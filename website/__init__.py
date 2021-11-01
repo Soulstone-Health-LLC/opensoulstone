@@ -31,3 +31,5 @@ def create_app():
     app = Flask(__name__)
     # Flask secret key configuration
     app.config['SECRET_KEY'] = secret_key
+
+    return app
