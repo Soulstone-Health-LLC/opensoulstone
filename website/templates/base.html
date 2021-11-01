@@ -9,10 +9,25 @@
     <title>{% block title %}Soulstone{% endblock %}</title>
   </head>
   <body>
+    <!-- Navbar -->
+    <nav class="demo">
+      <a href="/" class="brand">
+        <img class="logo" src="#" />
+        <span>Soulstone</span>
+      </a>
 
-  <!-- Static JS -->
-  <script type="text/javascript" src="{{ url_for('static', filename=
-  index.js') }}">
-  </script>
+      <!-- responsive-->
+      <input id="bmenub" type="checkbox" class="show">
+      <label for="bmenub" class="burger pseudo button">menu</label>
+
+      <div class="menu">
+        <a href="/login" class="button">Login</a>
+      </div>
+    </nav>
+
+    <!-- Static JS -->
+    <script type="text/javascript" src="{{ url_for('static', filename=
+    'index.js') }}">
+    </script>
   </body>
 </html>
