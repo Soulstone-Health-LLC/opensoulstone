@@ -129,3 +129,5 @@ dmypy.json
 .pyre/
 
 secretkey.txt
+
+HTML_TEMPLATE/HTML/LTR/.DS_Store
