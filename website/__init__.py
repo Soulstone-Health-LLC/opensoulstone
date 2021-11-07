@@ -10,6 +10,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from os import path
+from flask_login import LoginManager
 
 
 # ------------------------------------------------------------------------------
@@ -40,23 +41,40 @@ def create_app():
     app = Flask(__name__)
     # Flask secret key configuration
     app.config['SECRET_KEY'] = secret_key
-    # Database
+    # Flask and SQLAlchemy database configuration
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
     db.init_app(app)
 
+    # Import views and auth routes
     from .views import views
     from .auth import auth
 
+    # Blueprint routing
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
     
+    # Check if database exists; if not, create database and tables (as classes)
     from .models import User
-
     create_database(app)
+    
+    
+    # Initializes the login manager
+    login_manager = LoginManager()
+    login_manager.login_view = 'auth.login'
+    login_manager.login_message = u'You have to login to view this page.'
+    login_manager.login_message_category = 'warning'
+    login_manager.init_app(app)
+
+    @login_manager.user_loader
+    def load_user(id):
+        return User.query.get(int(id))
 
     return app
 
+# ------------------------------------------------------------------------------
+# Database initialization
+# ------------------------------------------------------------------------------
 def create_database(app):
     if not path.exists('website/' + DB_NAME):
         db.create_all(app=app)
-        print('Created Database!')
+        print('Created database!')

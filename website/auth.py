@@ -1,37 +1,66 @@
 '''
     File name: auth.py
     Author: Rodney Gauna
-    Date created: 2021-10-31
+    Date created: 2021-06-24
 '''
+
 
 # ------------------------------------------------------------------------------
 # Imports
 # ------------------------------------------------------------------------------
 from flask import Blueprint, render_template, request, flash, redirect, url_for
-from flask.helpers import flash
 from .models import User
-from . import db
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import login_user, login_required, logout_user, current_user
+from . import db
+
+
+# ------------------------------------------------------------------------------
+# Global Variables
+# ------------------------------------------------------------------------------
+auth = Blueprint('auth', __name__)
 
 
 # ------------------------------------------------------------------------------
 # Routes
 # ------------------------------------------------------------------------------
-auth = Blueprint('auth', __name__)
-
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
-    data = request.form
-    
-    return render_template("login.html")
+    '''Login page'''
+    # Gets the data from the form and saves as variables
+    if request.method == 'POST':
+        email = request.form.get('email')
+        password = request.form.get('password')
+
+        # Checks if the user's email is on file
+        user = User.query.filter_by(email=email).first()
+        # Checks if the password is correct
+        if user:
+            if check_password_hash(user.password, password):
+                print('logged in')
+                login_user(user, remember=True)
+                return redirect(url_for('views.home'))
+            else:
+                print('password wrong')
+        else:
+            print('email not found')
+
+    return render_template("login.html", user=current_user)
 
 
 @auth.route('/logout')
+@login_required
 def logout():
-    return render_template("login.html")
+    '''Logout operation'''
+    logout_user()
+    flash(' Logged out successfully.', category='success')
+    return redirect(url_for('auth.login'))
+
 
 @auth.route('/sign_up', methods=['GET', 'POST'])
 def sign_up():
+    '''Sign up page'''
+    # Gets the data from the form and saves as variables
     if request.method == 'POST':
         email = request.form.get('email')
         firstname = request.form.get('firstname')
@@ -39,12 +68,25 @@ def sign_up():
         password = request.form.get('password')
         password_repeat = request.form.get('password_repeat')
         
-        if password != password_repeat:
-            flash('The passwords must match', category='error')
+        # Checks if email already exists
+        user = User.query.filter_by(email=email).first()
+        
+        if user:
+            # TODO security issue - should look at some better wording
+            flash(' Email is already in use.', category='error')
+        # Validation logic for the submit form
+        elif password != password_repeat:
+            flash(' Passwords don\'t match.', category='error')
         else:
-            # add user to database
-            new_user = User(email=email, first_name=firstname, last_name=lastname, password=generate_password_hash(password, method='sha256'))
+            # Add new user to database
+            new_user = User(email=email, first_name=firstname,
+                            last_name=lastname,
+                            password=generate_password_hash(password,
+                                                            method='sha384'))
             db.session.add(new_user)
             db.session.commit()
+            flash(' Account created!', category='success')
+            login_user(new_user, remember=True)
             return redirect(url_for('views.home'))
-    return render_template("sign_up.html")
+
+    return render_template("sign_up.html", user=current_user)
