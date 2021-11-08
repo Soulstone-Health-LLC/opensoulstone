@@ -131,3 +131,5 @@ dmypy.json
 secretkey.txt
 
 HTML_TEMPLATE/HTML/LTR/.DS_Store
+
+website/database.db
