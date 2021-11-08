@@ -32,6 +32,7 @@ class User(db.Model, UserMixin):
     phone_number = db.Column(db.Integer)
     phone_type = db.Column(db.String(10))
     role = db.Column(db.String(50))
+    status = db.Column(db.Boolean)
     created_at = db.Column(db.DateTime(timezone=True), default=func.now())
     created_by = db.Column(db.Integer, db.ForeignKey('user.id'))
     updated_at = db.Column(db.DateTime(timezone=True))
@@ -77,6 +78,7 @@ class Locations(db.Model):
     phone_number = db.Column(db.Integer)
     phone_type = db.Column(db.String(10))
     email = db.Column(db.Text)
+    status = db.Column(db.Boolean)
     
     
 class Timezone(db.Model):
@@ -108,3 +110,4 @@ class People(db.Model):
     phone_number = db.Column(db.Integer)
     phone_type = db.Column(db.String(10))
     email = db.Column(db.Text)
+    status = db.Column(db.Boolean)
