@@ -32,3 +32,9 @@ def home():
 @login_required
 def support():
     return render_template("support.html", user=current_user)
+
+
+@views.route('/support/add_practice')
+@login_required
+def addpractice():
+    return render_template("add_practice.html", user=current_user)

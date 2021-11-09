@@ -42,6 +42,7 @@ class Practice(db.Model):
     '''SQL Table: practice'''
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Text)
+    biography = db.Column(db.Text)
     email = db.Column(db.Text)
     website = db.Column(db.Text)
     phone_number = db.Column(db.Integer)
