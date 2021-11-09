@@ -135,3 +135,5 @@ HTML_TEMPLATE/HTML/LTR/.DS_Store
 website/database.db
 
 database.db
+
+.DS_Store
