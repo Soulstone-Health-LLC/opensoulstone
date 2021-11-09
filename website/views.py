@@ -26,3 +26,9 @@ views = Blueprint('views', __name__)
 @login_required
 def home():
     return render_template("home.html", user=current_user)
+
+
+@views.route('/support')
+@login_required
+def support():
+    return render_template("support.html", user=current_user)
