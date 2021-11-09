@@ -59,16 +59,15 @@
 			<div class="page">
 				<div class="">
 				    <!-- CONTAINER OPEN -->
-					<div class="col col-login mx-auto">
-						<div class="text-center">
-							<img src="{{ url_for('static', filename='assets/images/brand/logo.png') }}" class="header-brand-img" alt="">
-						</div>
-					</div>
 					<div class="container-login100">
 						<div class="wrap-login100 p-0">
 							<div class="card-body">
                                 <form method="post" class="needs-validation" novalidate>
-                                    <span class="login100-form-title">
+                                    <div class="text-center">
+										<img src="{{ url_for('static', filename='assets/images/brand/logo.png') }}" class="header-brand-img" alt="">
+									</div>
+									<br>
+									<span class="login100-form-title">
 										Register
 									</span>
                                     <div class="form-group">
