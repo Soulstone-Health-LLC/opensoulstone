@@ -37,10 +37,6 @@ class User(db.Model, UserMixin):
     created_by = db.Column(db.Integer, db.ForeignKey('user.id'))
     updated_at = db.Column(db.DateTime(timezone=True))
     updated_by = db.Column(db.Integer, db.ForeignKey('user.id'))
-    practices = db.relationship('Practice')
-    users = db.relationship('User')
-    locations = db.relationship('Locations')
-    people = db.relationship('People')
     
 class Practice(db.Model):
     '''SQL Table: practice'''
@@ -54,7 +50,6 @@ class Practice(db.Model):
     created_at = db.Column(db.DateTime(timezone=True), default=func.now())
     updated_at = db.Column(db.DateTime(timezone=True))
     updated_by = db.Column(db.Integer, db.ForeignKey('user.id'))
-    users = db.relationship('User')
     locations = db.relationship('Locations')
     people = db.relationship('People')
     

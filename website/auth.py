@@ -82,7 +82,8 @@ def sign_up():
             new_user = User(email=email, first_name=firstname,
                             last_name=lastname,
                             password=generate_password_hash(password,
-                                                            method='sha384'))
+                                                            method='sha384'),
+                            practice_id=1)
             db.session.add(new_user)
             db.session.commit()
             flash(' Account created!', category='success')
