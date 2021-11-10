@@ -11,6 +11,7 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 from .models import Practice
 from . import db
+from datetime import datetime
 
 
 # ------------------------------------------------------------------------------
@@ -31,7 +32,9 @@ def home():
 @views.route('/support')
 @login_required
 def support():
-    return render_template("support.html", user=current_user)
+    if request.method == "GET":
+        practices = Practice.query.order_by(Practice.created_at).all()
+    return render_template("support.html", user=current_user, practices=practices)
 
 
 @views.route('/support/add_practice', methods=['GET', 'POST'])
