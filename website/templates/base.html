@@ -316,17 +316,18 @@
 						<!-- PAGE-HEADER -->
 						<div class="page-header">
 							<div>
-								<h1 class="page-title">Empty</h1>
-								<ol class="breadcrumb">
-									<li class="breadcrumb-item"><a href="#">Pages</a></li>
-									<li class="breadcrumb-item active" aria-current="page">Empty</li>
-								</ol>
+								{% block pagenav %}
+								<h1 class="page-title">Dashboard</h1>
+									<ol class="breadcrumb">
+										<li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+									</ol>
+								{% endblock %}
 							</div>
 						</div>
 						<!-- PAGE-HEADER END -->
 
 						<!-- ROW-1 OPEN -->
-						<div class="row"></div>
+						{% block content %}{% endblock %}
 					</div>
 					<!-- CONTAINER CLOSED -->
 				</div>
@@ -673,6 +674,12 @@
 		<script src="{{ url_for('static', filename='assets/plugins/p-scroll/perfect-scrollbar.js') }}"></script>
 		<script src="{{ url_for('static', filename='assets/plugins/p-scroll/pscroll.js') }}"></script>
 		<script src="{{ url_for('static', filename='assets/plugins/p-scroll/pscroll-1.js') }}"></script>
+
+		<!-- SELECT2 JS -->
+		<script src="{{ url_for('static', filename='assets/plugins/select2/select2.full.min.js') }}"></script>
+        
+		<!-- FORMVALIDATION JS -->
+		<script src="{{ url_for('static', filename='assets/js/form-validation.js') }}"></script>
 
 		<!-- CUSTOM JS-->
 		<script src="{{ url_for('static', filename='assets/js/custom.js') }}"></script>
