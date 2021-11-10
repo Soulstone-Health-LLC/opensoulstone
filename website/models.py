@@ -106,4 +106,4 @@ class People(db.Model):
     phone_number = db.Column(db.Integer)
     phone_type = db.Column(db.String(10))
     email = db.Column(db.Text)
-    status = db.Column(db.Boolean)
+    status = db.Column(db.Text)

@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}
+SoulStone - People
+{% endblock %}
+
+{% block pagenav %}
+<h1 class="page-title">People</h1>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page">People</li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+<div class="">
+    <a href="/add_person" class="btn btn-primary btn-icon text-white me-2">
+        <span>
+            <i class="fe fe-plus"></i>
+        </span> Add New Person
+    </a>
+</div>
+<br>
+<!-- Row -->
+<div class="row row-sm">
+    <div class="col-lg-12">
+        <div class="card custom-card">
+            <div class="card-body">
+                <div>
+                    <h3 class="card-title mb-1">People</h3>
+                    <p class="text-muted card-sub-title">List of records for all the people you've seen at your practice.</p>
+                </div>
+                <div class="table-responsive">
+                    <table class="table border text-nowrap text-md-nowrap table-hover mg-b-0">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Address</th>
+                                <th>Phone Number</th>
+                                <th>Email</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for people in peoples %}
+                            <tr>
+                                <td>{{ people.id }}</td>
+                                <td>
+                                    {% if people.middle_name == '' and people.suffix_name == '' %}
+                                    <tr>{{ people.last_name }}, {{ people.first_name }}</tr>
+                                    {% elif people.suffix_name == '' %}
+                                    <tr>{{ people.last_name }}, {{ people.first_name }} {{ people.middle_name }}</tr>
+                                    {% else %}
+                                    <tr>{{ people.last_name }} {{ people.suffix_name }}, {{ people.first_name }} {{ people.middle_name }}</tr>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if people.address_2 == '' %}
+                                    <tr>{{ people.address_1 }}</tr>
+                                    <tr>{{ people.city }}, {{ people.state }} {{ people.zipcode }}</tr>
+                                    {% else %}
+                                    <tr>{{ people.address_1 }}</tr>
+                                    <tr>{{ people.address_2 }}</tr>
+                                    <tr>{{ people.city }}, {{ people.state }} {{ people.zipcode }}</tr>
+                                    {% endif %}
+                                </td>
+                                <td>{{ people.phone_number }} ({{ people.phone_type }})</td>
+                                <td>{{ people.email }}</td>
+                                <td>{{ people.status }}</td>
+                                <td>
+                                    <a href="#">View</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Row -->
+{% endblock %}

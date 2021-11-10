@@ -10,7 +10,7 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from sqlalchemy.sql.functions import user
 from flask_login import login_required, current_user
-from .models import Practice
+from .models import People, Practice
 from . import db
 from datetime import datetime
 
@@ -31,6 +31,19 @@ def home():
     return render_template("home.html", user=current_user)
 
 
+# People
+@views.route('/people')
+@login_required
+def people():
+    if request.method == 'GET':
+        people = People.query.order_by(People.last_name).all()
+    return render_template("people.html", user=current_user, people=people)
+    
+
+
+# ------------------------------------------------------------------------------
+# Routes - Support
+# ------------------------------------------------------------------------------
 # Support - Practices
 @views.route('/support')
 @login_required
@@ -40,9 +53,6 @@ def support():
     return render_template("support.html", user=current_user, practices=practices)
 
 
-# ------------------------------------------------------------------------------
-# Routes - Support
-# ------------------------------------------------------------------------------
 # Support - Practices - View Practice
 @views.route('/support/<int:id>')
 def viewpractice(id):
