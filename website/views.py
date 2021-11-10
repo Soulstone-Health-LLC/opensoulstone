@@ -22,7 +22,7 @@ views = Blueprint('views', __name__)
 
 
 # ------------------------------------------------------------------------------
-# Routes
+# Routes - Practice
 # ------------------------------------------------------------------------------
 # Homepage
 @views.route('/')
@@ -40,6 +40,9 @@ def support():
     return render_template("support.html", user=current_user, practices=practices)
 
 
+# ------------------------------------------------------------------------------
+# Routes - Support
+# ------------------------------------------------------------------------------
 # Support - Practices - View Practice
 @views.route('/support/<int:id>')
 def viewpractice(id):
