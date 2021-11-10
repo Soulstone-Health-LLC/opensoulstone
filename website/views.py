@@ -8,6 +8,7 @@
 # Imports
 # ------------------------------------------------------------------------------
 from flask import Blueprint, render_template, request, flash, redirect, url_for
+from sqlalchemy.sql.functions import user
 from flask_login import login_required, current_user
 from .models import Practice
 from . import db
@@ -23,12 +24,14 @@ views = Blueprint('views', __name__)
 # ------------------------------------------------------------------------------
 # Routes
 # ------------------------------------------------------------------------------
+# Homepage
 @views.route('/')
 @login_required
 def home():
     return render_template("home.html", user=current_user)
 
 
+# Support - Practices
 @views.route('/support')
 @login_required
 def support():
@@ -37,6 +40,14 @@ def support():
     return render_template("support.html", user=current_user, practices=practices)
 
 
+# Support - Practices - View Practice
+@views.route('/support/<int:id>')
+def viewpractice(id):
+    practice = Practice.query.get_or_404(id)
+    return render_template("support_practice.html", user=current_user, practice=practice)
+
+
+# Support - Practices - Add Practice
 @views.route('/support/add_practice', methods=['GET', 'POST'])
 @login_required
 def addpractice():

@@ -1,0 +1,73 @@
+{% extends "base_support.html" %}
+
+{% block title %}SoulStone - Support App{% endblock %}
+
+{% block pagenav %}
+<h1 class="page-title">Support</h1>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/support">Support</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{practice.name}}</li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+<!-- ROW-1 OPEN -->
+<div class="row ">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h4><b>Practice ID</b></h4>
+                <p>{{ practice.id }}</p>
+            </div>
+        </div>
+    </div><!-- COL-END -->
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h4><b>Practice Name</b></h4>
+                <p>{{ practice.name }}</p>
+            </div>
+        </div>
+    </div><!-- COL-END -->
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h4><b>Practice Biography</b></h4>
+                <p>{{ practice.biography }}</p>
+            </div>
+        </div>
+    </div><!-- COL-END -->
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h4><b>Practice Email</b></h4>
+                <p>{{ practice.email }}</p>
+            </div>
+        </div>
+    </div><!-- COL-END -->
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h4><b>Practice Website</b></h4>
+                <p>{{ practice.website }}</p>
+            </div>
+        </div>
+    </div><!-- COL-END -->
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h4><b>Practice Phone Number</b></h4>
+                <p>{{ practice.phone_number }} ({{ practice.phone_type }})</p>
+            </div>
+        </div>
+    </div><!-- COL-END -->
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h4><b>Created At</b></h4>
+                <p>{{ practice.created_at.date() }}</p>
+            </div>
+        </div>
+    </div><!-- COL-END -->
+</div>
+{% endblock %}
