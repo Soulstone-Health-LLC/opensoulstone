@@ -42,14 +42,11 @@
                                 <th>Email</th>
                                 <th>Phone Number</th>
                                 <th>Status</th>
-                                <th>Created Date</th>
-                                <th>Created By</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% if practice.id is sameas user.practice_id %}
-                            {% for user in practice_user %}
+                            {% for user in practice.users %}
                             <tr>
                                 <td>{{ user.id }}</td>
                                 <td>{{ user.first_name }}</td>
@@ -59,14 +56,11 @@
                                 <td>{{ user.email }}</td>
                                 <td>{{ user.phone_number }}</td>
                                 <td>{{ user.status }}</td>
-                                <td>{{ user.created_at.date() }}</td>
-                                <td>{{ user.created_by }}</td>
                                 <td>
                                     <a href="#">View</a>
                                 </td>
                             </tr>
                             {% endfor %}
-                            {% endif %}
                         </tbody>
                     </table>
                 </div>
@@ -125,15 +119,6 @@
             </div>
         </div>
     </div><!-- COL-END -->
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-body">
-                <h4><b>Created At</b></h4>
-                <p>{{ practice.created_at.date() }}</p>
-            </div>
-        </div>
-    </div>
-    <!-- COL-END -->
 </div>
 <!-- End Pracitce Info -->
 {% endblock %}

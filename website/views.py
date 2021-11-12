@@ -27,6 +27,15 @@ views = Blueprint('views', __name__)
 # ------------------------------------------------------------------------------
 # Routes - Practice
 # ------------------------------------------------------------------------------
+# 404 Page
+@views.errorhandler(404)
+def page_not_found(e):
+    return render_template("404.html"), 404
+
+
+# ------------------------------------------------------------------------------
+# Routes - Practice
+# ------------------------------------------------------------------------------
 # Homepage
 @views.route('/')
 @login_required
@@ -52,7 +61,7 @@ def people():
 @login_required
 def support():
     if request.method == "GET":
-        practices = Practice.query.order_by(Practice.created_at).all()
+        practices = Practice.query.order_by(Practice.id).all()
     return render_template("support.html", user=current_user, practices=practices)
 
 
@@ -117,8 +126,6 @@ def addPracticeUser(id):
         
         # Add new practice user to database
         new_practice_user = User(practice_id=practice_id,
-                                 created_by=user_id,
-                                 updated_by=user_id,
                                  role=role, 
                                  first_name=firstname,
                                  middle_name=middlename,

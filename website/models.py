@@ -10,8 +10,8 @@
 from datetime import timezone
 from . import db
 from flask_login import UserMixin
+from sqlalchemy import Table, Column, Integer, ForeignKey
 from sqlalchemy.sql import func
-
 import website
 
 
@@ -21,6 +21,7 @@ import website
 # ------------------------------------------------------------------------------
 class User(db.Model, UserMixin):
     '''SQL Table: user'''
+    __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
     practice_id = db.Column(db.Integer, db.ForeignKey('practice.id'))
     email = db.Column(db.Text, unique=True)
@@ -33,13 +34,10 @@ class User(db.Model, UserMixin):
     phone_type = db.Column(db.String(10))
     role = db.Column(db.String(50))
     status = db.Column(db.Text)
-    created_at = db.Column(db.DateTime(timezone=True), default=func.now())
-    created_by = db.Column(db.Integer, db.ForeignKey('user.id'))
-    updated_at = db.Column(db.DateTime(timezone=True), default=func.now())
-    updated_by = db.Column(db.Integer, db.ForeignKey('user.id'))
     
 class Practice(db.Model):
     '''SQL Table: practice'''
+    __tablename__ = 'practice'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Text)
     biography = db.Column(db.Text)
@@ -48,11 +46,7 @@ class Practice(db.Model):
     phone_number = db.Column(db.Integer)
     phone_type = db.Column(db.String(10))
     timezone_id = db.Column(db.Integer, db.ForeignKey('timezone.id'))
-    created_at = db.Column(db.DateTime(timezone=True), default=func.now())
-    updated_at = db.Column(db.DateTime(timezone=True))
-    updated_by = db.Column(db.Integer, db.ForeignKey('user.id'))
-    locations = db.relationship('Locations')
-    people = db.relationship('People')
+    users = db.relationship('User')
     
 
 class Locations(db.Model):
