@@ -45,7 +45,7 @@ class User(db.Model, UserMixin):
     def verify_token(token):
         serial = Serializer(secret_key)
         try:
-            serial.loads(token)['user_id']
+            user_id = serial.loads(token)['user_id']
         except:
             return None
         return User.query.get(user_id)
