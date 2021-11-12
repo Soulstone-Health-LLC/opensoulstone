@@ -54,7 +54,7 @@ def login():
 # Forgot Password
 def send_mail(user):
     token = User.get_token(user)
-    msg = Message('Soulstone - Password Reset Request', recipients=[User.email],
+    msg = Message('Soulstone - Password Reset Request', recipients=[user.email],
                   sender='noreply@soulstone.com')
     msg.body = f''' To reset your password, please follow the link below:
     
@@ -64,6 +64,7 @@ def send_mail(user):
     
     ...
     '''
+    mail.send(msg)
 
 # Reset Request Page
 @auth.route('/reset_request', methods=['GET', 'POST'])
