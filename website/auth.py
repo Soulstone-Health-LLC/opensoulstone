@@ -78,6 +78,7 @@ def reset_request():
         if user:
             send_mail(user)
         else:
+            print('email not found')
             flash('Email not found.', category='error')
     return render_template("reset_request.html")
 
