@@ -137,3 +137,5 @@ website/database.db
 database.db
 
 .DS_Store
+
+emailpassword.txt
