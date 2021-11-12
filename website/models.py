@@ -8,11 +8,12 @@
 # Imports
 # ------------------------------------------------------------------------------
 from datetime import timezone
-from . import db
+from . import db, secret_key
 from flask_login import UserMixin
 from sqlalchemy import Table, Column, Integer, ForeignKey
 from sqlalchemy.sql import func
 import website
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
 
 # ------------------------------------------------------------------------------
@@ -24,7 +25,7 @@ class User(db.Model, UserMixin):
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
     practice_id = db.Column(db.Integer, db.ForeignKey('practice.id'))
-    email = db.Column(db.Text, unique=True)
+    email = db.Column(db.Text)
     password = db.Column(db.String(150))
     first_name = db.Column(db.String(150))
     middle_name = db.Column(db.String(150))
@@ -34,6 +35,21 @@ class User(db.Model, UserMixin):
     phone_type = db.Column(db.String(10))
     role = db.Column(db.String(50))
     status = db.Column(db.Text)
+    
+    
+    def get_token(self,expires_sec=900):
+        serial = Serializer(secret_key, expires_in=expires_sec)
+        return serial.dumps({'user_id':self.id}).decode('utf-8')
+    
+    @staticmethod
+    def verify_token(token):
+        serial = Serializer(secret_key)
+        try:
+            serial.loads(token)['user_id']
+        except:
+            return None
+        return User.query.get(user_id)
+        
     
 class Practice(db.Model):
     '''SQL Table: practice'''

@@ -11,6 +11,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from os import path
 from flask_login import LoginManager
+from flask_mail import Mail
 
 
 # ------------------------------------------------------------------------------
@@ -19,7 +20,7 @@ from flask_login import LoginManager
 db = SQLAlchemy()
 DB_NAME = "database.db"
 
-
+mail = Mail()
 # ------------------------------------------------------------------------------
 # Read Secret Key from the secretkey.txt file
 # ------------------------------------------------------------------------------
@@ -31,6 +32,18 @@ def read_secret_key():
 
 
 secret_key = read_secret_key()
+
+# ------------------------------------------------------------------------------
+# Read Secret Key from the secretkey.txt file
+# ------------------------------------------------------------------------------
+def read_email_password():
+    '''Open text file, read the secret key and returns it'''
+    with open("emailpassword.txt", "r") as r:
+        lines = r.readlines()
+        return lines[0].strip()
+
+
+email_password = read_email_password()
 
 
 # ------------------------------------------------------------------------------
@@ -68,6 +81,14 @@ def create_app():
     @login_manager.user_loader
     def load_user(id):
         return User.query.get(int(id))
+    
+    # Mail configuration
+    app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+    app.config['MAIL_PORT'] = 587
+    app.config['MAIL_USE_TLS'] = True
+    app.config['MAIL_USERNAME'] = 'rodneygauna@gmail.com'
+    app.config['MAIL_PASSWORD'] = email_password
+    mail.init_app(app)
 
     return app
 

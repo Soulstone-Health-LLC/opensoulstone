@@ -12,7 +12,9 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for
 from .models import User
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
-from . import db
+from . import db, mail
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from flask_mail import Message
 
 
 # ------------------------------------------------------------------------------
@@ -24,6 +26,7 @@ auth = Blueprint('auth', __name__)
 # ------------------------------------------------------------------------------
 # Routes
 # ------------------------------------------------------------------------------
+# Login Page
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     '''Login page'''
@@ -48,6 +51,62 @@ def login():
     return render_template("login.html", user=current_user)
 
 
+# Forgot Password
+def send_mail(user):
+    token = User.get_token(user)
+    msg = Message('Soulstone - Password Reset Request', recipients=[User.email],
+                  sender='noreply@soulstone.com')
+    msg.body = f''' To reset your password, please follow the link below:
+    
+    {url_for('auth.reset_token', token=token, _external=True)}
+    
+    If you did not send a password reset request, please ignore this email.
+    
+    ...
+    '''
+
+# Reset Request Page
+@auth.route('/reset_request', methods=['GET', 'POST'])
+def reset_request():
+    '''Reset page'''
+    if request.method == 'POST':
+        email = request.form.get('email')
+        
+        # Checks if the user's email is on file
+        user = User.query.filter_by(email=email).first()
+        # Checks if the email exists
+        if user:
+            send_mail(user)
+        else:
+            flash('Email not found.', category='error')
+    return render_template("reset_request.html")
+
+# Reset Password Page
+@auth.route('/reset_password/<token>', methods=['GET', 'POST'])
+def reset_token(token):
+    user = User.verify_token(token)
+    if user is None:
+        flash('That is an invalid token or the token has expired. Please try again.', category='error')
+        return redirect(url_for('view.reset_request'))
+    else:
+        if request.method == 'POST':
+            password = request.form.get('password')
+            password_repeat = request.form.get('password_repeat')
+            
+            if password != password_repeat:
+                flash(' Passwords don\'t match.', category='error')
+            else:
+                # Add new user to database
+                update_password = User(password=generate_password_hash(password,
+                                                                method='sha384'))
+                db.session.add(update_password)
+                db.session.commit()
+                flash(' Password updated!', category='success')
+                return redirect(url_for('auth.login'))
+    return render_template("change_password.html")
+
+
+# Logout
 @auth.route('/logout')
 @login_required
 def logout():
@@ -57,6 +116,7 @@ def logout():
     return redirect(url_for('auth.login'))
 
 
+# Sign Up Page
 @auth.route('/sign_up', methods=['GET', 'POST'])
 def sign_up():
     '''Sign up page'''
