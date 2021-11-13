@@ -9,12 +9,12 @@
 # Imports
 # ------------------------------------------------------------------------------
 from flask import Blueprint, render_template, request, flash, redirect, url_for
-from .models import User
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
-from . import db, mail
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask_mail import Message
+from .models import User
+from . import db, mail
 
 
 # ------------------------------------------------------------------------------
@@ -53,15 +53,16 @@ def login():
 
 # Forgot Password
 def send_mail(user):
+    ''' Generates a serialized token and sends the link to the user's email '''
     token = User.get_token(user)
     msg = Message('Soulstone - Password Reset Request', recipients=[user.email],
                   sender='noreply@soulstone.com')
     msg.body = f''' To reset your password, please follow the link below:
-    
+
     {url_for('auth.reset_token', token=token, _external=True)}
-    
+
     If you did not send a password reset request, please ignore this email.
-    
+
     ...
     '''
     mail.send(msg)
@@ -72,7 +73,6 @@ def reset_request():
     '''Reset page'''
     if request.method == 'POST':
         email = request.form.get('email')
-        
         # Checks if the user's email is on file
         user = User.query.filter_by(email=email).first()
         # Checks if the email exists
@@ -86,15 +86,17 @@ def reset_request():
 # Reset Password Page
 @auth.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_token(token):
+    ''' Checks the link the user clicked and if the token matches '''
     user_token = User.verify_token(token)
     if user_token is None:
-        flash('That is an invalid token or the token has expired. Please try again.', category='error')
+        flash('That is an invalid token or the token has expired. Please try again.',
+        category='error')
         return redirect(url_for('view.reset_request'))
-        
+
     if request.method == 'POST':
         password = request.form.get('password')
         password_repeat = request.form.get('password_repeat')
-        
+
         if password != password_repeat:
             flash(' Passwords don\'t match.', category='error')
         else:
@@ -128,12 +130,12 @@ def sign_up():
         lastname = request.form.get('lastname')
         password = request.form.get('password')
         password_repeat = request.form.get('password_repeat')
-        
+
         # Checks if email already exists
         user = User.query.filter_by(email=email).first()
-        
+
         if user:
-            # TODO security issue - should look at some better wording
+            # security issue - should look at some better wording
             flash(' Email is already in use.', category='error')
         # Validation logic for the submit form
         elif password != password_repeat:

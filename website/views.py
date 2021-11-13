@@ -7,15 +7,14 @@
 # ------------------------------------------------------------------------------
 # Imports
 # ------------------------------------------------------------------------------
+import random
+import string
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from sqlalchemy.sql.functions import user
 from flask_login import login_required, current_user
+from werkzeug.security import generate_password_hash
+from . import db
 from .models import People, Practice, User
-from werkzeug.security import generate_password_hash, check_password_hash
-from . import create_database, db
-from datetime import datetime
-import random
-import string
 
 
 # ------------------------------------------------------------------------------
@@ -29,7 +28,8 @@ views = Blueprint('views', __name__)
 # ------------------------------------------------------------------------------
 # 404 Page
 @views.errorhandler(404)
-def page_not_found(e):
+def page_not_found():
+    ''' Displays 404 page if there is an error '''
     return render_template("404.html"), 404
 
 
@@ -50,7 +50,6 @@ def people():
     if request.method == 'GET':
         people = People.query.order_by(People.last_name).all()
     return render_template("people.html", user=current_user, people=people)
-    
 
 
 # ------------------------------------------------------------------------------
@@ -87,7 +86,7 @@ def addpractice():
         website = request.form.get('website')
         phonenumber = request.form.get('phonenumber')
         phonetype = request.form.get('phonetype')
-        
+
         # Add new practice to database
         new_practice = Practice(name=practicename, biography=biography,
                                 email=email, website=website,
@@ -113,7 +112,6 @@ def addPracticeUser(id):
     # Gets the data from the form and saves as variables
     if request.method == 'POST':
         practice_id = request.form.get('practice_id')
-        user_id = request.form.get('user_id')
         role = request.form.get('role')
         firstname = request.form.get('firstname')
         middlename = request.form.get('middlename')
@@ -123,10 +121,10 @@ def addPracticeUser(id):
         phonenumber = request.form.get('phonenumber')
         phonetype = request.form.get('phonetype')
         password = randompass(10)
-        
+
         # Add new practice user to database
         new_practice_user = User(practice_id=practice_id,
-                                 role=role, 
+                                 role=role,
                                  first_name=firstname,
                                  middle_name=middlename,
                                  last_name=lastname,
