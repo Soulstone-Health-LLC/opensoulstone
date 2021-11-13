@@ -80,7 +80,8 @@ def billing():
 def support():
     if request.method == "GET":
         practices = Practice.query.order_by(Practice.id).all()
-    return render_template("support.html", user=current_user, practices=practices)
+    return render_template("support.html", user=current_user,
+                           practices=practices)
 
 
 # Support - Practices - View Practice
@@ -124,10 +125,13 @@ def addpractice():
 def addPracticeUser(id):
     '''Add practice user form and page'''
     practice = Practice.query.get(id)
+
     # Random string
     def randompass(length):
+        ''' Generates a random string for a temporary password '''
         letters = string.ascii_lowercase + string.ascii_uppercase + string.digits
         return ''.join(random.choice(letters) for i in range(length))
+
     # Gets the data from the form and saves as variables
     if request.method == 'POST':
         practice_id = request.form.get('practice_id')
