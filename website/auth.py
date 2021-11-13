@@ -11,7 +11,6 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
-from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask_mail import Message
 from .models import User
 from . import db, mail
@@ -55,7 +54,8 @@ def login():
 def send_mail(user):
     ''' Generates a serialized token and sends the link to the user's email '''
     token = User.get_token(user)
-    msg = Message('Soulstone - Password Reset Request', recipients=[user.email],
+    msg = Message('Soulstone - Password Reset Request',
+                  recipients=[user.email],
                   sender='noreply@soulstone.com')
     msg.body = f''' To reset your password, please follow the link below:
 
@@ -66,6 +66,7 @@ def send_mail(user):
     ...
     '''
     mail.send(msg)
+
 
 # Reset Request Page
 @auth.route('/reset_request', methods=['GET', 'POST'])
@@ -83,14 +84,16 @@ def reset_request():
             flash('Email not found.', category='error')
     return render_template("reset_request.html")
 
+
 # Reset Password Page
 @auth.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_token(token):
     ''' Checks the link the user clicked and if the token matches '''
     user_token = User.verify_token(token)
     if user_token is None:
-        flash('That is an invalid token or the token has expired. Please try again.',
-        category='error')
+        flash('''That is an invalid token or the token has expired.
+              Please try again.''',
+              category='error')
         return redirect(url_for('view.reset_request'))
 
     if request.method == 'POST':
@@ -101,7 +104,8 @@ def reset_token(token):
             flash(' Passwords don\'t match.', category='error')
         else:
             # Update password on database
-            update_password = User(password=generate_password_hash(password, method='sha384'))
+            update_password = User(
+                password=generate_password_hash(password, method='sha384'))
             db.session.execute(update_password)
             db.session.commit()
             flash(' Password updated!', category='success')

@@ -21,6 +21,8 @@ db = SQLAlchemy()
 DB_NAME = "database.db"
 
 mail = Mail()
+
+
 # ------------------------------------------------------------------------------
 # Read Secret Key from the secretkey.txt file
 # ------------------------------------------------------------------------------
@@ -32,6 +34,7 @@ def read_secret_key():
 
 
 secret_key = read_secret_key()
+
 
 # ------------------------------------------------------------------------------
 # Read Secret Key from the secretkey.txt file
@@ -70,7 +73,6 @@ def create_app():
     from .models import User
     create_database(app)
 
-
     # Initializes the login manager
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
@@ -92,6 +94,7 @@ def create_app():
     mail.init_app(app)
 
     return app
+
 
 # ------------------------------------------------------------------------------
 # Database initialization
