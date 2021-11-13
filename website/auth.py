@@ -86,25 +86,24 @@ def reset_request():
 # Reset Password Page
 @auth.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_token(token):
-    user = User.verify_token(token)
-    if user is None:
+    user_token = User.verify_token(token)
+    if user_token is None:
         flash('That is an invalid token or the token has expired. Please try again.', category='error')
         return redirect(url_for('view.reset_request'))
-    else:
-        if request.method == 'POST':
-            password = request.form.get('password')
-            password_repeat = request.form.get('password_repeat')
-            
-            if password != password_repeat:
-                flash(' Passwords don\'t match.', category='error')
-            else:
-                # Add new user to database
-                update_password = User(password=generate_password_hash(password,
-                                                                method='sha384'))
-                db.session.add(update_password)
-                db.session.commit()
-                flash(' Password updated!', category='success')
-                return redirect(url_for('auth.login'))
+        
+    if request.method == 'POST':
+        password = request.form.get('password')
+        password_repeat = request.form.get('password_repeat')
+        
+        if password != password_repeat:
+            flash(' Passwords don\'t match.', category='error')
+        else:
+            # Update password on database
+            update_password = User(password=generate_password_hash(password, method='sha384'))
+            db.session.execute(update_password)
+            db.session.commit()
+            flash(' Password updated!', category='success')
+            return redirect(url_for('auth.login'))
     return render_template("change_password.html")
 
 
