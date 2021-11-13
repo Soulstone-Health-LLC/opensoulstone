@@ -65,12 +65,12 @@ def create_app():
     # Blueprint routing
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
-    
+
     # Check if database exists; if not, create database and tables (as classes)
     from .models import User
     create_database(app)
-    
-    
+
+
     # Initializes the login manager
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
@@ -81,7 +81,7 @@ def create_app():
     @login_manager.user_loader
     def load_user(id):
         return User.query.get(int(id))
-    
+
     # Mail configuration
     app.config['MAIL_SERVER'] = 'smtp.gmail.com'
     app.config['MAIL_PORT'] = 465
