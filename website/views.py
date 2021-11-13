@@ -10,7 +10,6 @@
 import random
 import string
 from flask import Blueprint, render_template, request, flash, redirect, url_for
-from sqlalchemy.sql.functions import user
 from flask_login import login_required, current_user
 from werkzeug.security import generate_password_hash
 from . import db
@@ -129,7 +128,8 @@ def addPracticeUser(id):
     # Random string
     def randompass(length):
         ''' Generates a random string for a temporary password '''
-        letters = string.ascii_lowercase + string.ascii_uppercase + string.digits
+        s = string
+        letters = s.ascii_lowercase + s.ascii_uppercase + s.digits
         return ''.join(random.choice(letters) for i in range(length))
 
     # Gets the data from the form and saves as variables
@@ -153,7 +153,8 @@ def addPracticeUser(id):
                                  last_name=lastname,
                                  suffix_name=suffix,
                                  email=email,
-                                 password=generate_password_hash(password, method='sha384'),
+                                 password=generate_password_hash(
+                                     password, method='sha384'),
                                  phone_number=phonenumber,
                                  phone_type=phonetype,
                                  status='Active')
@@ -161,4 +162,5 @@ def addPracticeUser(id):
         db.session.commit()
         flash(' Account created!', category='success')
         return redirect(url_for('views.support'))
-    return render_template("support_add_user.html", user=current_user, practice=practice)
+    return render_template("support_add_user.html",
+                           user=current_user, practice=practice)
