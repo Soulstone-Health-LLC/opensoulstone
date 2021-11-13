@@ -9,9 +9,9 @@
 # ------------------------------------------------------------------------------
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from os import path
 from flask_login import LoginManager
 from flask_mail import Mail
+from os import path
 
 
 # ------------------------------------------------------------------------------
@@ -20,6 +20,10 @@ from flask_mail import Mail
 db = SQLAlchemy()
 DB_NAME = "database.db"
 
+
+# ------------------------------------------------------------------------------
+# Mail configuration
+# ------------------------------------------------------------------------------
 mail = Mail()
 
 
@@ -37,10 +41,10 @@ secret_key = read_secret_key()
 
 
 # ------------------------------------------------------------------------------
-# Read Secret Key from the secretkey.txt file
+# Read email password from the emailpassword.txt file
 # ------------------------------------------------------------------------------
 def read_email_password():
-    '''Open text file, read the secret key and returns it'''
+    '''Open text file, read the email password for Gmail and returns it'''
     with open("emailpassword.txt", "r") as r:
         lines = r.readlines()
         return lines[0].strip()

@@ -30,7 +30,7 @@ views = Blueprint('views', __name__)
 @views.errorhandler(404)
 def page_not_found():
     ''' Displays 404 page if there is an error '''
-    return render_template("404.html"), 404
+    return render_template("404.html", title='Soulstone'), 404
 
 
 # ------------------------------------------------------------------------------
@@ -40,7 +40,7 @@ def page_not_found():
 @views.route('/')
 @login_required
 def home():
-    return render_template("home.html", user=current_user)
+    return render_template("home.html", title="Soulstone", user=current_user)
 
 
 # People
@@ -49,7 +49,26 @@ def home():
 def people():
     if request.method == 'GET':
         people = People.query.order_by(People.last_name).all()
-    return render_template("people.html", user=current_user, people=people)
+    return render_template("people.html", title="Soulstone - People",
+                           user=current_user, people=people)
+
+
+# Notes
+@views.route('/notes')
+@login_required
+def notes():
+    ''' Routes the user to the Notes page '''
+    return render_template("notes.html", title="Soulstone - Notes",
+                           user=current_user)
+
+
+# Billing
+@views.route('/billing')
+@login_required
+def billing():
+    ''' Routes the user to the Billing page '''
+    return render_template("billing.html", title="Soulstone - Billing",
+                           user=current_user)
 
 
 # ------------------------------------------------------------------------------
