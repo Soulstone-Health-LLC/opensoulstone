@@ -35,12 +35,12 @@ class User(db.Model, UserMixin):
     phone_type = db.Column(db.String(10))
     role = db.Column(db.String(50))
     status = db.Column(db.Text)
-    
-    
+
+
     def get_token(self,expires_sec=900):
         serial = Serializer(secret_key, expires_in=expires_sec)
         return serial.dumps({'user_id':self.id}).decode('utf-8')
-    
+
     @staticmethod
     def verify_token(token):
         serial = Serializer(secret_key)
@@ -49,8 +49,8 @@ class User(db.Model, UserMixin):
         except:
             return None
         return User.query.get(user_id)
-        
-    
+
+
 class Practice(db.Model):
     '''SQL Table: practice'''
     __tablename__ = 'practice'
@@ -63,7 +63,7 @@ class Practice(db.Model):
     phone_type = db.Column(db.String(10))
     timezone_id = db.Column(db.Integer, db.ForeignKey('timezone.id'))
     users = db.relationship('User')
-    
+
 
 class Locations(db.Model):
     '''SQL Table: locations'''
@@ -85,8 +85,8 @@ class Locations(db.Model):
     phone_type = db.Column(db.String(10))
     email = db.Column(db.Text)
     status = db.Column(db.Boolean)
-    
-    
+
+
 class Timezone(db.Model):
     '''SQL Table: timezones'''
     id = db.Column(db.Integer, primary_key=True)
@@ -94,7 +94,7 @@ class Timezone(db.Model):
     time_offset = db.Column(db.Integer)
     practices = db.relationship('Practice')
     locations = db.relationship('Locations')
-    
+
 
 class People(db.Model):
     '''SQL Table: people'''
