@@ -130,7 +130,9 @@ def sign_up():
     '''Sign up page'''
     form = RegistrationForm()
     if form.validate_on_submit():
-          pass
+        flash(f'Account created for {form.first_name.data} {form.last_name.data}',
+              category='success')
+        return redirect(url_for('auth.login'))
     return render_template("sign_up.html",
                            title="Soulstone - Register",
                            form=form,
