@@ -30,17 +30,20 @@ auth = Blueprint('auth', __name__)
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     '''Login page'''
+    form = LoginForm()
+
     # Gets the data from the form and saves as variables
     if request.method == 'POST':
-        email = request.form.get('email')
-        password = request.form.get('password')
+        email = form.email.data
+        password = form.password.data
 
         # Checks if the user's email is on file
         user = User.query.filter_by(email=email).first()
+
         # Checks if the password is correct
         if user:
             if check_password_hash(user.password, password):
-                print('logged in')
+                flash('Logged in successfully', category='success')
                 login_user(user, remember=True)
                 return redirect(url_for('views.home'))
             else:
@@ -48,7 +51,10 @@ def login():
         else:
             print('email not found')
 
-    return render_template("login.html", user=current_user)
+    return render_template("login.html",
+                           title='Soulstone - Login',
+                           form=form,
+                           user=current_user)
 
 
 # Forgot Password
@@ -120,7 +126,7 @@ def reset_token(token):
 def logout():
     '''Logout operation'''
     logout_user()
-    flash(' Logged out successfully.', category='success')
+    flash('Logged out successfully.', category='success')
     return redirect(url_for('auth.login'))
 
 
@@ -153,7 +159,7 @@ def sign_up():
                 db.session.commit()
 
                 # Flash success message
-                flash(' Account created!', category='success')
+                flash('Account created!', category='success')
 
                 # Remember the newly registered user
                 login_user(new_user, remember=True)

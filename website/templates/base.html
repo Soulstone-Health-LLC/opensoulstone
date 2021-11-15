@@ -311,6 +311,45 @@
 
                 <!--app-content open-->
 				<div class="app-content">
+					{% with messages=get_flashed_messages(with_categories=true) %}
+						{% if messages %}
+							{% for category, message in messages %}
+								{% if category == 'error' %}
+								<div class="alert alert-danger alert-dismissible fade show mb-0" role="alert">
+									<span class="alert-inner--icon"><i class="fe fe-slash"></i></span>
+									<span class="alert-inner--text"><strong>Danger! </strong>{{ message }}</span>
+									<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+										<span aria-hidden="true">×</span>
+									</button>
+								</div>
+								{% elif category == 'warning' %}
+								<div class="alert alert-warning alert-dismissible fade show" role="alert">
+									<span class="alert-inner--icon"><i class="fe fe-info"></i></span>
+									<span class="alert-inner--text"><strong>Warning! </strong>{{ message }}</span>
+									<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+										<span aria-hidden="true">×</span>
+									</button>
+								</div>
+								{% elif category == 'info' %}
+								<div class="alert alert-info alert-dismissible fade show" role="alert">
+									<span class="alert-inner--icon"><i class="fe fe-bell"></i></span>
+									<span class="alert-inner--text"><strong>Info! </strong>{{ message }}</span>
+									<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+										<span aria-hidden="true">×</span>
+									</button>
+								</div>
+								{% else %}
+								<div class="alert alert-success alert-dismissible fade show" role="alert">
+									<span class="alert-inner--icon"><i class="fe fe-thumbs-up"></i></span>
+									<span class="alert-inner--text"><strong>Success! </strong>{{ message }}</span>
+									<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+										<span aria-hidden="true">×</span>
+									</button>
+								</div>
+								{% endif %}
+							{% endfor %}
+						{% endif %}
+					{% endwith %}
 					<div class="side-app">
 
 						<!-- PAGE-HEADER -->
@@ -677,7 +716,7 @@
 
 		<!-- SELECT2 JS -->
 		<script src="{{ url_for('static', filename='assets/plugins/select2/select2.full.min.js') }}"></script>
-        
+
 		<!-- FORMVALIDATION JS -->
 		<script src="{{ url_for('static', filename='assets/js/form-validation.js') }}"></script>
 
