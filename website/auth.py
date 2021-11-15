@@ -12,6 +12,7 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 from flask_mail import Message
+from .forms import RegistrationForm, LoginForm
 from .models import User
 from . import db, mail
 
@@ -127,7 +128,14 @@ def logout():
 @auth.route('/sign_up', methods=['GET', 'POST'])
 def sign_up():
     '''Sign up page'''
-    # Gets the data from the form and saves as variables
+    form = RegistrationForm()
+    if form.validate_on_submit():
+          pass
+    return render_template("sign_up.html",
+                           title="Soulstone - Register",
+                           form=form,
+                           user=current_user)
+    """ # Gets the data from the form and saves as variables
     if request.method == 'POST':
         email = request.form.get('email')
         firstname = request.form.get('firstname')
@@ -157,4 +165,4 @@ def sign_up():
             login_user(new_user, remember=True)
             return redirect(url_for('views.home'))
 
-    return render_template("sign_up.html", user=current_user)
+    return render_template("sign_up.html", user=current_user) """

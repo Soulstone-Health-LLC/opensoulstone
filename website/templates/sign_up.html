@@ -1,7 +1,8 @@
 {% extends "base_login.html" %}
 
 {% block form %}
-<form method="post" class="needs-validation" novalidate>
+<form method="post" class="" novalidate>
+	{{ form.hidden_tag() }}
 	<div class="text-center">
 		<img src="{{ url_for('static', filename='assets/images/brand/logo.png') }}" class="header-brand-img" alt="">
 	</div>
@@ -10,6 +11,64 @@
 		Register
 	</span>
 	<div class="form-group">
+		{{ form.email.label() }}
+		{% if form.email.errors %}
+			{{ form.email(class="form-control is-invalid") }}
+				{% for error in form.email.errors %}
+					<div class="invalid-feedback">{{ error }}</div>
+				{% endfor %}
+		{% else %}
+			{{ form.email(class="form-control") }}
+		{% endif %}
+	</div>
+	<div class="form-row">
+		<div class="col-md-6 mb-3">
+			{{ form.first_name.label() }}
+			{% if form.first_name.errors %}
+				{{ form.first_name(class="form-control is-invalid") }}
+				{% for error in form.first_name.errors %}
+					<div class="invalid-feedback">{{ error }}</div>
+				{% endfor %}
+			{% else %}
+				{{ form.first_name(class="form-control") }}
+			{% endif %}
+		</div>
+		<div class="col-md-6 mb-3">
+			{{ form.last_name.label() }}
+			{% if form.last_name.errors %}
+				{{ form.last_name(class="form-control is-invalid") }}
+				{% for error in form.last_name.errors %}
+					<div class="invalid-feedback">{{ error }}</div>
+				{% endfor %}
+			{% else %}
+				{{ form.last_name(class="form-control") }}
+			{% endif %}
+		</div>
+	</div>
+	<div class="form-group">
+		{{ form.password.label() }}
+		{% if form.password.errors %}
+			{{ form.password(class="form-control is-invalid") }}
+				{% for error in form.password.errors %}
+					<div class="invalid-feedback">{{ error }}</div>
+				{% endfor %}
+		{% else %}
+			{{ form.password(class="form-control") }}
+		{% endif %}
+	</div>
+	<div class="form-group">
+		{{ form.confirm_password.label() }}
+		{% if form.confirm_password.errors %}
+			{{ form.confirm_password(class="form-control is-invalid") }}
+				{% for error in form.confirm_password.errors %}
+					<div class="invalid-feedback">{{ error }}</div>
+				{% endfor %}
+		{% else %}
+			{{ form.confirm_password(class="form-control") }}
+		{% endif %}
+	</div>
+	{{ form.submit(class="btn btn-primary") }}
+	<!-- <div class="form-group">
 		<label for="email">Email *</label>
 		<input type="email" class="form-control" id="email" name="email" required>
 		<div class="invalid-feedback">Required</div>
@@ -43,6 +102,6 @@
 			<div class="invalid-feedback">You must agree before submitting.</div>
 		</div>
 	</div>
-	<button class="btn btn-primary" type="submit">Register Account</button>
+	<button class="btn btn-primary" type="submit">Register Account</button> -->
 </form>
 {% endblock form %}
