@@ -7,12 +7,10 @@
 # ------------------------------------------------------------------------------
 # Imports
 # ------------------------------------------------------------------------------
-from datetime import datetime, timezone
+from datetime import datetime
 from . import db, secret_key
 from flask_login import UserMixin
-from sqlalchemy import Table, Column, Integer, ForeignKey
 from sqlalchemy.sql import func
-import website
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
 
@@ -42,9 +40,10 @@ class User(db.Model, UserMixin):
     def __repr__(self):
         return f'{self.email} : {self.date_created}'
 
-    def get_token(self,expires_sec=900):
+    # For Reset/Forgot Password
+    def get_token(self, expires_sec=900):
         serial = Serializer(secret_key, expires_in=expires_sec)
-        return serial.dumps({'user_id':self.id}).decode('utf-8')
+        return serial.dumps({'user_id': self.id}).decode('utf-8')
 
     @staticmethod
     def verify_token(token):
