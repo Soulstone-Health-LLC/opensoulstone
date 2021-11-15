@@ -7,7 +7,7 @@
 # ------------------------------------------------------------------------------
 # Imports
 # ------------------------------------------------------------------------------
-from datetime import timezone
+from datetime import datetime, timezone
 from . import db, secret_key
 from flask_login import UserMixin
 from sqlalchemy import Table, Column, Integer, ForeignKey
@@ -24,18 +24,23 @@ class User(db.Model, UserMixin):
     '''SQL Table: user'''
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
-    practice_id = db.Column(db.Integer, db.ForeignKey('practice.id'))
-    email = db.Column(db.Text)
-    password = db.Column(db.String(150))
-    first_name = db.Column(db.String(150))
+    practice_id = db.Column(db.Integer, db.ForeignKey('practice.id'),
+                            default=1)
+    email = db.Column(db.Text, nullable=False)
+    password = db.Column(db.String(150), nullable=False)
+    first_name = db.Column(db.String(150), nullable=False)
     middle_name = db.Column(db.String(150))
-    last_name = db.Column(db.String(150))
+    last_name = db.Column(db.String(150), nullable=False)
     suffix_name = db.Column(db.String(150))
     phone_number = db.Column(db.Integer)
     phone_type = db.Column(db.String(10))
-    role = db.Column(db.String(50))
-    status = db.Column(db.Text)
+    role = db.Column(db.String(50), nullable=False, default='Staff')
+    date_created = db.Column(db.DateTime, default=datetime.utcnow(),
+                             nullable=False)
+    status = db.Column(db.Text, nullable=False, default='Active')
 
+    def __repr__(self):
+        return f'{self.email} : {self.date_created}'
 
     def get_token(self,expires_sec=900):
         serial = Serializer(secret_key, expires_in=expires_sec)

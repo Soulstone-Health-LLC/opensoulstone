@@ -130,41 +130,37 @@ def sign_up():
     '''Sign up page'''
     form = RegistrationForm()
     if form.validate_on_submit():
-        flash(f'Account created for {form.first_name.data} {form.last_name.data}',
-              category='success')
-        return redirect(url_for('auth.login'))
+        if request.method == 'POST':
+            email = form.email.data
+            first_name = form.first_name.data
+            last_name = form.last_name.data
+            password = form.password.data
+
+            # Checks if email already exists
+            user = User.query.filter_by(email=email).first()
+
+            if user:
+                # security issue - should look at some better wording
+                flash('Email is already in use.', category='error')
+            else:
+                # Add new user to database
+                new_user = User(email=email,
+                                first_name=first_name,
+                                last_name=last_name,
+                                password=generate_password_hash(password,
+                                                                method='sha384'))
+                db.session.add(new_user)
+                db.session.commit()
+
+                # Flash success message
+                flash(' Account created!', category='success')
+
+                # Remember the newly registered user
+                login_user(new_user, remember=True)
+
+                # redirect the user to landing page
+                return redirect(url_for('views.home'))
     return render_template("sign_up.html",
                            title="Soulstone - Register",
                            form=form,
                            user=current_user)
-    """ # Gets the data from the form and saves as variables
-    if request.method == 'POST':
-        email = request.form.get('email')
-        firstname = request.form.get('firstname')
-        lastname = request.form.get('lastname')
-        password = request.form.get('password')
-        password_repeat = request.form.get('password_repeat')
-
-        # Checks if email already exists
-        user = User.query.filter_by(email=email).first()
-
-        if user:
-            # security issue - should look at some better wording
-            flash(' Email is already in use.', category='error')
-        # Validation logic for the submit form
-        elif password != password_repeat:
-            flash(' Passwords don\'t match.', category='error')
-        else:
-            # Add new user to database
-            new_user = User(email=email, first_name=firstname,
-                            last_name=lastname,
-                            password=generate_password_hash(password,
-                                                            method='sha384'),
-                            practice_id=1)
-            db.session.add(new_user)
-            db.session.commit()
-            flash(' Account created!', category='success')
-            login_user(new_user, remember=True)
-            return redirect(url_for('views.home'))
-
-    return render_template("sign_up.html", user=current_user) """
