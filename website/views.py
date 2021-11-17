@@ -11,13 +11,10 @@ import random
 import string
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
-from sqlalchemy.sql.expression import label
 from werkzeug.security import generate_password_hash
-
 from website.forms import AddPracticeForm
 from . import db
 from .models import People, Practice, User
-import website
 
 
 # ------------------------------------------------------------------------------
