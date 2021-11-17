@@ -12,7 +12,7 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 from flask_mail import Message
-from .forms import RegistrationForm, LoginForm, ResetPassword, ResetRequest
+from .forms import RegistrationForm, LoginForm, ResetPasswordForm, ResetRequestForm
 from .models import User
 from . import db, mail
 
@@ -54,10 +54,10 @@ def login():
                     return redirect(url_for('views.home'))
                 else:
                     flash(f'The account information used for {form.email.data} is incorrect',
-                        category='error')
+                          category='error')
             else:
                 flash(f'Account not found for {form.email.data}.',
-                    category='error')
+                      category='error')
 
     return render_template("login.html",
                            title='Soulstone - Login',
@@ -87,50 +87,43 @@ def send_mail(user):
 @auth.route('/reset_request', methods=['GET', 'POST'])
 def reset_request():
     '''Reset page'''
-    form = ResetRequest()
+    form = ResetRequestForm()
 
-    if form.validate_on_submit():
-        if request.method == 'POST':
-            email = form.email.data
-            # Checks if the user's email is on file
-            user = User.query.filter_by(email=email).first()
-            # Checks if the email exists
-            if user:
-                try:
-                    send_mail(user)
-                    flash(f'An email to {form.emal.data} with a reset password link.', category='success')
-                except:
-                    return flash(f'An error occurred while trying to send an email to {form.emal.data}', category='error')
-            else:
-                flash(f'Account not found with {form.email.data}', category='error')
+    if request.method == 'POST':
+        # Checks if the user's email is on file
+        user = User.query.filter_by(email=form.email.data).first()
 
-    return render_template("reset_request.html", form=form)
+        if user:
+            send_mail(user)
+            flash(f'An email to {form.email.data} with a reset password link.', category='success')
+        else:
+            flash(f'Account not found with {form.email.data}', category='error')
+
+    return render_template("reset_request.html",
+                           title="Soulstone - Password Reset Request",
+                           form=form)
 
 
 # Reset Password Page
 @auth.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_token(token):
-    form = ResetPassword()
-
     ''' Checks the link the user clicked and if the token matches '''
-    user_token = User.verify_token(token)
-    if user_token is None:
+    user = User.verify_token(token)
+    if user is None:
         flash('''That is an invalid token or the token has expired.
               Please try again.''',
               category='error')
         return redirect(url_for('view.reset_request'))
 
+    form = ResetPasswordForm()
     if form.validate_on_submit():
-        if request.method == 'POST':
-            password = form.password.data
+        password = generate_password_hash(form.password.data, method='sha384')
 
-            # Update password on database
-            update_password = User(
-                password=generate_password_hash(password, method='sha384'))
-            db.session.execute(update_password)
-            db.session.commit()
-            flash(' Password updated!', category='success')
-            return redirect(url_for('auth.login'))
+        # Update password on database
+        user.password = password
+        db.session.commit()
+        flash(' Password updated!', category='success')
+        return redirect(url_for('auth.login'))
 
     return render_template("change_password.html", form=form)
 
@@ -150,6 +143,7 @@ def logout():
 def sign_up():
     '''Sign up page'''
     form = RegistrationForm()
+
     if form.validate_on_submit():
         if request.method == 'POST':
             email = form.email.data
@@ -181,6 +175,7 @@ def sign_up():
 
                 # redirect the user to landing page
                 return redirect(url_for('views.home'))
+
     return render_template("sign_up.html",
                            title="Soulstone - Register",
                            form=form,

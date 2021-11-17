@@ -28,8 +28,8 @@ views = Blueprint('views', __name__)
 # 404 Page
 @views.errorhandler(401)
 def page_401(e):
-    ''' Displays 404 page if there is an error '''
-    return render_template("401.html", title='Soulstone')
+    ''' Displays 401 page if there is an error '''
+    return render_template("401.html", title='Soulstone'), 401
 
 
 # 404 Page

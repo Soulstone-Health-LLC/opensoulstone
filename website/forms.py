@@ -44,14 +44,13 @@ class LoginForm(FlaskForm):
     submit = SubmitField(label='Log In')
 
 
-class ResetRequest(FlaskForm):
-    email = StringField(label='Email',
-                        validators=[DataRequired(),
-                                    Email()])
+class ResetRequestForm(FlaskForm):
+    email = StringField(label='Email *',
+                        validators=[DataRequired()])
     submit = SubmitField(label='Request Password Reset')
 
 
-class ResetPassword(FlaskForm):
+class ResetPasswordForm(FlaskForm):
     password = PasswordField(label='Password *',
                              validators=[DataRequired(),
                                          Length(min=6, max=50)])

@@ -7,7 +7,8 @@
 # ------------------------------------------------------------------------------
 # Imports
 # ------------------------------------------------------------------------------
-from flask import Flask
+from flask import Flask, redirect
+from flask.helpers import url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_mail import Mail
@@ -87,6 +88,10 @@ def create_app():
     @login_manager.user_loader
     def load_user(id):
         return User.query.get(int(id))
+
+    @login_manager.unauthorized_handler
+    def unauthorized():
+        return redirect(url_for('auth.login'))
 
     # Mail configuration
     app.config['MAIL_SERVER'] = 'smtp.gmail.com'

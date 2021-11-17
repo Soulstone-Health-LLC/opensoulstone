@@ -37,9 +37,6 @@ class User(db.Model, UserMixin):
                              nullable=False)
     status = db.Column(db.Text, nullable=False, default='Active')
 
-    def __repr__(self):
-        return f'{self.email} : {self.date_created}'
-
     # For Reset/Forgot Password
     def get_token(self, expires_sec=900):
         serial = Serializer(secret_key, expires_in=expires_sec)
@@ -53,6 +50,9 @@ class User(db.Model, UserMixin):
         except:
             return None
         return User.query.get(user_id)
+
+    def __repr__(self):
+        return f'{self.email} : {self.date_created}'
 
 
 class Practice(db.Model):
