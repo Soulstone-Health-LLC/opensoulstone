@@ -12,7 +12,7 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 from flask_mail import Message
-from .forms import RegistrationForm, LoginForm
+from .forms import RegistrationForm, LoginForm, ResetPassword, ResetRequest
 from .models import User
 from . import db, mail
 
@@ -38,25 +38,26 @@ def login():
     form = LoginForm()
 
     # Gets the data from the form and saves as variables
-    if request.method == 'POST':
-        email = form.email.data
-        password = form.password.data
+    if form.validate_on_submit():
+        if request.method == 'POST':
+            email = form.email.data
+            password = form.password.data
 
-        # Checks if the user's email is on file
-        user = User.query.filter_by(email=email).first()
+            # Checks if the user's email is on file
+            user = User.query.filter_by(email=email).first()
 
-        # Checks if the password is correct
-        if user:
-            if check_password_hash(user.password, password):
-                flash('Logged in successfully', category='success')
-                login_user(user, remember=True)
-                return redirect(url_for('views.home'))
+            # Checks if the password is correct
+            if user:
+                if check_password_hash(user.password, password):
+                    flash('Logged in successfully', category='success')
+                    login_user(user, remember=True)
+                    return redirect(url_for('views.home'))
+                else:
+                    flash(f'The account information used for {form.email.data} is incorrect',
+                        category='error')
             else:
-                flash(f'The account information used for {form.email.data} is incorrect',
-                      category='error')
-        else:
-            flash(f'Account not found for {form.email.data}.',
-                  category='error')
+                flash(f'Account not found for {form.email.data}.',
+                    category='error')
 
     return render_template("login.html",
                            title='Soulstone - Login',
@@ -86,22 +87,31 @@ def send_mail(user):
 @auth.route('/reset_request', methods=['GET', 'POST'])
 def reset_request():
     '''Reset page'''
-    if request.method == 'POST':
-        email = request.form.get('email')
-        # Checks if the user's email is on file
-        user = User.query.filter_by(email=email).first()
-        # Checks if the email exists
-        if user:
-            send_mail(user)
-        else:
-            print('email not found')
-            flash('Email not found.', category='error')
-    return render_template("reset_request.html")
+    form = ResetRequest()
+
+    if form.validate_on_submit():
+        if request.method == 'POST':
+            email = form.email.data
+            # Checks if the user's email is on file
+            user = User.query.filter_by(email=email).first()
+            # Checks if the email exists
+            if user:
+                try:
+                    send_mail(user)
+                    flash(f'An email to {form.emal.data} with a reset password link.', category='success')
+                except:
+                    return flash(f'An error occurred while trying to send an email to {form.emal.data}', category='error')
+            else:
+                flash(f'Account not found with {form.email.data}', category='error')
+
+    return render_template("reset_request.html", form=form)
 
 
 # Reset Password Page
 @auth.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_token(token):
+    form = ResetPassword()
+
     ''' Checks the link the user clicked and if the token matches '''
     user_token = User.verify_token(token)
     if user_token is None:
@@ -110,13 +120,10 @@ def reset_token(token):
               category='error')
         return redirect(url_for('view.reset_request'))
 
-    if request.method == 'POST':
-        password = request.form.get('password')
-        password_repeat = request.form.get('password_repeat')
+    if form.validate_on_submit():
+        if request.method == 'POST':
+            password = form.password.data
 
-        if password != password_repeat:
-            flash(' Passwords don\'t match.', category='error')
-        else:
             # Update password on database
             update_password = User(
                 password=generate_password_hash(password, method='sha384'))
@@ -124,7 +131,8 @@ def reset_token(token):
             db.session.commit()
             flash(' Password updated!', category='success')
             return redirect(url_for('auth.login'))
-    return render_template("change_password.html")
+
+    return render_template("change_password.html", form=form)
 
 
 # Logout

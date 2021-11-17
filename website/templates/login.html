@@ -1,7 +1,8 @@
 {% extends "base_login.html" %}
 
 {% block form %}
-<form method="post" class="login100-form validate-form">
+<form method="post" class="login100-form" novalidate>
+	{{ form.hidden_tag() }}
 	<div class="text-center">
 		<img src="{{ url_for('static', filename='assets/images/brand/logo.png') }}" class="header-brand-img" alt="">
 	</div>
@@ -10,21 +11,33 @@
 		Login
 	</span>
 	<div class="form-group">
-		<label for="email">Email *</label>
-		<input type="email" class="form-control" id="email" name="email" required>
-		<div class="invalid-feedback">Required</div>
+		{{ form.email.label() }}
+		{% if form.email.errors %}
+			{{ form.email(class="form-control is-invalid") }}
+				{% for error in form.email.errors %}
+					<div class="invalid-feedback">{{ error }}</div>
+				{% endfor %}
+		{% else %}
+			{{ form.email(class="form-control") }}
+		{% endif %}
 	</div>
 	<div class="form-group">
-		<label for="password">Password *</label>
-		<input type="password" class="form-control" id="password" name="password" required>
-		<div class="invalid-feedback">Required</div>
+		{{ form.password.label() }}
+		{% if form.password.errors %}
+			{{ form.password(class="form-control is-invalid") }}
+				{% for error in form.password.errors %}
+					<div class="invalid-feedback">{{ error }}</div>
+				{% endfor %}
+		{% else %}
+			{{ form.password(class="form-control") }}
+		{% endif %}
 	</div>
 	<div class="row">
 		<div class="col-md-6 mb-6">
-			<button class="login100-form-btn btn-primary" type="submit">Login</button>
+			{{ form.submit(class="login100-form-btn btn-primary") }}
 		</div>
 		<div class="col-md-6 mb-6 text-end">
-			<a href="/reset_request" class="btn btn-outline-primary">Forgot Password</a>
+			<a href="{{url_for('auth.reset_request')}}" class="btn btn-outline-primary">Forgot Password</a>
 		</div>
 	</div>
 </form>

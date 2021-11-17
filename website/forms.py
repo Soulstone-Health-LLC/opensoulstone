@@ -36,11 +36,26 @@ class RegistrationForm(FlaskForm):
 
 
 class LoginForm(FlaskForm):
+    email = StringField(label='Email *',
+                        validators=[DataRequired(),
+                                    Email()])
+    password = PasswordField(label='Password *',
+                             validators=[DataRequired()])
+    submit = SubmitField(label='Log In')
+
+
+class ResetRequest(FlaskForm):
     email = StringField(label='Email',
                         validators=[DataRequired(),
-                                    Email(),
-                                    Length(min=3, max=150)])
-    password = PasswordField(label='Password',
+                                    Email()])
+    submit = SubmitField(label='Request Password Reset')
+
+
+class ResetPassword(FlaskForm):
+    password = PasswordField(label='Password *',
                              validators=[DataRequired(),
                                          Length(min=6, max=50)])
-    submit = SubmitField(label='Log In')
+    confirm_password = PasswordField(label='Confirm Password *',
+                                     validators=[DataRequired(),
+                                                 EqualTo('password')])
+    submit = SubmitField(label='Reset Password')
