@@ -10,6 +10,9 @@
 from datetime import datetime
 from flask_login import UserMixin
 from sqlalchemy.sql import func
+from sqlalchemy import Table, Column, Integer, ForeignKey
+from sqlalchemy.orm import relationship
+from sqlalchemy.ext.declarative import declarative_base
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from . import db, secret_key
 
@@ -24,6 +27,7 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     practice_id = db.Column(db.Integer, db.ForeignKey('practice.id'),
                             default=1)
+    practice = relationship('Practice')
     email = db.Column(db.Text, nullable=False)
     password = db.Column(db.String(150), nullable=False)
     first_name = db.Column(db.String(150), nullable=False)
@@ -66,7 +70,7 @@ class Practice(db.Model):
     phone_number = db.Column(db.Integer)
     phone_type = db.Column(db.String(10))
     timezone_id = db.Column(db.Integer, db.ForeignKey('timezone.id'))
-    users = db.relationship('User')
+    users = relationship('User')
 
 
 class Locations(db.Model):

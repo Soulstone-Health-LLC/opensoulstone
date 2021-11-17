@@ -11,9 +11,13 @@ import random
 import string
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
+from sqlalchemy.sql.expression import label
 from werkzeug.security import generate_password_hash
+
+from website.forms import AddPracticeForm
 from . import db
 from .models import People, Practice, User
+import website
 
 
 # ------------------------------------------------------------------------------
@@ -53,10 +57,13 @@ def home():
 @views.route('/people')
 @login_required
 def people():
+    print(current_user.get_id())
     if request.method == 'GET':
         people = People.query.order_by(People.last_name).all()
-    return render_template("people.html", title="Soulstone - People",
-                           user=current_user, people=people)
+    return render_template("people.html",
+                           title="Soulstone - People",
+                           user=current_user,
+                           people=people)
 
 
 # Notes
@@ -104,8 +111,32 @@ def viewpractice(id):
 @login_required
 def addpractice():
     '''Add practice form and page'''
+    form = AddPracticeForm()
+
     # Gets the data from the form and saves as variables
-    if request.method == 'POST':
+    if form.validate_on_submit():
+        if request.method == 'POST':
+            name = form.name.data
+            biography = form.biography.data
+            email = form.email.data
+            website = form.website.data
+            phone_number = form.phone.data
+            phone_type = form.phone_type.data
+
+        # Add new practice to database
+        new_practice = Practice(name=name,
+                                biography=biography,
+                                email=email,
+                                website=website,
+                                phone_number=phone_number,
+                                phone_type=phone_type)
+        db.session.add(new_practice)
+        db.session.commit()
+        flash(f'{name} created successfully.', category='success')
+
+        return redirect(url_for('views.support'))
+
+    """ if request.method == 'POST':
         practicename = request.form.get('practicename')
         biography = request.form.get('biography')
         email = request.form.get('email')
@@ -121,8 +152,11 @@ def addpractice():
         db.session.add(new_practice)
         db.session.commit()
         flash(' Account created!', category='success')
-        return redirect(url_for('views.support'))
-    return render_template("add_practice.html", user=current_user)
+        return redirect(url_for('views.support')) """
+    return render_template("add_practice.html",
+                           title="Soulstone - Add Practice",
+                           form=form,
+                           user=current_user)
 
 
 # Support - Practices - Add Practice User
