@@ -26,10 +26,17 @@ views = Blueprint('views', __name__)
 # Routes - Practice
 # ------------------------------------------------------------------------------
 # 404 Page
-@views.errorhandler(404)
-def page_not_found():
+@views.errorhandler(401)
+def page_401(e):
     ''' Displays 404 page if there is an error '''
-    return render_template("404.html", title='Soulstone'), 404
+    return render_template("401.html", title='Soulstone')
+
+
+# 404 Page
+@views.errorhandler(404)
+def page_404(e):
+    ''' Displays 404 page if there is an error '''
+    return render_template("404.html", title='Soulstone')
 
 
 # ------------------------------------------------------------------------------

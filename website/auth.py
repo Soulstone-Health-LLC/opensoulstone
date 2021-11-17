@@ -30,6 +30,11 @@ auth = Blueprint('auth', __name__)
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     '''Login page'''
+    # If user is currently logged in, redirect to home
+    if current_user.is_authenticated:
+        return redirect(url_for('views.home'))
+
+    # Login logic
     form = LoginForm()
 
     # Gets the data from the form and saves as variables
@@ -47,9 +52,11 @@ def login():
                 login_user(user, remember=True)
                 return redirect(url_for('views.home'))
             else:
-                print('password wrong')
+                flash(f'The account information used for {form.email.data} is incorrect',
+                      category='error')
         else:
-            print('email not found')
+            flash(f'Account not found for {form.email.data}.',
+                  category='error')
 
     return render_template("login.html",
                            title='Soulstone - Login',
