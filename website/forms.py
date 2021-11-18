@@ -8,7 +8,8 @@
 # Imports
 # ------------------------------------------------------------------------------
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, SelectField, EmailField
+from wtforms import StringField, PasswordField, SubmitField, SelectField
+from wtforms import EmailField
 from wtforms.fields.simple import TelField
 from wtforms.validators import DataRequired, Length, EqualTo, Email
 from wtforms.widgets import TextArea

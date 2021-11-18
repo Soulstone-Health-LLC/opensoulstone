@@ -55,9 +55,8 @@ def home():
 @views.route('/people')
 @login_required
 def people():
-    practice = current_user.practice_id
     if request.method == 'GET':
-        people = People.query.order_by(People.last_name).all()
+        people = People.query.filter_by(practice_id=current_user.practice_id).order_by(People.last_name).all()
 
     return render_template("people.html",
                            title="Soulstone - People",
