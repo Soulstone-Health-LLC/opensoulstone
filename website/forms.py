@@ -99,8 +99,7 @@ class AddPersonForm(FlaskForm):
     address_2 = StringField(label='Address Line 2')
     city = StringField(label='City')
     state = SelectField(label='State',
-                        choices=[("", ""),
-                                 ("AL", "AL"),
+                        choices=[("AL", "AL"),
                                  ("AK", "AK"),
                                  ("AZ", "AZ"),
                                  ("AR", "AR"),
