@@ -39,31 +39,28 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for people in peoples %}
+                            {% for p in people %}
                             <tr>
-                                <td>{{ people.id }}</td>
+                                <td>{{ p.id }}</td>
                                 <td>
-                                    {% if people.middle_name == '' and people.suffix_name == '' %}
-                                    <tr>{{ people.last_name }}, {{ people.first_name }}</tr>
-                                    {% elif people.suffix_name == '' %}
-                                    <tr>{{ people.last_name }}, {{ people.first_name }} {{ people.middle_name }}</tr>
+                                    {% if p.middle_name == '' and p.suffix_name == '' %}
+                                        {{ p.last_name }}, {{ p.first_name }}
+                                    {% elif p.suffix_name == '' %}
+                                        {{ p.last_name }}, {{ p.first_name }} {{ p.middle_name }}
                                     {% else %}
-                                    <tr>{{ people.last_name }} {{ people.suffix_name }}, {{ people.first_name }} {{ people.middle_name }}</tr>
+                                        {{ p.last_name }} {{ p.suffix_name }}, {{ p.first_name }} {{ p.middle_name }}
                                     {% endif %}
                                 </td>
                                 <td>
-                                    {% if people.address_2 == '' %}
-                                    <tr>{{ people.address_1 }}</tr>
-                                    <tr>{{ people.city }}, {{ people.state }} {{ people.zipcode }}</tr>
+                                    {% if p.address_2 == '' %}
+                                        {{ p.address_1 }}<br>{{ p.city }}, {{ p.state }} {{ p.zipcode }}
                                     {% else %}
-                                    <tr>{{ people.address_1 }}</tr>
-                                    <tr>{{ people.address_2 }}</tr>
-                                    <tr>{{ people.city }}, {{ people.state }} {{ people.zipcode }}</tr>
+                                        {{ p.address_1 }}<br>{{ p.address_2 }}<br>{{ p.city }}, {{ p.state }} {{ p.zipcode }}
                                     {% endif %}
                                 </td>
-                                <td>{{ people.phone_number }} ({{ people.phone_type }})</td>
-                                <td>{{ people.email }}</td>
-                                <td>{{ people.status }}</td>
+                                <td>{{ p.phone_number }} ({{ p.phone_type }})</td>
+                                <td>{{ p.email }}</td>
+                                <td>{{ p.status }}</td>
                                 <td>
                                     <a href="#">View</a>
                                 </td>

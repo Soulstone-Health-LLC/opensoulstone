@@ -9,7 +9,6 @@
 # ------------------------------------------------------------------------------
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, SelectField, EmailField
-from wtforms.fields.numeric import IntegerField
 from wtforms.fields.simple import TelField
 from wtforms.validators import DataRequired, Length, EqualTo, Email
 from wtforms.widgets import TextArea
@@ -100,7 +99,8 @@ class AddPersonForm(FlaskForm):
     address_2 = StringField(label='Address Line 2')
     city = StringField(label='City')
     state = SelectField(label='State',
-                        choices=[("AL", "AL"),
+                        choices=[("", ""),
+                                 ("AL", "AL"),
                                  ("AK", "AK"),
                                  ("AZ", "AZ"),
                                  ("AR", "AR"),

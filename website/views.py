@@ -7,16 +7,13 @@
 # ------------------------------------------------------------------------------
 # Imports
 # ------------------------------------------------------------------------------
-from os import stat
 import random
 import string
-from datetime import date, datetime
+from datetime import datetime
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
-from flask_wtf import form
-from sqlalchemy.orm.query import Query
 from werkzeug.security import generate_password_hash
-from website.forms import AddPersonForm, AddPracticeForm, AddPracticeUserForm
+from .forms import AddPersonForm, AddPracticeForm, AddPracticeUserForm
 from . import db
 from .models import People, Practice, User
 
@@ -58,12 +55,10 @@ def home():
 @views.route('/people')
 @login_required
 def people():
-    user_current = current_user.get_id()
-    print(user_current)
     practice = current_user.practice_id
-    print(practice)
     if request.method == 'GET':
         people = People.query.order_by(People.last_name).all()
+
     return render_template("people.html",
                            title="Soulstone - People",
                            user=current_user,
@@ -158,7 +153,8 @@ def billing():
 def support():
     if request.method == "GET":
         practices = Practice.query.order_by(Practice.id).all()
-    return render_template("support.html", user=current_user,
+    return render_template("support.html",
+                           user=current_user,
                            practices=practices)
 
 
@@ -167,8 +163,10 @@ def support():
 def viewpractice(id):
     practice = Practice.query.get_or_404(id)
     practice_user = User.query.order_by(User.last_name).all()
-    return render_template("support_practice.html", user=current_user,
-                           practice=practice, practice_user=practice_user)
+    return render_template("support_practice.html",
+                           user=current_user,
+                           practice=practice,
+                           practice_user=practice_user)
 
 
 # Support - Practices - Add Practice
