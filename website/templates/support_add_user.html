@@ -23,54 +23,102 @@
             </div>
             <div class="card-body">
                 <!-- TODO: Show practice name here -->
-                <form method="post" class="needs-validation" novalidate>
+                <form method="post" class="" novalidate>
                     <input type="text" class="practice_id" id="practice_id" name="practice_id" value="{{practice.id}}" hidden>
                     <input type="text" class="user_id" id="user_id" name="user_id" value="{{user.id}}" hidden>
                     <div class="">
+                    {{ form.hidden_tag() }}
+                    <div class="">
                         <div class="form-group">
-                            <label for="role" class="form-label">User Role</label>
-                            <select id="role" name="role" class="form-control form-select" data-bs-placeholder="Select User Role" required>
-                                <option label="Select User Role"></option>
-                                <option value="practitioner">Practitioner</option>
-                                <option value="staff">Staff</option>
-                            </select>
+                            {{ form.role.label() }}
+                            {% if form.role.errors %}
+                                {{ form.role(class="form-control is-invalid") }}
+                                    {% for error in form.role.errors %}
+                                        <div class="invalid-feedback">{{ error }}</div>
+                                    {% endfor %}
+                            {% else %}
+                                {{ form.role(class="form-control") }}
+                            {% endif %}
                         </div>
                         <div class="form-group">
-                            <label for="firstname" class="form-label">First Name</label>
-                            <input type="text" class="form-control" id="firstname" name="firstname" required>
+                            {{ form.first_name.label() }}
+                            {% if form.first_name.errors %}
+                                {{ form.first_name(class="form-control is-invalid") }}
+                                    {% for error in form.first_name.errors %}
+                                        <div class="invalid-feedback">{{ error }}</div>
+                                    {% endfor %}
+                            {% else %}
+                                {{ form.first_name(class="form-control") }}
+                            {% endif %}
                         </div>
                         <div class="form-group">
-                            <label for="middlename" class="form-label">Middle Name</label>
-                            <input type="text" class="form-control" id="middlename" name="middlename">
+                            {{ form.middle_name.label() }}
+                            {% if form.middle_name.errors %}
+                                {{ form.middle_name(class="form-control is-invalid") }}
+                                    {% for error in form.middle_name.errors %}
+                                        <div class="invalid-feedback">{{ error }}</div>
+                                    {% endfor %}
+                            {% else %}
+                                {{ form.middle_name(class="form-control") }}
+                            {% endif %}
                         </div>
                         <div class="form-group">
-                            <label for="lastname" class="form-label">Last Name</label>
-                            <input type="text" class="form-control" id="lastname" name="lastname" required>
+                            {{ form.last_name.label() }}
+                            {% if form.last_name.errors %}
+                                {{ form.last_name(class="form-control is-invalid") }}
+                                    {% for error in form.last_name.errors %}
+                                        <div class="invalid-feedback">{{ error }}</div>
+                                    {% endfor %}
+                            {% else %}
+                                {{ form.last_name(class="form-control") }}
+                            {% endif %}
                         </div>
                         <div class="form-group">
-                            <label for="suffix" class="form-label">Suffix</label>
-                            <input type="text" class="form-control" id="suffix" name="suffix">
+                            {{ form.suffix_name.label() }}
+                            {% if form.suffix_name.errors %}
+                                {{ form.suffix_name(class="form-control is-invalid") }}
+                                    {% for error in form.suffix_name.errors %}
+                                        <div class="invalid-feedback">{{ error }}</div>
+                                    {% endfor %}
+                            {% else %}
+                                {{ form.suffix_name(class="form-control") }}
+                            {% endif %}
                         </div>
                         <div class="form-group">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" name="email" required>
+                            {{ form.email.label() }}
+                            {% if form.email.errors %}
+                                {{ form.email(class="form-control is-invalid") }}
+                                    {% for error in form.email.errors %}
+                                        <div class="invalid-feedback">{{ error }}</div>
+                                    {% endfor %}
+                            {% else %}
+                                {{ form.email(class="form-control") }}
+                            {% endif %}
                         </div>
                         <div class="form-group">
-                            <label for="phonenumber" class="form-label">Phone Number</label>
-                            <input type="text" class="form-control" id="firstname" name="firstname" required>
+                            {{ form.phone.label() }}
+                            {% if form.phone.errors %}
+                                {{ form.phone(class="form-control is-invalid") }}
+                                    {% for error in form.phone.errors %}
+                                        <div class="invalid-feedback">{{ error }}</div>
+                                    {% endfor %}
+                            {% else %}
+                                {{ form.phone(class="form-control") }}
+                            {% endif %}
                         </div>
                         <div class="form-group">
-                            <label for="phonetype" class="form-label">Phone Type</label>
-                            <select id="phonetype" name="phonetype" class="form-control form-select" data-bs-placeholder="Select Phone Type" required>
-                                <option label="Select Phone Type"></option>
-                                <option value="mobile">Mobile</option>
-                                <option value="home">Home</option>
-                                <option value="office">Office</option>
-                                <option value="fax">Fax</option>
-                            </select>
+                            {{ form.phone_type.label() }}
+                            {% if form.phone_type.errors %}
+                                {{ form.phone_type(class="form-control is-invalid") }}
+                                    {% for error in form.phone_type.errors %}
+                                        <div class="invalid-feedback">{{ error }}</div>
+                                    {% endfor %}
+                            {% else %}
+                                {{ form.phone_type(class="form-control") }}
+                            {% endif %}
                         </div>
                     </div>
-                    <button class="btn btn-primary mt-4 mb-0" type="submit">Add Practice</button>
+                    {{ form.submit(class="btn btn-primary") }}
                 </form>
             </div>
         </div>

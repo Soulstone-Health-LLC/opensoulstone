@@ -7,12 +7,16 @@
 # ------------------------------------------------------------------------------
 # Imports
 # ------------------------------------------------------------------------------
+from os import stat
 import random
 import string
+from datetime import date, datetime
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
+from flask_wtf import form
+from sqlalchemy.orm.query import Query
 from werkzeug.security import generate_password_hash
-from website.forms import AddPracticeForm
+from website.forms import AddPersonForm, AddPracticeForm, AddPracticeUserForm
 from . import db
 from .models import People, Practice, User
 
@@ -54,13 +58,77 @@ def home():
 @views.route('/people')
 @login_required
 def people():
-    print(current_user.get_id())
+    user_current = current_user.get_id()
+    print(user_current)
+    practice = current_user.practice_id
+    print(practice)
     if request.method == 'GET':
         people = People.query.order_by(People.last_name).all()
     return render_template("people.html",
                            title="Soulstone - People",
                            user=current_user,
                            people=people)
+
+
+# People - Add New Person
+@views.route('/people/add_person', methods=['GET', 'POST'])
+@login_required
+def addPerson():
+    form = AddPersonForm()
+
+    print(f'User\'s id: {current_user.get_id()}')
+    print(f'User\'s practice id: {current_user.practice_id}')
+
+    if form.validate_on_submit():
+        if request.method == 'POST':
+            # Get data from the form
+            practice_id = current_user.practice_id
+            created_at = datetime.utcnow()
+            created_by = current_user.get_id()
+            updated_at = datetime.utcnow()
+            updated_by = current_user.get_id()
+            first_name = form.first_name.data
+            middle_name = form.middle_name.data
+            last_name = form.last_name.data
+            suffix = form.suffix_name.data
+            address_1 = form.address_1.data
+            address_2 = form.address_2.data
+            city = form.city.data
+            state = form.state.data
+            zipcode = form.zipcode.data
+            phone_number = form.phone.data
+            phone_type = form.phone_type.data
+            email = form.email.data
+            status = form.status.data
+
+            # Add new practice to database
+            new_person = People(practice_id=practice_id,
+                                created_at=created_at,
+                                created_by=created_by,
+                                updated_at=updated_at,
+                                updated_by=updated_by,
+                                first_name=first_name,
+                                middle_name=middle_name,
+                                last_name=last_name,
+                                suffix_name=suffix,
+                                address_1=address_1,
+                                address_2=address_2,
+                                city=city,
+                                state=state,
+                                zipcode=zipcode,
+                                phone_number=phone_number,
+                                phone_type=phone_type,
+                                email=email,
+                                status=status)
+            db.session.add(new_person)
+            db.session.commit()
+            flash(f'{first_name} {last_name} created successfully.',
+                  category='success')
+
+    return render_template("add_people.html",
+                           title="Soulstone - Add Person",
+                           user=current_user,
+                           form=form)
 
 
 # Notes
@@ -131,25 +199,9 @@ def addpractice():
         db.session.commit()
         flash(f'{name} created successfully.', category='success')
 
+        # Redirect user to the Support home page
         return redirect(url_for('views.support'))
 
-    """ if request.method == 'POST':
-        practicename = request.form.get('practicename')
-        biography = request.form.get('biography')
-        email = request.form.get('email')
-        website = request.form.get('website')
-        phonenumber = request.form.get('phonenumber')
-        phonetype = request.form.get('phonetype')
-
-        # Add new practice to database
-        new_practice = Practice(name=practicename, biography=biography,
-                                email=email, website=website,
-                                phone_number=phonenumber,
-                                phone_type=phonetype)
-        db.session.add(new_practice)
-        db.session.commit()
-        flash(' Account created!', category='success')
-        return redirect(url_for('views.support')) """
     return render_template("add_practice.html",
                            title="Soulstone - Add Practice",
                            form=form,
@@ -161,6 +213,7 @@ def addpractice():
 @login_required
 def addPracticeUser(id):
     '''Add practice user form and page'''
+    form = AddPracticeUserForm()
     practice = Practice.query.get(id)
 
     # Random string
@@ -171,34 +224,41 @@ def addPracticeUser(id):
         return ''.join(random.choice(letters) for i in range(length))
 
     # Gets the data from the form and saves as variables
-    if request.method == 'POST':
-        practice_id = request.form.get('practice_id')
-        role = request.form.get('role')
-        firstname = request.form.get('firstname')
-        middlename = request.form.get('middlename')
-        lastname = request.form.get('lastname')
-        suffix = request.form.get('suffix')
-        email = request.form.get('email')
-        phonenumber = request.form.get('phonenumber')
-        phonetype = request.form.get('phonetype')
-        password = randompass(10)
+    if form.validate_on_submit():
+        if request.method == 'POST':
+            practice_id = request.form.get('practice_id')
+            role = form.role.data
+            firstname = form.first_name.data
+            middlename = form.middle_name.data
+            lastname = form.last_name.data
+            suffix = form.suffix_name.data
+            email = form.email.data
+            phonenumber = form.phone.data
+            phonetype = form.phone_type.data
+            password = randompass(10)
 
-        # Add new practice user to database
-        new_practice_user = User(practice_id=practice_id,
-                                 role=role,
-                                 first_name=firstname,
-                                 middle_name=middlename,
-                                 last_name=lastname,
-                                 suffix_name=suffix,
-                                 email=email,
-                                 password=generate_password_hash(
-                                     password, method='sha384'),
-                                 phone_number=phonenumber,
-                                 phone_type=phonetype,
-                                 status='Active')
-        db.session.add(new_practice_user)
-        db.session.commit()
-        flash(' Account created!', category='success')
-        return redirect(url_for('views.support'))
+            # Add new practice user to database
+            new_practice_user = User(practice_id=practice_id,
+                                     role=role,
+                                     first_name=firstname,
+                                     middle_name=middlename,
+                                     last_name=lastname,
+                                     suffix_name=suffix,
+                                     email=email,
+                                     password=generate_password_hash(
+                                         password, method='sha384'),
+                                     phone_number=phonenumber,
+                                     phone_type=phonetype,
+                                     status='Active')
+            db.session.add(new_practice_user)
+            db.session.commit()
+            flash(f'{form.email} created successfully.', category='success')
+
+            # Redirect user to Support home page
+            return redirect(url_for('views.support'))
+
     return render_template("support_add_user.html",
-                           user=current_user, practice=practice)
+                           title="Soulstone - Add Practice User",
+                           user=current_user,
+                           form=form,
+                           practice=practice)
