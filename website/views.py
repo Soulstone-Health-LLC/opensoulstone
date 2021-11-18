@@ -125,6 +125,17 @@ def addPerson():
                            form=form)
 
 
+# People - View Person
+@views.route('/person/<int:id>')
+def viewPerson(id):
+    if request.method == 'GET':
+        person = People.query.get_or_404(id)
+
+    return render_template("person.html",
+                           user=current_user,
+                           person=person)
+
+
 # Notes
 @views.route('/notes')
 @login_required
