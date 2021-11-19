@@ -85,6 +85,8 @@ def addPerson():
             middle_name = form.middle_name.data
             last_name = form.last_name.data
             suffix = form.suffix_name.data
+            date_of_birth = form.date_of_birth.data
+            gender_identity = form.gender_identity.data
             address_1 = form.address_1.data
             address_2 = form.address_2.data
             city = form.city.data
@@ -105,6 +107,8 @@ def addPerson():
                                 middle_name=middle_name,
                                 last_name=last_name,
                                 suffix_name=suffix,
+                                date_of_birth=date_of_birth,
+                                gender_identity=gender_identity,
                                 address_1=address_1,
                                 address_2=address_2,
                                 city=city,

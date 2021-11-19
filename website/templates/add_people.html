@@ -78,6 +78,37 @@
                     <div class="example mb-3">
                         <div class="media media-lg mt-0">
                             <div class="media-body">
+                                <h4 class="mt-0">Demographics</h4>
+                                <div class="row">
+                                    <div class="col-md-6 mb-6">
+                                        {{ form.date_of_birth.label() }}
+                                        {% if form.date_of_birth.errors %}
+                                            {{ form.date_of_birth(class="form-control is-invalid") }}
+                                                {% for error in form.date_of_birth.errors %}
+                                                    <div class="invalid-feedback">{{ error }}</div>
+                                                {% endfor %}
+                                        {% else %}
+                                            {{ form.date_of_birth(class="form-control") }}
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-md-6 mb-6">
+                                        {{ form.gender_identity.label() }}
+                                        {% if form.gender_identity.errors %}
+                                            {{ form.gender_identity(class="form-control is-invalid") }}
+                                                {% for error in form.gender_identity.errors %}
+                                                    <div class="invalid-feedback">{{ error }}</div>
+                                                {% endfor %}
+                                        {% else %}
+                                            {{ form.gender_identity(class="form-control") }}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="example mb-3">
+                        <div class="media media-lg mt-0">
+                            <div class="media-body">
                                 <h4 class="mt-0">Contact</h4>
                                 <div class="row">
                                     <div class="col-md-6 mb-6">

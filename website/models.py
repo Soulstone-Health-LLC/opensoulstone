@@ -123,3 +123,5 @@ class People(db.Model):
     phone_type = db.Column(db.String(10))
     email = db.Column(db.Text)
     status = db.Column(db.Text)
+    date_of_birth = db.Column(db.Date)
+    gender_identity = db.Column(db.Text)

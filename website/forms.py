@@ -8,8 +8,9 @@
 # Imports
 # ------------------------------------------------------------------------------
 from flask_wtf import FlaskForm
+from sqlalchemy.sql.expression import label
 from wtforms import StringField, PasswordField, SubmitField, SelectField
-from wtforms import EmailField
+from wtforms import EmailField, DateField
 from wtforms.fields.simple import TelField
 from wtforms.validators import DataRequired, Length, EqualTo, Email
 from wtforms.widgets import TextArea
@@ -96,11 +97,22 @@ class AddPersonForm(FlaskForm):
                             validators=[DataRequired(),
                                         Length(min=2, max=150)])
     suffix_name = StringField(label='Suffix')
+    date_of_birth = DateField(label='Date of Birth *',
+                              validators=[DataRequired()])
+    gender_identity = SelectField(label='Gender Identity',
+                                  choices=[('', ''),
+                                           ('Male', 'Male'),
+                                           ('Female', 'Female'),
+                                           ('Female-to-male transsexual', 'Female-to-male transsexual '),
+                                           ('Male-to-female transsexual', 'Male-to-female transsexual'),
+                                           ('Identifies as non-conforming', 'Identifies as non-conforming'),
+                                           ('Other', 'Other')])
     address_1 = StringField(label='Address Line 1')
     address_2 = StringField(label='Address Line 2')
     city = StringField(label='City')
     state = SelectField(label='State',
-                        choices=[("AL", "AL"),
+                        choices=[('', ''),
+                                 ("AL", "AL"),
                                  ("AK", "AK"),
                                  ("AZ", "AZ"),
                                  ("AR", "AR"),
