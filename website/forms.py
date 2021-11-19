@@ -80,9 +80,9 @@ class AddPracticeForm(FlaskForm):
     website = StringField(label='Practice Website')
     phone = TelField(label='Practice Phone Number *')
     phone_type = SelectField(label='Phone Type *',
-                             choices=[('Mobile', 'Mobile'),
+                             choices=[('Office', 'Office'),
+                                      ('Mobile', 'Mobile'),
                                       ('Home', 'Home'),
-                                      ('Office', 'Office'),
                                       ('Fax', 'Fax')])
     submit = SubmitField(label='Add New Practice')
 
