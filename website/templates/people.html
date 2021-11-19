@@ -51,6 +51,9 @@
                                         {{ p.last_name }} {{ p.suffix_name }}, {{ p.first_name }} {{ p.middle_name }}
                                     {% endif %}
                                 </td>
+                                {% if p.address_1 == '' %}
+                                <td></td>
+                                {% else %}
                                 <td>
                                     {% if p.address_2 == '' %}
                                         {{ p.address_1 }}<br>{{ p.city }}, {{ p.state }} {{ p.zipcode }}
@@ -58,11 +61,14 @@
                                         {{ p.address_1 }}<br>{{ p.address_2 }}<br>{{ p.city }}, {{ p.state }} {{ p.zipcode }}
                                     {% endif %}
                                 </td>
+                                {% endif %}
                                 <td>{{ p.phone_number }} ({{ p.phone_type }})</td>
                                 <td>{{ p.email }}</td>
                                 <td>{{ p.status }}</td>
                                 <td>
-                                    <a href="/person/{{p.id}}">View</a>
+                                    <div class="btn-group">
+                                        <a href="/person/{{p.id}}" class="btn btn-sm btn-primary badge" type="button"><span class="fe fe-eye"></span> View</a>
+                                    </div>
                                 </td>
                             </tr>
                             {% endfor %}
