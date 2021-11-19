@@ -41,7 +41,6 @@
                                         person.suffix_name }}
                                         {% endif %}
                                     </h4>
-                                    <h6 class="text-muted mb-3">Member Since: {{ person.created_at.strftime('%B %d, %Y') }}</h6>
                                     <h6 class="text-muted mb-3">
                                         {% if person.address_2 == '' %}
                                             {{ person.address_1 }}<br>{{ person.city }}, {{ person.state }} {{ person.zipcode }}
