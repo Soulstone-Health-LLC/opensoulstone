@@ -92,6 +92,14 @@
 						<li class="slide">
 							<a class="side-menu__item"  data-bs-toggle="slide" href="{{url_for('views.billing')}}"><i class="side-menu__icon fe fe-credit-card"></i><span class="side-menu__label">Billing</span></a>
 						</li>
+						<li class="slide">
+							<a class="side-menu__item" data-bs-toggle="slide" href="#"><i class="side-menu__icon fe fe-settings"></i><span class="side-menu__label">Settings</span><i class="angle fa fa-angle-right"></i></a>
+							<ul class="slide-menu" style="display: none;">
+								<li><a href="{{url_for('views.practiceSettings')}}" class="slide-item"> Practice Information</a></li>
+								<li><a href="#" class="slide-item"> User Maintenance</a></li>
+								<li><a href="#" class="slide-item"> Billing Charges</a></li>
+							</ul>
+						</li>
 					</ul>
 				</aside>
 				<!--/APP-SIDEBAR-->

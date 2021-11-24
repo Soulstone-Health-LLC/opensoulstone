@@ -237,6 +237,23 @@ def billing():
 
 
 # ------------------------------------------------------------------------------
+# Routes - Practice - Settings
+# ------------------------------------------------------------------------------
+@views.route('/settings/practice_info')
+@login_required
+def practiceSettings():
+    ''' Routes the user to the Settings - Practice Information page '''
+    if request.method == 'GET':
+        pu_id = current_user.practice_id
+        practice = Practice.query.get_or_404(pu_id)
+
+        return render_template("settings_practice_info.html",
+                               title="Soulstone - Settings - Practice Information",
+                               practice=practice,
+                               user=current_user)
+
+
+# ------------------------------------------------------------------------------
 # Routes - Support
 # ------------------------------------------------------------------------------
 # Support - Practices

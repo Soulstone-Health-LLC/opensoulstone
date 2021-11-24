@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block pagenav %}
+<h1 class="page-title">Settings</h1>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page">Practice Information</li>
+    </ol>
+{% endblock pagenav %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Practice Information</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive ">
+                    <table class="table table-borderless">
+                        <tbody class="p-0">
+                            <tr>
+                                <td><strong>Practice Name: </strong>
+                                    {{ practice.name }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Address: </strong>
+                                    {% if practice.address_2 == '' %}
+                                        {{ practice.address_1 }}, {{ practice.city }}, {{ practice.state }} {{ practice.zipcode }}
+                                    {% elif practice.address_1 == '' %}
+                                    {% else %}
+                                        {{ practice.address_1 }}, {{ practice.address_2 }}, {{ practice.city }}, {{ practice.state }} {{ practice.zipcode }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Gender Identity: </strong>
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Address: </strong>
+                                    {% if practice.address_2 == '' %}
+                                        {{ practice.address_1 }}, {{ practice.city }}, {{ practice.state }} {{ practice.zipcode }}
+                                    {% else %}
+                                        {{ practice.address_1 }}, {{ practice.address_2 }}, {{ practice.city }}, {{ practice.state }} {{ practice.zipcode }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Email: </strong>
+                                    {{ practice.email }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Phone: </strong>
+                                    {{ practice.phone_number }} ({{ practice.phone_type }})
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
