@@ -70,8 +70,6 @@ class Practice(db.Model):
     '''SQL Table: practice'''
     __tablename__ = 'practice'
     id = db.Column(db.Integer, primary_key=True)
-    # Foreign Keys
-    timezone_id = db.Column(db.Integer, db.ForeignKey('timezone.id'))
     # Data Points - Created/Updated
     created_at = db.Column(db.DateTime(timezone=True), default=func.now())
     updated_at = db.Column(db.DateTime(timezone=True))
@@ -88,16 +86,9 @@ class Practice(db.Model):
     email = db.Column(db.Text)
     website = db.Column(db.Text)
     status = db.Column(db.Text, nullable=False, default='Active')
+    # Relationships
     users = db.relationship('User')
     people = db.relationship('People')
-
-
-class Timezone(db.Model):
-    '''SQL Table: timezones'''
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.Text)
-    time_offset = db.Column(db.Integer)
-    practices = db.relationship('Practice')
 
 
 class People(db.Model):
