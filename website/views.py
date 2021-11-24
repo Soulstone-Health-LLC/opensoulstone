@@ -124,6 +124,9 @@ def addPerson():
             flash(f'{first_name} {last_name} created successfully.',
                   category='success')
 
+            # Redirect to view people
+            return redirect(url_for('views.people'))
+
     return render_template("add_people.html",
                            title="Soulstone - Add Person",
                            user=current_user,

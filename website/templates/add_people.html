@@ -94,12 +94,12 @@
                                     <div class="col-md-6 mb-6">
                                         {{ form.gender_identity.label() }}
                                         {% if form.gender_identity.errors %}
-                                            {{ form.gender_identity(class="form-control is-invalid") }}
+                                            {{ form.gender_identity(class="form-control select2 form-select is-invalid") }}
                                                 {% for error in form.gender_identity.errors %}
                                                     <div class="invalid-feedback">{{ error }}</div>
                                                 {% endfor %}
                                         {% else %}
-                                            {{ form.gender_identity(class="form-control") }}
+                                            {{ form.gender_identity(class="form-control select2 form-select") }}
                                         {% endif %}
                                     </div>
                                 </div>
@@ -125,12 +125,12 @@
                                     <div class="col-md-6 mb-6">
                                         {{ form.phone_type.label() }}
                                         {% if form.phone_type.errors %}
-                                            {{ form.phone_type(class="form-control is-invalid") }}
+                                            {{ form.phone_type(class="form-control select2 form-select is-invalid") }}
                                                 {% for error in form.phone_type.errors %}
                                                     <div class="invalid-feedback">{{ error }}</div>
                                                 {% endfor %}
                                         {% else %}
-                                            {{ form.phone_type(class="form-control") }}
+                                            {{ form.phone_type(class="form-control select2 form-select") }}
                                         {% endif %}
                                     </div>
                                 </div>
@@ -189,12 +189,12 @@
                                     <div class="col-md-6 mb-6">
                                         {{ form.state.label() }}
                                         {% if form.state.errors %}
-                                            {{ form.state(class="form-control is-invalid") }}
+                                            {{ form.state(class="form-control select2 form-select is-invalid") }}
                                                 {% for error in form.state.errors %}
                                                     <div class="invalid-feedback">{{ error }}</div>
                                                 {% endfor %}
                                         {% else %}
-                                            {{ form.state(class="form-control") }}
+                                            {{ form.state(class="form-control select2 form-select") }}
                                         {% endif %}
                                     </div>
                                 </div>
@@ -219,12 +219,12 @@
                                 <div class="form-group">
                                     {{ form.status.label() }}
                                     {% if form.status.errors %}
-                                        {{ form.status(class="form-control is-invalid") }}
+                                        {{ form.status(class="form-control select2 form-select is-invalid") }}
                                             {% for error in form.status.errors %}
                                                 <div class="invalid-feedback">{{ error }}</div>
                                             {% endfor %}
                                     {% else %}
-                                        {{ form.status(class="form-control") }}
+                                        {{ form.status(class="form-control select2 form-select") }}
                                     {% endif %}
                                 </div>
                             </div>
