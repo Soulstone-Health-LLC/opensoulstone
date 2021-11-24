@@ -26,7 +26,7 @@ views = Blueprint('views', __name__)
 
 
 # ------------------------------------------------------------------------------
-# Routes - Practice
+# Routes - Practice - Error Pages
 # ------------------------------------------------------------------------------
 # 404 Page
 @views.errorhandler(401)
@@ -43,7 +43,7 @@ def page_404(e):
 
 
 # ------------------------------------------------------------------------------
-# Routes - Practice
+# Routes - Practice - Dashboard
 # ------------------------------------------------------------------------------
 # Homepage
 @views.route('/')
@@ -52,6 +52,9 @@ def home():
     return render_template("home.html", title="Soulstone", user=current_user)
 
 
+# ------------------------------------------------------------------------------
+# Routes - Practice - People
+# ------------------------------------------------------------------------------
 # People
 @views.route('/people')
 @login_required
@@ -211,7 +214,9 @@ def viewPerson(id):
                                    user=current_user)
 
 
-# Notes
+# ------------------------------------------------------------------------------
+# Routes - Practice - Notes
+# ------------------------------------------------------------------------------
 @views.route('/notes')
 @login_required
 def notes():
@@ -220,7 +225,9 @@ def notes():
                            user=current_user)
 
 
-# Billing
+# ------------------------------------------------------------------------------
+# Routes - Practice - Billing
+# ------------------------------------------------------------------------------
 @views.route('/billing')
 @login_required
 def billing():
