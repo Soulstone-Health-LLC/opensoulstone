@@ -295,6 +295,11 @@ def addpractice():
         if request.method == 'POST':
             name = form.name.data
             biography = form.biography.data
+            address_1 = form.address_1.data
+            address_2 = form.address_2.data
+            city = form.city.data
+            state = form.state.data
+            zipcode = form.zipcode.data
             email = form.email.data
             website = form.website.data
             phone_number = form.phone.data
@@ -303,6 +308,11 @@ def addpractice():
         # Add new practice to database
         new_practice = Practice(name=name,
                                 biography=biography,
+                                address_1=address_1,
+                                address_2=address_2,
+                                city=city,
+                                state=state,
+                                zipcode=zipcode,
                                 email=email,
                                 website=website,
                                 phone_number=phone_number,
