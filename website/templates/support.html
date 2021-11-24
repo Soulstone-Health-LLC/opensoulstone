@@ -29,13 +29,15 @@
                     <p class="text-muted card-sub-title">List of active practices using SoulStone.</p>
                 </div>
                 <div class="table-responsive">
-                    <table class="table border text-nowrap text-md-nowrap table-hover mg-b-0">
+                    <table class="table table-bordered text-nowrap border-bottom w-100" id="responsive-datatable">
                         <thead>
                             <tr>
                                 <th>ID</th>
                                 <th>Practice Name</th>
+                                <th>Address</th>
                                 <th>Email</th>
                                 <th>Phone Number</th>
+                                <th>Status</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -44,8 +46,16 @@
                             <tr>
                                 <td>{{ practice.id }}</td>
                                 <td>{{ practice.name }}</td>
+                                <td>
+                                    {% if practice.address_2 == '' %}
+                                        {{ practice.address_1 }}<br>{{ practice.city }}, {{ practice.state }} {{ practice.zipcode }}
+                                    {% else %}
+                                        {{ practice.address_1 }}<br>{{ practice.address_2 }}<br>{{ practice.city }}, {{ practice.state }} {{ practice.zipcode }}
+                                    {% endif %}
+                                </td>
                                 <td>{{ practice.email }}</td>
                                 <td>{{ practice.phone_number }}</td>
+                                <td>{{ practice.status }}</td>
                                 <td>
                                     <a href="/support/{{practice.id}}">View</a>
                                 </td>

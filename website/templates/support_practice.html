@@ -90,8 +90,30 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
+                <h4><b>Practice Status</b></h4>
+                <p>{{ practice.status }}</p>
+            </div>
+        </div>
+    </div><!-- COL-END -->
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
                 <h4><b>Practice Biography</b></h4>
                 <p>{{ practice.biography }}</p>
+            </div>
+        </div>
+    </div><!-- COL-END -->
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h4><b>Practice Address</b></h4>
+                <p>
+                    {% if practice.address_2 == '' %}
+                        {{ practice.address_1 }}<br>{{ practice.city }}, {{ practice.state }} {{ practice.zipcode }}
+                    {% else %}
+                        {{ practice.address_1 }}<br>{{ practice.address_2 }}<br>{{ practice.city }}, {{ practice.state }} {{ practice.zipcode }}
+                    {% endif %}
+                </p>
             </div>
         </div>
     </div><!-- COL-END -->
