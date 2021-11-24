@@ -25,11 +25,12 @@ class User(db.Model, UserMixin):
     # Foreign Keys
     practice_id = db.Column(db.Integer, db.ForeignKey('practice.id'),
                             default=1)
-    # Data Points - Created/Updated
+    practice = db.relationship('Practice')
+    # Data Points - Create/Updated
     created_at = db.Column(db.DateTime(timezone=True), default=func.now())
-    created_by = db.Column(db.Integer)
+    created_by = db.Column(db.Integer, db.ForeignKey('user.id'))
     updated_at = db.Column(db.DateTime(timezone=True))
-    updated_by = db.Column(db.Integer)
+    updated_by = db.Column(db.Integer, db.ForeignKey('user.id'))
     # Data Points - Main
     email = db.Column(db.Text, nullable=False)
     password = db.Column(db.String(150), nullable=False)
@@ -37,6 +38,11 @@ class User(db.Model, UserMixin):
     middle_name = db.Column(db.String(150))
     last_name = db.Column(db.String(150), nullable=False)
     suffix_name = db.Column(db.String(150))
+    address_1 = db.Column(db.Text)
+    address_2 = db.Column(db.Text)
+    city = db.Column(db.Text)
+    state = db.Column(db.Text)
+    zipcode = db.Column(db.Integer)
     phone_number = db.Column(db.Integer)
     phone_type = db.Column(db.String(10))
     role = db.Column(db.String(50), nullable=False, default='Staff')
@@ -68,23 +74,20 @@ class Practice(db.Model):
     timezone_id = db.Column(db.Integer, db.ForeignKey('timezone.id'))
     # Data Points - Created/Updated
     created_at = db.Column(db.DateTime(timezone=True), default=func.now())
-    created_by = db.Column(db.Integer, db.ForeignKey('user.id'))
     updated_at = db.Column(db.DateTime(timezone=True))
-    updated_by = db.Column(db.Integer, db.ForeignKey('user.id'))
     # Data Points - Main
     name = db.Column(db.Text, nullable=False)
     biography = db.Column(db.Text)
-    address_1 = db.Column(db.Text)
-    address_2 = db.Column(db.Text)
-    city = db.Column(db.Text)
-    state = db.Column(db.Text)
-    zipcode = db.Column(db.Integer)
+    address_1 = db.Column(db.Text, nullable=False)
+    address_2 = db.Column(db.Text, nullable=False)
+    city = db.Column(db.Text, nullable=False)
+    state = db.Column(db.Text, nullable=False)
+    zipcode = db.Column(db.Integer, nullable=False)
+    phone_number = db.Column(db.Integer, nullable=False)
+    phone_type = db.Column(db.String(10), nullable=False)
     email = db.Column(db.Text)
     website = db.Column(db.Text)
-    phone_number = db.Column(db.Integer)
-    phone_type = db.Column(db.String(10))
     status = db.Column(db.Text, nullable=False, default='Active')
-    # Relationships
     users = db.relationship('User')
     people = db.relationship('People')
 
@@ -92,25 +95,19 @@ class Practice(db.Model):
 class Timezone(db.Model):
     '''SQL Table: timezones'''
     id = db.Column(db.Integer, primary_key=True)
-    # Data Points - Main
     name = db.Column(db.Text)
     time_offset = db.Column(db.Integer)
-    # Relationships
     practices = db.relationship('Practice')
-    locations = db.relationship('Locations')
 
 
 class People(db.Model):
     '''SQL Table: people'''
     id = db.Column(db.Integer, primary_key=True)
-    # Foreign Keys
     practice_id = db.Column(db.Integer, db.ForeignKey('practice.id'))
-    # Data Points - Created/Updated
     created_at = db.Column(db.DateTime(timezone=True), default=func.now())
     created_by = db.Column(db.Integer, db.ForeignKey('user.id'))
     updated_at = db.Column(db.DateTime(timezone=True))
     updated_by = db.Column(db.Integer, db.ForeignKey('user.id'))
-    # Data Points - Main
     first_name = db.Column(db.String(150))
     middle_name = db.Column(db.String(150))
     last_name = db.Column(db.String(150))
