@@ -14,7 +14,7 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 from sqlalchemy.sql.functions import user
 from werkzeug.security import generate_password_hash
-from .forms import AddPersonForm, AddPracticeForm, AddPracticeUserForm
+from .forms import AddPersonForm, EditPersonForm, AddPracticeForm, AddPracticeUserForm
 from . import db
 from .models import People, Practice, User
 
@@ -70,9 +70,6 @@ def people():
 @login_required
 def addPerson():
     form = AddPersonForm()
-
-    print(f'User\'s id: {current_user.get_id()}')
-    print(f'User\'s practice id: {current_user.practice_id}')
 
     if form.validate_on_submit():
         if request.method == 'POST':
@@ -130,15 +127,79 @@ def addPerson():
                            form=form)
 
 
+# People - Edit Person
+@views.route('/person/<int:id>/edit', methods=['GET', 'POST'])
+@login_required
+def editPerson(id):
+    form = EditPersonForm()
+
+    person = People.query.get_or_404(id)
+
+    if request.method == 'GET':
+        # pre-populate form
+        form.first_name.data = person.first_name
+        form.middle_name.data = person.middle_name
+        form.last_name.data = person.last_name
+        form.suffix_name.data = person.suffix_name
+        form.date_of_birth.data = person.date_of_birth
+        form.gender_identity.data = person.gender_identity
+        form.address_1.data = person.address_1
+        form.address_2.data = person.address_2
+        form.city.data = person.city
+        form.state.data = person.state
+        form.zipcode.data = person.zipcode
+        form.phone.data = person.phone_number
+        form.phone_type.data = person.phone_type
+        form.email.data = person.email
+        form.status.data = person.status
+
+    if form.validate_on_submit():
+        if request.method == 'POST':
+            # Get data from the form
+            person.updated_at = datetime.utcnow()
+            person.updated_by = current_user.get_id()
+            person.first_name = form.first_name.data
+            person.middle_name = form.middle_name.data
+            person.last_name = form.last_name.data
+            person.suffix_name = form.suffix_name.data
+            person.date_of_birth = form.date_of_birth.data
+            person.gender_identity = form.gender_identity.data
+            person.address_1 = form.address_1.data
+            person.address_2 = form.address_2.data
+            person.city = form.city.data
+            person.state = form.state.data
+            person.zipcode = form.zipcode.data
+            person.phone_number = form.phone.data
+            person.phone_type = form.phone_type.data
+            person.email = form.email.data
+            person.status = form.status.data
+
+            # Update person to database
+            db.session.commit()
+            flash(f'{person.first_name} {person.last_name} updated successfully.',
+                  category='success')
+
+            return render_template("person.html",
+                                   user=current_user,
+                                   person=person)
+
+    return render_template("edit_person.html",
+                           title="Soulstone - Edit Person",
+                           user=current_user,
+                           person=person,
+                           form=form)
+
+
 # People - View Person
 @views.route('/person/<int:id>')
 def viewPerson(id):
     if request.method == 'GET':
         # current user practice id
         pu_id = current_user.practice_id
+        pp_id = People.query.get_or_404(id).practice_id
 
         # check if user practice id matches patient user id
-        if pu_id == id:
+        if pu_id == pp_id:
             # Display the person info
             person = People.query.get_or_404(id)
 
