@@ -27,7 +27,6 @@
                                 <td><strong>Address: </strong>
                                     {% if practice.address_2 == '' %}
                                         {{ practice.address_1 }}, {{ practice.city }}, {{ practice.state }} {{ practice.zipcode }}
-                                    {% elif practice.address_1 == '' %}
                                     {% else %}
                                         {{ practice.address_1 }}, {{ practice.address_2 }}, {{ practice.city }}, {{ practice.state }} {{ practice.zipcode }}
                                     {% endif %}
