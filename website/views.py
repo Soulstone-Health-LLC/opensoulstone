@@ -12,7 +12,6 @@ import string
 from datetime import datetime
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
-from sqlalchemy.sql.functions import user
 from werkzeug.security import generate_password_hash
 from .forms import AddPersonForm, EditPersonForm, AddPracticeForm, AddPracticeUserForm
 from . import db
@@ -210,8 +209,8 @@ def viewPerson(id):
             person = People.query.get_or_404(id)
 
             return render_template("person.html",
-                            user=current_user,
-                            person=person)
+                                   user=current_user,
+                                   person=person)
         else:
             return render_template("401.html",
                                    user=current_user)
@@ -268,8 +267,8 @@ def support():
             practices = Practice.query.order_by(Practice.id).all()
 
             return render_template("support.html",
-                                user=current_user,
-                                practices=practices)
+                                   user=current_user,
+                                   practices=practices)
         else:
             return render_template("401.html",
                                    user=current_user)
