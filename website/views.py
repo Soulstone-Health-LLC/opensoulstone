@@ -15,7 +15,7 @@ from flask_login import login_required, current_user
 from werkzeug.security import generate_password_hash
 from .forms import AddPersonForm, EditPersonForm, AddPracticeForm, AddPracticeUserForm, EditPracticeForm
 from . import db
-from .models import People, Practice, User
+from .models import Charges, People, Practice, User
 
 
 # ------------------------------------------------------------------------------
@@ -313,6 +313,25 @@ def editPracticeInformation(id):
                            user=current_user,
                            practice=practice,
                            form=form)
+
+
+# View Charges
+@views.route('/settings/charges')
+@login_required
+def chargeSettings():
+    ''' Routes the user to the Settings - Charges page '''
+    if request.method == 'GET':
+        pu_id = current_user.practice_id
+        charges = Charges.query.filter_by(practice_id=pu_id).all()
+
+        # Practice counts
+        charges_count = Charges.query.filter_by(practice_id=pu_id).count()
+
+        return render_template("settings_charges.html",
+                               title="Soulstone - Settings - Charges",
+                               charges=charges,
+                               charges_count=charges_count,
+                               user=current_user)
 
 
 # ------------------------------------------------------------------------------
