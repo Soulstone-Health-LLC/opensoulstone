@@ -32,23 +32,39 @@
                                 </div>
                                 <div class="user-wrap">
                                     <h4>
-                                        {% if person.middle_name == '' and person.suffix_name == '' %}
-                                        {{ person.first_name }} {{ person.last_name }}
-                                        {% elif person.suffix_name == '' %}
-                                        {{ person.first_name }} {{ person.middle_name }} {{ person.last_name }}
+                                        {% if person.status == 'Inactive' %}
+                                            {% if person.middle_name == '' and person.suffix_name == '' %}
+                                            {{ person.first_name }} {{ person.last_name }} <span class="text-danger">({{ person.status }})</span>
+                                            {% elif person.suffix_name == '' %}
+                                            {{ person.first_name }} {{ person.middle_name }} {{ person.last_name }}
+                                            {% else %}
+                                            {{ person.first_name }} {{ person.middle_name }} {{ person.last_name }} {{
+                                            person.suffix_name }}
+                                            {% endif %}
                                         {% else %}
-                                        {{ person.first_name }} {{ person.middle_name }} {{ person.last_name }} {{
-                                        person.suffix_name }}
+                                            {% if person.middle_name == '' and person.suffix_name == '' %}
+                                            {{ person.first_name }} {{ person.last_name }}
+                                            {% elif person.suffix_name == '' %}
+                                            {{ person.first_name }} {{ person.middle_name }} {{ person.last_name }}
+                                            {% else %}
+                                            {{ person.first_name }} {{ person.middle_name }} {{ person.last_name }} {{
+                                            person.suffix_name }}
+                                            {% endif %}
                                         {% endif %}
                                     </h4>
                                     <h6 class="text-muted mb-3">
-                                        {% if person.address_2 == '' %}
-                                            {{ person.address_1 }}<br>{{ person.city }}, {{ person.state }} {{ person.zipcode }}
+                                        {% if person.address_1 == None or person.address_1 == '' %}
+                                            <span></span>
+                                        {% elif person.address_2 == None or person.address_2 == ''%}
+                                            <i class="fe fe-home"></i>
+                                            {{ person.address_1 }}, {{ person.city }}, {{ person.state }} {{ person.zipcode }}
                                         {% else %}
-                                            {{ person.address_1 }}<br>{{ person.address_2 }}<br>{{ person.city }}, {{ person.state }} {{ person.zipcode }}
+                                            <i class="fe fe-home"></i>
+                                            {{ person.address_1 }}, {{ person.address_2 }}, {{ person.city }}, {{ person.state }} {{ person.zipcode }}
                                         {% endif %}
                                     </h6>
                                     <h6 class="text-muted mb-3">
+                                        <i class="fe fe-phone"></i>
                                         {{ person.phone_number }} ({{ person.phone_type }})
                                     </h6>
                                 </div>
@@ -142,7 +158,9 @@
                                     <tbody class="col-lg-12 col-xl-6 p-0">
                                         <tr>
                                             <td><strong>Address: </strong>
-                                                {% if person.address_2 == '' %}
+                                                {% if person.address_1 == None or person.address_1 == '' %}
+                                                    <span></span>
+                                                {% elif person.address_2 == None or person.address_2 == ''%}
                                                     {{ person.address_1 }}, {{ person.city }}, {{ person.state }} {{ person.zipcode }}
                                                 {% else %}
                                                     {{ person.address_1 }}, {{ person.address_2 }}, {{ person.city }}, {{ person.state }} {{ person.zipcode }}
