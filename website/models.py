@@ -111,6 +111,6 @@ class People(db.Model):
     phone_number = db.Column(db.Integer)
     phone_type = db.Column(db.String(10))
     email = db.Column(db.Text)
-    status = db.Column(db.Text)
+    status = db.Column(db.Text, default='Active')
     date_of_birth = db.Column(db.Date)
     gender_identity = db.Column(db.Text)
