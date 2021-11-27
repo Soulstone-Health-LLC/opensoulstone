@@ -13,7 +13,7 @@ from datetime import datetime
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 from werkzeug.security import generate_password_hash
-from .forms import AddPersonForm, EditPersonForm, AddPracticeForm, AddPracticeUserForm
+from .forms import AddPersonForm, EditPersonForm, AddPracticeForm, AddPracticeUserForm, EditPracticeForm
 from . import db
 from .models import People, Practice, User
 
@@ -241,6 +241,7 @@ def billing():
 # ------------------------------------------------------------------------------
 # Routes - Practice - Settings
 # ------------------------------------------------------------------------------
+# View Practice Information
 @views.route('/settings/practice_info')
 @login_required
 def practiceSettings():
@@ -249,11 +250,71 @@ def practiceSettings():
         pu_id = current_user.practice_id
         practice = Practice.query.get_or_404(pu_id)
 
+        # Practice counts
+        people_count = People.query.filter_by(practice_id=pu_id).count()
+        user_count = User.query.filter_by(practice_id=pu_id).count()
+        # TODO: visit note count
+        # TODO: charges count
+
         return render_template("settings_practice_info.html",
                                title="Soulstone - Settings - Practice Information",
                                practice=practice,
+                               people_count=people_count,
+                               user_count=user_count,
                                user=current_user)
 
+
+# Edit Practice Information
+@views.route('/settings/<int:id>/edit_practice_info', methods=['GET', 'POST'])
+@login_required
+def editPracticeInformation(id):
+    ''' Routes the user to edit the practice information '''
+    form = EditPracticeForm()
+
+    practice = Practice.query.get_or_404(id)
+
+    if request.method == 'GET':
+        # pre-populate form
+        form.name.data = practice.name
+        form.biography.data = practice.biography
+        form.address_1.data = practice.address_1
+        form.address_2.data = practice.address_2
+        form.city.data = practice.city
+        form.state.data = practice.state
+        form.zipcode.data = practice.zipcode
+        form.phone.data = practice.phone_number
+        form.phone_type.data = practice.phone_type
+        form.email.data = practice.email
+        form.website.data = practice.website
+
+    if form.validate_on_submit():
+        if request.method == 'POST':
+            # Get data from the form
+            practice.updated_at = datetime.utcnow()
+            practice.name = form.name.data
+            practice.biography = form.biography.data
+            practice.address_1 = form.address_1.data
+            practice.address_2 = form.address_2.data
+            practice.city = form.city.data
+            practice.state = form.state.data
+            practice.zipcode = form.zipcode.data
+            practice.phone_number = form.phone.data
+            practice.phone_type = form.phone_type.data
+            practice.email = form.email.data
+            practice.website = form.website.data
+
+            # Update person to database
+            db.session.commit()
+            flash(f'{practice.name} updated successfully.',
+                  category='success')
+
+            return redirect(url_for('views.practiceSettings'))
+
+    return render_template("edit_practice.html",
+                           title="Soulstone - Edit Practice",
+                           user=current_user,
+                           practice=practice,
+                           form=form)
 
 # ------------------------------------------------------------------------------
 # Routes - Support

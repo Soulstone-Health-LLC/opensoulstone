@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+
+{% block pagenav %}
+<h1 class="page-title">Edit Practice</h1>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{url_for('views.practiceSettings')}}">Practice Informaton</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Edit Practice</li>
+    </ol>
+{% endblock pagenav %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Edit Practice Information</h4>
+            </div>
+            <div class="card-body">
+                <form method="post" class="" novalidate>
+                    {{ form.hidden_tag() }}
+                    <div class="">
+                        <div class="form-group">
+                            {{ form.name.label() }}
+                            {% if form.name.errors %}
+                                {{ form.name(class="form-control is-invalid") }}
+                                    {% for error in form.name.errors %}
+                                        <div class="invalid-feedback">{{ error }}</div>
+                                    {% endfor %}
+                            {% else %}
+                                {{ form.name(class="form-control") }}
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            {{ form.biography.label() }}
+                            {% if form.biography.errors %}
+                                {{ form.biography(class="form-control is-invalid") }}
+                                    {% for error in form.biography.errors %}
+                                        <div class="invalid-feedback">{{ error }}</div>
+                                    {% endfor %}
+                            {% else %}
+                                {{ form.biography(class="form-control") }}
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            {{ form.address_1.label() }}
+                            {% if form.address_1.errors %}
+                                {{ form.address_1(class="form-control is-invalid") }}
+                                    {% for error in form.address_1.errors %}
+                                        <div class="invalid-feedback">{{ error }}</div>
+                                    {% endfor %}
+                            {% else %}
+                                {{ form.address_1(class="form-control") }}
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            {{ form.address_2.label() }}
+                            {% if form.address_2.errors %}
+                                {{ form.address_2(class="form-control is-invalid") }}
+                                    {% for error in form.address_2.errors %}
+                                        <div class="invalid-feedback">{{ error }}</div>
+                                    {% endfor %}
+                            {% else %}
+                                {{ form.address_2(class="form-control") }}
+                            {% endif %}
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-6">
+                                {{ form.city.label() }}
+                                {% if form.city.errors %}
+                                    {{ form.city(class="form-control is-invalid") }}
+                                        {% for error in form.city.errors %}
+                                            <div class="invalid-feedback">{{ error }}</div>
+                                        {% endfor %}
+                                {% else %}
+                                    {{ form.city(class="form-control") }}
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6 mb-6">
+                                {{ form.state.label() }}
+                                {% if form.state.errors %}
+                                    {{ form.state(class="form-control select2 form-select is-invalid") }}
+                                        {% for error in form.state.errors %}
+                                            <div class="invalid-feedback">{{ error }}</div>
+                                        {% endfor %}
+                                {% else %}
+                                    {{ form.state(class="form-control select2 form-select") }}
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            {{ form.zipcode.label() }}
+                            {% if form.zipcode.errors %}
+                                {{ form.zipcode(class="form-control is-invalid") }}
+                                    {% for error in form.zipcode.errors %}
+                                        <div class="invalid-feedback">{{ error }}</div>
+                                    {% endfor %}
+                            {% else %}
+                                {{ form.zipcode(class="form-control") }}
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            {{ form.email.label() }}
+                            {% if form.email.errors %}
+                                {{ form.email(class="form-control is-invalid") }}
+                                    {% for error in form.email.errors %}
+                                        <div class="invalid-feedback">{{ error }}</div>
+                                    {% endfor %}
+                            {% else %}
+                                {{ form.email(class="form-control") }}
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            {{ form.website.label() }}
+                            {% if form.website.errors %}
+                                {{ form.website(class="form-control is-invalid") }}
+                                    {% for error in form.website.errors %}
+                                        <div class="invalid-feedback">{{ error }}</div>
+                                    {% endfor %}
+                            {% else %}
+                                {{ form.website(class="form-control") }}
+                            {% endif %}
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-6">
+                                {{ form.phone.label() }}
+                                {% if form.phone.errors %}
+                                    {{ form.phone(class="form-control is-invalid") }}
+                                        {% for error in form.phone.errors %}
+                                            <div class="invalid-feedback">{{ error }}</div>
+                                        {% endfor %}
+                                {% else %}
+                                    {{ form.phone(class="form-control") }}
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6 mb-6">
+                                {{ form.phone_type.label() }}
+                                {% if form.phone_type.errors %}
+                                    {{ form.phone_type(class="form-control select2 form-select is-invalid") }}
+                                        {% for error in form.phone_type.errors %}
+                                            <div class="invalid-feedback">{{ error }}</div>
+                                        {% endfor %}
+                                {% else %}
+                                    {{ form.phone_type(class="form-control select2 form-select") }}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {{ form.submit(class="btn btn-primary") }}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
