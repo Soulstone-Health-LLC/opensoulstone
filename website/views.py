@@ -12,8 +12,10 @@ import string
 from datetime import datetime
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
+from flask_wtf import form
+from sqlalchemy.sql.expression import desc
 from werkzeug.security import generate_password_hash
-from .forms import AddPersonForm, EditPersonForm, AddPracticeForm, AddPracticeUserForm, EditPracticeForm
+from .forms import AddCharge, AddPersonForm, EditPersonForm, AddPracticeForm, AddPracticeUserForm, EditPracticeForm
 from . import db
 from .models import Charges, People, Practice, User
 
@@ -332,6 +334,51 @@ def chargeSettings():
                                charges=charges,
                                charges_count=charges_count,
                                user=current_user)
+
+
+# People - Add New Person
+@views.route('/settings/add_charge', methods=['GET', 'POST'])
+@login_required
+def addCharge():
+    form = AddCharge()
+
+    if form.validate_on_submit():
+        if request.method == 'POST':
+            # Get data from the form
+            practice_id = current_user.practice_id
+            created_at = datetime.utcnow()
+            created_by = current_user.get_id()
+            updated_at = datetime.utcnow()
+            updated_by = current_user.get_id()
+            code = form.code.data
+            name = form.name.data
+            description = form.description.data
+            amount = form.amount.data
+            status = form.status.data
+
+            # Add new charge to database
+            new_charge = Charges(practice_id=practice_id,
+                                 created_at=created_at,
+                                 created_by=created_by,
+                                 updated_at=updated_at,
+                                 updated_by=updated_by,
+                                 code=code,
+                                 name=name,
+                                 description=description,
+                                 amount=amount,
+                                 status=status)
+            db.session.add(new_charge)
+            db.session.commit()
+            flash(f'{name} created successfully.',
+                  category='success')
+
+            # Redirect to view people
+            return redirect(url_for('views.chargeSettings'))
+
+    return render_template("add_charge.html",
+                           title="Soulstone - Add Charge",
+                           user=current_user,
+                           form=form)
 
 
 # ------------------------------------------------------------------------------

@@ -9,7 +9,7 @@
 
 {% block content %}
 <div class="">
-    <a href="#" class="btn btn-primary btn-icon text-white me-2">
+    <a href="{{ url_for('views.addCharge') }}" class="btn btn-primary btn-icon text-white me-2">
         <span>
             <i class="fe fe-plus"></i>
         </span> Add New Charge
@@ -29,15 +29,15 @@
                     <table class="table table-bordered text-nowrap border-bottom w-100" id="responsive-datatable">
                         <thead>
                             <tr>
-                                <th class="wd-15p border-bottom-0">Code</th>
-                                <th class="wd-15p border-bottom-0">Name</th>
-                                <th class="wd-15p border-bottom-0">Amount</th>
-                                <th class="wd-15p border-bottom-0">Status</th>
-                                <th class="wd-5p border-bottom-0">Actions</th>
+                                <th class="border-bottom-0">Code</th>
+                                <th class="border-bottom-0">Name</th>
+                                <th class="border-bottom-0">Amount</th>
+                                <th class="border-bottom-0">Status</th>
+                                <th class="border-bottom-0">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for c in charge %}
+                            {% for c in charges %}
                             <tr>
                                 <td>{{ c.code }}</td>
                                 <td>{{ c.name }}</td>

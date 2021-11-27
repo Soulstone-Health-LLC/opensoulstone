@@ -11,6 +11,7 @@ from flask_wtf import FlaskForm
 from sqlalchemy.sql.expression import label
 from wtforms import StringField, PasswordField, SubmitField, SelectField
 from wtforms import EmailField, DateField
+from wtforms.fields.numeric import FloatField
 from wtforms.fields.simple import TelField
 from wtforms.validators import DataRequired, Length, EqualTo, Email
 from wtforms.widgets import TextArea
@@ -436,3 +437,41 @@ class AddPracticeUserForm(FlaskForm):
                                       ('Office', 'Office'),
                                       ('Fax', 'Fax')])
     submit = SubmitField(label='Register Account')
+
+
+class AddCharge(FlaskForm):
+    ''' Add Billable Charge to the Practice '''
+    code = StringField(label='Code *',
+                       validators=[DataRequired(),
+                                   Length(min=2)])
+    name = StringField(label='Charge Name *',
+                       validators=[DataRequired(),
+                                   Length(min=2)])
+    description = StringField(label='Charge Description *',
+                              widget=TextArea(),
+                              validators=[DataRequired()])
+    amount = FloatField(label='Amount *',
+                        validators=[DataRequired()])
+    status = SelectField(label='Status *',
+                         choices=[('Active', 'Active'),
+                                  ('Inactive', 'Inactive')])
+    submit = SubmitField(label='Add New Charge')
+
+
+class EditCharge(FlaskForm):
+    ''' Edit existing Charge to the Practice '''
+    code = StringField(label='Code *',
+                       validators=[DataRequired(),
+                                   Length(min=2)])
+    name = StringField(label='Charge Name *',
+                       validators=[DataRequired(),
+                                   Length(min=2)])
+    description = StringField(label='Charge Description *',
+                              widget=TextArea(),
+                              validators=[DataRequired()])
+    amount = FloatField(label='Amount *',
+                        validators=[DataRequired()])
+    status = SelectField(label='Status *',
+                         choices=[('Active', 'Active'),
+                                  ('Inactive', 'Inactive')])
+    submit = SubmitField(label='Save Charge')
