@@ -7,7 +7,6 @@
 # ------------------------------------------------------------------------------
 # Imports
 # ------------------------------------------------------------------------------
-from datetime import datetime
 from flask_login import UserMixin
 from sqlalchemy.sql import func
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
@@ -93,12 +92,16 @@ class Practice(db.Model):
 
 class People(db.Model):
     '''SQL Table: people'''
+    __tablename__ = 'people'
     id = db.Column(db.Integer, primary_key=True)
+    # Foreign Keys
     practice_id = db.Column(db.Integer, db.ForeignKey('practice.id'))
+    # Data Points - Created/Updated
     created_at = db.Column(db.DateTime(timezone=True), default=func.now())
     created_by = db.Column(db.Integer, db.ForeignKey('user.id'))
     updated_at = db.Column(db.DateTime(timezone=True))
     updated_by = db.Column(db.Integer, db.ForeignKey('user.id'))
+    # Data Points - Main
     first_name = db.Column(db.String(150))
     middle_name = db.Column(db.String(150))
     last_name = db.Column(db.String(150))
@@ -114,3 +117,22 @@ class People(db.Model):
     status = db.Column(db.Text, default='Active')
     date_of_birth = db.Column(db.Date)
     gender_identity = db.Column(db.Text)
+
+
+class Charges(db.Model):
+    '''SQL Table: charges'''
+    __tablename__ = 'charges'
+    id = db.Column(db.Integer, primary_key=True)
+    # Foreign Keys
+    practice_id = db.Column(db.Integer, db.ForeignKey('practice.id'))
+    # Data Points - Created/Updated
+    created_at = db.Column(db.DateTime(timezone=True), default=func.now())
+    created_by = db.Column(db.Integer, db.ForeignKey('user.id'))
+    updated_at = db.Column(db.DateTime(timezone=True))
+    updated_by = db.Column(db.Integer, db.ForeignKey('user.id'))
+    # Data Points - Main
+    code = db.Column(db.Text, nullable=False)
+    name = db.Column(db.Text, nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    amount = db.Column(db.Float, nullable=False)
+    status = db.Column(db.Text, default='Active')
