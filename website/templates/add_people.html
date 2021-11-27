@@ -212,24 +212,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="example mb-3">
-                        <div class="media media-lg mt-0">
-                            <div class="media-body">
-                                <h4 class="mt-0">Status</h4>
-                                <div class="form-group">
-                                    {{ form.status.label() }}
-                                    {% if form.status.errors %}
-                                        {{ form.status(class="form-control select2 form-select is-invalid") }}
-                                            {% for error in form.status.errors %}
-                                                <div class="invalid-feedback">{{ error }}</div>
-                                            {% endfor %}
-                                    {% else %}
-                                        {{ form.status(class="form-control select2 form-select") }}
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     {{ form.submit(class="btn btn-primary") }}
                 </form>
             </div>

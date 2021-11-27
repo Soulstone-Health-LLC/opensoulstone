@@ -95,7 +95,6 @@ def addPerson():
             phone_number = form.phone.data
             phone_type = form.phone_type.data
             email = form.email.data
-            status = form.status.data
 
             # Add new practice to database
             new_person = People(practice_id=practice_id,
@@ -116,8 +115,7 @@ def addPerson():
                                 zipcode=zipcode,
                                 phone_number=phone_number,
                                 phone_type=phone_type,
-                                email=email,
-                                status=status)
+                                email=email)
             db.session.add(new_person)
             db.session.commit()
             flash(f'{first_name} {last_name} created successfully.',

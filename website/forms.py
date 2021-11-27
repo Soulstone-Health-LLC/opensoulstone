@@ -316,9 +316,6 @@ class AddPersonForm(FlaskForm):
                                       ('Home', 'Home'),
                                       ('Office', 'Office'),
                                       ('Fax', 'Fax')])
-    status = SelectField(label='Status *',
-                         choices=[('Active', 'Active'),
-                                  ('Inactive', 'Inactive')])
     submit = SubmitField(label='Create New Person')
 
 
