@@ -12,10 +12,8 @@ import string
 from datetime import datetime
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
-from flask_wtf import form
-from sqlalchemy.sql.expression import desc
 from werkzeug.security import generate_password_hash
-from .forms import AddCharge, AddPersonForm, EditPersonForm, AddPracticeForm, AddPracticeUserForm, EditPracticeForm
+from .forms import AddChargeForm, AddPersonForm, EditChargeForm, EditPersonForm, AddPracticeForm, AddPracticeUserForm, EditPracticeForm
 from . import db
 from .models import Charges, People, Practice, User
 
@@ -184,9 +182,7 @@ def editPerson(id):
             flash(f'{person.first_name} {person.last_name} updated successfully.',
                   category='success')
 
-            return render_template("person.html",
-                                   user=current_user,
-                                   person=person)
+            return redirect(url_for('views.viewPerson', id=person.id))
 
     return render_template("edit_person.html",
                            title="Soulstone - Edit Person",
@@ -336,11 +332,12 @@ def chargeSettings():
                                user=current_user)
 
 
-# People - Add New Person
+# Add New Charge
 @views.route('/settings/add_charge', methods=['GET', 'POST'])
 @login_required
 def addCharge():
-    form = AddCharge()
+    ''' Routes user to add a new charge '''
+    form = AddChargeForm()
 
     if form.validate_on_submit():
         if request.method == 'POST':
@@ -378,6 +375,69 @@ def addCharge():
     return render_template("add_charge.html",
                            title="Soulstone - Add Charge",
                            user=current_user,
+                           form=form)
+
+
+# View Charge
+@views.route('/settings/charges/<int:id>')
+@login_required
+def viewCharge(id):
+    if request.method == 'GET':
+        # current user practice id
+        pu_id = current_user.practice_id
+        charge_id = Charges.query.get_or_404(id).practice_id
+
+        # check if user practice id matches charge id
+        if pu_id == charge_id:
+            # Display the charge info
+            charge = Charges.query.get_or_404(id)
+
+            return render_template("charge.html",
+                                   user=current_user,
+                                   charge=charge)
+        else:
+            return render_template("401.html",
+                                   user=current_user)
+
+
+# Edit Charge
+@views.route('/settings/charges/<int:id>/edit', methods=['GET', 'POST'])
+@login_required
+def editCharge(id):
+    ''' Routes the user to edit the charge '''
+    form = EditChargeForm()
+
+    charge = Charges.query.get_or_404(id)
+
+    if request.method == 'GET':
+        # pre-populate form
+        form.code.data = charge.code
+        form.name.data = charge.name
+        form.description.data = charge.description
+        form.status.data = charge.status
+
+    if form.validate_on_submit():
+        if request.method == 'POST':
+            # Get data from the form
+            charge.updated_at = datetime.utcnow()
+            charge.updated_by = current_user.get_id()
+            charge.code = form.code.data
+            charge.name = form.name.data
+            charge.description = form.description.data
+            charge.amount = request.form.get('amount')
+            charge.status = form.status.data
+
+            # Update person to database
+            db.session.commit()
+            flash(f'{charge.name} updated successfully.',
+                  category='success')
+
+            return redirect(url_for('views.viewCharge', id=charge.id))
+
+    return render_template("edit_charge.html",
+                           title="Soulstone - Edit Charge",
+                           user=current_user,
+                           charge=charge,
                            form=form)
 
 

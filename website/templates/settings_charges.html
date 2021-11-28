@@ -45,7 +45,7 @@
                                 <td>{{ c.status }}</td>
                                 <td>
                                     <div class="btn-group">
-                                        <a href="#" class="btn btn-primary badge" type="button"><i class="fe fe-eye"></i> View</a>
+                                        <a href="{{ url_for('views.viewCharge', id=c.id) }}" class="btn btn-primary badge" type="button"><i class="fe fe-eye"></i> View</a>
                                     </div>
                                 </td>
                             </tr>

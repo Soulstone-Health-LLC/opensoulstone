@@ -439,7 +439,7 @@ class AddPracticeUserForm(FlaskForm):
     submit = SubmitField(label='Register Account')
 
 
-class AddCharge(FlaskForm):
+class AddChargeForm(FlaskForm):
     ''' Add Billable Charge to the Practice '''
     code = StringField(label='Code *',
                        validators=[DataRequired(),
@@ -456,7 +456,7 @@ class AddCharge(FlaskForm):
     submit = SubmitField(label='Add New Charge')
 
 
-class EditCharge(FlaskForm):
+class EditChargeForm(FlaskForm):
     ''' Edit existing Charge to the Practice '''
     code = StringField(label='Code *',
                        validators=[DataRequired(),
@@ -467,9 +467,6 @@ class EditCharge(FlaskForm):
     description = StringField(label='Charge Description *',
                               widget=TextArea(),
                               validators=[DataRequired()])
-    amount = DecimalField(label='Amount *',
-                          validators=[DataRequired(),
-                                      NumberRange(min=0.00, max=9999.99)])
     status = SelectField(label='Status *',
                          choices=[('Active', 'Active'),
                                   ('Inactive', 'Inactive')])
