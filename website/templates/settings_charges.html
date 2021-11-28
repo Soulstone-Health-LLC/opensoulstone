@@ -41,7 +41,7 @@
                             <tr>
                                 <td>{{ c.code }}</td>
                                 <td>{{ c.name }}</td>
-                                <td>{{ c.amount }}</td>
+                                <td>{{ "$%.2f"|format(c.amount) }}</td>
                                 <td>{{ c.status }}</td>
                                 <td>
                                     <div class="btn-group">

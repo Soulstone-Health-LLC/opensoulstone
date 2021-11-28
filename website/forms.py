@@ -11,9 +11,9 @@ from flask_wtf import FlaskForm
 from sqlalchemy.sql.expression import label
 from wtforms import StringField, PasswordField, SubmitField, SelectField
 from wtforms import EmailField, DateField
-from wtforms.fields.numeric import FloatField
+from wtforms.fields.numeric import DecimalField, FloatField
 from wtforms.fields.simple import TelField
-from wtforms.validators import DataRequired, Length, EqualTo, Email
+from wtforms.validators import DataRequired, Length, EqualTo, Email, NumberRange
 from wtforms.widgets import TextArea
 from .models import People
 
@@ -450,8 +450,6 @@ class AddCharge(FlaskForm):
     description = StringField(label='Charge Description *',
                               widget=TextArea(),
                               validators=[DataRequired()])
-    amount = FloatField(label='Amount *',
-                        validators=[DataRequired()])
     status = SelectField(label='Status *',
                          choices=[('Active', 'Active'),
                                   ('Inactive', 'Inactive')])
@@ -469,8 +467,9 @@ class EditCharge(FlaskForm):
     description = StringField(label='Charge Description *',
                               widget=TextArea(),
                               validators=[DataRequired()])
-    amount = FloatField(label='Amount *',
-                        validators=[DataRequired()])
+    amount = DecimalField(label='Amount *',
+                          validators=[DataRequired(),
+                                      NumberRange(min=0.00, max=9999.99)])
     status = SelectField(label='Status *',
                          choices=[('Active', 'Active'),
                                   ('Inactive', 'Inactive')])

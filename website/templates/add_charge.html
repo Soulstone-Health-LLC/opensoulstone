@@ -56,15 +56,8 @@
                         </div>
                         <div class="row">
                             <div class="col-md-4 mb-6">
-                                {{ form.amount.label() }}
-                                {% if form.amount.errors %}
-                                    {{ form.amount(class="form-control is-invalid") }}
-                                        {% for error in form.amount.errors %}
-                                            <div class="invalid-feedback">{{ error }}</div>
-                                        {% endfor %}
-                                {% else %}
-                                    {{ form.amount(class="form-control") }}
-                                {% endif %}
+                                <label for="amount">Amount *</label>
+                                <input type="text" class="form-control" id="usd" name="amount" data-inputmask="'alias': 'currency', 'unmaskAsNumber': 'true'">
                             </div>
                         </div>
                         <div class="row">

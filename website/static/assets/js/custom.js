@@ -264,5 +264,4 @@
 	/*Header-Position Styles*/
 	// $('body').addClass('fixed-layout');
 	// $('body').addClass('scrollable-layout');
-	
 })(jQuery);
