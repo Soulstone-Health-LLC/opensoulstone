@@ -19,7 +19,7 @@ from .models import People
 
 
 # ------------------------------------------------------------------------------
-# Form Classes
+# Form - User Registration
 # ------------------------------------------------------------------------------
 class RegistrationForm(FlaskForm):
     ''' Sign Up / Register User Form '''
@@ -42,6 +42,9 @@ class RegistrationForm(FlaskForm):
     submit = SubmitField(label='Register Account')
 
 
+# ------------------------------------------------------------------------------
+# Form - Login
+# ------------------------------------------------------------------------------
 class LoginForm(FlaskForm):
     ''' Login Form '''
     email = EmailField(label='Email *',
@@ -52,6 +55,9 @@ class LoginForm(FlaskForm):
     submit = SubmitField(label='Log In')
 
 
+# ------------------------------------------------------------------------------
+# Form - Request Password Reset
+# ------------------------------------------------------------------------------
 class ResetRequestForm(FlaskForm):
     ''' Request Reset Password Form '''
     email = StringField(label='Email *',
@@ -59,6 +65,9 @@ class ResetRequestForm(FlaskForm):
     submit = SubmitField(label='Request Password Reset')
 
 
+# ------------------------------------------------------------------------------
+# Form - Reset Password
+# ------------------------------------------------------------------------------
 class ResetPasswordForm(FlaskForm):
     ''' Reset Password Form'''
     password = PasswordField(label='Password *',
@@ -70,6 +79,9 @@ class ResetPasswordForm(FlaskForm):
     submit = SubmitField(label='Reset Password')
 
 
+# ------------------------------------------------------------------------------
+# Form - Support - Add New Practice
+# ------------------------------------------------------------------------------
 class AddPracticeForm(FlaskForm):
     ''' Add New Practice Form '''
     name = StringField(label='Practice Name *',
@@ -151,6 +163,9 @@ class AddPracticeForm(FlaskForm):
     submit = SubmitField(label='Add New Practice')
 
 
+# ------------------------------------------------------------------------------
+# Form -Edit Practice
+# ------------------------------------------------------------------------------
 class EditPracticeForm(FlaskForm):
     ''' Edit Practice Information Form '''
     name = StringField(label='Practice Name *',
@@ -232,6 +247,9 @@ class EditPracticeForm(FlaskForm):
     submit = SubmitField(label='Save Practice Information')
 
 
+# ------------------------------------------------------------------------------
+# Form - Add New Person
+# ------------------------------------------------------------------------------
 class AddPersonForm(FlaskForm):
     ''' Add User to the Practice Form '''
     first_name = StringField(label='First Name *',
@@ -320,6 +338,9 @@ class AddPersonForm(FlaskForm):
     submit = SubmitField(label='Create New Person')
 
 
+# ------------------------------------------------------------------------------
+# Form -Edit Person
+# ------------------------------------------------------------------------------
 class EditPersonForm(FlaskForm):
     ''' Add User to the Practice Form '''
     first_name = StringField(label='First Name *',
@@ -411,6 +432,9 @@ class EditPersonForm(FlaskForm):
     submit = SubmitField(label='Edit Person')
 
 
+# ------------------------------------------------------------------------------
+# Form - Add Practice User
+# ------------------------------------------------------------------------------
 class AddPracticeUserForm(FlaskForm):
     ''' Add User to the Practice Form '''
     role = SelectField(label='User Role *',
@@ -439,6 +463,9 @@ class AddPracticeUserForm(FlaskForm):
     submit = SubmitField(label='Register Account')
 
 
+# ------------------------------------------------------------------------------
+# Form - Add Charge
+# ------------------------------------------------------------------------------
 class AddChargeForm(FlaskForm):
     ''' Add Billable Charge to the Practice '''
     code = StringField(label='Code *',
@@ -456,6 +483,9 @@ class AddChargeForm(FlaskForm):
     submit = SubmitField(label='Add New Charge')
 
 
+# ------------------------------------------------------------------------------
+# Form - Edit Charge
+# ------------------------------------------------------------------------------
 class EditChargeForm(FlaskForm):
     ''' Edit existing Charge to the Practice '''
     code = StringField(label='Code *',
