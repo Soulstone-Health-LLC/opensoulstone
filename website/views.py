@@ -228,9 +228,12 @@ def notes():
 def addVisitNote():
     form = AddVisitNoteForm()
 
+    person = People.query.first()
+
     return render_template("add_visit_note.html",
     title="Soulstone - Add Visit Note",
     user=current_user,
+    person=person,
     form=form)
 
 
