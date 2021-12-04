@@ -1,11 +1,59 @@
 {% extends "base.html" %}
 
 {% block pagenav %}
-<h1 class="page-title">Notes</h1>
+<h1 class="page-title">Visit Notes</h1>
     <ol class="breadcrumb">
-        <li class="breadcrumb-item active" aria-current="page">Notes</li>
+        <li class="breadcrumb-item active" aria-current="page">Visit Notes</li>
     </ol>
 {% endblock pagenav %}
 
 {% block content %}
+<div class="">
+    <a href="#" class="btn btn-primary btn-icon text-white me-2">
+        <span>
+            <i class="fe fe-plus"></i>
+        </span> Add New Visit Note
+    </a>
+</div>
+<br>
+<!-- Table of Visit Notes -->
+<div class="row row-sm">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div>
+                    <h3 class="card-title mb-1">People</h3>
+                    <p class="text-muted card-sub-title">List of records for all the people you've seen at your practice.</p>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered text-nowrap border-bottom w-100" id="responsive-datatable">
+                        <thead>
+                            <tr>
+                                <th class="border-bottom-0">Date of Visit</th>
+                                <th class="border-bottom-0">Name</th>
+                                <th class="border-bottom-0">Status</th>
+                                <th class="border-bottom-0">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- {% for p in people %} -->
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a href="#" class="btn btn-primary badge" type="button"><i class="fe fe-eye"></i> View</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- {% endfor %} -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Table -->
 {% endblock content %}
