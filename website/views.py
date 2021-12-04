@@ -13,7 +13,7 @@ from datetime import datetime
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 from werkzeug.security import generate_password_hash
-from .forms import AddChargeForm, AddPersonForm, EditChargeForm, EditPersonForm, AddPracticeForm, AddPracticeUserForm, EditPracticeForm
+from .forms import AddChargeForm, AddPersonForm, AddVisitNoteForm, EditChargeForm, EditPersonForm, AddPracticeForm, AddPracticeUserForm, EditPracticeForm
 from . import db
 from .models import Charges, People, Practice, User
 
@@ -221,6 +221,17 @@ def notes():
     ''' Routes the user to the Notes page '''
     return render_template("notes.html", title="Soulstone - Notes",
                            user=current_user)
+
+
+@views.route('/notes/add_visit_note', methods=['GET', 'POST'])
+@login_required
+def addVisitNote():
+    form = AddVisitNoteForm()
+
+    return render_template("add_visit_note.html",
+    title="Soulstone - Add Visit Note",
+    user=current_user,
+    form=form)
 
 
 # ------------------------------------------------------------------------------

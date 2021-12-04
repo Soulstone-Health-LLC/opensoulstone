@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block pagenav %}
+<h1 class="page-title">Add Visit Notes</h1>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url_for('views.notes') }}">Visit Notes</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Add Visit Note</li>
+    </ol>
+{% endblock pagenav %}
+
+{% block content %}
+<!--Row-->
+<div class="row ">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header border-bottom-0">
+                <div class="card-title">
+                    Vertical Orientation Wizard
+                </div>
+            </div>
+            <div class="card-body">
+                <div id="wizard3">
+                    <h3>Personal Information</h3>
+                    <section>
+                        <div class="control-group form-group">
+                            <label class="form-label">Name</label>
+                            <input type="text" class="form-control required" placeholder="Name">
+                        </div>
+                        <div class="control-group form-group">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control required" placeholder="Email Address">
+                        </div>
+                        <div class="control-group form-group">
+                            <label class="form-label">Phone Number</label>
+                            <input type="number" class="form-control required" placeholder="Number">
+                        </div>
+                        <div class="control-group form-group mb-0">
+                            <label class="form-label">Address</label>
+                            <input type="text" class="form-control required" placeholder="Address">
+                        </div>
+                    </section>
+                    <h3>Billing Information</h3>
+                    <section>
+                        <div class="table-responsive mg-t-20">
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <td>Cart Subtotal</td>
+                                        <td class="text-end">$792.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span>Totals</span></td>
+                                        <td class="text-end text-muted"><span>$792.00</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span>Order Total</span></td>
+                                        <td><h2 class="price text-end mb-0">$792.00</h2></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                    <h3>Payment Details</h3>
+                    <section>
+                        <div class="form-group">
+                            <label class="form-label" >Card Holder Name</label>
+                            <input type="text" class="form-control" id="name12" placeholder="First Name">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Card number</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Search for...">
+                                <span class="input-group-text btn btn-info shadow-none">
+                                    <i class="fa fa-cc-visa"></i> &nbsp; <i class="fa fa-cc-amex"></i> &nbsp;
+                                    <i class="fa fa-cc-mastercard"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <div class="form-group mb-sm-0">
+                                    <label class="form-label">Expiration</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" placeholder="MM" name="expiremonth">
+                                        <input type="number" class="form-control" placeholder="YY" name="expireyear">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 ">
+                                <div class="form-group mb-0">
+                                    <label class="form-label">CVV <i class="fa fa-question-circle"></i></label>
+                                    <input type="number" class="form-control" required="">
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Row -->
+{% endblock content %}
