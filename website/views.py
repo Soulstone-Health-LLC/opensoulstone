@@ -228,6 +228,8 @@ def notes():
 def addVisitNote():
     form = AddVisitNoteForm()
 
+    # TODO: figure out how to select the person before starting the form
+    # TODO: should the form be broken up and save each step?
     person = People.query.first()
 
     return render_template("add_visit_note.html",
