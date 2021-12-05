@@ -136,3 +136,38 @@ class Charges(db.Model):
     description = db.Column(db.Text, nullable=False)
     amount = db.Column(db.Float, nullable=False)
     status = db.Column(db.Text, default='Active')
+
+
+class Notes(db.Model):
+    ''' SQL Table: notes '''
+    __tablename__ = 'notes'
+    id = db.Column(db.Integer, primary_key=True)
+    # Foreign Keys
+    practice_id = db.Column(db.Integer, db.ForeignKey('practice.id'))
+    person_id = db.Column(db.Integer, db.ForeignKey('people.id'))
+    # Data Points - Created/Updated
+    created_at = db.Column(db.DateTime(timezone=True), default=func.now())
+    created_by = db.Column(db.Integer, db.ForeignKey('user.id'))
+    updated_at = db.Column(db.DateTime(timezone=True))
+    updated_by = db.Column(db.Integer, db.ForeignKey('user.id'))
+    # Data Points - Main
+    date_of_service = db.Column(db.DateTime, nullable=False)
+    reason_for_visit = db.Column(db.Text)
+    chakra_assessment_root_score = db.Column(db.Integer)
+    chakra_assessment_root_description = db.Column(db.Text)
+    chakra_assessment_sacral_score = db.Column(db.Integer)
+    chakra_assessment_sacral_description = db.Column(db.Text)
+    chakra_assessment_solar_plexus_score = db.Column(db.Integer)
+    chakra_assessment_solar_plexus_description = db.Column(db.Text)
+    chakra_assessment_heart_score = db.Column(db.Integer)
+    chakra_assessment_heart_description = db.Column(db.Text)
+    chakra_assessment_throat_score = db.Column(db.Integer)
+    chakra_assessment_throat_description = db.Column(db.Text)
+    chakra_assessment_third_eye_score = db.Column(db.Integer)
+    chakra_assessment_third_eye_description = db.Column(db.Text)
+    chakra_assessmentcrown_score = db.Column(db.Integer)
+    chakra_assessmentcrown_description = db.Column(db.Text)
+    # Signed Status
+    status = db.Column(db.Text, nullable=False, default='Not Signed')
+    signed_on = db.Column(db.DateTime)
+    signed_by = db.Column(db.Integer, db.ForeignKey('people.id'))

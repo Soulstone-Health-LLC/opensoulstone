@@ -15,7 +15,7 @@ from flask_login import login_required, current_user
 from werkzeug.security import generate_password_hash
 from .forms import AddChargeForm, AddPersonForm, AddVisitNoteForm, EditChargeForm, EditPersonForm, AddPracticeForm, AddPracticeUserForm, EditPracticeForm
 from . import db
-from .models import Charges, People, Practice, User
+from .models import Charges, People, Practice, User, Notes
 
 
 # ------------------------------------------------------------------------------
@@ -219,8 +219,13 @@ def viewPerson(id):
 @login_required
 def notes():
     ''' Routes the user to the Notes page '''
+    people = People.query.filter_by(practice_id=current_user.practice_id).order_by(People.last_name).all()
+    notes = Notes.query.filter_by(practice_id=current_user.practice_id).order_by(Notes.date_of_service).all()
+
     return render_template("notes.html", title="Soulstone - Notes",
-                           user=current_user)
+                           user=current_user,
+                           notes=notes,
+                           people=people)
 
 
 @views.route('/notes/add_visit_note', methods=['GET', 'POST'])
@@ -230,12 +235,10 @@ def addVisitNote():
 
     # TODO: figure out how to select the person before starting the form
     # TODO: should the form be broken up and save each step?
-    person = People.query.first()
 
     return render_template("add_visit_note.html",
     title="Soulstone - Add Visit Note",
     user=current_user,
-    person=person,
     form=form)
 
 

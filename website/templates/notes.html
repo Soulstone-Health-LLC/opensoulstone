@@ -9,7 +9,7 @@
 
 {% block content %}
 <div class="">
-    <a href="{{ url_for('views.addVisitNote') }}" class="btn btn-primary btn-icon text-white me-2">
+    <a data-bs-target="#modalSelectPatient" data-bs-toggle="modal" href="" class="btn btn-primary btn-icon text-white me-2">
         <span>
             <i class="fe fe-plus"></i>
         </span> Add New Visit Note
@@ -22,8 +22,8 @@
         <div class="card">
             <div class="card-body">
                 <div>
-                    <h3 class="card-title mb-1">People</h3>
-                    <p class="text-muted card-sub-title">List of records for all the people you've seen at your practice.</p>
+                    <h3 class="card-title mb-1">Recent Visit Notes</h3>
+                    <p class="text-muted card-sub-title">List of recent visit notes for all the people you've seen at your practice.</p>
                 </div>
                 <div class="table-responsive">
                     <table class="table table-bordered text-nowrap border-bottom w-100" id="responsive-datatable">
@@ -36,11 +36,11 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- {% for p in people %} -->
+                            {% for n in notes %}
                             <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td>{{  n.date_of_service  }}</td>
+                                <td>{{  n.person_id  }}</td>
+                                <td>{{  n.status  }}</td>
                                 <td>
                                     <div class="btn-group">
                                         <a href="#" class="btn btn-primary badge" type="button"><i class="fe fe-eye"></i> View</a>
@@ -56,4 +56,95 @@
     </div>
 </div>
 <!-- End Table -->
+<!-- Select/Add Patient -->
+<div class="modal fade"  id="modalSelectPatient">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
+        <div class="modal-content modal-content-demo">
+            <div class="modal-header">
+                <h6 class="modal-title">Select Patient</h6><button aria-label="Close" class="btn-close" data-bs-dismiss="modal" ><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div>
+                                    <h3 class="card-title mb-1">New Person</h3>
+                                    <p class="text-muted card-sub-title">Create a new person before starting a new visit note.</p>
+                                    <div class="btn-group">
+                                        <a href="{{ url_for('views.addPerson')}}" class="btn btn-primary badge" type="button"><i class="fe fe-plus"></i> Create New Person</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div>
+                                    <h3 class="card-title mb-1">Existing People</h3>
+                                    <p class="text-muted card-sub-title">Create a new visit note for an existing person.</p>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered text-nowrap border-bottom w-100" id="basic-datatable">
+                                        <thead>
+                                            <tr>
+                                                <th class="wd-15p border-bottom-0">Name</th>
+                                                <th class="wd-15p border-bottom-0">Address</th>
+                                                <th class="wd-15p border-bottom-0">Phone Number</th>
+                                                <th class="wd-15p border-bottom-0">Email</th>
+                                                <th class="wd-15p border-bottom-0">Status</th>
+                                                <th class="wd-5p border-bottom-0">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for p in people %}
+                                            <tr>
+                                                <td>
+                                                    {% if p.middle_name == '' and p.suffix_name == '' %}
+                                                        {{ p.last_name }}, {{ p.first_name }}
+                                                    {% elif p.suffix_name == '' %}
+                                                        {{ p.last_name }}, {{ p.first_name }} {{ p.middle_name }}
+                                                    {% else %}
+                                                        {{ p.last_name }} {{ p.suffix_name }}, {{ p.first_name }} {{ p.middle_name }}
+                                                    {% endif %}
+                                                </td>
+                                                {% if p.address_1 == '' %}
+                                                <td></td>
+                                                {% else %}
+                                                <td>
+                                                    {% if p.address_2 == '' %}
+                                                        {{ p.address_1 }}<br>{{ p.city }}, {{ p.state }} {{ p.zipcode }}
+                                                    {% else %}
+                                                        {{ p.address_1 }}<br>{{ p.address_2 }}<br>{{ p.city }}, {{ p.state }} {{ p.zipcode }}
+                                                    {% endif %}
+                                                </td>
+                                                {% endif %}
+                                                <td>{{ p.phone_number }} ({{ p.phone_type }})</td>
+                                                <td>{{ p.email }}</td>
+                                                <td>{{ p.status }}</td>
+                                                <td>
+                                                    <div class="btn-group">
+                                                        <a href="#" class="btn btn-primary badge" type="button"><i class="fe fe-plus"></i> Create Visit Note</a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-light" data-bs-dismiss="modal" >Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Select/Add Patient -->
 {% endblock content %}
