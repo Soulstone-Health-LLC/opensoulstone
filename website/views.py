@@ -220,7 +220,7 @@ def viewPerson(id):
 def notes():
     ''' Routes the user to the Notes page '''
     people = People.query.filter_by(practice_id=current_user.practice_id).order_by(People.last_name).all()
-    notes = Notes.query.filter_by(practice_id=current_user.practice_id).order_by(Notes.date_of_service).all()
+    notes = Notes.query.filter_by(practice_id=current_user.practice_id).order_by(Notes.id).all()
 
     return render_template("notes.html", title="Soulstone - Notes",
                            user=current_user,
