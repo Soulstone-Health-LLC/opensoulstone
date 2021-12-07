@@ -228,18 +228,32 @@ def notes():
                            people=people)
 
 
-@views.route('/notes/add_visit_note', methods=['GET', 'POST'])
+@views.route('/notes/<int:id>/add_visit_note', methods=['GET', 'POST'])
 @login_required
-def addVisitNote():
-    form = AddVisitNoteForm()
-
+def addVisitNote(id):
     # TODO: figure out how to select the person before starting the form
     # TODO: should the form be broken up and save each step?
 
-    return render_template("add_visit_note.html",
-    title="Soulstone - Add Visit Note",
-    user=current_user,
-    form=form)
+    form = AddVisitNoteForm()
+
+    # current user practice id
+    pu_id = current_user.practice_id
+    pp_id = People.query.get_or_404(id).practice_id
+
+    if request.method == 'GET':
+        # check if user practice id matches patient user id
+        if pu_id == pp_id:
+            # Display the person info
+            person = People.query.get_or_404(id)
+
+            return render_template("add_visit_note.html",
+                                   title="Soulstone - Add Visit Note",
+                                   user=current_user,
+                                   person=person,
+                                   form=form)
+        else:
+            return render_template("401.html",
+                                   user=current_user)
 
 
 # ------------------------------------------------------------------------------

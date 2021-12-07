@@ -127,7 +127,7 @@
                                                 <td>{{ p.status }}</td>
                                                 <td>
                                                     <div class="btn-group">
-                                                        <a href="#" class="btn btn-primary badge" type="button"><i class="fe fe-plus"></i> Create Visit Note</a>
+                                                        <a href="{{ url_for('views.addVisitNote', id=p.id) }}" class="btn btn-primary badge" type="button"><i class="fe fe-plus"></i> Create Visit Note</a>
                                                     </div>
                                                 </td>
                                             </tr>

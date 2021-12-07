@@ -167,7 +167,6 @@ class Notes(db.Model):
     chakra_assessment_third_eye_description = db.Column(db.Text)
     chakra_assessmentcrown_score = db.Column(db.Integer)
     chakra_assessmentcrown_description = db.Column(db.Text)
+    visit_notes = db.Column(db.Text)
     # Signed Status
-    status = db.Column(db.Text, nullable=False, default='Not Signed')
-    signed_on = db.Column(db.DateTime)
-    signed_by = db.Column(db.Integer, db.ForeignKey('people.id'))
+    status = db.Column(db.Text, nullable=False, default='Open')

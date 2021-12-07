@@ -12,16 +12,12 @@ $(function() {
 	icons['video'] = '<i class="fa fa-film" aria-hidden="true"><\/i>';
 	icons['code-block'] = '<i class="fa fa-code" aria-hidden="true"><\/i>';
 	var toolbarOptions = [
-		[{
-			'header': [1, 2, 3, 4, 5, 6, false]
-		}],
 		['bold', 'italic', 'underline', 'strike'],
 		[{
 			'list': 'ordered'
 		}, {
 			'list': 'bullet'
-		}],
-		['link', 'image', 'video']
+		}]
 	];
 	var quill = new Quill('#quillEditor', {
 		modules: {
@@ -29,35 +25,59 @@ $(function() {
 		},
 		theme: 'snow'
 	});
-	var quillModal = new Quill('#quillEditorModal', {
+	var quill = new Quill('#quillEditor2', {
 		modules: {
 			toolbar: toolbarOptions
 		},
 		theme: 'snow'
 	});
-	var quillModal2 = new Quill('#quillEditorModal2', {
+	var quill = new Quill('#quillEditor3', {
 		modules: {
 			toolbar: toolbarOptions
 		},
 		theme: 'snow'
 	});
-	var toolbarInlineOptions = [
-		['bold', 'italic', 'underline'],
-		[{
-			'header': 1
-		}, {
-			'header': 2
-		}, 'blockquote'],
-		['link', 'image', 'code-block'],
-	];
-	var quillInline = new Quill('#quillInline', {
+	var quill = new Quill('#quillEditor4', {
 		modules: {
-			toolbar: toolbarInlineOptions
+			toolbar: toolbarOptions
 		},
-		bounds: '#quillInline',
-		scrollingContainer: '#scrolling-container',
-		placeholder: 'Write something...',
-		theme: 'bubble'
+		theme: 'snow'
+	});
+	var quill = new Quill('#quillEditor5', {
+		modules: {
+			toolbar: toolbarOptions
+		},
+		theme: 'snow'
+	});
+	var quill = new Quill('#quillEditor6', {
+		modules: {
+			toolbar: toolbarOptions
+		},
+		theme: 'snow'
+	});
+	var quill = new Quill('#quillEditor7', {
+		modules: {
+			toolbar: toolbarOptions
+		},
+		theme: 'snow'
+	});
+	var quill = new Quill('#quillEditor8', {
+		modules: {
+			toolbar: toolbarOptions
+		},
+		theme: 'snow'
+	});
+	var quill = new Quill('#quillEditor9', {
+		modules: {
+			toolbar: toolbarOptions
+		},
+		theme: 'snow'
+	});
+	var quill = new Quill('#quillEditor10', {
+		modules: {
+			toolbar: toolbarOptions
+		},
+		theme: 'snow'
 	});
 	new PerfectScrollbar('#scrolling-container', {
 		suppressScrollX: true
