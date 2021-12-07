@@ -219,8 +219,8 @@ def viewPerson(id):
 @login_required
 def notes():
     ''' Routes the user to the Notes page '''
-    people = People.query.filter_by(practice_id=current_user.practice_id).order_by(People.last_name).all()
-    notes = Notes.query.filter_by(practice_id=current_user.practice_id).order_by(Notes.id).all()
+    people = People.query.filter_by(practice_id=current_user.practice_id).all()
+    notes = Notes.query.filter_by(practice_id=current_user.practice_id).all()
 
     return render_template("notes.html", title="Soulstone - Notes",
                            user=current_user,
@@ -235,6 +235,8 @@ def addVisitNote(id):
     # TODO: should the form be broken up and save each step?
 
     form = AddVisitNoteForm()
+
+    pers_id = People.query.get_or_404(id).id
 
     # current user practice id
     pu_id = current_user.practice_id
@@ -258,7 +260,7 @@ def addVisitNote(id):
     if form.validate_on_submit() and request.method == 'POST':
         # Get data from the form
         practice_id = current_user.practice_id
-        person_id = pp_id
+        person_id = pers_id
         created_at = datetime.utcnow()
         created_by = current_user.get_id()
         updated_at = datetime.utcnow()
