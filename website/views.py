@@ -7,13 +7,14 @@
 # ------------------------------------------------------------------------------
 # Imports
 # ------------------------------------------------------------------------------
+from operator import methodcaller
 import random
 import string
 from datetime import datetime
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 from werkzeug.security import generate_password_hash
-from .forms import AddChargeForm, AddPersonForm, AddVisitNoteForm, EditChargeForm, EditPersonForm, AddPracticeForm, AddPracticeUserForm, EditPracticeForm
+from .forms import AddChargeForm, AddPersonForm, AddVisitNoteForm, EditChargeForm, EditPersonForm, AddPracticeForm, AddPracticeUserForm, EditPracticeForm, EditVisitNoteForm
 from . import db
 from .models import Charges, People, Practice, User, Notes
 
@@ -316,6 +317,74 @@ def addVisitNote(id):
         # Redirect to Visit Notes page
         return redirect(url_for('views.notes'))
 
+
+@views.route('/notes/<int:id>', methods=['GET', 'POST'])
+@login_required
+def editVisitNote(id):
+    form = EditVisitNoteForm()
+
+    note = Notes.query.get_or_404(id)
+    pers_id = note.person_id
+    person = People.query.get_or_404(pers_id)
+
+    if request.method == 'GET':
+        form.reason_for_visit.data = note.reason_for_visit
+        form.date_of_service.data = note.date_of_service
+        form.chakra_assessment_root_score.data = note.chakra_assessment_root_score
+        form.chakra_assessment_root_description.data = note.chakra_assessment_root_description
+        form.chakra_assessment_sacral_score.data = note.chakra_assessment_sacral_score
+        form.chakra_assessment_sacral_description.data = note.chakra_assessment_sacral_description
+        form.chakra_assessment_solar_plexus_score.data = note.chakra_assessment_solar_plexus_score
+        form.chakra_assessment_solar_plexus_description.data = note.chakra_assessment_solar_plexus_description
+        form.chakra_assessment_heart_score.data = note.chakra_assessment_heart_score
+        form.chakra_assessment_heart_description.data = note.chakra_assessment_heart_description
+        form.chakra_assessment_throat_score.data = note.chakra_assessment_throat_score
+        form.chakra_assessment_throat_description.data = note.chakra_assessment_throat_description
+        form.chakra_assessment_third_eye_score.data = note.chakra_assessment_third_eye_score
+        form.chakra_assessment_third_eye_description.data = note.chakra_assessment_third_eye_description
+        form.chakra_assessment_crown_score.data = note.chakra_assessment_crown_score
+        form.chakra_assessment_crown_description.data = note.chakra_assessment_crown_description
+        form.visit_notes.data = note.visit_notes
+        form.post_visit_recommendations.data = note.post_visit_recommendations
+
+        return render_template("edit_visit_note.html",
+                                title="Soulstone - Edit Visit Note",
+                                user=current_user,
+                                person=person,
+                                note=note,
+                                form=form)
+
+    if form.validate_on_submit() and request.method == 'POST':
+        note.updated_at = datetime.utcnow()
+        note.reason_for_visit = form.reason_for_visit.data
+        note.date_of_service = form.date_of_service.data
+        note.chakra_assessment_root_score = form.chakra_assessment_root_score.data
+        note.chakra_assessment_root_description = form.chakra_assessment_root_description.data
+        note.chakra_assessment_sacral_score = form.chakra_assessment_sacral_score.data
+        note.chakra_assessment_sacral_description = form.chakra_assessment_sacral_description.data
+        note.chakra_assessment_solar_plexus_score = form.chakra_assessment_solar_plexus_score.data
+        note.chakra_assessment_solar_plexus_description = form.chakra_assessment_solar_plexus_description.data
+        note.chakra_assessment_heart_score = form.chakra_assessment_heart_score.data
+        note.chakra_assessment_heart_description = form.chakra_assessment_heart_description.data
+        note.chakra_assessment_throat_score = form.chakra_assessment_throat_score.data
+        note.chakra_assessment_throat_description = form.chakra_assessment_throat_description.data
+        note.chakra_assessment_third_eye_score = form.chakra_assessment_third_eye_score.data
+        note.chakra_assessment_third_eye_description = form.chakra_assessment_third_eye_description.data
+        note.chakra_assessment_crown_score = form.chakra_assessment_crown_score.data
+        note.chakra_assessment_crown_description = form.chakra_assessment_crown_description.data
+        note.visit_notes = form.visit_notes.data
+        note.post_visit_recommendations = form.post_visit_recommendations.data
+
+        # Update visit note to database
+        try:
+            db.session.commit()
+            flash('Visit Note updated successfully.',
+                category='success')
+        except:
+            flash('Something went wrong. Try again.',
+                category='danger')
+
+        return redirect(url_for('views.notes'))
 
 # ------------------------------------------------------------------------------
 # Routes - Practice - Billing
