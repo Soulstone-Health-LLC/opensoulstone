@@ -255,6 +255,65 @@ def addVisitNote(id):
             return render_template("401.html",
                                    user=current_user)
 
+    if form.validate_on_submit() and request.method == 'POST':
+        # Get data from the form
+        practice_id = current_user.practice_id
+        person_id = pp_id
+        created_at = datetime.utcnow()
+        created_by = current_user.get_id()
+        updated_at = datetime.utcnow()
+        updated_by = current_user.get_id()
+        date_of_service = form.date_of_service.data
+        reason_for_visit = form.reason_for_visit.data
+        chakra_assessment_root_score = form.chakra_assessment_root_score.data
+        chakra_assessment_root_description = form.chakra_assessment_root_description.data
+        chakra_assessment_sacral_score = form.chakra_assessment_sacral_score.data
+        chakra_assessment_sacral_description = form.chakra_assessment_sacral_description.data
+        chakra_assessment_solar_plexus_score = form.chakra_assessment_solar_plexus_score.data
+        chakra_assessment_solar_plexus_description = form.chakra_assessment_solar_plexus_description.data
+        chakra_assessment_heart_score = form.chakra_assessment_heart_score.data
+        chakra_assessment_heart_description = form.chakra_assessment_heart_description.data
+        chakra_assessment_throat_score = form.chakra_assessment_throat_score.data
+        chakra_assessment_throat_description = form.chakra_assessment_throat_description.data
+        chakra_assessment_third_eye_score = form.chakra_assessment_third_eye_score.data
+        chakra_assessment_third_eye_description = form.chakra_assessment_third_eye_description.data
+        chakra_assessment_crown_score = form.chakra_assessment_crown_score.data
+        chakra_assessment_crown_description = form.chakra_assessment_crown_description.data
+        visit_notes = form.visit_notes.data
+        post_visit_recommendations = form.post_visit_recommendations.data
+
+        # Add new visit note to database
+        new_visit_note = Notes(practice_id=practice_id,
+                               person_id=person_id,
+                               created_at=created_at,
+                               created_by=created_by,
+                               updated_at=updated_at,
+                               updated_by=updated_by,
+                               date_of_service=date_of_service,
+                               reason_for_visit=reason_for_visit,
+                               chakra_assessment_root_score=chakra_assessment_root_score,
+                               chakra_assessment_root_description=chakra_assessment_root_description,
+                               chakra_assessment_sacral_score=chakra_assessment_sacral_score,
+                               chakra_assessment_sacral_description=chakra_assessment_sacral_description,
+                               chakra_assessment_solar_plexus_score=chakra_assessment_solar_plexus_score,
+                               chakra_assessment_solar_plexus_description=chakra_assessment_solar_plexus_description,
+                               chakra_assessment_heart_score=chakra_assessment_heart_score,
+                               chakra_assessment_heart_description=chakra_assessment_heart_description,
+                               chakra_assessment_throat_score=chakra_assessment_throat_score,
+                               chakra_assessment_throat_description=chakra_assessment_throat_description,
+                               chakra_assessment_third_eye_score=chakra_assessment_third_eye_score,
+                               chakra_assessment_third_eye_description=chakra_assessment_third_eye_description,
+                               chakra_assessment_crown_score=chakra_assessment_crown_score,
+                               chakra_assessment_crown_description=chakra_assessment_crown_description,
+                               visit_notes=visit_notes,
+                               post_visit_recommendations=post_visit_recommendations)
+        db.session.add(new_visit_note)
+        db.session.commit()
+        flash('Visit Note created successfully.', category='success')
+
+        # Redirect to Visit Notes page
+        return redirect(url_for('views.notes'))
+
 
 # ------------------------------------------------------------------------------
 # Routes - Practice - Billing

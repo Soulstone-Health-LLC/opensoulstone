@@ -165,8 +165,9 @@ class Notes(db.Model):
     chakra_assessment_throat_description = db.Column(db.Text)
     chakra_assessment_third_eye_score = db.Column(db.Integer)
     chakra_assessment_third_eye_description = db.Column(db.Text)
-    chakra_assessmentcrown_score = db.Column(db.Integer)
-    chakra_assessmentcrown_description = db.Column(db.Text)
+    chakra_assessment_crown_score = db.Column(db.Integer)
+    chakra_assessment_crown_description = db.Column(db.Text)
     visit_notes = db.Column(db.Text)
+    post_visit_recommendations = db.Column(db.Text)
     # Signed Status
     status = db.Column(db.Text, nullable=False, default='Open')
