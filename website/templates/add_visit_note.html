@@ -135,13 +135,7 @@
                                 <!-- Reason for Visit -->
                                 <div class="form-group">
                                     {{ form.reason_for_visit.label() }}
-                                    <div class="ql-wrapper ql-wrapper-demo bg-light">
-                                        <div id="quillEditor" class="ql-container ql-snow">
-                                            <div class="ql-editor" data-gramm="false" contenteditable="true">
-                                                {{ form.reason_for_visit }}
-                                            </div>
-                                        </div>
-                                    </div>
+                                    {{ form.reason_for_visit(class="form-control") }}
                                 </div>
                             </section>
                             <h3>Chakra Assessment</h3>
@@ -149,18 +143,12 @@
                                 <!-- Chakra Assessment -->
                                 <!-- Root Chakra -->
                                 <div class="form-group">
-                                        {{ form.chakra_assessment_root_score.label() }}
-                                        {{ form.chakra_assessment_root_score(class="form-control form-select") }}
+                                    {{ form.chakra_assessment_root_score.label() }}
+                                    {{ form.chakra_assessment_root_score(class="form-control form-select") }}
                                 </div>
                                 <div class="form-group mb-6">
                                     {{ form.chakra_assessment_root_description.label() }}
-                                    <div class="ql-wrapper ql-wrapper-demo bg-light">
-                                        <div id="quillEditor2" class="ql-container ql-snow">
-                                            <div class="ql-editor" data-gramm="false" contenteditable="true">
-                                                {{ form.chakra_assessment_root_description }}
-                                            </div>
-                                        </div>
-                                    </div>
+                                    {{ form.chakra_assessment_root_description(class="form-control") }}
                                 </div>
                                 <!-- Sacral Chakra -->
                                 <div class="form-group">
@@ -169,28 +157,15 @@
                                 </div>
                                 <div class="form-group mb-6">
                                     {{ form.chakra_assessment_sacral_description.label() }}
-                                    <div class="ql-wrapper ql-wrapper-demo bg-light">
-                                        <div id="quillEditor3" class="ql-container ql-snow">
-                                            <div class="ql-editor" data-gramm="false" contenteditable="true">
-                                                {{ form.chakra_assessment_sacral_description }}
-                                            </div>
-                                        </div>
-                                    </div>
+                                    {{ form.chakra_assessment_sacral_description(class="form-control") }}
                                 </div>
                                 <!-- Solar Plexus Chakra -->
                                 <div class="form-group">
                                     {{ form.chakra_assessment_solar_plexus_score.label() }}
                                     {{ form.chakra_assessment_solar_plexus_score(class="form-control form-select") }}
-                                </div>
                                 <div class="form-group mb-6">
                                     {{ form.chakra_assessment_solar_plexus_description.label() }}
-                                    <div class="ql-wrapper ql-wrapper-demo bg-light">
-                                        <div id="quillEditor4" class="ql-container ql-snow">
-                                            <div class="ql-editor" data-gramm="false" contenteditable="true">
-                                                {{ form.chakra_assessment_solar_plexus_description }}
-                                            </div>
-                                        </div>
-                                    </div>
+                                    {{ form.chakra_assessment_solar_plexus_description(class="form-control") }}
                                 </div>
                                 <!-- Heart Chakra -->
                                 <div class="form-group">
@@ -199,13 +174,7 @@
                                 </div>
                                 <div class="form-group mb-6">
                                     {{ form.chakra_assessment_heart_description.label() }}
-                                    <div class="ql-wrapper ql-wrapper-demo bg-light">
-                                        <div id="quillEditor5" class="ql-container ql-snow">
-                                            <div class="ql-editor" data-gramm="false" contenteditable="true">
-                                                {{ form.chakra_assessment_heart_description }}
-                                            </div>
-                                        </div>
-                                    </div>
+                                    {{ form.chakra_assessment_heart_description(class="form-control") }}
                                 </div>
                                 <!-- Throat Chakra -->
                                 <div class="form-group">
@@ -214,13 +183,7 @@
                                 </div>
                                 <div class="form-group mb-6">
                                     {{ form.chakra_assessment_throat_description.label() }}
-                                    <div class="ql-wrapper ql-wrapper-demo bg-light">
-                                        <div id="quillEditor6" class="ql-container ql-snow">
-                                            <div class="ql-editor" data-gramm="false" contenteditable="true">
-                                                {{ form.chakra_assessment_throat_description }}
-                                            </div>
-                                        </div>
-                                    </div>
+                                    {{ form.chakra_assessment_throat_description(class="form-control") }}
                                 </div>
                                 <!-- Third-Eye Chakra -->
                                 <div class="form-group">
@@ -229,13 +192,7 @@
                                 </div>
                                 <div class="form-group mb-6">
                                     {{ form.chakra_assessment_third_eye_description.label() }}
-                                    <div class="ql-wrapper ql-wrapper-demo bg-light">
-                                        <div id="quillEditor7" class="ql-container ql-snow">
-                                            <div class="ql-editor" data-gramm="false" contenteditable="true">
-                                                {{ form.chakra_assessment_third_eye_description }}
-                                            </div>
-                                        </div>
-                                    </div>
+                                    {{ form.chakra_assessment_third_eye_description(class="form-control") }}
                                 </div>
                                 <!-- Crown Chakra -->
                                 <div class="form-group">
@@ -244,13 +201,7 @@
                                 </div>
                                 <div class="form-group mb-6">
                                     {{ form.chakra_assessment_crown_description.label() }}
-                                    <div class="ql-wrapper ql-wrapper-demo bg-light">
-                                        <div id="quillEditor8" class="ql-container ql-snow">
-                                            <div class="ql-editor" data-gramm="false" contenteditable="true">
-                                                {{ form.chakra_assessment_crown_description }}
-                                            </div>
-                                        </div>
-                                    </div>
+                                    {{ form.chakra_assessment_crown_description(class="form-control") }}
                                 </div>
                             </section>
                             <h3>Visit Observations</h3>
@@ -258,13 +209,7 @@
                                 <!-- Practicioner Note -->
                                 <div class="form-group">
                                     {{ form.visit_notes.label() }}
-                                    <div class="ql-wrapper ql-wrapper-demo bg-light">
-                                        <div id="quillEditor9" class="ql-container ql-snow">
-                                            <div class="ql-editor" data-gramm="false" contenteditable="true">
-                                                {{ form.visit_notes }}
-                                            </div>
-                                        </div>
-                                    </div>
+                                    {{ form.visit_notes(class="form-control") }}
                                 </div>
                             </section>
                             <h3>Post Visit Recommendations</h3>
@@ -272,12 +217,7 @@
                                 <!-- Post Visit Recommendations -->
                                 <div class="form-group">
                                     {{ form.post_visit_recommendations.label() }}
-                                    <div class="ql-wrapper ql-wrapper-demo bg-light">
-                                        <div id="quillEditor10" class="ql-container ql-snow">
-                                            <div class="ql-editor" data-gramm="false" contenteditable="true">
-                                                {{ form.post_visit_recommendations }}
-                                            </div>
-                                        </div>
+                                    {{ form.post_visit_recommendations(class="form-control") }}
                                     </div>
                                 </div>
                             </section>

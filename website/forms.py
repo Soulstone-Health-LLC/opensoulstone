@@ -507,7 +507,8 @@ class AddVisitNoteForm(FlaskForm):
     ''' Add new Visit Note '''
     date_of_service = DateField(label='Date of Service *',
                                 validators=[DataRequired()])
-    reason_for_visit = StringField(label='Reason for Visit')
+    reason_for_visit = StringField(label='Reason for Visit',
+                                   widget=TextArea())
     chakra_assessment_root_score = SelectField(label='Root Chakra Score',
                                                choices=[('', ''),
                                                         ('-5', -5),
