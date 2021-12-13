@@ -10,8 +10,10 @@
 from operator import methodcaller
 import random
 import string
+import pdfkit
 from datetime import datetime
 from flask import Blueprint, render_template, request, flash, redirect, url_for
+from flask import make_response
 from flask_login import login_required, current_user
 from werkzeug.security import generate_password_hash
 from .forms import AddChargeForm, AddPersonForm, AddVisitNoteForm, EditChargeForm, EditPersonForm, AddPracticeForm, AddPracticeUserForm, EditPracticeForm, EditVisitNoteForm
@@ -385,6 +387,29 @@ def editVisitNote(id):
                 category='danger')
 
         return redirect(url_for('views.notes'))
+
+
+@views.route('/pdf_note/<int:id>')
+@login_required
+def pdfVisitNote(id):
+    note = Notes.query.get_or_404(id)
+    practice = Practice.query.filter_by(id=note.practice_id).first()
+    person = People.query.filter_by(id=note.person_id).first()
+
+    rendered = render_template('pdf_visit_note.html',
+                                note=note,
+                                practice=practice,
+                                person=person,
+                                user=current_user)
+    config = pdfkit.configuration(wkhtmltopdf='C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe')
+    pdf = pdfkit.from_string(rendered, False, configuration=config)
+    
+
+    response = make_response(pdf)
+    response.headers['Content-Type'] = 'application/pdf'
+    response.headers['Content-Disposition'] = 'inline; filename=visit_note.pdf'
+    return response
+
 
 # ------------------------------------------------------------------------------
 # Routes - Practice - Billing

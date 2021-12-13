@@ -1,0 +1,54 @@
+<h1>Visit Note Summary</h1>
+<!-- Practice Info -->
+<h2>Practice Information</h2>
+<strong>{{ practice.name }}</strong>
+<br>
+{% if practice.address_2 == '' %}
+    {{ practice.address_1 }}<br>{{ practice.city }}, {{ practice.state }} {{ practice.zipcode }}
+{% else %}
+    {{ practice.address_1 }}<br>{{ practice.address_2 }}<br>{{ practice.city }}, {{ practice.state }} {{ practice.zipcode }}
+{% endif %}
+<br>
+{{ practice.phone_number }}
+<br>
+{{ practice.email }}
+<br>
+{{ practice.website }}
+<br>
+<br>
+<!-- Person Info -->
+<h2>Person Information</h2>
+{% if person.middle_name == '' and person.suffix_name == '' %}
+    <strong>{{ person.first_name }} {{ person.last_name }}</strong>
+{% elif person.suffix_name == '' %}
+    <strong>{{ person.first_name }} {{ person.middle_name }} {{ person.last_name }}</strong>
+{% else %}
+    <strong>{{ person.first_name }} {{ person.middle_name }} {{ person.last_name }} {{person.suffix_name }}</strong>
+{% endif %}
+<br>
+{% if person.address_1 == None or person.address_1 == '' %}
+    <!-- no address -->
+{% elif person.address_2 == None or person.address_2 == ''%}
+    {{ person.address_1 }}, {{ person.city }}, {{ person.state }} {{ person.zipcode }}
+{% else %}
+    {{ person.address_1 }}, {{ person.address_2 }}, {{ person.city }}, {{ person.state }} {{ person.zipcode }}
+{% endif %}
+{{ person.phone_number }} ({{ person.phone_type }})
+<br>
+{% if person.email == None or person.email == '' %}
+    <!-- no email-->
+{% else %}
+    {{ person.email }}
+{% endif %}
+<br>
+<h2>Visit Summary</h2>
+Date of Visit: {{ note.date_of_service }}
+<br>
+<br>
+{% if note.reason_for_visit == None or note.reason_for_visit == '' %}
+    <!-- no reason for visit-->
+{% else %}
+    Reason for Visit:
+    <br>
+    {{ note.reason_for_visit }}
+{% endif %}

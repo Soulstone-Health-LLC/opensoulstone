@@ -43,7 +43,8 @@
                                 <td>{{ n.status }}</td>
                                 <td>
                                     <div class="btn-group">
-                                        <a href="{{ url_for('views.editVisitNote', id=n.id) }}" class="btn btn-primary badge" type="button"><i class="fe fe-eye"></i> View</a>
+                                        <a href="{{ url_for('views.editVisitNote', id=n.id) }}" class="btn btn-primary badge" type="button"><i class="fe fe-edit"></i> Edit</a>
+                                        <a href="{{ url_for('views.pdfVisitNote', id=n.id) }}" class="btn btn-secondary badge" type="button"><i class="fe fe-print"></i> PDF</a>
                                     </div>
                                 </td>
                             </tr>
