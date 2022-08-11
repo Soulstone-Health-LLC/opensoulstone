@@ -1,5 +1,5 @@
 '''
-    File name: main.py
+    File name: app.py
     Author: Rodney Gauna
     Date created: 2021-10-31
 '''
