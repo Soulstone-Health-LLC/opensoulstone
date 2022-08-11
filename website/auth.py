@@ -12,7 +12,8 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 from flask_mail import Message
-from .forms import RegistrationForm, LoginForm, ResetPasswordForm, ResetRequestForm
+from .forms import RegistrationForm, LoginForm, ResetPasswordForm
+from .forms import ResetRequestForm
 from .models import User
 from . import db, mail
 
@@ -53,7 +54,9 @@ def login():
                     login_user(user, remember=True)
                     return redirect(url_for('views.home'))
                 else:
-                    flash(f'The account information used for {form.email.data} is incorrect',
+                    flash(f'''
+                          The account information used for {form.email.data}
+                          is incorrect''',
                           category='error')
             else:
                 flash(f'Account not found for {form.email.data}.',
@@ -95,9 +98,11 @@ def reset_request():
 
         if user:
             send_mail(user)
-            flash(f'An email to {form.email.data} with a reset password link.', category='success')
+            flash(f'An email to {form.email.data} with a reset password link.',
+                  category='success')
         else:
-            flash(f'Account not found with {form.email.data}', category='error')
+            flash(f'Account not found with {form.email.data}',
+                  category='error')
 
     return render_template("reset_request.html",
                            title="Soulstone - Password Reset Request",
@@ -163,7 +168,8 @@ def sign_up():
                                 first_name=first_name,
                                 last_name=last_name,
                                 password=generate_password_hash(password,
-                                                                method='sha384'))
+                                                                method='sha384')
+                                )
                 db.session.add(new_user)
                 db.session.commit()
 
