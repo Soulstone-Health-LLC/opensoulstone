@@ -168,8 +168,7 @@ def sign_up():
                                 first_name=first_name,
                                 last_name=last_name,
                                 password=generate_password_hash(password,
-                                                                method='sha384')
-                                )
+                                                                method='sha384'))
                 db.session.add(new_user)
                 db.session.commit()
 
