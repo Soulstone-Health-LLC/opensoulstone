@@ -200,16 +200,13 @@ def pdfVisitNote(id):
     note = Notes.query.get_or_404(id)
     practice = Practice.query.filter_by(id=note.practice_id).first()
     person = People.query.filter_by(id=note.person_id).first()
-
     rendered = render_template('pdf_visit_note.html',
                                 note=note,
                                 practice=practice,
                                 person=person,
                                 user=current_user)
-    config = pdfkit.configuration(wkhtmltopdf='C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe')
+    config = pdfkit.configuration(wkhtmltopdf='/usr/local/bin/wkhtmltopdf')
     pdf = pdfkit.from_string(rendered, False, configuration=config)
-
-
     response = make_response(pdf)
     response.headers['Content-Type'] = 'application/pdf'
     response.headers['Content-Disposition'] = 'inline; filename=visit_note.pdf'
