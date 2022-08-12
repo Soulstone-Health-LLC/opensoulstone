@@ -8,7 +8,7 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 from website.persons.forms import AddPersonForm, EditPersonForm
 from website import db
-from website.models import People
+from website.models import People, Notes
 
 
 # ------------------------------------------------------------------------------
@@ -169,10 +169,12 @@ def viewPerson(id):
         if pu_id == pp_id:
             # Display the person info
             person = People.query.get_or_404(id)
+            notes = Notes.query.filter_by(person_id=id).all()
 
             return render_template("person.html",
                                    user=current_user,
-                                   person=person)
+                                   person=person,
+                                   notes=notes)
         else:
             return render_template("401.html",
                                    user=current_user)
