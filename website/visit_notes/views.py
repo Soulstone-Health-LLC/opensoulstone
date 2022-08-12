@@ -122,7 +122,7 @@ def addVisitNote(id):
         flash('Visit Note created successfully.', category='success')
 
         # Redirect to Visit Notes page
-        return redirect(url_for('views.notes'))
+        return redirect(url_for('visit_notes.notes'))
 
 
 @visit_notes.route('/notes/<int:id>', methods=['GET', 'POST'])
@@ -191,7 +191,7 @@ def editVisitNote(id):
             flash('Something went wrong. Try again.',
                 category='danger')
 
-        return redirect(url_for('views.notes'))
+        return redirect(url_for('visit_notes.notes'))
 
 
 @visit_notes.route('/pdf_note/<int:id>')
