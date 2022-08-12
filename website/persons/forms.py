@@ -103,7 +103,7 @@ class AddPersonForm(FlaskForm):
 
 
 # ------------------------------------------------------------------------------
-# Form -Edit Person
+# Form - Edit Person
 # ------------------------------------------------------------------------------
 class EditPersonForm(FlaskForm):
     ''' Add User to the Practice Form '''
