@@ -1,8 +1,5 @@
-'''
-    File name: __init__.py
-    Author: Rodney Gauna
-    Date created: 2021-10-31
-'''
+# soulstone/website/__init__.py
+
 
 # ------------------------------------------------------------------------------
 # Imports
@@ -69,10 +66,12 @@ def create_app():
     # Import views and auth routes
     from .views import views
     from .auth import auth
+    from website.settings.views import settings
 
     # Blueprint routing
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
+    app.register_blueprint(settings)
 
     # Check if database exists; if not, create database and tables (as classes)
     from .models import User
