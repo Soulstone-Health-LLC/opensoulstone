@@ -69,6 +69,7 @@ def create_app():
     from website.persons.views import persons
     from website.settings.views import settings
     from website.support.views import supportapp
+    from website.error_pages.handler import error_pages
 
     # Blueprint routing
     app.register_blueprint(views, url_prefix='/')
@@ -76,6 +77,7 @@ def create_app():
     app.register_blueprint(persons)
     app.register_blueprint(settings)
     app.register_blueprint(supportapp)
+    app.register_blueprint(error_pages)
 
     # Check if database exists; if not, create database and tables (as classes)
     from .models import User
