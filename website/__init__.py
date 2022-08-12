@@ -65,7 +65,7 @@ def create_app():
 
     # Import views and auth routes
     from .views import views
-    from .auth import auth
+    from website.users.views import users
     from website.persons.views import persons
     from website.visit_notes.views import visit_notes
     from website.settings.views import settings
@@ -74,7 +74,7 @@ def create_app():
 
     # Blueprint routing
     app.register_blueprint(views, url_prefix='/')
-    app.register_blueprint(auth, url_prefix='/')
+    app.register_blueprint(users)
     app.register_blueprint(persons)
     app.register_blueprint(visit_notes)
     app.register_blueprint(settings)
