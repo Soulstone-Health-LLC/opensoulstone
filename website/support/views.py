@@ -5,7 +5,6 @@
 # ------------------------------------------------------------------------------
 import random
 import string
-from datetime import datetime
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 from werkzeug.security import generate_password_hash
@@ -98,7 +97,8 @@ def addpractice():
 
 
 # Support - Practices - Add Practice User
-@supportapp.route('/support/<int:id>/support_add_user', methods=['GET', 'POST'])
+@supportapp.route('/support/<int:id>/support_add_user',
+                  methods=['GET', 'POST'])
 @login_required
 def addPracticeUser(id):
     '''Add practice user form and page'''
