@@ -89,7 +89,7 @@ def editPracticeInformation(id):
             flash(f'{practice.name} updated successfully.',
                   category='success')
 
-            return redirect(url_for('views.practiceSettings'))
+            return redirect(url_for('settings.practiceSettings'))
 
     return render_template("edit_practice.html",
                            title="Soulstone - Edit Practice",
@@ -155,7 +155,7 @@ def addCharge():
                   category='success')
 
             # Redirect to view people
-            return redirect(url_for('views.chargeSettings'))
+            return redirect(url_for('settings.chargeSettings'))
 
     return render_template("add_charge.html",
                            title="Soulstone - Add Charge",
@@ -217,7 +217,7 @@ def editCharge(id):
             flash(f'{charge.name} updated successfully.',
                   category='success')
 
-            return redirect(url_for('views.viewCharge', id=charge.id))
+            return redirect(url_for('settings.viewCharge', id=charge.id))
 
     return render_template("edit_charge.html",
                            title="Soulstone - Edit Charge",

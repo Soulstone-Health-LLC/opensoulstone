@@ -9,7 +9,7 @@
 
 {% block content %}
 <div class="">
-    <a href="{{ url_for('views.addCharge') }}" class="btn btn-primary btn-icon text-white me-2">
+    <a href="{{ url_for('settings.addCharge') }}" class="btn btn-primary btn-icon text-white me-2">
         <span>
             <i class="fe fe-plus"></i>
         </span> Add New Charge
@@ -45,7 +45,7 @@
                                 <td>{{ c.status }}</td>
                                 <td>
                                     <div class="btn-group">
-                                        <a href="{{ url_for('views.viewCharge', id=c.id) }}" class="btn btn-primary badge" type="button"><i class="fe fe-eye"></i> View</a>
+                                        <a href="{{ url_for('settings.viewCharge', id=c.id) }}" class="btn btn-primary badge" type="button"><i class="fe fe-eye"></i> View</a>
                                     </div>
                                 </td>
                             </tr>

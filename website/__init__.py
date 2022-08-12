@@ -4,6 +4,7 @@
 # ------------------------------------------------------------------------------
 # Imports
 # ------------------------------------------------------------------------------
+import imp
 from flask import Flask, redirect
 from flask.helpers import url_for
 from flask_sqlalchemy import SQLAlchemy
@@ -68,6 +69,7 @@ def create_app():
     from website.users.views import users
     from website.persons.views import persons
     from website.visit_notes.views import visit_notes
+    from website.billing.views import billing
     from website.settings.views import settings
     from website.support.views import supportapp
     from website.error_pages.handler import error_pages
@@ -77,6 +79,7 @@ def create_app():
     app.register_blueprint(users)
     app.register_blueprint(persons)
     app.register_blueprint(visit_notes)
+    app.register_blueprint(billing)
     app.register_blueprint(settings)
     app.register_blueprint(supportapp)
     app.register_blueprint(error_pages)

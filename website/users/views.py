@@ -46,7 +46,7 @@ def login():
                 if check_password_hash(user.password, password):
                     flash('Logged in successfully', category='success')
                     login_user(user, remember=True)
-                    return redirect(url_for('views.home'))
+                    return redirect(url_for('core.home'))
                 else:
                     flash(f'''
                           The account information used for {form.email.data}
@@ -71,7 +71,7 @@ def send_mail(user):
                   sender='noreply@soulstone.com')
     msg.body = f''' To reset your password, please follow the link below:
 
-    {url_for('auth.reset_token', token=token, _external=True)}
+    {url_for('users.reset_token', token=token, _external=True)}
 
     If you did not send a password reset request, please ignore this email.
 
@@ -112,7 +112,7 @@ def reset_token(token):
         flash('''That is an invalid token or the token has expired.
               Please try again.''',
               category='error')
-        return redirect(url_for('view.reset_request'))
+        return redirect(url_for('users.reset_request'))
 
     form = ResetPasswordForm()
     if form.validate_on_submit():
@@ -122,7 +122,7 @@ def reset_token(token):
         user.password = password
         db.session.commit()
         flash(' Password updated!', category='success')
-        return redirect(url_for('auth.login'))
+        return redirect(url_for('users.login'))
 
     return render_template("change_password.html", form=form)
 
@@ -134,7 +134,7 @@ def logout():
     '''Logout operation'''
     logout_user()
     flash('Logged out successfully.', category='success')
-    return redirect(url_for('auth.login'))
+    return redirect(url_for('users.login'))
 
 
 # Sign Up Page
@@ -173,7 +173,7 @@ def sign_up():
                 login_user(new_user, remember=True)
 
                 # redirect the user to landing page
-                return redirect(url_for('views.home'))
+                return redirect(url_for('core.home'))
 
     return render_template("sign_up.html",
                            title="Soulstone - Register",
