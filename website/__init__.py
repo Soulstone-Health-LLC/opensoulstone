@@ -67,11 +67,13 @@ def create_app():
     from .views import views
     from .auth import auth
     from website.settings.views import settings
+    from website.support.views import supportapp
 
     # Blueprint routing
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
     app.register_blueprint(settings)
+    app.register_blueprint(supportapp)
 
     # Check if database exists; if not, create database and tables (as classes)
     from .models import User
