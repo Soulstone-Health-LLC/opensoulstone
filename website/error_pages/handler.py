@@ -15,7 +15,7 @@ error_pages = Blueprint('error_pages', __name__)
 # ------------------------------------------------------------------------------
 # Routes - Practice - Error Pages
 # ------------------------------------------------------------------------------
-# 401 Page
+# 404 Page
 @error_pages.errorhandler(401)
 def page_401(e):
     ''' Displays 401 page if there is an error '''
