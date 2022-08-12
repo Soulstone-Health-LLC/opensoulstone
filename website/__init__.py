@@ -67,6 +67,7 @@ def create_app():
     from .views import views
     from .auth import auth
     from website.persons.views import persons
+    from website.visit_notes.views import visit_notes
     from website.settings.views import settings
     from website.support.views import supportapp
     from website.error_pages.handler import error_pages
@@ -75,6 +76,7 @@ def create_app():
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
     app.register_blueprint(persons)
+    app.register_blueprint(visit_notes)
     app.register_blueprint(settings)
     app.register_blueprint(supportapp)
     app.register_blueprint(error_pages)
