@@ -66,12 +66,14 @@ def create_app():
     # Import views and auth routes
     from .views import views
     from .auth import auth
+    from website.persons.views import persons
     from website.settings.views import settings
     from website.support.views import supportapp
 
     # Blueprint routing
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
+    app.register_blueprint(persons)
     app.register_blueprint(settings)
     app.register_blueprint(supportapp)
 
