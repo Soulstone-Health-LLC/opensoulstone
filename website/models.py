@@ -10,7 +10,7 @@
 from flask_login import UserMixin
 from sqlalchemy.sql import func
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
-from . import db, secret_key
+from website import db, secret_key
 
 
 # ------------------------------------------------------------------------------
