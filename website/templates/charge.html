@@ -3,14 +3,14 @@
 {% block pagenav %}
 <h1 class="page-title">Settings</h1>
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{{ url_for('views.chargeSettings') }}">Billing Charges</a></li>
+        <li class="breadcrumb-item"><a href="{{ url_for('settings.chargeSettings') }}">Billing Charges</a></li>
         <li class="breadcrumb-item active" aria-current="page">{{ charge.code }}</li>
     </ol>
 {% endblock pagenav %}
 
 {% block content %}
 <div class="">
-    <a href="{{ url_for('views.editCharge', id=charge.id) }}" class="btn btn-primary btn-icon text-white me-2">
+    <a href="{{ url_for('settings.editCharge', id=charge.id) }}" class="btn btn-primary btn-icon text-white me-2">
         <span>
             <i class="fe fe-edit"></i>
         </span> Edit Charge
