@@ -170,11 +170,13 @@ def viewPerson(id):
             # Display the person info
             person = People.query.get_or_404(id)
             notes = Notes.query.filter_by(person_id=id).all()
+            notes_count = Notes.query.filter_by(person_id=id).count()
 
             return render_template("person.html",
                                    user=current_user,
                                    person=person,
-                                   notes=notes)
+                                   notes=notes,
+                                   notes_count=notes_count)
         else:
             return render_template("401.html",
                                    user=current_user)
