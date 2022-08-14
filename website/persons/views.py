@@ -148,7 +148,7 @@ def editPerson(id):
             flash(f'{person.first_name} {person.last_name} updated successfully.',
                   category='success')
 
-            return redirect(url_for('views.viewPerson', id=person.id))
+            return redirect(url_for('persons.viewPerson', id=person.id))
 
     return render_template("edit_person.html",
                            title="Soulstone - Edit Person",
