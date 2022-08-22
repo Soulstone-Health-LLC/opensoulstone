@@ -88,7 +88,7 @@ def addPerson():
                   category='success')
 
             # Redirect to view people
-            return redirect(url_for('views.people'))
+            return redirect(url_for('persons.people'))
 
     return render_template("add_people.html",
                            title="Soulstone - Add Person",

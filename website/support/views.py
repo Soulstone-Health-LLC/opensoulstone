@@ -144,7 +144,7 @@ def addPracticeUser(id):
             flash(f'{form.email} created successfully.', category='success')
 
             # Redirect user to Support home page
-            return redirect(url_for('views.support'))
+            return redirect(url_for('supportapp.support'))
 
     return render_template("support_add_user.html",
                            title="Soulstone - Add Practice User",
