@@ -139,3 +139,5 @@ database.db
 .DS_Store
 
 emailpassword.txt
+
+pyvenv.cfg
