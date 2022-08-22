@@ -90,7 +90,7 @@ def create_app():
 
     # Initializes the login manager
     login_manager = LoginManager()
-    login_manager.login_view = 'auth.login'
+    login_manager.login_view = 'users.login'
     login_manager.login_message = u'You have to login to view this page.'
     login_manager.login_message_category = 'warning'
     login_manager.init_app(app)
@@ -101,7 +101,7 @@ def create_app():
 
     @login_manager.unauthorized_handler
     def unauthorized():
-        return redirect(url_for('auth.login'))
+        return redirect(url_for('users.login'))
 
     # Mail configuration
     app.config['MAIL_SERVER'] = 'smtp.gmail.com'
