@@ -1,41 +1,51 @@
-/* only drops the person table if it exists */
-DROP TABLE IF EXISTS practice;
-
-
-/* create practice table */
-CREATE TABLE practice (
-    id INTEGER PRIMARY KEY,
-    name TEXT,
-    email TEXT,
-    website TEXT,
-    phone_number INTEGER,
-    phone_type VARCHAR(10),
-    timezone_id INTEGER,
-    created_at DATETIME,
-    updated_at DATETIME,
-    updated_by INTEGER
-);
-
-
 /* insert test data for practice table */
-INSERT INTO practice (
+INSERT INTO
+  practice (
     name,
     email,
     website,
     phone_number,
     phone_type,
-    timezone_id,
-    created_at,
-    updated_at,
-    updated_by)
-VALUES (
+    address_1,
+    address_2,
+    city,
+    state,
+    zipcode,
+    status
+  )
+VALUES
+  (
     'Healing Hands',
     'healinghands@email.com',
     'healinghands.com',
     5555555555,
-    'office',
-    5,
-    '2021-10-31 12:00:00',
-    '2021-10-31 12:00:00',
-    1
-);
+    'Office',
+    '123 Main Street',
+    'Suite 200',
+    'San Diego',
+    'CA',
+    92121,
+    'Active'
+  );
+
+/* insert test support user */
+INSERT INTO
+  user (
+    practice_id,
+    email,
+    password,
+    first_name,
+    last_name,
+    role,
+    status
+  )
+VALUES
+  (
+    1,
+    'rodneygauna+support@gmail.com',
+    'rodneygauna+support',
+    'Support',
+    'Test User',
+    'Support',
+    'Active'
+  );
