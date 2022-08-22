@@ -4,7 +4,6 @@
 # ------------------------------------------------------------------------------
 # Imports
 # ------------------------------------------------------------------------------
-import imp
 from flask import Flask, redirect
 from flask.helpers import url_for
 from flask_sqlalchemy import SQLAlchemy
