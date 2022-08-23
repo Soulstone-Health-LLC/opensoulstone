@@ -175,7 +175,7 @@ class LedgerPayments(db.Model):
     amount = db.Column(db.Float, nullable=False)
     payment_method = db.Column(db.Text, nullable=False)
     check_number = db.Column(db.String(50))
-    credit_card_last_four = db.Column(db.Integer(4))
+    credit_card_last_four = db.Column(db.Integer)
     payment_note = db.Column(db.Text)
 
 
