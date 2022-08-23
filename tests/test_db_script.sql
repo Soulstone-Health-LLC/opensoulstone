@@ -15,6 +15,19 @@ INSERT INTO
   )
 VALUES
   (
+    'Support Practice',
+    'support@email.com',
+    'support.com',
+    5555555555,
+    'Office',
+    '123 Main Street',
+    'Suite 200',
+    'San Diego',
+    'CA',
+    92121,
+    'Active'
+  ),
+  (
     'Healing Hands',
     'healinghands@email.com',
     'healinghands.com',

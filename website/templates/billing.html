@@ -73,22 +73,28 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for c in charges %}
+                            {% for lc in ledger_charges %}
                             <tr>
                                 <td>
-                                    Date goes here
+                                    {{ lc.created_at }}
                                 </td>
                                 <td>
-                                    Full name goes here
+                                    {% if lc.middle_name == '' and lc.suffix_name == '' %}
+                                        {{ lc.last_name }}, {{ lc.first_name }}
+                                    {% elif lc.suffix_name == '' %}
+                                        {{ lc.last_name }}, {{ lc.first_name }} {{ lc.middle_name }}
+                                    {% else %}
+                                        {{ lc.last_name }} {{ lc.suffix_name }}, {{ lc.first_name }} {{ lc.middle_name }}
+                                    {% endif %}
                                 </td>
                                 <td>
-                                    charge code and description goes here
+                                    {{ lc.code }} {{ lc.description }}
                                 </td>
                                 <td>
-                                    $ ###.##
+                                    $ {{ lc.units * lc.unit_amount }}
                                 </td>
                                 <td>
-                                    $ ###.##
+                                    $
                                 </td>
                                 <td>
                                     <div class="btn-group">
