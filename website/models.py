@@ -7,6 +7,7 @@
 # ------------------------------------------------------------------------------
 # Imports
 # ------------------------------------------------------------------------------
+from email.policy import default
 from flask_login import UserMixin
 from sqlalchemy.sql import func
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
@@ -136,6 +137,46 @@ class Charges(db.Model):
     description = db.Column(db.Text, nullable=False)
     amount = db.Column(db.Float, nullable=False)
     status = db.Column(db.Text, default='Active')
+
+
+class LedgerCharges(db.Model):
+    '''SQL Table: ledger_charges'''
+    __tablename__ = 'ledger_charges'
+    id = db.Column(db.Integer, primary_key=True)
+    # Foreign Keys
+    practice_id = db.Column(db.Integer, db.ForeignKey('practice.id'))
+    charge_id = db.Column(db.Integer, db.ForeignKey('charges.id'))
+    person_id = db.Column(db.Integer, db.ForeignKey('people.id'))
+    note_id = db.Column(db.Integer, db.ForeignKey('notes.id'))
+    # Data Points - Created/Updated
+    created_at = db.Column(db.DateTime(timezone=True), default=func.now())
+    created_by = db.Column(db.Integer, db.ForeignKey('user.id'))
+    updated_at = db.Column(db.DateTime(timezone=True))
+    updated_by = db.Column(db.Integer, db.ForeignKey('user.id'))
+    # Data Points - Main
+    units = db.Column(db.Integer, nullable=False, default=1)
+    unit_amount = db.Column(db.Float, nullable=False)
+    tax_rate = db.Column(db.Float)
+
+
+class LedgerPayments(db.Model):
+    '''SQL Table: ledger_payments'''
+    __tablename__ = 'ledger_payments'
+    id = db.Column(db.Integer, primary_key=True)
+    # Foreign Keys
+    practice_id = db.Column(db.Integer, db.ForeignKey('practice.id'))
+    person_id = db.Column(db.Integer, db.ForeignKey('people.id'))
+    # Data Points - Created/Updated
+    created_at = db.Column(db.DateTime(timezone=True), default=func.now())
+    created_by = db.Column(db.Integer, db.ForeignKey('user.id'))
+    updated_at = db.Column(db.DateTime(timezone=True))
+    updated_by = db.Column(db.Integer, db.ForeignKey('user.id'))
+    # Data Points - Main
+    amount = db.Column(db.Float, nullable=False)
+    payment_method = db.Column(db.Text, nullable=False)
+    check_number = db.Column(db.String(50))
+    credit_card_last_four = db.Column(db.Integer(4))
+    payment_note = db.Column(db.Text)
 
 
 class Notes(db.Model):
