@@ -38,6 +38,30 @@ def ledger():
         .join(Charges, LedgerCharges.charge_id == Charges.id)\
         .filter_by(practice_id=current_user.practice_id).all()
 
-    return render_template("billing.html", title="Soulstone - Billing",
+    return render_template("billing.html",
+                           title="Soulstone - Billing",
                            user=current_user,
                            ledger_charges=ledger_charges)
+
+
+# Payments
+@billing.route('/billing/payments')
+@login_required
+def payments():
+    ''' Routes the user to the Billing > Payments page'''
+    ledger_payments = db.session.query(LedgerPayments.created_at,
+                                       LedgerPayments.payment_method,
+                                       LedgerPayments.amount,
+                                       LedgerPayments.payment_note,
+                                       LedgerPayments.practice_id,
+                                       People.first_name,
+                                       People.middle_name,
+                                       People.last_name,
+                                       People.suffix_name)\
+        .join(People, LedgerPayments.person_id == People.id)\
+        .filter_by(practice_id=current_user.practice_id).all()
+
+    return render_template("payments.html",
+                           title="Soulstone - Payments",
+                           user=current_user,
+                           ledger_payments=ledger_payments)
