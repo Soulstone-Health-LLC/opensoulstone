@@ -141,3 +141,5 @@ database.db
 emailpassword.txt
 
 pyvenv.cfg
+
+.vscode/
