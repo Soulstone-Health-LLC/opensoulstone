@@ -27,7 +27,7 @@ def login():
     '''Login page'''
     # If user is currently logged in, redirect to home
     if current_user.is_authenticated:
-        return redirect(url_for('views.home'))
+        return redirect(url_for('core.home'))
 
     # Login logic
     form = LoginForm()
