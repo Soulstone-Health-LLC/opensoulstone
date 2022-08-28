@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block pagenav %}
+<h1 class="page-title">Add Visit Notes</h1>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url_for('billing.ledger') }}">Billing</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Add New Charge</li>
+    </ol>
+{% endblock pagenav %}
+
+{% block content %}
+<!-- Select a Practice Charge -->
+<div class="">
+    <a data-bs-target="#modalSelectCharge" data-bs-toggle="modal" href="" class="btn btn-primary btn-icon text-white me-2">
+        <span>
+            <i class="fe fe-plus"></i>
+        </span> Select a Charge
+    </a>
+</div>
+<br>
+<!-- End Select a Practice Charge -->
+<!-- Select Charge -->
+<div class="modal fade"  id="modalSelectCharge">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
+        <div class="modal-content modal-content-demo">
+            <div class="modal-header">
+                <h6 class="modal-title">Select Charge</h6><button aria-label="Close" class="btn-close" data-bs-dismiss="modal" ><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div>
+                                    <h3 class="card-title mb-1">New Practice Charge</h3>
+                                    <p class="text-muted card-sub-title">Create a new practice charge before adding a new charge.</p>
+                                    <div class="btn-group">
+                                        <a href="{{ url_for('settings.addCharge')}}" class="btn btn-primary badge" type="button"><i class="fe fe-plus"></i> Create New Practice Charge</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div>
+                                    <h3 class="card-title mb-1">Existing Charge</h3>
+                                    <p class="text-muted card-sub-title">Select an existing practice charge.</p>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered text-nowrap border-bottom w-100" id="basic-datatable">
+                                        <thead>
+                                            <tr>
+                                                <th class="wd-15p border-bottom-0">Code</th>
+                                                <th class="wd-15p border-bottom-0">Name</th>
+                                                <th class="wd-15p border-bottom-0">Description</th>
+                                                <th class="wd-15p border-bottom-0">Amount</th>
+                                                <th class="wd-5p border-bottom-0">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for c in practice_charges %}
+                                            <tr>
+                                                <td>{{ c.code }}
+                                                <td>{{ c.name }}</td>
+                                                <td>{{ c.description }}</td>
+                                                <td>{{ c.amount }}</td>
+                                                <td>
+                                                    <div class="btn-group">
+                                                        <a href="#" class="btn btn-primary badge" type="button"><i class="fe fe-plus"></i> Add New Charge</a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-light" data-bs-dismiss="modal" >Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Select Charge -->
+{% endblock content %}
