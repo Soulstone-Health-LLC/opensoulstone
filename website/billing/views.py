@@ -56,7 +56,8 @@ def addLedgerCharge(id):
     form = AddLedgerChargeForm()
 
     pers_id = People.query.get_or_404(id).id
-    practice_charges = Charges.query.filter_by(practice_id=current_user.practice_id).all()
+    practice_charges = Charges.query.filter_by(
+        practice_id=current_user.practice_id).all()
 
     # current user practice id
     pu_id = current_user.practice_id
