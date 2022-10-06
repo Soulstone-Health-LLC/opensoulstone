@@ -13,6 +13,13 @@ local = "http://127.0.0.1:5000"
 
 
 # ------------------------------------------------------------------------------
+# Global Variables
+# ------------------------------------------------------------------------------
+email = "rodneygauna+hh@gmail.com"
+password = "rodneygauna hh"
+
+
+# ------------------------------------------------------------------------------
 # Tests
 # ------------------------------------------------------------------------------
 def test_login_exists():
@@ -41,8 +48,8 @@ def test_login_successful():
     # And enters their login information
     login_page = Login(driver)
 
-    login_page.sendkeys_email("rodneygauna hh@gmail.com")
-    login_page.sendkeys_password("rodneygauna hh")
+    login_page.sendkeys_email(email)
+    login_page.sendkeys_password(password)
 
     # When the user clicks Log In
     login_page.click_login()
