@@ -15,7 +15,7 @@ local = "http://127.0.0.1:5000"
 # ------------------------------------------------------------------------------
 # Global Variables
 # ------------------------------------------------------------------------------
-email = "rodneygauna@gmail.com"
+email = "rodneygauna+support@gmail.com"
 
 
 # ------------------------------------------------------------------------------
@@ -46,4 +46,5 @@ def test_forgot_password_successful():
     success_banner_message = f"Success! An email to {email} with a reset password link."
     success_banner = driver.find_element(By.CLASS_NAME, "alert-inner--text")
 
-    assert success_banner_message in success_banner
+    assert success_banner_message in success_banner.text
+    driver.quit()
