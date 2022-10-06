@@ -1,22 +1,23 @@
-# ----------------------------------------------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # Imports
-# ----------------------------------------------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from tests.pages.login import Login
 
 
-# ----------------------------------------------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # Site
-# ----------------------------------------------------------------------------------------------------------------------
-local = 'http://127.0.0.1:5000'
+# ------------------------------------------------------------------------------
+local = "http://127.0.0.1:5000"
 
 
-# ----------------------------------------------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # Tests
-# ----------------------------------------------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 def test_login_exists():
-    '''Test - Login page exisits'''
+    """Test - Login page exisits"""
+
     driver = webdriver.Chrome()
 
     # When the user navigates to the site
@@ -30,7 +31,8 @@ def test_login_exists():
 
 
 def test_login_successful():
-    '''Test - Successfully login into the application'''
+    """Test - Successfully login into the application"""
+
     driver = webdriver.Chrome()
 
     # Given the user navigates to the site
@@ -39,16 +41,16 @@ def test_login_successful():
     # And enters their login information
     login_page = Login(driver)
 
-    login_page.sendkeys_email('rodneygauna+hh@gmail.com')
-    login_page.sendkeys_password('rodneygauna+hh')
+    login_page.sendkeys_email("rodneygauna hh@gmail.com")
+    login_page.sendkeys_password("rodneygauna hh")
 
     # When the user clicks Log In
     login_page.click_login()
 
     # Then the user should see the success banner
-    success_banner_message = 'Success! Logged in successfully'
+    success_banner_message = "Success! Logged in successfully"
 
-    success_banner = driver.find_element(By.CLASS_NAME, 'alert-inner--text')
+    success_banner = driver.find_element(By.CLASS_NAME, "alert-inner--text")
 
     assert success_banner_message in success_banner.text
     driver.quit()
