@@ -47,11 +47,9 @@ def test_forgot_password_successful():
     forgot_password_page.click_request_reset_password()
 
     # Then the user should see a success banner
-    success_banner_message = f'''
-    Success! An email to {EMAIL} with a reset password link.
-    '''
+    message = f'Success! An email to {EMAIL} with a reset password link.'
 
     success_banner = driver.find_element(By.CLASS_NAME, "alert-inner--text")
 
-    assert success_banner_message in success_banner.text
+    assert message in success_banner.text
     driver.quit()

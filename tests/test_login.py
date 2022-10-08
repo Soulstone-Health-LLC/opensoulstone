@@ -59,11 +59,9 @@ def test_login_successful():
     login_page.click_login()
 
     # Then the user should see the success banner
-    success_banner_message = '''
-    Success! Logged in successfully
-    '''
+    message = 'Success! Logged in successfully'
 
     success_banner = driver.find_element(By.CLASS_NAME, "alert-inner--text")
 
-    assert success_banner_message in success_banner.text
+    assert message in success_banner.text
     driver.quit()
