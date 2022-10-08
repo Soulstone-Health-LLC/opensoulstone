@@ -1,22 +1,26 @@
+'''
+tests/test_login.py
+'''
+
 # ------------------------------------------------------------------------------
 # Imports
 # ------------------------------------------------------------------------------
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from tests.pages.login import Login
+from pages.login import Login
 
 
 # ------------------------------------------------------------------------------
 # Site
 # ------------------------------------------------------------------------------
-local = "http://127.0.0.1:5000"
+LOCAL = "http://127.0.0.1:5000"
 
 
 # ------------------------------------------------------------------------------
 # Global Variables
 # ------------------------------------------------------------------------------
-email = "rodneygauna+hh@gmail.com"
-valid_password = "rodneygauna hh"
+EMAIL = "rodneygauna+hh@gmail.com"
+VALID_PASSWORD = "rodneygauna hh"
 
 
 # ------------------------------------------------------------------------------
@@ -28,7 +32,7 @@ def test_login_exists():
     driver = webdriver.Chrome()
 
     # When the user navigates to the site
-    driver.get(local)
+    driver.get(LOCAL)
 
     # Then the user should see the login form
     login_page = Login(driver)
@@ -43,19 +47,21 @@ def test_login_successful():
     driver = webdriver.Chrome()
 
     # Given the user navigates to the site
-    driver.get(local)
+    driver.get(LOCAL)
 
     # And enters their login information
     login_page = Login(driver)
 
-    login_page.sendkeys_email(email)
-    login_page.sendkeys_password(valid_password)
+    login_page.sendkeys_email(EMAIL)
+    login_page.sendkeys_password(VALID_PASSWORD)
 
     # When the user clicks Log In
     login_page.click_login()
 
     # Then the user should see the success banner
-    success_banner_message = "Success! Logged in successfully"
+    success_banner_message = '''
+    Success! Logged in successfully
+    '''
 
     success_banner = driver.find_element(By.CLASS_NAME, "alert-inner--text")
 
