@@ -143,3 +143,5 @@ emailpassword.txt
 pyvenv.cfg
 
 .vscode/
+
+Scripts/
