@@ -20,7 +20,7 @@ LOCAL = "http://127.0.0.1:5000"
 # Global Variables
 # ------------------------------------------------------------------------------
 EMAIL = "rodneygauna+hh@gmail.com"
-VALID_PASSWORD = "rodneygauna hh"
+VALID_PASSWORD = "rodneygauna+hh"
 
 
 # ------------------------------------------------------------------------------
@@ -29,7 +29,7 @@ VALID_PASSWORD = "rodneygauna hh"
 def test_login_exists():
     """Test - Login page exisits"""
 
-    driver = webdriver.Chrome()
+    driver = webdriver.Chrome('C:/webdrivers/chromedriver')
 
     # When the user navigates to the site
     driver.get(LOCAL)
@@ -44,7 +44,7 @@ def test_login_exists():
 def test_login_successful():
     """Test - Successfully login into the application"""
 
-    driver = webdriver.Chrome()
+    driver = webdriver.Chrome('C:/webdrivers/chromedriver')
 
     # Given the user navigates to the site
     driver.get(LOCAL)
