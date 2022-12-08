@@ -1,15 +1,17 @@
-# soulstone/website/__init__.py
-
+'''
+This file initializes the application using Flask.
+'''
 
 # ------------------------------------------------------------------------------
 # Imports
 # ------------------------------------------------------------------------------
+import os
+from dotenv import load_dotenv
 from flask import Flask, redirect
 from flask.helpers import url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_mail import Mail
-from os import path
 
 
 # ------------------------------------------------------------------------------
@@ -26,29 +28,11 @@ mail = Mail()
 
 
 # ------------------------------------------------------------------------------
-# Read Secret Key from the secretkey.txt file
+# Read Secret Key and Email Password from .env file
 # ------------------------------------------------------------------------------
-def read_secret_key():
-    '''Open text file, read the secret key and returns it'''
-    with open("secretkey.txt", "r") as r:
-        lines = r.readlines()
-        return lines[0].strip()
-
-
-secret_key = read_secret_key()
-
-
-# ------------------------------------------------------------------------------
-# Read email password from the emailpassword.txt file
-# ------------------------------------------------------------------------------
-def read_email_password():
-    '''Open text file, read the email password for Gmail and returns it'''
-    with open("emailpassword.txt", "r") as r:
-        lines = r.readlines()
-        return lines[0].strip()
-
-
-email_password = read_email_password()
+load_dotenv()
+SECRET_KEY = os.getenv("SECRET_KEY")
+EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
 
 
 # ------------------------------------------------------------------------------
@@ -58,7 +42,7 @@ def create_app():
     '''Initializes  the application using Flask'''
     app = Flask(__name__)
     # Flask secret key configuration
-    app.config['SECRET_KEY'] = secret_key
+    app.config['SECRET_KEY'] = SECRET_KEY
     # Flask and SQLAlchemy database configuration
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
     db.init_app(app)
@@ -108,7 +92,7 @@ def create_app():
     app.config['MAIL_USE_TLS'] = False
     app.config['MAIL_USE_SSL'] = True
     app.config['MAIL_USERNAME'] = 'rodneygauna@gmail.com'
-    app.config['MAIL_PASSWORD'] = email_password
+    app.config['MAIL_PASSWORD'] = EMAIL_PASSWORD
     mail.init_app(app)
 
     return app
@@ -118,6 +102,6 @@ def create_app():
 # Database initialization
 # ------------------------------------------------------------------------------
 def create_database(app):
-    if not path.exists('website/' + DB_NAME):
+    if not os.path.exists('website/' + DB_NAME):
         db.create_all(app=app)
         print('Created database!')
