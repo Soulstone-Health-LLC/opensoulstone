@@ -1,17 +1,14 @@
 '''
-    File name: models.py
-    Author: Rodney Gauna
-    Date created: 2021-10-31
+Modles for the Soulstone application
 '''
 
 # ------------------------------------------------------------------------------
 # Imports
 # ------------------------------------------------------------------------------
-from email.policy import default
 from flask_login import UserMixin
 from sqlalchemy.sql import func
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
-from website import db, secret_key
+from website import db, SECRET_KEY
 
 
 # ------------------------------------------------------------------------------
@@ -50,12 +47,12 @@ class User(db.Model, UserMixin):
 
     # For Reset/Forgot Password
     def get_token(self, expires_sec=900):
-        serial = Serializer(secret_key, expires_in=expires_sec)
+        serial = Serializer(SECRET_KEY, expires_in=expires_sec)
         return serial.dumps({'user_id': self.id}).decode('utf-8')
 
     @staticmethod
     def verify_token(token):
-        serial = Serializer(secret_key)
+        serial = Serializer(SECRET_KEY)
         try:
             user_id = serial.loads(token)['user_id']
         except:
