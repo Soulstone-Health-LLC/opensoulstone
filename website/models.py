@@ -8,12 +8,20 @@ Modles for the Soulstone application
 from flask_login import UserMixin
 from sqlalchemy.sql import func
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
-from website import db, SECRET_KEY
+from . import db, login_manager, SECRET_KEY
 
 
 # ------------------------------------------------------------------------------
-# Models
-# Database Schema: https://drawsql.app/webdevable-llc/diagrams/soulstone
+# LoginManager - user_loader
+# ------------------------------------------------------------------------------
+@login_manager.user_loader
+def load_user(user_id):
+    '''Queries the database for the user_id and returns the user object'''
+    return User.query.get(user_id)
+
+
+# ------------------------------------------------------------------------------
+# Models - Database Tables
 # ------------------------------------------------------------------------------
 class User(db.Model, UserMixin):
     '''SQL Table: user'''
