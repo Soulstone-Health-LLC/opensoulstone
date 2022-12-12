@@ -21,6 +21,54 @@ def load_user(user_id):
 
 
 # ------------------------------------------------------------------------------
+# Model - Form Dictinaries
+# ------------------------------------------------------------------------------
+# State Dictionary
+STATE_CHOICES = [('', ''), ('AL', 'AL'), ('AK', 'AK'), ('AZ', 'AZ'),
+                 ('AR', 'AR'), ('CA', 'CA'), ('CO', 'CO'), ('CT', 'CT'),
+                 ('DC', 'DC'), ('DE', 'DE'), ('FL', 'FL'), ('GA', 'GA'),
+                 ('HI', 'HI'), ('ID', 'ID'), ('IL', 'IL'), ('IN', 'IN'),
+                 ('IA', 'IA'), ('KS', 'KS'), ('KY', 'KY'), ('LA', 'LA'),
+                 ('ME', 'ME'), ('MD', 'MD'), ('MA', 'MA'), ('MI', 'MI'),
+                 ('MN', 'MN'), ('MS', 'MS'), ('MO', 'MO'), ('MT', 'MT'),
+                 ('NE', 'NE'), ('NV', 'NV'), ('NH', 'NH'), ('NJ', 'NJ'),
+                 ('NM', 'NM'), ('NY', 'NY'), ('NC', 'NC'), ('ND', 'ND'),
+                 ('OH', 'OH'), ('OK', 'OK'), ('OR', 'OR'), ('PA', 'PA'),
+                 ('RI', 'RI'), ('SC', 'SC'), ('SD', 'SD'), ('TN', 'TN'),
+                 ('TX', 'TX'), ('UT', 'UT'), ('VT', 'VT'), ('VA', 'VA'),
+                 ('WA', 'WA'), ('WV', 'WV'), ('WI', 'WI'), ('WY', 'WY')]
+
+# Gender Pronoun Dictionary
+GENDER_PRONOUN_CHOICES = [('', ''),
+                          ('He/Him', 'He/Him'),
+                          ('She/Her', 'She/Her'),
+                          ('They/Them', 'They/Them'),
+                          ('He/Them', 'He/Them'),
+                          ('She/Them', 'She/Them'),
+                          ('Name/Name', 'Name/Name'),
+                          ('Other', 'Other')]
+
+# Phone Type Dictionary
+PHONE_TYPE_CHOICES = [('', ''),
+                      ('Mobile', 'Mobile'),
+                      ('Home', 'Home'),
+                      ('Office', 'Office'),
+                      ('Fax', 'Fax')]
+
+# Role Dictionary
+ROLE_CHOICES = [('', ''),
+                ('Owner', 'Owner'),
+                ('Manager', 'Manager'),
+                ('Staff', 'Staff'),
+                ('Patient', 'Patient')]
+
+# Status Dictionary
+STATUS_CHOICES = [('', ''),
+                  ('Active', 'Active'),
+                  ('Inactive', 'Inactive')]
+
+
+# ------------------------------------------------------------------------------
 # Models - Database Tables
 # ------------------------------------------------------------------------------
 class User(db.Model, UserMixin):

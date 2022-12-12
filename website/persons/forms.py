@@ -1,4 +1,6 @@
-# soulstone/website/persons/forms.py
+'''
+Forms for the persons blueprint
+'''
 
 
 # ------------------------------------------------------------------------------
@@ -9,6 +11,8 @@ from wtforms import StringField, SubmitField, SelectField
 from wtforms import EmailField, DateField
 from wtforms.fields.simple import TelField
 from wtforms.validators import DataRequired, Length
+from website.models import GENDER_PRONOUN_CHOICES, STATE_CHOICES
+from website.models import PHONE_TYPE_CHOICES, ROLE_CHOICES
 
 
 # ------------------------------------------------------------------------------
@@ -27,78 +31,18 @@ class AddPersonForm(FlaskForm):
     date_of_birth = DateField(label='Date of Birth *',
                               validators=[DataRequired()])
     gender_identity = SelectField(label='Gender Identity',
-                                  choices=[('', ''),
-                                           ('Male', 'Male'),
-                                           ('Female', 'Female'),
-                                           ('Female-to-male transsexual', 'Female-to-male transsexual '),
-                                           ('Male-to-female transsexual', 'Male-to-female transsexual'),
-                                           ('Identifies as non-conforming', 'Identifies as non-conforming'),
-                                           ('Other', 'Other')])
+                                  choices=GENDER_PRONOUN_CHOICES)
     address_1 = StringField(label='Address Line 1')
     address_2 = StringField(label='Address Line 2')
     city = StringField(label='City')
     state = SelectField(label='State',
-                        choices=[('', ''),
-                                 ("AL", "AL"),
-                                 ("AK", "AK"),
-                                 ("AZ", "AZ"),
-                                 ("AR", "AR"),
-                                 ("CA", "CA"),
-                                 ("CO", "CO"),
-                                 ("CT", "CT"),
-                                 ("DC", "DC"),
-                                 ("DE", "DE"),
-                                 ("FL", "FL"),
-                                 ("GA", "GA"),
-                                 ("HI", "HI"),
-                                 ("ID", "ID"),
-                                 ("IL", "IL"),
-                                 ("IN", "IN"),
-                                 ("IA", "IA"),
-                                 ("KS", "KS"),
-                                 ("KY", "KY"),
-                                 ("LA", "LA"),
-                                 ("ME", "ME"),
-                                 ("MD", "MD"),
-                                 ("MA", "MA"),
-                                 ("MI", "MI"),
-                                 ("MN", "MN"),
-                                 ("MS", "MS"),
-                                 ("MO", "MO"),
-                                 ("MT", "MT"),
-                                 ("NE", "NE"),
-                                 ("NV", "NV"),
-                                 ("NH", "NH"),
-                                 ("NJ", "NJ"),
-                                 ("NM", "NM"),
-                                 ("NY", "NY"),
-                                 ("NC", "NC"),
-                                 ("ND", "ND"),
-                                 ("OH", "OH"),
-                                 ("OK", "OK"),
-                                 ("OR", "OR"),
-                                 ("PA", "PA"),
-                                 ("RI", "RI"),
-                                 ("SC", "SC"),
-                                 ("SD", "SD"),
-                                 ("TN", "TN"),
-                                 ("TX", "TX"),
-                                 ("UT", "UT"),
-                                 ("VT", "VT"),
-                                 ("VA", "VA"),
-                                 ("WA", "WA"),
-                                 ("WV", "WV"),
-                                 ("WI", "WI"),
-                                 ("WY", "WY")])
+                        choices=STATE_CHOICES)
     zipcode = StringField(label='Zipcode')
     email = EmailField(label='Email')
     phone = TelField(label='Phone Number *',
                      validators=[DataRequired()])
     phone_type = SelectField(label='Phone Type *',
-                             choices=[('Mobile', 'Mobile'),
-                                      ('Home', 'Home'),
-                                      ('Office', 'Office'),
-                                      ('Fax', 'Fax')])
+                             choices=PHONE_TYPE_CHOICES)
     submit = SubmitField(label='Create New Person')
 
 
@@ -118,79 +62,18 @@ class EditPersonForm(FlaskForm):
     date_of_birth = DateField(label='Date of Birth *',
                               validators=[DataRequired()])
     gender_identity = SelectField(label='Gender Identity',
-                                  choices=[('', ''),
-                                           ('Male', 'Male'),
-                                           ('Female', 'Female'),
-                                           ('Female-to-male transsexual', 'Female-to-male transsexual '),
-                                           ('Male-to-female transsexual', 'Male-to-female transsexual'),
-                                           ('Identifies as non-conforming', 'Identifies as non-conforming'),
-                                           ('Other', 'Other')])
+                                  choices=GENDER_PRONOUN_CHOICES)
     address_1 = StringField(label='Address Line 1')
     address_2 = StringField(label='Address Line 2')
     city = StringField(label='City')
     state = SelectField(label='State',
-                        choices=[('', ''),
-                                 ("AL", "AL"),
-                                 ("AK", "AK"),
-                                 ("AZ", "AZ"),
-                                 ("AR", "AR"),
-                                 ("CA", "CA"),
-                                 ("CO", "CO"),
-                                 ("CT", "CT"),
-                                 ("DC", "DC"),
-                                 ("DE", "DE"),
-                                 ("FL", "FL"),
-                                 ("GA", "GA"),
-                                 ("HI", "HI"),
-                                 ("ID", "ID"),
-                                 ("IL", "IL"),
-                                 ("IN", "IN"),
-                                 ("IA", "IA"),
-                                 ("KS", "KS"),
-                                 ("KY", "KY"),
-                                 ("LA", "LA"),
-                                 ("ME", "ME"),
-                                 ("MD", "MD"),
-                                 ("MA", "MA"),
-                                 ("MI", "MI"),
-                                 ("MN", "MN"),
-                                 ("MS", "MS"),
-                                 ("MO", "MO"),
-                                 ("MT", "MT"),
-                                 ("NE", "NE"),
-                                 ("NV", "NV"),
-                                 ("NH", "NH"),
-                                 ("NJ", "NJ"),
-                                 ("NM", "NM"),
-                                 ("NY", "NY"),
-                                 ("NC", "NC"),
-                                 ("ND", "ND"),
-                                 ("OH", "OH"),
-                                 ("OK", "OK"),
-                                 ("OR", "OR"),
-                                 ("PA", "PA"),
-                                 ("RI", "RI"),
-                                 ("SC", "SC"),
-                                 ("SD", "SD"),
-                                 ("TN", "TN"),
-                                 ("TX", "TX"),
-                                 ("UT", "UT"),
-                                 ("VT", "VT"),
-                                 ("VA", "VA"),
-                                 ("WA", "WA"),
-                                 ("WV", "WV"),
-                                 ("WI", "WI"),
-                                 ("WY", "WY")])
+                        choices=STATE_CHOICES)
     zipcode = StringField(label='Zipcode')
     email = EmailField(label='Email')
     phone = TelField(label='Phone Number *',
                      validators=[DataRequired()])
     phone_type = SelectField(label='Phone Type *',
-                             choices=[('Mobile', 'Mobile'),
-                                      ('Home', 'Home'),
-                                      ('Office', 'Office'),
-                                      ('Fax', 'Fax')])
+                             choices=PHONE_TYPE_CHOICES)
     status = SelectField(label='Status *',
-                         choices=[('Active', 'Active'),
-                                  ('Inactive', 'Inactive')])
+                         choices=ROLE_CHOICES)
     submit = SubmitField(label='Edit Person')

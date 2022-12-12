@@ -8,6 +8,8 @@ from wtforms import StringField, SubmitField, SelectField, EmailField
 from wtforms.fields.simple import TelField
 from wtforms.validators import DataRequired, Length, Email
 from wtforms.widgets import TextArea
+from website.models import STATE_CHOICES, PHONE_TYPE_CHOICES
+from website.models import STATUS_CHOICES
 
 
 # ------------------------------------------------------------------------------
@@ -26,58 +28,7 @@ class EditPracticeForm(FlaskForm):
     city = StringField(label='City *',
                        validators=[DataRequired()])
     state = SelectField(label='State *',
-                        choices=[('', ''),
-                                 ("AL", "AL"),
-                                 ("AK", "AK"),
-                                 ("AZ", "AZ"),
-                                 ("AR", "AR"),
-                                 ("CA", "CA"),
-                                 ("CO", "CO"),
-                                 ("CT", "CT"),
-                                 ("DC", "DC"),
-                                 ("DE", "DE"),
-                                 ("FL", "FL"),
-                                 ("GA", "GA"),
-                                 ("HI", "HI"),
-                                 ("ID", "ID"),
-                                 ("IL", "IL"),
-                                 ("IN", "IN"),
-                                 ("IA", "IA"),
-                                 ("KS", "KS"),
-                                 ("KY", "KY"),
-                                 ("LA", "LA"),
-                                 ("ME", "ME"),
-                                 ("MD", "MD"),
-                                 ("MA", "MA"),
-                                 ("MI", "MI"),
-                                 ("MN", "MN"),
-                                 ("MS", "MS"),
-                                 ("MO", "MO"),
-                                 ("MT", "MT"),
-                                 ("NE", "NE"),
-                                 ("NV", "NV"),
-                                 ("NH", "NH"),
-                                 ("NJ", "NJ"),
-                                 ("NM", "NM"),
-                                 ("NY", "NY"),
-                                 ("NC", "NC"),
-                                 ("ND", "ND"),
-                                 ("OH", "OH"),
-                                 ("OK", "OK"),
-                                 ("OR", "OR"),
-                                 ("PA", "PA"),
-                                 ("RI", "RI"),
-                                 ("SC", "SC"),
-                                 ("SD", "SD"),
-                                 ("TN", "TN"),
-                                 ("TX", "TX"),
-                                 ("UT", "UT"),
-                                 ("VT", "VT"),
-                                 ("VA", "VA"),
-                                 ("WA", "WA"),
-                                 ("WV", "WV"),
-                                 ("WI", "WI"),
-                                 ("WY", "WY")],
+                        choices=STATE_CHOICES,
                         validators=[DataRequired()])
     zipcode = StringField(label='Zipcode *',
                           validators=[DataRequired()])
@@ -87,10 +38,7 @@ class EditPracticeForm(FlaskForm):
     phone = TelField(label='Practice Phone Number *',
                      validators=[DataRequired()])
     phone_type = SelectField(label='Phone Type *',
-                             choices=[('Office', 'Office'),
-                                      ('Mobile', 'Mobile'),
-                                      ('Home', 'Home'),
-                                      ('Fax', 'Fax')])
+                             choices=PHONE_TYPE_CHOICES)
     submit = SubmitField(label='Save Practice Information')
 
 
@@ -118,10 +66,7 @@ class AddPracticeUserForm(FlaskForm):
     phone = TelField(label='Phone Number *',
                      validators=[DataRequired()])
     phone_type = SelectField(label='Phone Type *',
-                             choices=[('Mobile', 'Mobile'),
-                                      ('Home', 'Home'),
-                                      ('Office', 'Office'),
-                                      ('Fax', 'Fax')])
+                             choices=PHONE_TYPE_CHOICES)
     submit = SubmitField(label='Register Account')
 
 
@@ -140,8 +85,7 @@ class AddChargeForm(FlaskForm):
                               widget=TextArea(),
                               validators=[DataRequired()])
     status = SelectField(label='Status *',
-                         choices=[('Active', 'Active'),
-                                  ('Inactive', 'Inactive')])
+                         choices=STATUS_CHOICES)
     submit = SubmitField(label='Add New Charge')
 
 
@@ -160,8 +104,5 @@ class EditChargeForm(FlaskForm):
                               widget=TextArea(),
                               validators=[DataRequired()])
     status = SelectField(label='Status *',
-                         choices=[('Active', 'Active'),
-                                  ('Inactive', 'Inactive')])
+                         choices=STATUS_CHOICES)
     submit = SubmitField(label='Save Charge')
-
-
