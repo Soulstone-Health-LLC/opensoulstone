@@ -12,7 +12,7 @@ from wtforms import EmailField, DateField
 from wtforms.fields.simple import TelField
 from wtforms.validators import DataRequired, Length
 from website.models import GENDER_PRONOUN_CHOICES, STATE_CHOICES
-from website.models import PHONE_TYPE_CHOICES, ROLE_CHOICES
+from website.models import PHONE_TYPE_CHOICES, STATUS_CHOICES
 
 
 # ------------------------------------------------------------------------------
@@ -75,5 +75,5 @@ class EditPersonForm(FlaskForm):
     phone_type = SelectField(label='Phone Type *',
                              choices=PHONE_TYPE_CHOICES)
     status = SelectField(label='Status *',
-                         choices=ROLE_CHOICES)
+                         choices=STATUS_CHOICES)
     submit = SubmitField(label='Edit Person')
