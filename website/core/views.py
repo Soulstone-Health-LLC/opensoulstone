@@ -20,4 +20,5 @@ core = Blueprint('core', __name__)
 @core.route('/')
 @login_required
 def home():
+    '''Home page'''
     return render_template("home.html", title="Soulstone", user=current_user)
