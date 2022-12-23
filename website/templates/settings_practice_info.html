@@ -1,120 +1,140 @@
-{% extends "base.html" %}
-
-{% block pagenav %}
+{% extends "base.html" %} {% block pagenav %}
 <h1 class="page-title">Settings</h1>
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item active" aria-current="page">Practice Information</li>
-    </ol>
-{% endblock pagenav %}
-
-{% block content %}
+<ol class="breadcrumb">
+  <li class="breadcrumb-item active" aria-current="page">
+    Practice Information
+  </li>
+</ol>
+{% endblock pagenav %} {% block content %}
 <div class="row">
-    <div class="col-lg-12">
-        <div class="card">
-            <div class="card-body p-4 text-dark">
-                <div class="statistics-info">
-                    <div class="row text-center">
-                        <div class="col-lg-3 col-sm-6 mt-4 mb-4">
-                            <div class="counter-status">
-                                <div class="counter-icon bg-secondary-gradient box-shadow-primary">
-                                    <i class="fe fe-users text-white"></i>
-                                </div>
-                                <h5 class="mb-2">Total People</h5>
-                                <h2 class="counter mb-0">{{ people_count }}</h2>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-sm-6 mt-4 mb-4">
-                            <div class="counter-status">
-                                <div class="counter-icon bg-primary-gradient box-shadow-secondary">
-                                    <i class="fe fe-edit-3 text-white"></i>
-                                </div>
-                                <h5 class="mb-2">Total Visit Notes</h5>
-                                <h2 class="counter  mb-0">8888</h2>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-sm-6  mt-4 mb-4">
-                            <div class="counter-statuss">
-                                <div class="counter-icon bg-success-gradient box-shadow-success">
-                                    <i class="fe fe-credit-card text-white"></i>
-                                </div>
-                                <h5 class="mb-2">Total Charges Billed</h5>
-                                <h2 class="counter mb-0">8888</h2>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-sm-6 mt-4 mb-4">
-                            <div class="counter-status">
-                                <div class="counter-icon bg-danger-gradient box-shadow-danger">
-                                    <i class="fe fe-user text-white"></i>
-                                </div>
-                                <h5 class="mb-2">Total Users</h5>
-                                <h2 class="counter  mb-0">{{ user_count }}</h2>
-                            </div>
-                        </div>
-                    </div>
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-body p-4 text-dark">
+        <div class="statistics-info">
+          <div class="row text-center">
+            <div class="col-lg-3 col-sm-6 mt-4 mb-4">
+              <div class="counter-status">
+                <div
+                  class="counter-icon bg-secondary-gradient box-shadow-primary"
+                >
+                  <i class="fe fe-users text-white"></i>
                 </div>
+                <h5 class="mb-2">Total People</h5>
+                <h2 class="counter mb-0">{{ people_count }}</h2>
+              </div>
             </div>
+            <div class="col-lg-3 col-sm-6 mt-4 mb-4">
+              <div class="counter-status">
+                <div
+                  class="counter-icon bg-primary-gradient box-shadow-secondary"
+                >
+                  <i class="fe fe-edit-3 text-white"></i>
+                </div>
+                <h5 class="mb-2">Total Visit Notes</h5>
+                <h2 class="counter mb-0">{{ visit_notes_count }}</h2>
+              </div>
+            </div>
+            <div class="col-lg-3 col-sm-6 mt-4 mb-4">
+              <div class="counter-statuss">
+                <div
+                  class="counter-icon bg-success-gradient box-shadow-success"
+                >
+                  <i class="fe fe-credit-card text-white"></i>
+                </div>
+                <h5 class="mb-2">Total Charges Billed</h5>
+                <h2 class="counter mb-0">8888</h2>
+              </div>
+            </div>
+            <div class="col-lg-3 col-sm-6 mt-4 mb-4">
+              <div class="counter-status">
+                <div class="counter-icon bg-danger-gradient box-shadow-danger">
+                  <i class="fe fe-user text-white"></i>
+                </div>
+                <h5 class="mb-2">Total Users</h5>
+                <h2 class="counter mb-0">{{ user_count }}</h2>
+              </div>
+            </div>
+          </div>
         </div>
-    </div><!-- COL-END -->
+      </div>
+    </div>
+  </div>
+  <!-- COL-END -->
 </div>
 <!-- Add Practice User -->
 <div class="">
-    <a href="{{ url_for('settings.editPracticeInformation', id=practice.id) }} " class="btn btn-primary btn-icon text-white me-2">
-        <span>
-            <i class="fe fe-edit"></i>
-        </span> Edit Practice Information
-    </a>
+  <a
+    href="{{ url_for('settings.editPracticeInformation', id=practice.id) }} "
+    class="btn btn-primary btn-icon text-white me-2"
+  >
+    <span>
+      <i class="fe fe-edit"></i>
+    </span>
+    Edit Practice Information
+  </a>
 </div>
-<br>
+<br />
 <!-- End Add Practice User -->
 <div class="row">
-    <div class="col-lg-12">
-        <div class="card">
-            <div class="card-body">
-                <div class="panel panel-primary">
-                    <div class=" tab-menu-heading">
-                        <div class="tabs-menu1 ">
-                            <!-- Tabs -->
-                            <ul class="nav panel-tabs">
-                                <li><a href="#practiceInfo" class="active me-1" data-bs-toggle="tab">Practice</a></li>
-                                <li><a href="#contactInfo" data-bs-toggle="tab" class="me-1">Contact Information</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="panel-body tabs-menu-body">
-                        <div class="tab-content">
-                            <div class="tab-pane active " id="practiceInfo">
-                                <h5 class="semi-bold">Practice Name:</h5>
-                                <p>{{ practice.name }}</p>
-                                <br>
-                                <h5 class="semi-bold">Practice Address:</h5>
-                                <p>
-                                    {% if practice.address_2 == '' %}
-                                        {{ practice.address_1 }}<br>{{ practice.city }}, {{ practice.state }} {{ practice.zipcode }}
-                                    {% else %}
-                                        {{ practice.address_1 }}<br>{{ practice.address_2 }}<br>{{ practice.city }}, {{ practice.state }} {{ practice.zipcode }}
-                                    {% endif %}
-                                </p>
-                                <br>
-                                <h5 class="semi-bold">Practice Biography:</h5>
-                                <p>{{ practice.biography }}</p>
-                                <br>
-                            </div>
-                            <div class="tab-pane " id="contactInfo">
-                                <h5 class="semi-bold">Practice Phone:</h5>
-                                <p>{{ practice.phone_number }} ({{ practice.phone_type }})</p>
-                                <br>
-                                <h5 class="semi-bold">Practice Email:</h5>
-                                <p>{{ practice.email }}</p>
-                                <br>
-                                <h5 class="semi-bold">Practice Website:</h5>
-                                <p>{{ practice.website }}</p>
-                                <br>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="panel panel-primary">
+          <div class="tab-menu-heading">
+            <div class="tabs-menu1">
+              <!-- Tabs -->
+              <ul class="nav panel-tabs">
+                <li>
+                  <a
+                    href="#practiceInfo"
+                    class="active me-1"
+                    data-bs-toggle="tab"
+                    >Practice</a
+                  >
+                </li>
+                <li>
+                  <a href="#contactInfo" data-bs-toggle="tab" class="me-1"
+                    >Contact Information</a
+                  >
+                </li>
+              </ul>
             </div>
+          </div>
+          <div class="panel-body tabs-menu-body">
+            <div class="tab-content">
+              <div class="tab-pane active" id="practiceInfo">
+                <h5 class="semi-bold">Practice Name:</h5>
+                <p>{{ practice.name }}</p>
+                <br />
+                <h5 class="semi-bold">Practice Address:</h5>
+                <p>
+                  {% if practice.address_2 == '' %} {{ practice.address_1 }}<br />{{
+                  practice.city }}, {{ practice.state }} {{ practice.zipcode }}
+                  {% else %} {{ practice.address_1 }}<br />{{ practice.address_2
+                  }}<br />{{ practice.city }}, {{ practice.state }} {{
+                  practice.zipcode }} {% endif %}
+                </p>
+                <br />
+                <h5 class="semi-bold">Practice Biography:</h5>
+                <p>{{ practice.biography }}</p>
+                <br />
+              </div>
+              <div class="tab-pane" id="contactInfo">
+                <h5 class="semi-bold">Practice Phone:</h5>
+                <p>{{ practice.phone_number }} ({{ practice.phone_type }})</p>
+                <br />
+                <h5 class="semi-bold">Practice Email:</h5>
+                <p>{{ practice.email }}</p>
+                <br />
+                <h5 class="semi-bold">Practice Website:</h5>
+                <p>{{ practice.website }}</p>
+                <br />
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </div>
 {% endblock content %}

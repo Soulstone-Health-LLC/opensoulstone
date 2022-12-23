@@ -9,7 +9,7 @@ from flask_login import login_required, current_user
 from website.settings.forms import AddChargeForm, EditChargeForm
 from website.settings.forms import EditPracticeForm
 from website import db
-from website.models import Charges, People, Practice, User
+from website.models import Charges, People, Practice, User, Notes
 
 
 # ------------------------------------------------------------------------------
@@ -33,7 +33,7 @@ def practiceSettings():
         # Practice counts
         people_count = People.query.filter_by(practice_id=pu_id).count()
         user_count = User.query.filter_by(practice_id=pu_id).count()
-        # TODO: visit note count
+        visit_notes_count = Notes.query.filter_by(practice_id=pu_id).count()
         # TODO: charges count
 
         return render_template("settings_practice_info.html",
@@ -41,6 +41,7 @@ def practiceSettings():
                                practice=practice,
                                people_count=people_count,
                                user_count=user_count,
+                               visit_notes_count=visit_notes_count,
                                user=current_user)
 
 
