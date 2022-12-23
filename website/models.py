@@ -67,6 +67,14 @@ STATUS_CHOICES = [('', ''),
                   ('Active', 'Active'),
                   ('Inactive', 'Inactive')]
 
+# Payment Type Dictionary
+PAYMENT_TYPE_CHOICES = [('', ''),
+                        ('Cash', 'Cash'),
+                        ('Check', 'Check'),
+                        ('Credit Card', 'Credit Card'),
+                        ('Gift Card', 'Gift Card'),
+                        ('Other', 'Other')]
+
 
 # ------------------------------------------------------------------------------
 # Models - Database Tables

@@ -6,7 +6,7 @@
 from datetime import datetime
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
-from website.billing.forms import AddLedgerChargeForm
+from website.billing.forms import AddLedgerChargeForm, AddLedgerPaymentForm
 from website import db
 from website.models import People, Charges
 from website.models import LedgerCharges, LedgerPayments, Notes
@@ -140,3 +140,73 @@ def payments():
                            title="Soulstone - Payments",
                            user=current_user,
                            ledger_payments=ledger_payments)
+
+
+@billing.route('/billing/payments/<int:id>/add_payment', methods=['GET', 'POST'])
+@login_required
+def addLedgerPayment(id):
+    ''' Routes the user to the add new ledger payment page '''
+    form = AddLedgerPaymentForm()
+
+    pers_id = People.query.get_or_404(id).id
+    practice_charges = Charges.query.filter_by(
+        practice_id=current_user.practice_id).all()
+
+    # current user practice id
+    pu_id = current_user.practice_id
+    pp_id = People.query.get_or_404(id).practice_id
+    notes_count = Notes.query.filter_by(person_id=id).count()
+
+    if request.method == 'GET':
+        # check if user practice id matches patient user id
+        if pu_id == pp_id:
+            # Display the person info
+            person = People.query.get_or_404(id)
+
+            return render_template("add_ledger_payment.html",
+                                   title="Soulstone - Add New Payment",
+                                   user=current_user,
+                                   person=person,
+                                   notes_count=notes_count,
+                                   practice_charges=practice_charges,
+                                   form=form)
+        else:
+            return render_template("401.html",
+                                   user=current_user)
+
+    if form.validate_on_submit and request.method == 'POST':
+        practice_id = current_user.practice_id
+        person_id = pers_id
+        created_at = datetime.utcnow()
+        created_by = current_user.get_id()
+        updated_at = datetime.utcnow()
+        updated_by = current_user.get_id()
+        payment_method = form.payment_method.data
+        payment_amount = form.payment_amount.data
+        check_number = form.check_number.data
+        credit_card_number = form.credit_card_number.data
+        payment_note = form.payment_note.data
+
+        # Add new ledger charge to the database
+        new_ledger_payment = LedgerPayments(practice_id=practice_id,
+                                            person_id=person_id,
+                                            created_at=created_at,
+                                            created_by=created_by,
+                                            updated_at=updated_at,
+                                            updated_by=updated_by,
+                                            payment_method=payment_method,
+                                            amount=payment_amount,
+                                            check_number=check_number,
+                                            credit_card_last_four=credit_card_number,
+                                            payment_note=payment_note)
+        db.session.add(new_ledger_payment)
+        db.session.commit()
+        flash('Payment added successfully.',
+              category='success')
+
+        return redirect(url_for('billing.payments'))
+
+    return render_template("add_ledger_payment.html",
+                           title="Soulstone - Add Payment",
+                           user=current_user,
+                           form=form)
