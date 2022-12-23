@@ -8,8 +8,8 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 from website.billing.forms import AddLedgerChargeForm
 from website import db
-from website.models import Practice, People, Notes, Charges
-from website.models import LedgerCharges, LedgerPayments
+from website.models import People, Charges
+from website.models import LedgerCharges, LedgerPayments, Notes
 
 
 # ------------------------------------------------------------------------------
@@ -62,6 +62,7 @@ def addLedgerCharge(id):
     # current user practice id
     pu_id = current_user.practice_id
     pp_id = People.query.get_or_404(id).practice_id
+    notes_count = Notes.query.filter_by(person_id=id).count()
 
     if request.method == 'GET':
         # check if user practice id matches patient user id
@@ -74,6 +75,7 @@ def addLedgerCharge(id):
                                    title="Soulstone - Add New Charge",
                                    user=current_user,
                                    person=person,
+                                   notes_count=notes_count,
                                    practice_charges=practice_charges,
                                    form=form)
         else:
@@ -82,28 +84,28 @@ def addLedgerCharge(id):
 
     if form.validate_on_submit and request.method == 'POST':
         practice_id = current_user.practice_id
-        #charge_id = 
+        # charge_id =
         person_id = pers_id
-        #note_id = 
+        # note_id =
         created_at = datetime.utcnow()
         created_by = current_user.get_id()
         updated_at = datetime.utcnow()
         updated_by = current_user.get_id()
         units = form.units.data
-        #unit_amount = 
+        # unit_amount =
         tax_rate = form.tax_rate.data
 
         # Add new ledger charge to the database
         new_ledger_charge = LedgerCharges(practice_id=practice_id,
-                                          #charge_id=charge_id,
+                                          # charge_id=charge_id,
                                           person_id=person_id,
-                                          #note_id=note_id,
+                                          # note_id=note_id,
                                           created_at=created_at,
                                           created_by=created_by,
                                           updated_at=updated_at,
                                           updated_by=updated_by,
                                           units=units,
-                                          #unit_amount=unit_amount,
+                                          # unit_amount=unit_amount,
                                           tax_rate=tax_rate)
         db.session.add(new_ledger_charge)
         db.session.commit()
