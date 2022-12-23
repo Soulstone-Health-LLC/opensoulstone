@@ -41,17 +41,23 @@ def ledger():
         .join(People, LedgerCharges.person_id == People.id)\
         .join(Charges, LedgerCharges.charge_id == Charges.id)\
         .filter_by(practice_id=current_user.practice_id).all()
+    total_charges = db.session.query(db.func.sum(
+        LedgerCharges.units * LedgerCharges.unit_amount + (LedgerCharges.unit_amount * LedgerCharges.tax_rate))).filter_by(practice_id=current_user.practice_id).scalar()
+    total_payments = db.session.query(db.func.sum(LedgerPayments.amount)).filter_by(
+        practice_id=current_user.practice_id).scalar()
 
     return render_template("billing.html",
                            title="Soulstone - Billing",
                            user=current_user,
                            people=people,
-                           ledger_charges=ledger_charges)
+                           ledger_charges=ledger_charges,
+                           total_charges=total_charges,
+                           total_payments=total_payments)
 
 
 # Billing - Add Ledger Charge
-@billing.route('/billing/<int:id>/add_ledger_charge', methods=['GET', 'POST'])
-@login_required
+@ billing.route('/billing/<int:id>/add_ledger_charge', methods=['GET', 'POST'])
+@ login_required
 def addLedgerCharge(id):
     ''' Routes the user to the add new ledger charge page '''
     form = AddLedgerChargeForm()
@@ -135,11 +141,17 @@ def payments():
                                        People.suffix_name)\
         .join(People, LedgerPayments.person_id == People.id)\
         .filter_by(practice_id=current_user.practice_id).all()
+    total_charges = db.session.query(db.func.sum(
+        LedgerCharges.units * LedgerCharges.unit_amount + (LedgerCharges.unit_amount * LedgerCharges.tax_rate))).filter_by(practice_id=current_user.practice_id).scalar()
+    total_payments = db.session.query(db.func.sum(LedgerPayments.amount)).filter_by(
+        practice_id=current_user.practice_id).scalar()
 
     return render_template("payments.html",
                            title="Soulstone - Payments",
                            user=current_user,
-                           ledger_payments=ledger_payments)
+                           ledger_payments=ledger_payments,
+                           total_charges=total_charges,
+                           total_payments=total_payments)
 
 
 @billing.route('/billing/payments/<int:id>/add_payment', methods=['GET', 'POST'])
