@@ -105,7 +105,7 @@
                                     {{ lc.code }} {{ lc.description }}
                                 </td>
                                 <td>
-                                    $ {{ lc.units * lc.unit_amount }}
+                                    $ {{ (lc.unit_amount + (lc.unit_amount * lc.tax_rate)) * lc.units }}
                                 </td>
                                 <td>
                                     $

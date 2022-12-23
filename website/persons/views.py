@@ -8,7 +8,7 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 from website.persons.forms import AddPersonForm, EditPersonForm
 from website import db
-from website.models import People, Notes
+from website.models import People, Notes, LedgerCharges
 
 
 # ------------------------------------------------------------------------------
@@ -171,12 +171,14 @@ def viewPerson(id):
             person = People.query.get_or_404(id)
             notes = Notes.query.filter_by(person_id=id).all()
             notes_count = Notes.query.filter_by(person_id=id).count()
+            bills = LedgerCharges.query.filter_by(person_id=id).all()
 
             return render_template("person.html",
                                    user=current_user,
                                    person=person,
                                    notes=notes,
-                                   notes_count=notes_count)
+                                   notes_count=notes_count,
+                                   bills=bills)
         else:
             return render_template("401.html",
                                    user=current_user)
