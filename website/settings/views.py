@@ -9,7 +9,7 @@ from flask_login import login_required, current_user
 from website.settings.forms import AddChargeForm, EditChargeForm
 from website.settings.forms import EditPracticeForm
 from website import db
-from website.models import Charges, People, Practice, User, Notes
+from website.models import Charges, People, Practice, User, Notes, LedgerCharges
 
 
 # ------------------------------------------------------------------------------
@@ -34,7 +34,8 @@ def practiceSettings():
         people_count = People.query.filter_by(practice_id=pu_id).count()
         user_count = User.query.filter_by(practice_id=pu_id).count()
         visit_notes_count = Notes.query.filter_by(practice_id=pu_id).count()
-        # TODO: charges count
+        total_charges = db.session.query(db.func.sum(
+            LedgerCharges.units * LedgerCharges.unit_amount + (LedgerCharges.unit_amount * LedgerCharges.tax_rate))).filter_by(practice_id=current_user.practice_id).scalar()
 
         return render_template("settings_practice_info.html",
                                title="Soulstone - Settings - Practice Information",
@@ -42,6 +43,7 @@ def practiceSettings():
                                people_count=people_count,
                                user_count=user_count,
                                visit_notes_count=visit_notes_count,
+                               total_charges=total_charges,
                                user=current_user)
 
 
