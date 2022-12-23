@@ -1,261 +1,300 @@
-{% extends "base.html" %}
-
-{% block pagenav %}
+{% extends "base.html" %} {% block pagenav %}
 <h1 class="page-title">
-    {% if person.middle_name == '' and person.suffix_name == '' %}
-    {{ person.first_name }} {{ person.last_name }}
-    {% elif person.suffix_name == '' %}
-    {{ person.first_name }} {{ person.middle_name }} {{ person.last_name }}
-    {% else %}
-    {{ person.first_name }} {{ person.middle_name }} {{ person.last_name }} {{ person.suffix_name }}
-    {% endif %}
+  {% if person.middle_name == '' and person.suffix_name == '' %} {{
+  person.first_name }} {{ person.last_name }} {% elif person.suffix_name == ''
+  %} {{ person.first_name }} {{ person.middle_name }} {{ person.last_name }} {%
+  else %} {{ person.first_name }} {{ person.middle_name }} {{ person.last_name
+  }} {{ person.suffix_name }} {% endif %}
 </h1>
 <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="{{ url_for('persons.people')}}">People</a></li>
-    <li class="breadcrumb-item active" aria-current="page">{{ person.id }}</li>
+  <li class="breadcrumb-item">
+    <a href="{{ url_for('persons.people')}}">People</a>
+  </li>
+  <li class="breadcrumb-item active" aria-current="page">{{ person.id }}</li>
 </ol>
-{% endblock pagenav %}
-
-{% block content %}
+{% endblock pagenav %} {% block content %}
 <!-- ROW-1 OPEN -->
 <div class="row" id="user-profile">
-    <div class="col-lg-12">
-        <div class="card">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="wideget-user">
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-xl-6">
+              <div class="wideget-user-desc d-sm-flex">
+                <div class="wideget-user-img">
+                  <img
+                    class=""
+                    src="{{ url_for('static', filename='assets/images/users/8.jpg') }}"
+                    alt="img"
+                  />
+                </div>
+                <div class="user-wrap">
+                  <h4>
+                    {% if person.status == 'Inactive' %} {% if
+                    person.middle_name == '' and person.suffix_name == '' %} {{
+                    person.first_name }} {{ person.last_name }}
+                    <span class="text-danger">({{ person.status }})</span>
+                    {% elif person.suffix_name == '' %} {{ person.first_name }}
+                    {{ person.middle_name }} {{ person.last_name }} {% else %}
+                    {{ person.first_name }} {{ person.middle_name }} {{
+                    person.last_name }} {{ person.suffix_name }} {% endif %} {%
+                    else %} {% if person.middle_name == '' and
+                    person.suffix_name == '' %} {{ person.first_name }} {{
+                    person.last_name }} {% elif person.suffix_name == '' %} {{
+                    person.first_name }} {{ person.middle_name }} {{
+                    person.last_name }} {% else %} {{ person.first_name }} {{
+                    person.middle_name }} {{ person.last_name }} {{
+                    person.suffix_name }} {% endif %} {% endif %}
+                  </h4>
+                  <h6 class="text-muted mb-3">
+                    {% if person.address_1 == None or person.address_1 == '' %}
+                    <span></span>
+                    {% elif person.address_2 == None or person.address_2 == ''%}
+                    <i class="fe fe-home"></i>
+                    {{ person.address_1 }}, {{ person.city }}, {{ person.state
+                    }} {{ person.zipcode }} {% else %}
+                    <i class="fe fe-home"></i>
+                    {{ person.address_1 }}, {{ person.address_2 }}, {{
+                    person.city }}, {{ person.state }} {{ person.zipcode }} {%
+                    endif %}
+                  </h6>
+                  <h6 class="text-muted mb-3">
+                    <i class="fe fe-phone"></i>
+                    {{ person.phone_number }} ({{ person.phone_type }})
+                  </h6>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12 col-md-12 col-xl-6">
+              <div class="text-xl-right mt-4 mt-xl-0">
+                <a
+                  href="{{ url_for('persons.editPerson', id=person.id) }}"
+                  class="btn btn-primary"
+                  ><i class="fe fe-edit"></i> Edit Profile</a
+                >
+              </div>
+              <div class="mt-5">
+                <div class="main-profile-contact-list float-md-end d-lg-flex">
+                  <div class="me-5">
+                    <div class="media">
+                      <div class="media-icon bg-primary me-3 mt-1">
+                        <i class="fe fe-edit-3 fs-20 text-white"></i>
+                      </div>
+                      <div class="media-body">
+                        <span class="text-muted">Visit Notes</span>
+                        <div class="fw-semibold fs-25">{{ notes_count }}</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="me-5 mt-5 mt-md-0">
+                    <div class="media">
+                      <div class="media-icon bg-success me-3 mt-1">
+                        <i class="fe fe-credit-card fs-20 text-white"></i>
+                      </div>
+                      <div class="media-body">
+                        <span class="text-muted">Open Balance</span>
+                        <div class="fw-semibold fs-25">$ 8888.88</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="border-top">
+        <div class="wideget-user-tab">
+          <div class="tab-menu-heading">
+            <div class="tabs-menu1">
+              <ul class="nav">
+                <li class="">
+                  <a href="#profile" class="active show" data-bs-toggle="tab"
+                    >Profile</a
+                  >
+                </li>
+                <li>
+                  <a href="#visitnotes" data-bs-toggle="tab" class=""
+                    >Visit Notes</a
+                  >
+                </li>
+                <li>
+                  <a href="#billing" data-bs-toggle="tab" class="">Billing</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tab-content">
+      <div class="tab-pane active show" id="profile">
+        <div id="profile-log-switch">
+          <div class="card">
             <div class="card-body">
-                <div class="wideget-user">
-                    <div class="row">
-                        <div class="col-lg-12 col-md-12 col-xl-6">
-                            <div class="wideget-user-desc d-sm-flex">
-                                <div class="wideget-user-img">
-                                    <img class="" src="{{ url_for('static', filename='assets/images/users/8.jpg') }}"
-                                        alt="img">
-                                </div>
-                                <div class="user-wrap">
-                                    <h4>
-                                        {% if person.status == 'Inactive' %}
-                                            {% if person.middle_name == '' and person.suffix_name == '' %}
-                                            {{ person.first_name }} {{ person.last_name }} <span class="text-danger">({{ person.status }})</span>
-                                            {% elif person.suffix_name == '' %}
-                                            {{ person.first_name }} {{ person.middle_name }} {{ person.last_name }}
-                                            {% else %}
-                                            {{ person.first_name }} {{ person.middle_name }} {{ person.last_name }} {{
-                                            person.suffix_name }}
-                                            {% endif %}
-                                        {% else %}
-                                            {% if person.middle_name == '' and person.suffix_name == '' %}
-                                            {{ person.first_name }} {{ person.last_name }}
-                                            {% elif person.suffix_name == '' %}
-                                            {{ person.first_name }} {{ person.middle_name }} {{ person.last_name }}
-                                            {% else %}
-                                            {{ person.first_name }} {{ person.middle_name }} {{ person.last_name }} {{
-                                            person.suffix_name }}
-                                            {% endif %}
-                                        {% endif %}
-                                    </h4>
-                                    <h6 class="text-muted mb-3">
-                                        {% if person.address_1 == None or person.address_1 == '' %}
-                                            <span></span>
-                                        {% elif person.address_2 == None or person.address_2 == ''%}
-                                            <i class="fe fe-home"></i>
-                                            {{ person.address_1 }}, {{ person.city }}, {{ person.state }} {{ person.zipcode }}
-                                        {% else %}
-                                            <i class="fe fe-home"></i>
-                                            {{ person.address_1 }}, {{ person.address_2 }}, {{ person.city }}, {{ person.state }} {{ person.zipcode }}
-                                        {% endif %}
-                                    </h6>
-                                    <h6 class="text-muted mb-3">
-                                        <i class="fe fe-phone"></i>
-                                        {{ person.phone_number }} ({{ person.phone_type }})
-                                    </h6>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-12 col-md-12 col-xl-6">
-                            <div class="text-xl-right mt-4 mt-xl-0">
-                                <a href="{{ url_for('persons.editPerson', id=person.id) }}" class="btn btn-primary"><i class="fe fe-edit"></i> Edit Profile</a>
-                            </div>
-                            <div class="mt-5">
-                                <div class="main-profile-contact-list float-md-end d-lg-flex">
-                                    <div class="me-5">
-                                        <div class="media">
-                                            <div class="media-icon bg-primary  me-3 mt-1">
-                                                <i class="fe fe-edit-3 fs-20 text-white"></i>
-                                            </div>
-                                            <div class="media-body">
-                                                <span class="text-muted">Visit Notes</span>
-                                                <div class="fw-semibold fs-25">
-                                                    {{ notes_count }}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="me-5 mt-5 mt-md-0">
-                                        <div class="media">
-                                            <div class="media-icon bg-success me-3 mt-1">
-                                                <i class="fe fe-credit-card  fs-20 text-white"></i>
-                                            </div>
-                                            <div class="media-body">
-                                                <span class="text-muted">Open Balance</span>
-                                                <div class="fw-semibold fs-25">
-                                                    $ 8888.88
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+              <div class="media-heading">
+                <h5><strong>Personal Information</strong></h5>
+              </div>
+              <div class="table-responsive">
+                <table class="table row table-borderless">
+                  <tbody class="col-lg-12 col-xl-6 p-0">
+                    <tr>
+                      <td>
+                        <strong>Full Name: </strong>
+                        {% if person.middle_name == '' and person.suffix_name ==
+                        '' %} {{ person.first_name }} {{ person.last_name }} {%
+                        elif person.suffix_name == '' %} {{ person.first_name }}
+                        {{ person.middle_name }} {{ person.last_name }} {% else
+                        %} {{ person.first_name }} {{ person.middle_name }} {{
+                        person.last_name }} {{ person.suffix_name }} {% endif %}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <strong>Date of Birth:</strong>
+                        {{ person.date_of_birth }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <strong>Gender Identity: </strong>
+                        {{ person.gender_identity }}
+                      </td>
+                    </tr>
+                  </tbody>
+                  <tbody class="col-lg-12 col-xl-6 p-0">
+                    <tr>
+                      <td>
+                        <strong>Address: </strong>
+                        {% if person.address_1 == None or person.address_1 == ''
+                        %}
+                        <span></span>
+                        {% elif person.address_2 == None or person.address_2 ==
+                        ''%} {{ person.address_1 }}, {{ person.city }}, {{
+                        person.state }} {{ person.zipcode }} {% else %} {{
+                        person.address_1 }}, {{ person.address_2 }}, {{
+                        person.city }}, {{ person.state }} {{ person.zipcode }}
+                        {% endif %}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <strong>Email: </strong>
+                        {{ person.email }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <strong>Phone: </strong>
+                        {{ person.phone_number }} ({{ person.phone_type }})
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
-            <div class="border-top">
-                <div class="wideget-user-tab">
-                    <div class="tab-menu-heading">
-                        <div class="tabs-menu1">
-                            <ul class="nav">
-                                <li class=""><a href="#profile" class="active show" data-bs-toggle="tab">Profile</a></li>
-                                <li><a href="#visitnotes" data-bs-toggle="tab" class="">Visit Notes</a></li>
-                                <li><a href="#billing" data-bs-toggle="tab" class="">Billing</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
-        <div class="tab-content">
-            <div class="tab-pane active show" id="profile">
-                <div id="profile-log-switch">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="media-heading">
-                                <h5><strong>Personal Information</strong></h5>
-                            </div>
-                            <div class="table-responsive ">
-                                <table class="table row table-borderless">
-                                    <tbody class="col-lg-12 col-xl-6 p-0">
-                                        <tr>
-                                            <td><strong>Full Name: </strong>
-                                                {% if person.middle_name == '' and person.suffix_name == '' %}
-                                                    {{ person.first_name }} {{ person.last_name }}
-                                                {% elif person.suffix_name == '' %}
-                                                    {{ person.first_name }} {{ person.middle_name }} {{ person.last_name }}
-                                                {% else %}
-                                                    {{ person.first_name }} {{ person.middle_name }} {{ person.last_name }} {{ person.suffix_name }}
-                                                {% endif %}
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Date of Birth:</strong>
-                                                {{ person.date_of_birth }}
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Gender Identity: </strong>
-                                                {{ person.gender_identity }}
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                    <tbody class="col-lg-12 col-xl-6 p-0">
-                                        <tr>
-                                            <td><strong>Address: </strong>
-                                                {% if person.address_1 == None or person.address_1 == '' %}
-                                                    <span></span>
-                                                {% elif person.address_2 == None or person.address_2 == ''%}
-                                                    {{ person.address_1 }}, {{ person.city }}, {{ person.state }} {{ person.zipcode }}
-                                                {% else %}
-                                                    {{ person.address_1 }}, {{ person.address_2 }}, {{ person.city }}, {{ person.state }} {{ person.zipcode }}
-                                                {% endif %}
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Email: </strong>
-                                                {{ person.email }}
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Phone: </strong>
-                                                {{ person.phone_number }} ({{ person.phone_type }})
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+      </div>
+      <div class="tab-pane" id="visitnotes">
+        <div id="profile-log-switch">
+          <div class="card">
+            <div class="card-body">
+              <div class="media-heading">
+                <h5><strong>Visit Notes</strong></h5>
+              </div>
+              <div class="table-responsive">
+                <table
+                  class="table table-bordered text-nowrap border-bottom w-100"
+                  id="responsive-datatable"
+                >
+                  <thead>
+                    <tr>
+                      <th class="wd-25 border-bottom-0">Date of Visit</th>
+                      <th class="wd-25 border-bottom-0">Status</th>
+                      <th class="wd-25 border-bottom-0">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for n in notes %}
+                    <tr>
+                      <td>{{ n.date_of_service }}</td>
+                      <td>{{ n.status }}</td>
+                      <td>
+                        <div class="btn-group">
+                          <a
+                            href="{{ url_for('visit_notes.editVisitNote', id=n.id) }}"
+                            class="btn btn-primary badge"
+                            type="button"
+                            ><i class="fe fe-edit"></i> Edit</a
+                          >
+                          <a
+                            href="{{ url_for('visit_notes.pdfVisitNote', id=n.id) }}"
+                            class="btn btn-outline-primary badge"
+                            type="button"
+                            ><i class="fe fe-printer"></i> Print</a
+                          >
                         </div>
-                    </div>
-                </div>
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
             </div>
-            <div class="tab-pane" id="visitnotes">
-                <div id="profile-log-switch">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="media-heading">
-                                <h5><strong>Visit Notes</strong></h5>
-                            </div>
-                            <div class="table-responsive">
-                                <table class="table table-bordered text-nowrap border-bottom w-100" id="responsive-datatable">
-                                    <thead>
-                                        <tr>
-                                            <th class="wd-25 border-bottom-0">Date of Visit</th>
-                                            <th class="wd-25 border-bottom-0">Status</th>
-                                            <th class="wd-25 border-bottom-0">Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for n in notes %}
-                                        <tr>
-                                            <td>{{ n.date_of_service }}</td>
-                                            <td>{{ n.status }}</td>
-                                            <td>
-                                                <div class="btn-group">
-                                                    <a href="{{ url_for('visit_notes.editVisitNote', id=n.id) }}" class="btn btn-primary badge" type="button"><i class="fe fe-edit"></i> Edit</a>
-                                                    <a href="{{ url_for('visit_notes.pdfVisitNote', id=n.id) }}" class="btn btn-outline-primary badge" type="button"><i class="fe fe-printer"></i> Print</a>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="tab-pane" id="billing">
-                <div id="profile-log-switch">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="media-heading">
-                                <h5><strong>Billing</strong></h5>
-                            </div>
-                            <div class="table-responsive">
-                                <table class="table table-bordered text-nowrap border-bottom w-100" id="responsive-datatable">
-                                    <thead>
-                                        <tr>
-                                            <th class="wd-25 border-bottom-0">Date of Service</th>
-                                            <th class="wd-25 border-bottom-0">Amount</th>
-                                            <th class="wd-25 border-bottom-0">Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for b in bills %}
-                                        <tr>
-                                            <td>{{ b.created_at }}</td>
-                                            <td>{{ (b.unit_amount + (b.unit_amount * b.tax_rate)) * b.units }}</td>
-                                            <td>
-                                                <div class="btn-group">
-                                                    <a href="#" class="btn btn-primary badge" type="button"><i class="fe fe-edit"></i> Edit</a>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-            </div>
+          </div>
         </div>
-    </div><!-- COL-END -->
+      </div>
+      <div class="tab-pane" id="billing">
+        <div id="profile-log-switch">
+          <div class="card">
+            <div class="card-body">
+              <div class="media-heading">
+                <h5><strong>Billing</strong></h5>
+              </div>
+              <div class="table-responsive">
+                <table
+                  class="table table-bordered text-nowrap border-bottom w-100"
+                  id="responsive-datatable"
+                >
+                  <thead>
+                    <tr>
+                      <th class="wd-25 border-bottom-0">Date of Service</th>
+                      <th class="wd-25 border-bottom-0">Amount</th>
+                      <th class="wd-25 border-bottom-0">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for b in bills %}
+                    <tr>
+                      <td>{{ b.created_at }}</td>
+                      <td>
+                        {{ (b.unit_amount + (b.unit_amount * b.tax_rate)) *
+                        b.units }}
+                      </td>
+                      <td>
+                        <div class="btn-group">
+                          <a
+                            href="#"
+                            class="btn btn-primary badge"
+                            type="button"
+                            ><i class="fe fe-edit"></i> Edit</a
+                          >
+                        </div>
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- COL-END -->
+  </div>
+  <!-- ROW-1 CLOSED -->
 </div>
-<!-- ROW-1 CLOSED -->
 {% endblock content %}
