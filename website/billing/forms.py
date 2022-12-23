@@ -3,7 +3,7 @@
 # Imports
 # ------------------------------------------------------------------------------
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
+from wtforms import SubmitField, FloatField, IntegerField
 from wtforms.validators import DataRequired, Length
 
 
@@ -12,9 +12,9 @@ from wtforms.validators import DataRequired, Length
 # ------------------------------------------------------------------------------
 class AddLedgerChargeForm(FlaskForm):
     ''' Add new Ledger Charge '''
-    units = StringField(label='Units *',
-                        validators=[DataRequired(),
-                                    Length(min=1)])
-    tax_rate = StringField(label='Tax Rate',
-                           validators=[Length(min=1)])
+    charge_id = IntegerField(label='Charge ID *', validators=[DataRequired()])
+    unit_amount = FloatField(label='Unit Amount *', validators=[DataRequired()])
+    units = IntegerField(label='Units *', validators=[DataRequired(),
+                                                      Length(min=1)])
+    tax_rate = FloatField(label='Tax Rate', validators=[Length(min=1)])
     submit = SubmitField(label='Add Charge')

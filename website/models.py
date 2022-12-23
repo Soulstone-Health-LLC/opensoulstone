@@ -209,7 +209,7 @@ class LedgerCharges(db.Model):
     # Data Points - Main
     units = db.Column(db.Integer, nullable=False, default=1)
     unit_amount = db.Column(db.Float, nullable=False)
-    tax_rate = db.Column(db.Float)
+    tax_rate = db.Column(db.Float, default=0.0)
 
 
 class LedgerPayments(db.Model):

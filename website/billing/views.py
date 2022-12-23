@@ -30,6 +30,7 @@ def ledger():
     ledger_charges = db.session.query(LedgerCharges.created_at,
                                       LedgerCharges.units,
                                       LedgerCharges.unit_amount,
+                                      LedgerCharges.tax_rate,
                                       LedgerCharges.practice_id,
                                       People.first_name,
                                       People.middle_name,
@@ -69,7 +70,6 @@ def addLedgerCharge(id):
         if pu_id == pp_id:
             # Display the person info
             person = People.query.get_or_404(id)
-            #c_id = Charges.query.get_or_404(id).id
 
             return render_template("add_ledger_charge.html",
                                    title="Soulstone - Add New Charge",
@@ -84,20 +84,19 @@ def addLedgerCharge(id):
 
     if form.validate_on_submit and request.method == 'POST':
         practice_id = current_user.practice_id
-        # charge_id =
+        charge_id = form.charge_id.data
         person_id = pers_id
-        # note_id =
         created_at = datetime.utcnow()
         created_by = current_user.get_id()
         updated_at = datetime.utcnow()
         updated_by = current_user.get_id()
         units = form.units.data
-        # unit_amount =
+        unit_amount = form.unit_amount.data
         tax_rate = form.tax_rate.data
 
         # Add new ledger charge to the database
         new_ledger_charge = LedgerCharges(practice_id=practice_id,
-                                          # charge_id=charge_id,
+                                          charge_id=charge_id,
                                           person_id=person_id,
                                           # note_id=note_id,
                                           created_at=created_at,
@@ -105,14 +104,14 @@ def addLedgerCharge(id):
                                           updated_at=updated_at,
                                           updated_by=updated_by,
                                           units=units,
-                                          # unit_amount=unit_amount,
+                                          unit_amount=unit_amount,
                                           tax_rate=tax_rate)
         db.session.add(new_ledger_charge)
         db.session.commit()
         flash('Charge added successfully.',
               category='success')
 
-        return redirect(url_for('settings.ledger'))
+        return redirect(url_for('billing.ledger'))
 
     return render_template("add_ledger_charge.html",
                            title="Soulstone - Add Charge",
