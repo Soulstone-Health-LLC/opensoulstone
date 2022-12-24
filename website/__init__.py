@@ -51,6 +51,7 @@ from website.billing.views import billing
 from website.settings.views import settings
 from website.support.views import supportapp
 from website.error_pages.handler import error_pages
+from website.cli.cli_commands import commands
 
 app.register_blueprint(core)
 app.register_blueprint(users)
@@ -60,3 +61,4 @@ app.register_blueprint(billing)
 app.register_blueprint(settings)
 app.register_blueprint(supportapp)
 app.register_blueprint(error_pages)
+app.register_blueprint(commands)
