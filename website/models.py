@@ -5,6 +5,7 @@ Modles for the Soulstone application
 # ------------------------------------------------------------------------------
 # Imports
 # ------------------------------------------------------------------------------
+from flask import redirect, url_for
 from flask_login import UserMixin
 from sqlalchemy.sql import func
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
@@ -19,6 +20,10 @@ def load_user(user_id):
     '''Queries the database for the user_id and returns the user object'''
     return User.query.get(user_id)
 
+@login_manager.unauthorized_handler
+def unauthorized():
+    '''Redirects unauthorized users to the login page'''
+    return redirect(url_for('users.login'))
 
 # ------------------------------------------------------------------------------
 # Model - Form Dictinaries
@@ -104,7 +109,7 @@ class User(db.Model, UserMixin):
     city = db.Column(db.Text)
     state = db.Column(db.Text)
     zipcode = db.Column(db.Integer)
-    phone_number = db.Column(db.Integer)
+    phone_number = db.Column(db.String(10))
     phone_type = db.Column(db.String(10))
     role = db.Column(db.String(50), nullable=False, default='Staff')
     status = db.Column(db.Text, nullable=False, default='Active')
@@ -173,7 +178,7 @@ class People(db.Model):
     city = db.Column(db.Text)
     state = db.Column(db.Text)
     zipcode = db.Column(db.Integer)
-    phone_number = db.Column(db.Integer)
+    phone_number = db.Column(db.String(10))
     phone_type = db.Column(db.String(10))
     email = db.Column(db.Text)
     status = db.Column(db.Text, default='Active')
