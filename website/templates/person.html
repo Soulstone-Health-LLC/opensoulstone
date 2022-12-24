@@ -61,7 +61,8 @@
                   </h6>
                   <h6 class="text-muted mb-3">
                     <i class="fe fe-phone"></i>
-                    {{ person.phone_number }} ({{ person.phone_type }})
+                    ({{ person.phone_number[:3] }}) {{ person.phone_number[3:6]
+                    }}-{{ person.phone_number[6:10] }} ({{ person.phone_type }})
                   </h6>
                 </div>
               </div>
@@ -189,7 +190,9 @@
                     <tr>
                       <td>
                         <strong>Phone: </strong>
-                        {{ person.phone_number }} ({{ person.phone_type }})
+                        ({{ person.phone_number[:3] }}) {{
+                        person.phone_number[3:6] }}-{{ person.phone_number[6:10]
+                        }} ({{ person.phone_type }})
                       </td>
                     </tr>
                   </tbody>
