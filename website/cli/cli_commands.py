@@ -4,7 +4,7 @@ CLI Commands for the website app
 
 # Imports
 from flask import Blueprint
-from website.users import generate_password_hash
+from werkzeug.security import generate_password_hash
 from website.models import Practice, User
 from .. import db
 
