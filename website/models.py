@@ -82,6 +82,11 @@ PAYMENT_TYPE_CHOICES = [('', ''),
                         ('Gift Card', 'Gift Card'),
                         ('Other', 'Other')]
 
+# Event Type Dictionary
+EVENT_TYPE_CHOICES = [('', ''),
+                      ('Appointment', 'Appointment'),
+                      ('Block Off Time', 'Block Off Time')]
+
 
 # ------------------------------------------------------------------------------
 # Models - Database Tables
@@ -280,3 +285,22 @@ class Notes(db.Model):
     post_visit_recommendations = db.Column(db.Text)
     # Signed Status
     status = db.Column(db.Text, nullable=False, default='Open')
+
+
+class Events(db.Model):
+    '''SQL Table: events'''
+    __tablename__ = 'events'
+    id = db.Column(db.Integer, primary_key=True)
+    practice_id = db.Column(db.Integer, db.ForeignKey('practice.id'))
+    person_id = db.Column(db.Integer, db.ForeignKey('people.id'))
+    created_at = db.Column(db.DateTime(timezone=True), default=func.now())
+    created_by = db.Column(db.Integer, db.ForeignKey('user.id'))
+    updated_at = db.Column(db.DateTime(timezone=True))
+    updated_by = db.Column(db.Integer, db.ForeignKey('user.id'))
+    event_type = db.Column(db.Text, nullable=False)
+    date = db.Column(db.DateTime, nullable=False)
+    time = db.Column(db.Time, nullable=False)
+    note = db.Column(db.Text)
+
+    def __repr__(self):
+        return f"Event('{self.event_type}', '{self.date}', '{self.time}')"

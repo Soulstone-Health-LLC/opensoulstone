@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block pagenav %}
+<h1 class="page-title">Add Event</h1>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item" aria-current="page"><a href="{{ url_for('calendar.schedule') }}">Calendar</a></li>
+        <li class="breadcrumb-item active">Add Event</li>
+    </ol>
+{% endblock pagenav %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Add Event</h4>
+            </div>
+            <div class="card-body">
+                <form method="post" class="" novalidate>
+                    {{ form.hidden_tag() }}
+                    <div class="">
+                        <div class="row">
+                            <div class="col-md-4 mb-6">
+                                {{ form.event_type.label() }}
+                                {% if form.event_type.errors %}
+                                    {{ form.event_type(class="form-control is-invalid") }}
+                                        {% for error in form.event_type.errors %}
+                                            <div class="invalid-feedback">{{ error }}</div>
+                                        {% endfor %}
+                                {% else %}
+                                    {{ form.event_type(class="form-control") }}
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-6">
+                                {{ form.person.label() }}
+                                {% if form.person.errors %}
+                                    {{ form.person(class="form-control is-invalid") }}
+                                        {% for error in form.person.errors %}
+                                            <div class="invalid-feedback">{{ error }}</div>
+                                        {% endfor %}
+                                {% else %}
+                                    {{ form.person(class="form-control") }}
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-6">
+                                {{ form.date.label() }}
+                                {% if form.date.errors %}
+                                    {{ form.date(class="form-control is-invalid") }}
+                                        {% for error in form.date.errors %}
+                                            <div class="invalid-feedback">{{ error }}</div>
+                                        {% endfor %}
+                                {% else %}
+                                    {{ form.date(class="form-control") }}
+                                {% endif %}
+                            </div>
+                            <div class="col-md-4 mb-6">
+                                {{ form.time.label() }}
+                                {% if form.time.errors %}
+                                    {{ form.time(class="form-control is-invalid") }}
+                                        {% for error in form.time.errors %}
+                                            <div class="invalid-feedback">{{ error }}</div>
+                                        {% endfor %}
+                                {% else %}
+                                    {{ form.time(class="form-control") }}
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-6">
+                                {{ form.note.label() }}
+                                {% if form.note.errors %}
+                                    {{ form.note(class="form-control is-invalid") }}
+                                        {% for error in form.note.errors %}
+                                            <div class="invalid-feedback">{{ error }}</div>
+                                        {% endfor %}
+                                {% else %}
+                                    {{ form.note(class="form-control") }}
+                                {% endif %}
+                            </div>
+                        {{ form.submit(class="btn btn-primary") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
