@@ -185,6 +185,11 @@ def viewPerson(id):
                 LedgerCharges.unit_amount * LedgerCharges.tax_rate))).filter_by(practice_id=current_user.practice_id, person_id=id).scalar()
             total_payments = db.session.query(db.func.sum(LedgerPayments.amount)).filter_by(
                 practice_id=current_user.practice_id, person_id=id).scalar()
+
+            if total_charges is None:
+                total_charges = 0
+            if total_payments is None:
+                total_payments = 0
             balance = total_charges - total_payments
 
             return render_template("person.html",
