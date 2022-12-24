@@ -20,10 +20,12 @@ def load_user(user_id):
     '''Queries the database for the user_id and returns the user object'''
     return User.query.get(user_id)
 
+
 @login_manager.unauthorized_handler
 def unauthorized():
     '''Redirects unauthorized users to the login page'''
     return redirect(url_for('users.login'))
+
 
 # ------------------------------------------------------------------------------
 # Model - Form Dictinaries
@@ -147,7 +149,7 @@ class Practice(db.Model):
     city = db.Column(db.Text, nullable=False)
     state = db.Column(db.Text, nullable=False)
     zipcode = db.Column(db.Integer, nullable=False)
-    phone_number = db.Column(db.Integer, nullable=False)
+    phone_number = db.Column(db.String(10), nullable=False)
     phone_type = db.Column(db.String(10), nullable=False)
     email = db.Column(db.Text)
     website = db.Column(db.Text)
