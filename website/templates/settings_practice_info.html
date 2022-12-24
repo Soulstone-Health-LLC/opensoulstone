@@ -123,7 +123,11 @@
               </div>
               <div class="tab-pane" id="contactInfo">
                 <h5 class="semi-bold">Practice Phone:</h5>
-                <p>{{ practice.phone_number }} ({{ practice.phone_type }})</p>
+                <p>
+                  ({{ practice.phone_number[:3] }}) {{
+                  practice.phone_number[3:6] }}-{{ practice.phone_number[6:10]
+                  }} ({{ practice.phone_type }})
+                </p>
                 <br />
                 <h5 class="semi-bold">Practice Email:</h5>
                 <p>{{ practice.email }}</p>
