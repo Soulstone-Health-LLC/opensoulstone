@@ -42,7 +42,9 @@
                   <i class="fe fe-credit-card text-white"></i>
                 </div>
                 <h5 class="mb-2">Total Charges Billed</h5>
-                <h2 class="counter mb-0">$ {{ total_charges }}</h2>
+                <h2 class="counter mb-0">
+                  {{ "$ {:,.2f}".format(total_charges) }}
+                </h2>
               </div>
             </div>
             <div class="col-lg-3 col-sm-6 mt-4 mb-4">

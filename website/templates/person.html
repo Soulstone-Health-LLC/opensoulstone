@@ -94,7 +94,9 @@
                       </div>
                       <div class="media-body">
                         <span class="text-muted">Open Balance</span>
-                        <div class="fw-semibold fs-25">$ {{ balance }}</div>
+                        <div class="fw-semibold fs-25">
+                          {{ "$ {:,.2f}".format(balance) }}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -273,8 +275,8 @@
                       <td>{{ c.code }} - {{ c.description }}</td>
 
                       <td>
-                        $ {{ (c.unit_amount + (c.unit_amount * c.tax_rate)) *
-                        c.units }}
+                        {{ "$ {:,.2f}".format((c.unit_amount + (c.unit_amount *
+                        c.tax_rate)) * c.units) }}
                       </td>
                       <td>
                         <div class="btn-group">
