@@ -8,7 +8,7 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 from website.persons.forms import AddPersonForm, EditPersonForm
 from website import db
-from website.models import People, Notes, LedgerCharges
+from website.models import People, Notes, Charges, LedgerCharges, LedgerPayments
 
 
 # ------------------------------------------------------------------------------
@@ -25,7 +25,8 @@ persons = Blueprint('persons', __name__)
 @login_required
 def people():
     if request.method == 'GET':
-        people = People.query.filter_by(practice_id=current_user.practice_id).order_by(People.last_name).all()
+        people = People.query.filter_by(
+            practice_id=current_user.practice_id).order_by(People.last_name).all()
 
     return render_template("people.html",
                            title="Soulstone - People",
@@ -171,14 +172,28 @@ def viewPerson(id):
             person = People.query.get_or_404(id)
             notes = Notes.query.filter_by(person_id=id).all()
             notes_count = Notes.query.filter_by(person_id=id).count()
-            bills = LedgerCharges.query.filter_by(person_id=id).all()
+            ledger_charges = db.session.query(LedgerCharges.created_at,
+                                              LedgerCharges.units,
+                                              LedgerCharges.unit_amount,
+                                              LedgerCharges.tax_rate,
+                                              LedgerCharges.practice_id,
+                                              Charges.code,
+                                              Charges.description)\
+                .filter_by(person_id=id)\
+                .join(Charges, LedgerCharges.charge_id == Charges.id).all()
+            total_charges = db.session.query(db.func.sum(LedgerCharges.units * LedgerCharges.unit_amount + (
+                LedgerCharges.unit_amount * LedgerCharges.tax_rate))).filter_by(practice_id=current_user.practice_id, person_id=id).scalar()
+            total_payments = db.session.query(db.func.sum(LedgerPayments.amount)).filter_by(
+                practice_id=current_user.practice_id, person_id=id).scalar()
+            balance = total_charges - total_payments
 
             return render_template("person.html",
                                    user=current_user,
                                    person=person,
                                    notes=notes,
                                    notes_count=notes_count,
-                                   bills=bills)
+                                   ledger_charges=ledger_charges,
+                                   balance=balance)
         else:
             return render_template("401.html",
                                    user=current_user)

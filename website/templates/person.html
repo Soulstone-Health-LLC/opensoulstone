@@ -94,7 +94,7 @@
                       </div>
                       <div class="media-body">
                         <span class="text-muted">Open Balance</span>
-                        <div class="fw-semibold fs-25">$ 8888.88</div>
+                        <div class="fw-semibold fs-25">$ {{ balance }}</div>
                       </div>
                     </div>
                   </div>
@@ -211,9 +211,9 @@
                 >
                   <thead>
                     <tr>
-                      <th class="wd-25 border-bottom-0">Date of Visit</th>
-                      <th class="wd-25 border-bottom-0">Status</th>
-                      <th class="wd-25 border-bottom-0">Actions</th>
+                      <th class="border-bottom-0">Date of Visit</th>
+                      <th class="border-bottom-0">Status</th>
+                      <th class="border-bottom-0">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -256,22 +256,25 @@
               <div class="table-responsive">
                 <table
                   class="table table-bordered text-nowrap border-bottom w-100"
-                  id="responsive-datatable"
+                  id="basic-datatable"
                 >
                   <thead>
                     <tr>
-                      <th class="wd-25 border-bottom-0">Date of Service</th>
-                      <th class="wd-25 border-bottom-0">Amount</th>
-                      <th class="wd-25 border-bottom-0">Actions</th>
+                      <th class="border-bottom-0">Date</th>
+                      <th class="border-bottom-0">Charge Code & Description</th>
+                      <th class="border-bottom-0">Charge Amount</th>
+                      <th class="border-bottom-0">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {% for b in bills %}
+                    {% for c in ledger_charges %}
                     <tr>
-                      <td>{{ b.created_at }}</td>
+                      <td>{{ c.created_at }}</td>
+                      <td>{{ c.code }} - {{ c.description }}</td>
+
                       <td>
-                        $ {{ (b.unit_amount + (b.unit_amount * b.tax_rate)) *
-                        b.units }}
+                        $ {{ (c.unit_amount + (c.unit_amount * c.tax_rate)) *
+                        c.units }}
                       </td>
                       <td>
                         <div class="btn-group">
