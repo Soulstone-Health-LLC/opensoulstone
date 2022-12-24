@@ -298,7 +298,7 @@ class Events(db.Model):
     updated_at = db.Column(db.DateTime(timezone=True))
     updated_by = db.Column(db.Integer, db.ForeignKey('user.id'))
     event_type = db.Column(db.Text, nullable=False)
-    date = db.Column(db.DateTime, nullable=False)
+    date = db.Column(db.Date, nullable=False)
     time = db.Column(db.Time, nullable=False)
     note = db.Column(db.Text)
 
