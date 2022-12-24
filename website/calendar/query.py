@@ -7,6 +7,7 @@ Query the database for the people select field
 from website import db
 from website.models import People
 
+
 # SQL query for the people select field
 people_query = db.session.query(People.id, People.first_name, People.last_name).order_by(
     People.last_name).all()  # TODO: need to add practice_id filter
