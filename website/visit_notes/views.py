@@ -27,13 +27,20 @@ visit_notes = Blueprint('visit_notes', __name__)
 @login_required
 def notes():
     ''' Routes the user to the Notes page '''
-    people = People.query.filter_by(practice_id=current_user.practice_id).all()
-    notes = Notes.query.filter_by(practice_id=current_user.practice_id).all()
+    visit_notes = db.session.query(Notes.id,
+                                   Notes.date_of_service,
+                                   Notes.status,
+                                   Notes.practice_id,
+                                   People.first_name,
+                                   People.middle_name,
+                                   People.last_name,
+                                   People.suffix_name)\
+        .filter_by(practice_id=current_user.practice_id)\
+        .join(People, Notes.person_id == People.id).all()
 
     return render_template("notes.html", title="Soulstone - Notes",
                            user=current_user,
-                           notes=notes,
-                           people=people)
+                           visit_notes=visit_notes)
 
 
 @visit_notes.route('/notes/<int:id>/add_visit_note', methods=['GET', 'POST'])
@@ -155,11 +162,11 @@ def editVisitNote(id):
         form.post_visit_recommendations.data = note.post_visit_recommendations
 
         return render_template("edit_visit_note.html",
-                                title="Soulstone - Edit Visit Note",
-                                user=current_user,
-                                person=person,
-                                note=note,
-                                form=form)
+                               title="Soulstone - Edit Visit Note",
+                               user=current_user,
+                               person=person,
+                               note=note,
+                               form=form)
 
     if form.validate_on_submit() and request.method == 'POST':
         note.updated_at = datetime.utcnow()
@@ -186,10 +193,10 @@ def editVisitNote(id):
         try:
             db.session.commit()
             flash('Visit Note updated successfully.',
-                category='success')
+                  category='success')
         except:
             flash('Something went wrong. Try again.',
-                category='danger')
+                  category='danger')
 
         return redirect(url_for('visit_notes.notes'))
 
@@ -201,10 +208,10 @@ def pdfVisitNote(id):
     practice = Practice.query.filter_by(id=note.practice_id).first()
     person = People.query.filter_by(id=note.person_id).first()
     rendered = render_template('pdf_visit_note.html',
-                                note=note,
-                                practice=practice,
-                                person=person,
-                                user=current_user)
+                               note=note,
+                               practice=practice,
+                               person=person,
+                               user=current_user)
     config = pdfkit.configuration(wkhtmltopdf='/usr/local/bin/wkhtmltopdf')
     pdf = pdfkit.from_string(rendered, False, configuration=config)
     response = make_response(pdf)
