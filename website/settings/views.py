@@ -37,6 +37,9 @@ def practiceSettings():
         total_charges = db.session.query(db.func.sum(
             LedgerCharges.units * LedgerCharges.unit_amount + (LedgerCharges.unit_amount * LedgerCharges.tax_rate))).filter_by(practice_id=current_user.practice_id).scalar()
 
+        if total_charges is None:
+            total_charges = 0
+
         return render_template("settings_practice_info.html",
                                title="Soulstone - Settings - Practice Information",
                                practice=practice,
