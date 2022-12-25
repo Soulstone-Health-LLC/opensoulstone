@@ -298,8 +298,10 @@ class Events(db.Model):
     updated_at = db.Column(db.DateTime(timezone=True))
     updated_by = db.Column(db.Integer, db.ForeignKey('user.id'))
     event_type = db.Column(db.Text, nullable=False)
-    date = db.Column(db.Date, nullable=False)
-    time = db.Column(db.Time, nullable=False)
+    start_date = db.Column(db.Date, nullable=False)
+    start_time = db.Column(db.Time, nullable=False)
+    end_date = db.Column(db.Date, nullable=False)
+    end_time = db.Column(db.Time, nullable=False)
     note = db.Column(db.Text)
 
     def __repr__(self):
