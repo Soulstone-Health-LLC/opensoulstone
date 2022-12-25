@@ -82,6 +82,10 @@ def addLedgerCharge(id):
             # Display the person info
             person = People.query.get_or_404(id)
 
+            # List of charges for the select field
+            form.charge_id.choices = [(charge.id, charge.description)
+                                      for charge in practice_charges]
+
             return render_template("add_ledger_charge.html",
                                    title="Soulstone - Add New Charge",
                                    user=current_user,

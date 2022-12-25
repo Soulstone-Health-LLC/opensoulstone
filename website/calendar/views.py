@@ -35,6 +35,9 @@ def addEvent():
     '''Add Event page'''
     form = AddEventForm()
 
+    form.person.choices = [(person.id, person.first_name + ' ' + person.last_name)
+                           for person in current_user.practice.people]
+
     if form.validate_on_submit():
         if request.method == 'POST':
             # Get data from the form

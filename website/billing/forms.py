@@ -5,9 +5,8 @@
 from flask_wtf import FlaskForm
 from wtforms import SubmitField, FloatField, IntegerField, SelectField
 from wtforms import TextAreaField
-from wtforms.validators import DataRequired, Length
+from wtforms.validators import DataRequired, Length, InputRequired
 from website.models import PAYMENT_TYPE_CHOICES
-from website.billing.query import possible_charges
 
 
 # ------------------------------------------------------------------------------
@@ -15,8 +14,8 @@ from website.billing.query import possible_charges
 # ------------------------------------------------------------------------------
 class AddLedgerChargeForm(FlaskForm):
     ''' Add new Ledger Charge '''
-    charge_id = SelectField(label='Charge *', choices=[('', '')]+[(k, v) for k, v in possible_charges.items()],
-                            validators=[DataRequired()])
+    charge_id = SelectField(label='Charge *', coerce=int,
+                            validators=[InputRequired()])
     unit_amount = FloatField(label='Unit Amount *',
                              validators=[DataRequired()])
     units = IntegerField(label='Units *', validators=[DataRequired(),
