@@ -93,6 +93,7 @@ class User(db.Model, UserMixin):
     # Foreign Keys
     practice_id = db.Column(db.Integer, db.ForeignKey('practice.id'),
                             default=1)
+    practice = db.relationship('Practice')
     # Data Points - Create/Updated
     created_at = db.Column(db.DateTime(timezone=True), default=func.now())
     created_by = db.Column(db.Integer, db.ForeignKey('user.id'))
