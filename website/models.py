@@ -306,3 +306,20 @@ class Events(db.Model):
 
     def __repr__(self):
         return f"Event('{self.event_type}', '{self.date}', '{self.time}')"
+
+
+class EventTypes(db.Model):
+    '''SQL Table: event_types'''
+    id = db.Column(db.Integer, primary_key=True)
+    practice_id = db.Column(db.Integer, db.ForeignKey('practice.id'))
+    person_id = db.Column(db.Integer, db.ForeignKey('people.id'))
+    created_at = db.Column(db.DateTime(timezone=True), default=func.now())
+    created_by = db.Column(db.Integer, db.ForeignKey('user.id'))
+    updated_at = db.Column(db.DateTime(timezone=True))
+    updated_by = db.Column(db.Integer, db.ForeignKey('user.id'))
+    event_name = db.Column(db.Text, nullable=False)
+    event_description = db.Column(db.Text)
+    event_status = db.Column(db.Text, nullable=False, default='Active')
+
+    def __repr__(self):
+        return f"Event_Type('{self.event_name}', '{self.event_description}')"

@@ -7,9 +7,10 @@ from datetime import datetime
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 from website.settings.forms import AddChargeForm, EditChargeForm
-from website.settings.forms import EditPracticeForm
+from website.settings.forms import EditPracticeForm, EventTypeForm
 from website import db
-from website.models import Charges, People, Practice, User, Notes, LedgerCharges
+from website.models import Charges, People, Practice, User, Notes
+from website.models import LedgerCharges, EventTypes
 
 
 # ------------------------------------------------------------------------------
@@ -229,4 +230,102 @@ def editCharge(id):
                            title="Soulstone - Edit Charge",
                            user=current_user,
                            charge=charge,
+                           form=form)
+
+
+# View Event Types
+@settings.route('/settings/event_types')
+@login_required
+def viewEventTypes():
+    '''Route to see the list of event types'''
+    if request.method == 'GET':
+        pu_id = current_user.practice_id
+        event_types = EventTypes.query.filter_by(practice_id=pu_id).all()
+
+        # Practice counts
+        event_type_count = EventTypes.query.filter_by(
+            practice_id=pu_id).count()
+
+        return render_template("settings_event_types.html",
+                               title="Soulstone - Settings - Event Types",
+                               event_types=event_types,
+                               event_type_count=event_type_count,
+                               user=current_user)
+
+
+# Add Event Type
+@settings.route('/settings/add_event_type', methods=['GET', 'POST'])
+@login_required
+def addEventType():
+    '''Routes the user to add a new event type'''
+    form = EventTypeForm()
+
+    if form.validate_on_submit():
+        if request.method == 'POST':
+            # Get data from the form
+            practice_id = current_user.practice_id
+            created_at = datetime.utcnow()
+            created_by = current_user.get_id()
+            updated_at = datetime.utcnow()
+            updated_by = current_user.get_id()
+            event_name = form.event_name.data
+            event_description = form.event_description.data
+            event_status = form.event_status.data
+
+            # Add new event type to database
+            new_event_type = EventTypes(practice_id=practice_id,
+                                        created_at=created_at,
+                                        created_by=created_by,
+                                        updated_at=updated_at,
+                                        updated_by=updated_by,
+                                        event_name=event_name,
+                                        event_description=event_description,
+                                        event_status=event_status)
+            db.session.add(new_event_type)
+            db.session.commit()
+            flash(f'{event_name} created successfully.',
+                  category='success')
+            return redirect(url_for('settings.viewEventTypes'))
+
+    return render_template("add_event_type.html",
+                           title="Soulstone - Add Event Type",
+                           form=form,
+                           user=current_user)
+
+
+# Edit Event Type
+@settings.route('/settings/event_types/<int:id>/edit', methods=['GET', 'POST'])
+@login_required
+def editEventType(id):
+    '''Routes the user to edit the event type'''
+    form = EventTypeForm()
+
+    event_type = EventTypes.query.get_or_404(id)
+
+    if request.method == 'GET':
+        # pre-populate form
+        form.event_name.data = event_type.event_name
+        form.event_description.data = event_type.event_description
+        form.event_status.data = event_type.event_status
+
+    if form.validate_on_submit():
+        if request.method == 'POST':
+            # Get data from the form
+            event_type.updated_at = datetime.utcnow()
+            event_type.updated_by = current_user.get_id()
+            event_type.event_name = form.event_name.data
+            event_type.event_description = form.event_description.data
+            event_type.event_status = form.event_status.data
+
+            # Update event type to database
+            db.session.commit()
+            flash(f'{event_type.event_name} updated successfully.',
+                  category='success')
+
+            return redirect(url_for('settings.viewEventTypes'))
+
+    return render_template("edit_event_type.html",
+                           title="Soulstone - Edit Event Type",
+                           user=current_user,
+                           event_type=event_type,
                            form=form)

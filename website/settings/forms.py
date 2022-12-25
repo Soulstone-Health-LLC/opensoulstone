@@ -106,3 +106,17 @@ class EditChargeForm(FlaskForm):
     status = SelectField(label='Status *',
                          choices=STATUS_CHOICES)
     submit = SubmitField(label='Save Charge')
+
+
+# Form - Add Event Type
+class EventTypeForm(FlaskForm):
+    ''' Add New Event Type to the Practice '''
+    event_name = StringField(label='Event Type Name *',
+                             validators=[DataRequired(),
+                                         Length(min=2)])
+    event_description = StringField(label='Event Type Description *',
+                                    widget=TextArea(),
+                                    validators=[DataRequired()])
+    event_status = SelectField(label='Status *',
+                               choices=STATUS_CHOICES)
+    submit = SubmitField(label='Save Event Type')
