@@ -5,7 +5,7 @@ Forms for the calendar
 # Imports
 from flask_wtf import FlaskForm
 from wtforms import SubmitField, SelectField, DateField, TimeField
-from wtforms import TextAreaField, IntegerField
+from wtforms import TextAreaField
 from wtforms.validators import DataRequired, InputRequired
 from website.models import EVENT_TYPE_CHOICES
 from website.calendar.query import possible_people
