@@ -4,5 +4,20 @@
   <li class="breadcrumb-item active">Calendar</li>
 </ol>
 {% endblock pagenav %} {% block content %}
-<h2>Calendar</h2>
+<!-- Start Add Event Link -->
+<div class="">
+  <a
+    href="{{ url_for('calendar.addEvent')}}"
+    class="btn btn-primary btn-icon text-white me-2"
+  >
+    <span>
+      <i class="fe fe-calendar"></i>
+    </span>
+    Add New Event
+  </a>
+</div>
+<br />
+<!-- End Add Event Link -->
+<!-- Start Calendar -->
+<!-- End Calendar -->
 {% endblock content %}

@@ -35,6 +35,9 @@ def addEvent():
     '''Add Event page'''
     form = AddEventForm()
 
+    form.event_type.choices = [(event_type.id, event_type.event_name) for event_type
+                               in current_user.practice.event_types]
+
     form.person.choices = [(person.id, person.first_name + ' ' + person.last_name)
                            for person in current_user.practice.people]
 
@@ -48,8 +51,10 @@ def addEvent():
             updated_by = current_user.get_id()
             event_type = form.event_type.data
             person_id = form.person.data
-            date = form.date.data
-            time = form.time.data
+            start_date = form.start_date.data
+            start_time = form.start_time.data
+            end_date = form.end_date.data
+            end_time = form.end_time.data
             note = form.note.data
 
             # Create new event
@@ -60,8 +65,10 @@ def addEvent():
                                updated_by=updated_by,
                                event_type=event_type,
                                person_id=person_id,
-                               date=date,
-                               time=time,
+                               start_date=start_date,
+                               start_time=start_time,
+                               end_date=end_date,
+                               end_time=end_time,
                                note=note)
 
             # Add new event to the database

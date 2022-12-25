@@ -47,25 +47,49 @@
                         </div>
                         <div class="row">
                             <div class="col-md-4 mb-6">
-                                {{ form.date.label() }}
-                                {% if form.date.errors %}
-                                    {{ form.date(class="form-control is-invalid") }}
-                                        {% for error in form.date.errors %}
+                                {{ form.start_date.label() }}
+                                {% if form.start_date.errors %}
+                                    {{ form.start_date(class="form-control is-invalid") }}
+                                        {% for error in form.start_date.errors %}
                                             <div class="invalid-feedback">{{ error }}</div>
                                         {% endfor %}
                                 {% else %}
-                                    {{ form.date(class="form-control") }}
+                                    {{ form.start_date(class="form-control") }}
                                 {% endif %}
                             </div>
                             <div class="col-md-4 mb-6">
-                                {{ form.time.label() }}
-                                {% if form.time.errors %}
-                                    {{ form.time(class="form-control is-invalid") }}
-                                        {% for error in form.time.errors %}
+                                {{ form.start_time.label() }}
+                                {% if form.start_time.errors %}
+                                    {{ form.start_time(class="form-control is-invalid") }}
+                                        {% for error in form.start_time.errors %}
                                             <div class="invalid-feedback">{{ error }}</div>
                                         {% endfor %}
                                 {% else %}
-                                    {{ form.time(class="form-control") }}
+                                    {{ form.start_time(class="form-control") }}
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-6">
+                                {{ form.end_date.label() }}
+                                {% if form.end_date.errors %}
+                                    {{ form.end_date(class="form-control is-invalid") }}
+                                        {% for error in form.end_date.errors %}
+                                            <div class="invalid-feedback">{{ error }}</div>
+                                        {% endfor %}
+                                {% else %}
+                                    {{ form.end_date(class="form-control") }}
+                                {% endif %}
+                            </div>
+                            <div class="col-md-4 mb-6">
+                                {{ form.end_time.label() }}
+                                {% if form.end_time.errors %}
+                                    {{ form.end_time(class="form-control is-invalid") }}
+                                        {% for error in form.end_time.errors %}
+                                            <div class="invalid-feedback">{{ error }}</div>
+                                        {% endfor %}
+                                {% else %}
+                                    {{ form.end_time(class="form-control") }}
                                 {% endif %}
                             </div>
                         </div>

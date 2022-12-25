@@ -82,11 +82,6 @@ PAYMENT_TYPE_CHOICES = [('', ''),
                         ('Gift Card', 'Gift Card'),
                         ('Other', 'Other')]
 
-# Event Type Dictionary
-EVENT_TYPE_CHOICES = [('', ''),
-                      ('Appointment', 'Appointment'),
-                      ('Block Off Time', 'Block Off Time')]
-
 
 # ------------------------------------------------------------------------------
 # Models - Database Tables
@@ -162,6 +157,7 @@ class Practice(db.Model):
     # Relationships
     users = db.relationship('User')
     people = db.relationship('People')
+    event_types = db.relationship('EventTypes')
 
 
 class People(db.Model):
@@ -297,7 +293,7 @@ class Events(db.Model):
     created_by = db.Column(db.Integer, db.ForeignKey('user.id'))
     updated_at = db.Column(db.DateTime(timezone=True))
     updated_by = db.Column(db.Integer, db.ForeignKey('user.id'))
-    event_type = db.Column(db.Text, nullable=False)
+    event_type_id = db.Column(db.Integer, db.ForeignKey('event_types.id'))
     start_date = db.Column(db.Date, nullable=False)
     start_time = db.Column(db.Time, nullable=False)
     end_date = db.Column(db.Date, nullable=False)

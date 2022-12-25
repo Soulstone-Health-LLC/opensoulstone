@@ -6,6 +6,7 @@ CLI Commands for the website app
 from flask import Blueprint
 from werkzeug.security import generate_password_hash
 from website.models import Practice, User, People, Charges
+from website.models import EventTypes
 from .. import db
 
 # Blueprint Configuration
@@ -140,6 +141,15 @@ def db_seed_max():
                             description='Test Charge 2 Description',
                             amount=200.00,
                             status='Active')
+    # Test Event Types
+    test_event_type_1 = EventTypes(practice_id=2,
+                                   event_name='Test Event Type 1',
+                                   event_description='Test Event Type 1 Description',
+                                   event_status='Active')
+    test_event_type_2 = EventTypes(practice_id=2,
+                                   event_name='Test Event Type 2',
+                                   event_description='Test Event Type 2 Description',
+                                   event_status='Active')
     # Test practice persons
     test_person_1 = People(practice_id=2,
                            first_name='Test',
@@ -170,6 +180,8 @@ def db_seed_max():
     db.session.add(test_user)
     db.session.add(test_charge_1)
     db.session.add(test_charge_2)
+    db.session.add(test_event_type_1)
+    db.session.add(test_event_type_2)
     db.session.add(test_person_1)
     db.session.add(test_person_2)
     db.session.commit()
