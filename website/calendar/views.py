@@ -8,7 +8,7 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 from website.calendar.forms import AddEventForm
 from website import db
-from website.models import Events
+from website.models import Events, People, EventTypes
 
 
 # Blueprint
@@ -21,10 +21,24 @@ calendar = Blueprint('calendar', __name__)
 @login_required
 def schedule():
     '''Calendar page'''
-    # TODO: Add sql query to get calendar data
+    if request.method == 'GET':
+        events = db.session.query(Events.created_at,
+                                  Events.start_date,
+                                  Events.start_time,
+                                  Events.end_date,
+                                  Events.end_time,
+                                  People.first_name,
+                                  People.middle_name,
+                                  People.last_name,
+                                  People.suffix_name,
+                                  EventTypes.event_name)\
+            .join(People, Events.person_id == People.id)\
+            .join(EventTypes, Events.event_type_id == EventTypes.id)\
+            .filter_by(practice_id=current_user.practice_id).all()
 
     return render_template("calendar.html",
                            title="Calendar",
+                           events=events,
                            user=current_user)
 
 
@@ -35,8 +49,8 @@ def addEvent():
     '''Add Event page'''
     form = AddEventForm()
 
-    form.event_type.choices = [(event_type.id, event_type.event_name) for event_type
-                               in current_user.practice.event_types]
+    form.event_type_id.choices = [(event_type.id, event_type.event_name) for event_type
+                                  in current_user.practice.event_types]
 
     form.person.choices = [(person.id, person.first_name + ' ' + person.last_name)
                            for person in current_user.practice.people]
@@ -49,7 +63,7 @@ def addEvent():
             created_by = current_user.get_id()
             updated_at = datetime.utcnow()
             updated_by = current_user.get_id()
-            event_type = form.event_type.data
+            event_type_id = form.event_type_id.data
             person_id = form.person.data
             start_date = form.start_date.data
             start_time = form.start_time.data
@@ -63,7 +77,7 @@ def addEvent():
                                created_by=created_by,
                                updated_at=updated_at,
                                updated_by=updated_by,
-                               event_type=event_type,
+                               event_type_id=event_type_id,
                                person_id=person_id,
                                start_date=start_date,
                                start_time=start_time,
