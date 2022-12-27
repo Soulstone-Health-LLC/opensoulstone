@@ -16,10 +16,13 @@ class AddEventForm(FlaskForm):
     # Form Fields
     event_type_id = SelectField(label='Event Type *', coerce=int,
                                 validators=[InputRequired()],
-                                render_kw={'class': 'form-control select2-show-search form-select'})
+                                render_kw={'class': 'form-control select2-show-search',
+                                           'placeholder': 'Select Event Type'})
     person = SelectField(label='Person', coerce=int,
                          validators=[InputRequired()],
-                         render_kw={'class': 'form-control select2 form-select'})
+                         render_kw={
+                             'class': 'form-control select2 form-select',
+                             'placeholder': 'Select Person'})
     start_date = DateField(label='Start Date *', format='%Y-%m-%d',
                            validators=[DataRequired()])
     start_time = TimeField(label='Start Time *', format='%H:%M',
@@ -28,5 +31,6 @@ class AddEventForm(FlaskForm):
                          validators=[DataRequired()])
     end_time = TimeField(label='End Time *', format='%H:%M',
                          validators=[DataRequired()])
-    note = TextAreaField(label='Note')
+    note = TextAreaField(label='Note', render_kw={
+                         'placeholder': 'Add any notes about the event here...'})
     submit = SubmitField(label='Create New Event')

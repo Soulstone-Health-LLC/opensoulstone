@@ -52,8 +52,8 @@ def addEvent():
     form.event_type_id.choices = [(event_type.id, event_type.event_name) for event_type
                                   in current_user.practice.event_types]
 
-    form.person.choices = [(person.id, person.first_name + ' ' + person.last_name)
-                           for person in current_user.practice.people]
+    form.person.choices = [(0, 'None')] + [(person.id, person.first_name + ' ' + person.last_name)
+                                           for person in current_user.practice.people]
 
     if form.validate_on_submit():
         if request.method == 'POST':

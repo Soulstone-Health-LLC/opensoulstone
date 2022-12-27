@@ -85,7 +85,7 @@ $(function(e) {
 		multidateSeparator: "-",
 	})
 
-	
+
 	// Select2
 	$('.select2').select2({
 		minimumResultsForSearch: Infinity,
@@ -93,7 +93,7 @@ $(function(e) {
 	});
 	// Select2 by showing the search
 	$('.select2-show-search').select2({
-		minimumResultsForSearch: '',
+		minimumResultsForSearch: 5,
 		width: '100%'
 	});
 });

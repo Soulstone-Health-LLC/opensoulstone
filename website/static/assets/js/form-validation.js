@@ -4,6 +4,10 @@
     $('.select2').select2({
       minimumResultsForSearch: Infinity
     });
+    // Select2 by showing the search
+    $('.select2-show-search').select2({
+      minimumResultsForSearch: 5
+    });
     window.addEventListener('load', function() {
       // Fetch all the forms we want to apply custom Bootstrap validation styles to
       var forms = document.getElementsByClassName('needs-validation');
