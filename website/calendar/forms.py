@@ -16,7 +16,7 @@ class AddEventForm(FlaskForm):
     # Form Fields
     event_type_id = SelectField(label='Event Type *', coerce=int,
                                 validators=[InputRequired()],
-                                render_kw={'class': 'form-control select2-show-search',
+                                render_kw={'class': 'form-control select2 form-select',
                                            'placeholder': 'Select Event Type'})
     person = SelectField(label='Person', coerce=int,
                          validators=[InputRequired()],
