@@ -150,6 +150,46 @@ def db_seed_max():
                                    event_name='Test Event Type 2',
                                    event_description='Test Event Type 2 Description',
                                    event_status='Active')
+    test_event_type_3 = EventTypes(practice_id=2,
+                                   event_name='Test Event Type 3',
+                                   event_description='Test Event Type 3 Description',
+                                   event_status='Active')
+    test_event_type_4 = EventTypes(practice_id=2,
+                                   event_name='Test Event Type 4',
+                                   event_description='Test Event Type 4 Description',
+                                   event_status='Active')
+    test_event_type_5 = EventTypes(practice_id=2,
+                                   event_name='Test Event Type 5',
+                                   event_description='Test Event Type 5 Description',
+                                   event_status='Active')
+    test_event_type_6 = EventTypes(practice_id=2,
+                                   event_name='Test Event Type 6',
+                                   event_description='Test Event Type 6 Description',
+                                   event_status='Active')
+    test_event_type_7 = EventTypes(practice_id=2,
+                                   event_name='Test Event Type 7',
+                                   event_description='Test Event Type 7 Description',
+                                   event_status='Active')
+    test_event_type_8 = EventTypes(practice_id=2,
+                                   event_name='Test Event Type 8',
+                                   event_description='Test Event Type 8 Description',
+                                   event_status='Active')
+    test_event_type_9 = EventTypes(practice_id=2,
+                                   event_name='Test Event Type 9',
+                                   event_description='Test Event Type 9 Description',
+                                   event_status='Active')
+    test_event_type_10 = EventTypes(practice_id=2,
+                                    event_name='Test Event Type 10',
+                                    event_description='Test Event Type 10 Description',
+                                    event_status='Active')
+    test_event_type_11 = EventTypes(practice_id=2,
+                                    event_name='Test Event Type 11',
+                                    event_description='Test Event Type 11 Description',
+                                    event_status='Active')
+    test_event_type_12 = EventTypes(practice_id=2,
+                                    event_name='Test Event Type 12',
+                                    event_description='Test Event Type 12 Description',
+                                    event_status='Active')
     # Test practice persons
     test_person_1 = People(practice_id=2,
                            first_name='Test',
@@ -182,6 +222,16 @@ def db_seed_max():
     db.session.add(test_charge_2)
     db.session.add(test_event_type_1)
     db.session.add(test_event_type_2)
+    db.session.add(test_event_type_3)
+    db.session.add(test_event_type_4)
+    db.session.add(test_event_type_5)
+    db.session.add(test_event_type_6)
+    db.session.add(test_event_type_7)
+    db.session.add(test_event_type_8)
+    db.session.add(test_event_type_9)
+    db.session.add(test_event_type_10)
+    db.session.add(test_event_type_11)
+    db.session.add(test_event_type_12)
     db.session.add(test_person_1)
     db.session.add(test_person_2)
     db.session.commit()

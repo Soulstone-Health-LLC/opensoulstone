@@ -19,12 +19,14 @@
           <div class="">
             <div class="row">
               <div class="col-md-4 mb-6">
-                {{ form.event_type_id.label() }} {% if form.event_type_id.errors
-                %} {{ form.event_type_id(class="form-control is-invalid") }} {%
-                for error in form.event_type_id.errors %}
-                <div class="invalid-feedback">{{ error }}</div>
-                {% endfor %} {% else %} {{
-                form.event_type_id(class="form-control") }} {% endif %}
+                <div class="form-group">
+                  {{ form.event_type_id.label(class="form-label") }} {% if
+                  form.event_type_id.errors %} {{
+                  form.event_type_id(class="form-control is-invalid") }} {% for
+                  error in form.event_type_id.errors %}
+                  <div class="invalid-feedback">{{ error }}</div>
+                  {% endfor %} {% else %} {{ form.event_type_id }} {% endif %}
+                </div>
               </div>
             </div>
             <div class="row">
@@ -33,8 +35,7 @@
                 form.person(class="form-control is-invalid") }} {% for error in
                 form.person.errors %}
                 <div class="invalid-feedback">{{ error }}</div>
-                {% endfor %} {% else %} {{ form.person(class="form-control") }}
-                {% endif %}
+                {% endfor %} {% else %} {{ form.person }} {% endif %}
               </div>
             </div>
             <div class="row">
