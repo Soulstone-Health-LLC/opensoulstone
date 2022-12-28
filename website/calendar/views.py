@@ -45,8 +45,8 @@ def schedule():
 
     return render_template("calendar.html",
                            title="Calendar",
-                           events=cal_events,
-                           cal_events=events,
+                           events=cal_events,  # TODO: Fix this
+                           cal_events=events,  # TODO: Flip this
                            user=current_user)
 
 
