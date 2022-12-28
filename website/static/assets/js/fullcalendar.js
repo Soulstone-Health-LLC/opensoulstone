@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 //List FullCalendar
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     var calendarEl = document.getElementById('calendar');
     var calendar = new FullCalendar.Calendar(calendarEl, {
         height: 'auto',
@@ -117,14 +117,14 @@ document.addEventListener('DOMContentLoaded', function() {
             listWeek: { buttonText: 'list week' }
         },
         initialView: 'listWeek',
-        initialDate: '2021-07-12',
         navLinks: true, // can click day/week names to navigate views
         editable: true,
         eventLimit: true, // allow "more" link when too many events
         dayMaxEvents: true, // allow "more" link when too many events
-        events: [{
+        /* events example
+        events: {{[{
             title: 'All Day Event',
-            start: '2021-11-01'
+            start: '2022-11-01'
         }, {
             title: 'Long Event',
             start: '2019-11-07',
@@ -163,8 +163,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }, {
             title: 'Click for Google',
             url: 'http://google.com/',
-            start: '2021-11-28'
-        }]
+            start: '2022-11-28'
+        }]}}
+        */
     });
 
     calendar.render();

@@ -36,15 +36,23 @@ def schedule():
             .join(EventTypes, Events.event_type_id == EventTypes.id)\
             .filter_by(practice_id=current_user.practice_id).all()
 
+        cal_events = [{
+            'title': f'{event.first_name} {event.last_name} ({event.event_name})',
+            'start': str(event.start_date) + 'T' + str(event.start_time),
+            'end': str(event.end_date) + 'T' + str(event.end_time),
+            'url': url_for('calendar.schedule')
+        } for event in events]
+
     return render_template("calendar.html",
                            title="Calendar",
-                           events=events,
+                           events=cal_events,
+                           cal_events=events,
                            user=current_user)
 
 
 # Add Event Page
-@calendar.route('/calendar/add_event', methods=['GET', 'POST'])
-@login_required
+@ calendar.route('/calendar/add_event', methods=['GET', 'POST'])
+@ login_required
 def addEvent():
     '''Add Event page'''
     form = AddEventForm()
