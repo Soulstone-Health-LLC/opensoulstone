@@ -182,18 +182,19 @@ def editEvent(event_id):
 
 
 # Delete Event
-@calendar.route('/calendar/delete_event/<int:event_id>', methods=['DELETE'])
+@calendar.route('/calendar/delete_event/<int:event_id>', methods=['POST'])
 @login_required
 def deleteEvent(event_id):
     '''Delete Event page'''
     event = Events.query.filter_by(id=event_id).first()
 
     # Delete event
-    db.session.delete(event)
-    db.session.commit()
+    if request.method == 'POST':
+        db.session.delete(event)
+        db.session.commit()
 
-    # Flash message
-    flash('Event deleted', 'success')
+        # Flash message
+        flash('Event deleted', 'success')
 
-    # Redirect to the calendar page
-    return redirect(url_for('calendar.schedule'))
+        # Redirect to the calendar page
+        return redirect(url_for('calendar.schedule'))
