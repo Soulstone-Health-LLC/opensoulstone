@@ -1,0 +1,94 @@
+{% extends "base.html" %} {% block pagenav %}
+<h1 class="page-title">View Event</h1>
+<ol class="breadcrumb">
+  <li class="breadcrumb-item" aria-current="page">
+    <a href="{{ url_for('calendar.schedule') }}">Calendar</a>
+  </li>
+  <li class="breadcrumb-item active">View Event</li>
+</ol>
+{% endblock pagenav %} {% block content %}
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title">View Event</h4>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="eventTitle">Event Type</label>
+              <input
+                type="text"
+                class="form-control"
+                id="eventTitle"
+                name="eventTitle"
+                value="{{ event.event_type_id }}"
+                readonly
+              />
+            </div>
+        </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="eventTitle">Person</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="eventTitle"
+                  name="eventTitle"
+                  value="{{ event.person_id }}"
+                  readonly
+                />
+              </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="eventDate">Event Start</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="eventDate"
+                    name="eventDate"
+                    value="{{ event.start_date }}  {{ event.start_time }}"
+                    readonly
+                  />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="eventEndTime">Event End</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="eventEndTime"
+                    name="eventEndTime"
+                    value="{{ event.end_date }}  {{ event.end_time }}"
+                    readonly
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="eventDescription">Event Note</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="eventDescription"
+                    name="eventDescription"
+                    value="{{ event.note }}"
+                    readonly
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endblock content %}
+    </div>
+  </div>
+</div>

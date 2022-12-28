@@ -6,7 +6,7 @@ Views for the calendar section of the website
 from datetime import datetime
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
-from website.calendar.forms import AddEventForm
+from website.calendar.forms import EventForm
 from website import db
 from website.models import Events, People, EventTypes
 
@@ -22,7 +22,8 @@ calendar = Blueprint('calendar', __name__)
 def schedule():
     '''Calendar page'''
     if request.method == 'GET':
-        events = db.session.query(Events.created_at,
+        events = db.session.query(Events.id,
+                                  Events.created_at,
                                   Events.start_date,
                                   Events.start_time,
                                   Events.end_date,
@@ -40,7 +41,7 @@ def schedule():
             'title': f'{event.first_name} {event.last_name} ({event.event_name})',
             'start': str(event.start_date) + 'T' + str(event.start_time),
             'end': str(event.end_date) + 'T' + str(event.end_time),
-            'url': url_for('calendar.schedule')
+            'url': url_for('calendar.viewEvent', event_id=event.id)
         } for event in events]
 
     return render_template("calendar.html",
@@ -55,7 +56,7 @@ def schedule():
 @ login_required
 def addEvent():
     '''Add Event page'''
-    form = AddEventForm()
+    form = EventForm()
 
     form.event_type_id.choices = [(event_type.id, event_type.event_name) for event_type
                                   in current_user.practice.event_types]
@@ -104,4 +105,16 @@ def addEvent():
             return redirect(url_for('calendar.schedule'))
     return render_template("add_event.html",
                            form=form,
+                           user=current_user)
+
+
+# View Event
+@calendar.route('/calendar/view_event/<int:event_id>')
+@login_required
+def viewEvent(event_id):
+    '''View Event page'''
+    event = Events.query.get_or_404(event_id)
+
+    return render_template("view_event.html",
+                           event=event,
                            user=current_user)

@@ -10,8 +10,8 @@ from wtforms.validators import DataRequired, InputRequired
 
 
 # Form - Add Event
-class AddEventForm(FlaskForm):
-    ''' Add Event Form '''
+class EventForm(FlaskForm):
+    ''' Event Form '''
 
     # Form Fields
     event_type_id = SelectField(label='Event Type *', coerce=int,
