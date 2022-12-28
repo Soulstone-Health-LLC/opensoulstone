@@ -47,9 +47,14 @@ def login():
             # Checks if the password is correct
             if user:
                 if check_password_hash(user.password, password):
-                    flash('Logged in successfully', category='success')
-                    login_user(user, remember=True)
-                    return redirect(url_for('core.home'))
+                    if user.role == 'Support':
+                        flash('Logged in successfully', category='success')
+                        login_user(user, remember=True)
+                        return redirect(url_for('supportapp.support'))
+                    else:
+                        flash('Logged in successfully', category='success')
+                        login_user(user, remember=True)
+                        return redirect(url_for('core.home'))
                 else:
                     flash(f'''
                           The account information used for {form.email.data}
