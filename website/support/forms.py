@@ -46,8 +46,8 @@ class AddPracticeForm(FlaskForm):
 # ------------------------------------------------------------------------------
 # Form - Add Practice User
 # ------------------------------------------------------------------------------
-class AddPracticeUserForm(FlaskForm):
-    ''' Add User to the Practice Form '''
+class PracticeUserForm(FlaskForm):
+    ''' Add or Edit the User to the Practice Form '''
     role = SelectField(label='User Role *',
                        choices=ROLE_CHOICES,
                        validators=[DataRequired()])

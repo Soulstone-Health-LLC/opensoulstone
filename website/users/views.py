@@ -124,7 +124,7 @@ def reset_token(token):
 
     form = ResetPasswordForm()
     if form.validate_on_submit():
-        password = generate_password_hash(form.password.data, method='sha384')
+        password = generate_password_hash(form.password.data, method='sha256')
 
         # Update password on database
         user.password = password

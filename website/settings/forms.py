@@ -6,10 +6,10 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, SelectField, EmailField
 from wtforms.fields.simple import TelField
-from wtforms.validators import DataRequired, Length, Email
+from wtforms.validators import DataRequired, Length, Email, InputRequired
 from wtforms.widgets import TextArea
 from website.models import STATE_CHOICES, PHONE_TYPE_CHOICES
-from website.models import STATUS_CHOICES
+from website.models import STATUS_CHOICES, ROLE_CHOICES
 
 
 # ------------------------------------------------------------------------------
@@ -43,14 +43,13 @@ class EditPracticeForm(FlaskForm):
 
 
 # ------------------------------------------------------------------------------
-# Form - Add Practice User
+# Form - Practice User
 # ------------------------------------------------------------------------------
-class AddPracticeUserForm(FlaskForm):
-    ''' Add User to the Practice Form '''
+class PracticeUserForm(FlaskForm):
+    ''' Add or Edit a User to the Practice Form '''
     role = SelectField(label='User Role *',
-                       choices=[('Practitioner', 'Practitioner'),
-                                ('Staff', 'Staff')],
-                       validators=[DataRequired()])
+                       choices=ROLE_CHOICES,
+                       validators=[InputRequired()])
     first_name = StringField(label='First Name *',
                              validators=[DataRequired(),
                                          Length(min=2, max=150)])
@@ -59,15 +58,25 @@ class AddPracticeUserForm(FlaskForm):
                             validators=[DataRequired(),
                                         Length(min=2, max=150)])
     suffix_name = StringField(label='Suffix')
+    address_1 = StringField(label='Address Line 1')
+    address_2 = StringField(label='Address Line 2')
+    city = StringField(label='City')
+    state = SelectField(label='State',
+                        choices=STATE_CHOICES)
+    zipcode = StringField(label='Zipcode')
     email = EmailField(label='Email *',
                        validators=[DataRequired(),
                                    Email(),
                                    Length(min=3, max=150)])
-    phone = TelField(label='Phone Number *',
-                     validators=[DataRequired()])
+    phone_number = TelField(label='Phone Number *',
+                            validators=[DataRequired()])
     phone_type = SelectField(label='Phone Type *',
-                             choices=PHONE_TYPE_CHOICES)
-    submit = SubmitField(label='Register Account')
+                             choices=PHONE_TYPE_CHOICES,
+                             validators=[InputRequired()])
+    status = SelectField(label='Status *',
+                         choices=STATUS_CHOICES,
+                         validators=[InputRequired()])
+    submit = SubmitField(label='Save Account')
 
 
 # ------------------------------------------------------------------------------

@@ -1,0 +1,79 @@
+{% extends "base.html" %} {% block pagenav %}
+<h1 class="page-title">Settings</h1>
+<ol class="breadcrumb">
+  <li class="breadcrumb-item" aria-current="page">
+    <a href="{{ url_for('settings.practiceUsers') }}">Event Types</a>
+  </li>
+</ol>
+{% endblock pagenav %} {% block content %}
+<!-- Add Practice User -->
+<div class="">
+  <a
+    href="{{ url_for('settings.addPracticeUser') }}"
+    class="btn btn-primary btn-icon text-white me-2"
+  >
+    <span>
+      <i class="fe fe-plus"></i>
+    </span>
+    Add New Practice User
+  </a>
+</div>
+<br />
+<!-- End Add Practice User -->
+<!-- Row -->
+<div class="row row-sm">
+  <div class="col-lg-12">
+    <div class="card custom-card">
+      <div class="card-body">
+        <div>
+          <h3 class="card-title mb-1">Practice Users</h3>
+          <p class="text-muted card-sub-title">
+            List of users for the practice.
+          </p>
+        </div>
+        <div class="table-responsive">
+          <table
+            class="table table-bordered text-nowrap border-bottom w-100"
+            id="responsive-datatable"
+          >
+            <thead>
+              <tr>
+                <th>First Name</th>
+                <th>Middle Name</th>
+                <th>Last Name</th>
+                <th>Suffix</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for user in users %}
+              <tr>
+                <td>{{ user.first_name }}</td>
+                <td>{{ user.middle_name }}</td>
+                <td>{{ user.last_name }}</td>
+                <td>{{ user.suffix_name }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.phone_number }}</td>
+                <td>{{ user.status }}</td>
+                <td>
+                  <a
+                    href="{{ url_for('settings.editPracticeUser', user_id=user.id) }}"
+                    class="btn btn-primary badge"
+                    type="button"
+                    ><i class="fe fe-edit"></i> Edit</a
+                  >
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Row -->
+{% endblock content %}
