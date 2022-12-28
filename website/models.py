@@ -56,27 +56,21 @@ GENDER_PRONOUN_CHOICES = [('', ''),
                           ('Other', 'Other')]
 
 # Phone Type Dictionary
-PHONE_TYPE_CHOICES = [('', ''),
-                      ('Mobile', 'Mobile'),
+PHONE_TYPE_CHOICES = [('Mobile', 'Mobile'),
                       ('Home', 'Home'),
                       ('Office', 'Office'),
                       ('Fax', 'Fax')]
 
 # Role Dictionary
-ROLE_CHOICES = [('', ''),
-                ('Owner', 'Owner'),
-                ('Manager', 'Manager'),
-                ('Staff', 'Staff'),
-                ('Patient', 'Patient')]
+ROLE_CHOICES = [('Practitioner', 'Practitioner'),
+                ('Staff', 'Staff')]
 
 # Status Dictionary
-STATUS_CHOICES = [('', ''),
-                  ('Active', 'Active'),
+STATUS_CHOICES = [('Active', 'Active'),
                   ('Inactive', 'Inactive')]
 
 # Payment Type Dictionary
-PAYMENT_TYPE_CHOICES = [('', ''),
-                        ('Cash', 'Cash'),
+PAYMENT_TYPE_CHOICES = [('Cash', 'Cash'),
                         ('Check', 'Check'),
                         ('Credit Card', 'Credit Card'),
                         ('Gift Card', 'Gift Card'),
