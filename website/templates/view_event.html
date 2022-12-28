@@ -85,6 +85,16 @@
                 </div>
               </div>
             </div>
+            <div class="row">
+              <div class="col-md-3">
+                <a href="{{ url_for('calendar.viewEvent', event_id=event.id) }}" class="btn btn-primary">Edit Event</a>
+              </div>
+              <div class="col-md-3">
+                <form action="{{ url_for('calendar.deleteEvent', event_id=event.id) }}" method="delete">
+                  <input type="submit" class="btn btn-danger" value="Delete Event">
+                </form>
+              </div>
+            </div>
           </div>
         </div>
       </div>

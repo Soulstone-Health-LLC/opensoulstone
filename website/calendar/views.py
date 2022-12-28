@@ -118,3 +118,82 @@ def viewEvent(event_id):
     return render_template("view_event.html",
                            event=event,
                            user=current_user)
+
+
+# Edit Event
+@calendar.route('/calendar/edit_event/<int:event_id>', methods=['GET', 'POST'])
+@login_required
+def editEvent(event_id):
+    '''Edit Event page'''
+    event = Events.query.get_or_404(event_id)
+    form = EventForm()
+
+    form.event_type_id.choices = [(event_type.id, event_type.event_name) for event_type
+                                  in current_user.practice.event_types]
+
+    form.person.choices = [(0, 'None')] + [(person.id, person.first_name + ' ' + person.last_name)
+                                           for person in current_user.practice.people]
+
+    if form.validate_on_submit():
+        if request.method == 'POST':
+            # Get data from the form
+            updated_at = datetime.utcnow()
+            updated_by = current_user.get_id()
+            event_type_id = form.event_type_id.data
+            person_id = form.person.data
+            start_date = form.start_date.data
+            start_time = form.start_time.data
+            end_date = form.end_date.data
+            end_time = form.end_time.data
+            note = form.note.data
+
+            # Update event
+            event.updated_at = updated_at
+            event.updated_by = updated_by
+            event.event_type_id = event_type_id
+            event.person_id = person_id
+            event.start_date = start_date
+            event.start_time = start_time
+            event.end_date = end_date
+            event.end_time = end_time
+            event.note = note
+
+            # Add new event to the database
+            db.session.commit()
+
+            # Flash message
+            flash('Event updated', 'success')
+
+            # Redirect to the calendar page
+            return redirect(url_for('calendar.schedule'))
+    elif request.method == 'GET':
+        form.event_type_id.data = event.event_type_id
+        form.person.data = event.person_id
+        form.start_date.data = event.start_date
+        form.start_time.data = event.start_time
+        form.end_date.data = event.end_date
+        form.end_time.data = event.end_time
+        form.note.data = event.note
+
+    return render_template("edit_event.html",
+                           form=form,
+                           event=event,
+                           user=current_user)
+
+
+# Delete Event
+@calendar.route('/calendar/delete_event/<int:event_id>', methods=['DELETE'])
+@login_required
+def deleteEvent(event_id):
+    '''Delete Event page'''
+    event = Events.query.filter_by(id=event_id).first()
+
+    # Delete event
+    db.session.delete(event)
+    db.session.commit()
+
+    # Flash message
+    flash('Event deleted', 'success')
+
+    # Redirect to the calendar page
+    return redirect(url_for('calendar.schedule'))
