@@ -1,22 +1,17 @@
-
-"""
+'''
 This module contains shared fixtures
-"""
+'''
 
-# ---------------------------------------------------------------
+
 # Imports
-# ---------------------------------------------------------------
-
 import pytest
 import selenium.webdriver
 
 
-# ---------------------------------------------------------------
 # Fixtures
-# ---------------------------------------------------------------
-
 @pytest.fixture
 def browserChrome():
+    '''Create a Chrome WebDriver instance and return it to the test'''
     # Initialize the ChromeDriver instance
     b = selenium.webdriver.Chrome()
 
@@ -32,7 +27,8 @@ def browserChrome():
 
 @pytest.fixture
 def browserFirefox():
-    # Initialize the ChromeDriver instance
+    '''Create a Firefox WebDriver instance and return it to the test'''
+    # Initialize the Firefox instance
     b = selenium.webdriver.Firefox()
 
     # Make its calls wait up to 10 seconds for elements to appear
