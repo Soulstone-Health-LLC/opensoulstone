@@ -3,6 +3,7 @@
 # ------------------------------------------------------------------------------
 # Imports
 # ------------------------------------------------------------------------------
+from datetime import datetime
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, SelectField, DateField
 from wtforms.validators import DataRequired
@@ -15,7 +16,7 @@ from wtforms.widgets import TextArea
 class AddVisitNoteForm(FlaskForm):
     ''' Add new Visit Note '''
     date_of_service = DateField(label='Date of Service *',
-                                validators=[DataRequired()])
+                                validators=[DataRequired()], default=datetime.today)
     reason_for_visit = StringField(label='Reason for Visit',
                                    widget=TextArea())
     chakra_assessment_root_score = SelectField(label='Root Chakra Score',
@@ -65,19 +66,19 @@ class AddVisitNoteForm(FlaskForm):
                                                              widget=TextArea())
     chakra_assessment_heart_score = SelectField(label='Heart Chakra Score',
                                                 choices=[('', ''),
-                                                        ('-5', -5),
-                                                        ('-4', -4),
-                                                        ('-3', -3),
-                                                        ('-2', -2),
-                                                        ('-1', -1),
-                                                        ('0', 0),
-                                                        ('1', 1),
-                                                        ('2', 2),
-                                                        ('3', 3),
-                                                        ('4', 4),
-                                                        ('5', 5)])
+                                                         ('-5', -5),
+                                                         ('-4', -4),
+                                                         ('-3', -3),
+                                                         ('-2', -2),
+                                                         ('-1', -1),
+                                                         ('0', 0),
+                                                         ('1', 1),
+                                                         ('2', 2),
+                                                         ('3', 3),
+                                                         ('4', 4),
+                                                         ('5', 5)])
     chakra_assessment_heart_description = StringField(label='Heart Chakra Notes',
-                                                     widget=TextArea())
+                                                      widget=TextArea())
     chakra_assessment_throat_score = SelectField(label='Throat Chakra Score',
                                                  choices=[('', ''),
                                                           ('-5', -5),
@@ -186,19 +187,19 @@ class EditVisitNoteForm(FlaskForm):
                                                              widget=TextArea())
     chakra_assessment_heart_score = SelectField(label='Heart Chakra Score',
                                                 choices=[('', ''),
-                                                        ('-5', -5),
-                                                        ('-4', -4),
-                                                        ('-3', -3),
-                                                        ('-2', -2),
-                                                        ('-1', -1),
-                                                        ('0', 0),
-                                                        ('1', 1),
-                                                        ('2', 2),
-                                                        ('3', 3),
-                                                        ('4', 4),
-                                                        ('5', 5)])
+                                                         ('-5', -5),
+                                                         ('-4', -4),
+                                                         ('-3', -3),
+                                                         ('-2', -2),
+                                                         ('-1', -1),
+                                                         ('0', 0),
+                                                         ('1', 1),
+                                                         ('2', 2),
+                                                         ('3', 3),
+                                                         ('4', 4),
+                                                         ('5', 5)])
     chakra_assessment_heart_description = StringField(label='Heart Chakra Notes',
-                                                     widget=TextArea())
+                                                      widget=TextArea())
     chakra_assessment_throat_score = SelectField(label='Throat Chakra Score',
                                                  choices=[('', ''),
                                                           ('-5', -5),

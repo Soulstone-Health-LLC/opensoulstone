@@ -11,7 +11,7 @@ from flask import make_response
 from flask_login import login_required, current_user
 from website.visit_notes.forms import AddVisitNoteForm, EditVisitNoteForm
 from website import db
-from website.models import People, Practice, Notes
+from website.models import People, Practice, Notes, LedgerCharges, LedgerPayments
 
 
 # ------------------------------------------------------------------------------
@@ -38,9 +38,12 @@ def notes():
         .filter_by(practice_id=current_user.practice_id)\
         .join(People, Notes.person_id == People.id).all()
 
+    people = People.query.filter_by(practice_id=current_user.practice_id).all()
+
     return render_template("notes.html", title="Soulstone - Notes",
                            user=current_user,
-                           visit_notes=visit_notes)
+                           visit_notes=visit_notes,
+                           people=people)
 
 
 @visit_notes.route('/notes/<int:id>/add_visit_note', methods=['GET', 'POST'])
@@ -52,6 +55,17 @@ def addVisitNote(id):
     form = AddVisitNoteForm()
 
     pers_id = People.query.get_or_404(id).id
+
+    total_charges = db.session.query(db.func.sum(LedgerCharges.units * LedgerCharges.unit_amount + (
+        LedgerCharges.unit_amount * LedgerCharges.tax_rate))).filter_by(practice_id=current_user.practice_id, person_id=id).scalar()
+    total_payments = db.session.query(db.func.sum(LedgerPayments.amount)).filter_by(
+        practice_id=current_user.practice_id, person_id=id).scalar()
+
+    if total_charges is None:
+        total_charges = 0
+    if total_payments is None:
+        total_payments = 0
+    balance = total_charges - total_payments
 
     # current user practice id
     pu_id = current_user.practice_id
@@ -67,7 +81,8 @@ def addVisitNote(id):
                                    title="Soulstone - Add Visit Note",
                                    user=current_user,
                                    person=person,
-                                   form=form)
+                                   form=form,
+                                   balance=balance)
         else:
             return render_template("401.html",
                                    user=current_user)
