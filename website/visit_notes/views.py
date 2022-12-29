@@ -156,6 +156,17 @@ def editVisitNote(id):
     pers_id = note.person_id
     person = People.query.get_or_404(pers_id)
 
+    total_charges = db.session.query(db.func.sum(LedgerCharges.units * LedgerCharges.unit_amount + (
+        LedgerCharges.unit_amount * LedgerCharges.tax_rate))).filter_by(practice_id=current_user.practice_id, person_id=id).scalar()
+    total_payments = db.session.query(db.func.sum(LedgerPayments.amount)).filter_by(
+        practice_id=current_user.practice_id, person_id=id).scalar()
+
+    if total_charges is None:
+        total_charges = 0
+    if total_payments is None:
+        total_payments = 0
+    balance = total_charges - total_payments
+
     if request.method == 'GET':
         form.reason_for_visit.data = note.reason_for_visit
         form.date_of_service.data = note.date_of_service
@@ -181,7 +192,8 @@ def editVisitNote(id):
                                user=current_user,
                                person=person,
                                note=note,
-                               form=form)
+                               form=form,
+                               balance=balance)
 
     if form.validate_on_submit() and request.method == 'POST':
         note.updated_at = datetime.utcnow()

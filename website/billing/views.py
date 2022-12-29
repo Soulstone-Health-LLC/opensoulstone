@@ -75,6 +75,16 @@ def addLedgerCharge(id):
     pu_id = current_user.practice_id
     pp_id = People.query.get_or_404(id).practice_id
     notes_count = Notes.query.filter_by(person_id=id).count()
+    total_charges = db.session.query(db.func.sum(LedgerCharges.units * LedgerCharges.unit_amount + (
+        LedgerCharges.unit_amount * LedgerCharges.tax_rate))).filter_by(practice_id=current_user.practice_id, person_id=id).scalar()
+    total_payments = db.session.query(db.func.sum(LedgerPayments.amount)).filter_by(
+        practice_id=current_user.practice_id, person_id=id).scalar()
+
+    if total_charges is None:
+        total_charges = 0
+    if total_payments is None:
+        total_payments = 0
+    balance = total_charges - total_payments
 
     if request.method == 'GET':
         # check if user practice id matches patient user id
@@ -92,7 +102,8 @@ def addLedgerCharge(id):
                                    person=person,
                                    notes_count=notes_count,
                                    practice_charges=practice_charges,
-                                   form=form)
+                                   form=form,
+                                   balance=balance)
         else:
             return render_template("401.html",
                                    user=current_user)
@@ -177,6 +188,16 @@ def addLedgerPayment(id):
     pu_id = current_user.practice_id
     pp_id = People.query.get_or_404(id).practice_id
     notes_count = Notes.query.filter_by(person_id=id).count()
+    total_charges = db.session.query(db.func.sum(LedgerCharges.units * LedgerCharges.unit_amount + (
+        LedgerCharges.unit_amount * LedgerCharges.tax_rate))).filter_by(practice_id=current_user.practice_id, person_id=id).scalar()
+    total_payments = db.session.query(db.func.sum(LedgerPayments.amount)).filter_by(
+        practice_id=current_user.practice_id, person_id=id).scalar()
+
+    if total_charges is None:
+        total_charges = 0
+    if total_payments is None:
+        total_payments = 0
+    balance = total_charges - total_payments
 
     if request.method == 'GET':
         # check if user practice id matches patient user id
@@ -190,7 +211,8 @@ def addLedgerPayment(id):
                                    person=person,
                                    notes_count=notes_count,
                                    practice_charges=practice_charges,
-                                   form=form)
+                                   form=form,
+                                   balance=balance)
         else:
             return render_template("401.html",
                                    user=current_user)
