@@ -147,4 +147,5 @@ pyvenv.cfg
 Scripts/
 bin
 include
-
+db
+!db/.gitkeep
