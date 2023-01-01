@@ -1,5 +1,6 @@
 services:
   soulstone:
+    user: 1000:1000
     build: 
       context: .
       dockerfile: ./build/Dockerfile
@@ -8,6 +9,10 @@ services:
     environment:
       - SECRET_KEY=${SECRET_KEY}
       - EMAIL_PASSWORD=${EMAIL_PASSWORD}
-      - SQLITE_LOCATION=/db
+      - SQLITE_LOCATION=/app/database
     volumes:
-      - ./db:/db
+      - database:/app/database
+
+volumes:
+  database:
+  

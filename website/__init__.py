@@ -1,19 +1,7 @@
 '''
 This file initializes the application using Flask.
 '''
-
-
 # Imports
-from website.cli.cli_commands import commands
-from website.error_pages.handler import error_pages
-from website.support.views import supportapp
-from website.settings.views import settings
-from website.billing.views import billing
-from website.visit_notes.views import visit_notes
-from website.persons.views import persons
-from website.users.views import users
-from website.calendar.views import calendar
-from website.core.views import core
 import os
 from dotenv import load_dotenv
 from flask import Flask
@@ -26,7 +14,7 @@ load_dotenv()
 SECRET_KEY = os.getenv("SECRET_KEY")
 EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
 SQLITE_LOCATION = os.getenv(
-    "SQLITE_LOCATION" | os.path.abspath(os.path.dirname(__file__))
+    "SQLITE_LOCATION", os.path.abspath(os.path.dirname(__file__))
 )
 
 # Flask initialization
@@ -55,6 +43,16 @@ mail.init_app(app)
 
 
 # Blueprint routing
+from website.core.views import core
+from website.calendar.views import calendar
+from website.users.views import users
+from website.persons.views import persons
+from website.visit_notes.views import visit_notes
+from website.billing.views import billing
+from website.settings.views import settings
+from website.support.views import supportapp
+from website.error_pages.handler import error_pages
+from website.cli.cli_commands import commands
 
 app.register_blueprint(core)
 app.register_blueprint(calendar)
