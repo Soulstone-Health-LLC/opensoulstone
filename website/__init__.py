@@ -1,8 +1,6 @@
 '''
 This file initializes the application using Flask.
 '''
-
-
 # Imports
 import os
 from dotenv import load_dotenv
@@ -15,11 +13,13 @@ from flask_mail import Mail
 load_dotenv()
 SECRET_KEY = os.getenv("SECRET_KEY")
 EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
-
+SQLITE_LOCATION = os.getenv(
+    "SQLITE_LOCATION", os.path.abspath(os.path.dirname(__file__))
+)
 
 # Flask initialization
 app = Flask(__name__)
-basedir = os.path.abspath(os.path.dirname(__file__))
+basedir = SQLITE_LOCATION
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + \
     os.path.join(basedir, 'database.db')
 app.config['SECRET_KEY'] = SECRET_KEY
