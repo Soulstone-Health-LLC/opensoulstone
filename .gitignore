@@ -145,3 +145,6 @@ pyvenv.cfg
 .vscode/
 
 Scripts/
+bin
+include
+
