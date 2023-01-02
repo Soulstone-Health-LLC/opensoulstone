@@ -3,7 +3,7 @@ Views for the calendar section of the website
 '''
 
 # Imports
-from datetime import datetime
+from datetime import datetime, timedelta
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 from website.calendar.forms import EventForm
@@ -24,9 +24,8 @@ def schedule():
     if request.method == 'GET':
         events = db.session.query(Events.id,
                                   Events.created_at,
-                                  Events.start_date,
+                                  Events.date,
                                   Events.start_time,
-                                  Events.end_date,
                                   Events.end_time,
                                   People.first_name,
                                   People.middle_name,
@@ -39,8 +38,8 @@ def schedule():
 
         cal_events = [{
             'title': f'{event.first_name} {event.last_name} ({event.event_name})',
-            'start': str(event.start_date) + 'T' + str(event.start_time),
-            'end': str(event.end_date) + 'T' + str(event.end_time),
+            'start': str(event.date) + 'T' + str(event.start_time),
+            'end': str(event.date) + 'T' + str(event.end_time),
             'url': url_for('calendar.viewEvent', event_id=event.id)
         } for event in events]
 
@@ -66,6 +65,11 @@ def addEvent():
 
     if form.validate_on_submit():
         if request.method == 'POST':
+            # calculate duration
+            duration = EventTypes.query.filter_by(
+                id=form.event_type_id.data).first().event_duration
+            start_datetime = datetime.combine(
+                form.date.data, form.start_time.data)
             # Get data from the form
             practice_id = current_user.practice_id
             created_at = datetime.utcnow()
@@ -74,11 +78,11 @@ def addEvent():
             updated_by = current_user.get_id()
             event_type_id = form.event_type_id.data
             person_id = form.person.data
-            start_date = form.start_date.data
-            start_time = form.start_time.data
-            end_date = form.end_date.data
-            end_time = form.end_time.data
+            date = form.date.data
             note = form.note.data
+
+            # Calculate end date and time
+            end_time = start_datetime + duration
 
             # Create new event
             new_event = Events(practice_id=practice_id,
@@ -88,10 +92,9 @@ def addEvent():
                                updated_by=updated_by,
                                event_type_id=event_type_id,
                                person_id=person_id,
-                               start_date=start_date,
-                               start_time=start_time,
-                               end_date=end_date,
-                               end_time=end_time,
+                               date=date,
+                               start_time=datetime.time(start_datetime),
+                               end_time=datetime.time(end_time),
                                note=note)
 
             # Add new event to the database
@@ -113,7 +116,19 @@ def addEvent():
 @login_required
 def viewEvent(event_id):
     '''View Event page'''
-    event = Events.query.get_or_404(event_id)
+    event = db.session.query(Events.id,
+                             Events.created_at,
+                             Events.date,
+                             Events.start_time,
+                             Events.end_time,
+                             People.first_name,
+                             People.middle_name,
+                             People.last_name,
+                             People.suffix_name,
+                             EventTypes.event_name)\
+        .filter_by(id=event_id)\
+        .join(People, Events.person_id == People.id)\
+        .join(EventTypes, Events.event_type_id == EventTypes.id).first()
 
     return render_template("view_event.html",
                            event=event,
@@ -136,26 +151,30 @@ def editEvent(event_id):
 
     if form.validate_on_submit():
         if request.method == 'POST':
+            # calculate duration
+            duration = EventTypes.query.filter_by(
+                id=form.event_type_id.data).first().event_duration
+            start_datetime = datetime.combine(
+                form.date.data, form.start_time.data)
             # Get data from the form
             updated_at = datetime.utcnow()
             updated_by = current_user.get_id()
             event_type_id = form.event_type_id.data
             person_id = form.person.data
-            start_date = form.start_date.data
-            start_time = form.start_time.data
-            end_date = form.end_date.data
-            end_time = form.end_time.data
+            date = form.date.data
             note = form.note.data
+
+            # Calculate end date and time
+            end_time = start_datetime + duration
 
             # Update event
             event.updated_at = updated_at
             event.updated_by = updated_by
             event.event_type_id = event_type_id
             event.person_id = person_id
-            event.start_date = start_date
-            event.start_time = start_time
-            event.end_date = end_date
-            event.end_time = end_time
+            event.date = date
+            event.start_time = datetime.time(start_datetime)
+            event.end_time = datetime.time(end_time)
             event.note = note
 
             # Add new event to the database
@@ -169,10 +188,8 @@ def editEvent(event_id):
     elif request.method == 'GET':
         form.event_type_id.data = event.event_type_id
         form.person.data = event.person_id
-        form.start_date.data = event.start_date
+        form.date.data = event.date
         form.start_time.data = event.start_time
-        form.end_date.data = event.end_date
-        form.end_time.data = event.end_time
         form.note.data = event.note
 
     return render_template("edit_event.html",

@@ -5,6 +5,7 @@ Modles for the Soulstone application
 # ------------------------------------------------------------------------------
 # Imports
 # ------------------------------------------------------------------------------
+from datetime import timedelta
 from flask import redirect, url_for
 from flask_login import UserMixin
 from sqlalchemy.sql import func
@@ -181,6 +182,8 @@ class People(db.Model):
     status = db.Column(db.Text, default='Active')
     date_of_birth = db.Column(db.Date)
     gender_identity = db.Column(db.Text)
+    # Relationships
+    events = db.relationship('Events')
 
 
 class Charges(db.Model):
@@ -288,11 +291,12 @@ class Events(db.Model):
     updated_at = db.Column(db.DateTime(timezone=True))
     updated_by = db.Column(db.Integer, db.ForeignKey('user.id'))
     event_type_id = db.Column(db.Integer, db.ForeignKey('event_types.id'))
-    start_date = db.Column(db.Date, nullable=False)
+    date = db.Column(db.Date, nullable=False)
     start_time = db.Column(db.Time, nullable=False)
-    end_date = db.Column(db.Date, nullable=False)
     end_time = db.Column(db.Time, nullable=False)
     note = db.Column(db.Text)
+    # Relationships
+    event_type = db.relationship('EventTypes', backref='events', lazy=True)
 
     def __repr__(self):
         return f"Event('{self.event_type}', '{self.date}', '{self.time}')"
@@ -310,6 +314,8 @@ class EventTypes(db.Model):
     event_name = db.Column(db.Text, nullable=False)
     event_description = db.Column(db.Text)
     event_status = db.Column(db.Text, nullable=False, default='Active')
+    event_duration = db.Column(
+        db.Interval, nullable=False, default=timedelta(minutes=30))
 
     def __repr__(self):
         return f"Event_Type('{self.event_name}', '{self.event_description}')"

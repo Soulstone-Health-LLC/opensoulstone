@@ -5,6 +5,7 @@
 # ------------------------------------------------------------------------------
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, SelectField, EmailField
+from wtforms import IntegerField
 from wtforms.fields.simple import TelField
 from wtforms.validators import DataRequired, Length, Email, InputRequired
 from wtforms.widgets import TextArea
@@ -126,6 +127,8 @@ class EventTypeForm(FlaskForm):
     event_description = StringField(label='Event Type Description *',
                                     widget=TextArea(),
                                     validators=[DataRequired()])
+    event_duration = IntegerField(
+        label='Event Duration (in minutes) *', validators=[DataRequired()])
     event_status = SelectField(label='Status *',
                                choices=STATUS_CHOICES)
     submit = SubmitField(label='Save Event Type')

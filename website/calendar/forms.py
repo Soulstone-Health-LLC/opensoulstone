@@ -5,7 +5,7 @@ Forms for the calendar
 # Imports
 from flask_wtf import FlaskForm
 from wtforms import SubmitField, SelectField, DateField, TimeField
-from wtforms import TextAreaField
+from wtforms import TextAreaField, IntegerField
 from wtforms.validators import DataRequired, InputRequired
 
 
@@ -23,14 +23,10 @@ class EventForm(FlaskForm):
                          render_kw={
                              'class': 'form-control select2 form-select',
                              'placeholder': 'Select Person'})
-    start_date = DateField(label='Start Date *', format='%Y-%m-%d',
+    date = DateField(label='Start Date *', format='%Y-%m-%d',
                            validators=[DataRequired()])
     start_time = TimeField(label='Start Time *', format='%H:%M',
                            validators=[DataRequired()])
-    end_date = DateField(label='End Date *', format='%Y-%m-%d',
-                         validators=[DataRequired()])
-    end_time = TimeField(label='End Time *', format='%H:%M',
-                         validators=[DataRequired()])
     note = TextAreaField(label='Note', render_kw={
                          'placeholder': 'Add any notes about the event here...'})
     submit = SubmitField(label='Create New Event')

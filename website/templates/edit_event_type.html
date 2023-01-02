@@ -37,6 +37,15 @@
               form.event_description(class="form-control") }} {% endif %}
             </div>
             <div class="row">
+              <div class="form-group">
+                {{ form.event_duration.label() }} {% if
+                form.event_duration.errors %} {{
+                form.event_duration(class="form-control is-invalid") }} {% for
+                error in form.event_duration.errors %}
+                <div class="invalid-feedback">{{ error }}</div>
+                {% endfor %} {% else %} {{
+                form.event_duration(class="form-control") }} {% endif %}
+              </div>
               <div class="col-md-4 mb-6">
                 {{ form.event_status.label() }} {% if form.event_status.errors
                 %} {{ form.event_status(class="form-control select2 form-select
