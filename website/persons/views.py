@@ -7,6 +7,7 @@ from datetime import datetime
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 from website.persons.forms import AddPersonForm, EditPersonForm
+from website.persons.forms import SearchPersonForm
 from website import db
 from website.models import People, Notes, Charges, LedgerCharges
 from website.models import LedgerPayments
@@ -37,6 +38,31 @@ def people():
                            user=current_user,
                            people_list=people_list,
                            people_count=people_count)
+
+
+# Persons - Search
+@persons.route('/people/search', methods=['GET', 'POST'])
+@login_required
+def searchPerson():
+    ''' Search for a person '''
+    form = SearchPersonForm()
+    if form.validate_on_submit():
+        if request.method == 'POST':
+            query = form.query.data
+            results = People.query.filter(People.first_name.contains(
+                query) | People.last_name.contains(query)).all()
+            results_count = People.query.filter(People.first_name.contains(
+                query) | People.last_name.contains(query)).count()
+
+        return render_template("people_search.html",
+                               form=form,
+                               results=results,
+                               results_count=results_count,
+                               user=current_user)
+
+    return render_template("people_search.html",
+                           form=form,
+                           user=current_user)
 
 
 # Persons - Add New Person
