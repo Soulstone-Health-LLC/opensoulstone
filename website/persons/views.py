@@ -8,7 +8,8 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 from website.persons.forms import AddPersonForm, EditPersonForm
 from website import db
-from website.models import People, Notes, Charges, LedgerCharges, LedgerPayments
+from website.models import People, Notes, Charges, LedgerCharges
+from website.models import LedgerPayments
 
 
 # ------------------------------------------------------------------------------
@@ -25,13 +26,17 @@ persons = Blueprint('persons', __name__)
 @login_required
 def people():
     if request.method == 'GET':
-        people = People.query.filter_by(
-            practice_id=current_user.practice_id).order_by(People.last_name).all()
+        people_list = People.query.filter_by(
+            practice_id=current_user.practice_id).order_by(People.last_name)\
+            .all()
+        people_count = People.query.filter_by(
+            practice_id=current_user.practice_id).count()
 
     return render_template("people.html",
                            title="Soulstone - People",
                            user=current_user,
-                           people=people)
+                           people_list=people_list,
+                           people_count=people_count)
 
 
 # Persons - Add New Person
