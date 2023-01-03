@@ -77,3 +77,13 @@ class EditPersonForm(FlaskForm):
     status = SelectField(label='Status *',
                          choices=STATUS_CHOICES)
     submit = SubmitField(label='Edit Person')
+
+
+# Form - Search Person
+class SearchPersonForm(FlaskForm):
+    ''' Search for a Person '''
+    query = SearchField(label='Search',
+                        render_kw={'class': 'form-control',
+                                   'placeholder': 'Search for a person by first or last name...'},
+                        validators=[DataRequired()])
+    submit = SubmitField(label='Submit')
