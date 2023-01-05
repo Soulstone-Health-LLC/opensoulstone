@@ -40,7 +40,8 @@ def ledger():
                                       Charges.description)\
         .join(People, LedgerCharges.person_id == People.id)\
         .join(Charges, LedgerCharges.charge_id == Charges.id)\
-        .filter_by(practice_id=current_user.practice_id).all()
+        .filter_by(practice_id=current_user.practice_id)\
+        .all()
     total_charges = db.session.query(db.func.sum(
         LedgerCharges.units * LedgerCharges.unit_amount + (LedgerCharges.unit_amount * LedgerCharges.tax_rate))).filter_by(practice_id=current_user.practice_id).scalar()
     total_payments = db.session.query(db.func.sum(LedgerPayments.amount)).filter_by(
@@ -50,7 +51,6 @@ def ledger():
         total_charges = 0
     if total_payments is None:
         total_payments = 0
-
     return render_template("billing.html",
                            title="Soulstone - Billing",
                            user=current_user,
