@@ -60,6 +60,37 @@ def ledger():
                            total_payments=total_payments)
 
 
+# Billing - Balance
+@billing.route('/billing/balance')
+@login_required
+def balance():
+    ''' Routes the user to the Balance page '''
+    # queries
+    people = People.query.filter_by(practice_id=current_user.practice_id).all()
+    total_charges = db.session.query(db.func.sum(
+        LedgerCharges.units * LedgerCharges.unit_amount + (LedgerCharges.unit_amount * LedgerCharges.tax_rate))).filter_by(practice_id=current_user.practice_id).scalar()
+    total_payments = db.session.query(db.func.sum(LedgerPayments.amount)).filter_by(
+        practice_id=current_user.practice_id).scalar()
+
+    if total_charges is None:
+        total_charges = 0
+    if total_payments is None:
+        total_payments = 0
+
+    # List of outstanding balances
+    balances = People.query.join(LedgerCharges).join(LedgerPayments).filter(
+        People.practice_id == current_user.practice_id,
+        LedgerCharges.unit_amount > LedgerPayments.amount).all()
+
+    return render_template("balance.html",
+                           title="Soulstone - Balance",
+                           user=current_user,
+                           people=people,
+                           total_charges=total_charges,
+                           total_payments=total_payments,
+                           balances=balances)
+
+
 # Billing - Add Ledger Charge
 @ billing.route('/billing/<int:id>/add_ledger_charge', methods=['GET', 'POST'])
 @ login_required
@@ -146,10 +177,12 @@ def addLedgerCharge(id):
 
 
 # Payments
-@billing.route('/billing/payments')
-@login_required
+@ billing.route('/billing/payments')
+@ login_required
 def payments():
     ''' Routes the user to the Billing > Payments page'''
+    # queries
+    people = People.query.filter_by(practice_id=current_user.practice_id).all()
     ledger_payments = db.session.query(LedgerPayments.created_at,
                                        LedgerPayments.payment_method,
                                        LedgerPayments.amount,
@@ -166,16 +199,22 @@ def payments():
     total_payments = db.session.query(db.func.sum(LedgerPayments.amount)).filter_by(
         practice_id=current_user.practice_id).scalar()
 
+    if total_charges is None:
+        total_charges = 0
+    if total_payments is None:
+        total_payments = 0
+
     return render_template("payments.html",
                            title="Soulstone - Payments",
                            user=current_user,
+                           people=people,
                            ledger_payments=ledger_payments,
                            total_charges=total_charges,
                            total_payments=total_payments)
 
 
-@billing.route('/billing/payments/<int:id>/add_payment', methods=['GET', 'POST'])
-@login_required
+@ billing.route('/billing/payments/<int:id>/add_payment', methods=['GET', 'POST'])
+@ login_required
 def addLedgerPayment(id):
     ''' Routes the user to the add new ledger payment page '''
     form = AddLedgerPaymentForm()

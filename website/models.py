@@ -185,6 +185,18 @@ class People(db.Model):
     # Relationships
     events = db.relationship('Events')
 
+    # Outstanding Balances
+    def outstanding_balance(self):
+        ''' Returns the sum of the person's ledger charges minus payments'''
+        charge_sum = db.session.query(db.func.sum(LedgerCharges.unit_amount)).filter(
+            LedgerCharges.person_id == self.id
+        ).scalar()
+        payment_sum = db.session.query(db.func.sum(LedgerPayments.amount)).filter(
+            LedgerPayments.person_id == self.id
+        ).scalar()
+
+        return charge_sum - payment_sum
+
 
 class Charges(db.Model):
     '''SQL Table: charges'''
@@ -223,6 +235,9 @@ class LedgerCharges(db.Model):
     units = db.Column(db.Integer, nullable=False, default=1)
     unit_amount = db.Column(db.Float, nullable=False)
     tax_rate = db.Column(db.Float, default=0.0)
+    # Relationships
+    person = db.relationship(
+        'People', backref=db.backref('ledger_charges', lazy=True))
 
 
 class LedgerPayments(db.Model):

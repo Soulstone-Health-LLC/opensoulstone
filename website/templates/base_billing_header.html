@@ -37,19 +37,21 @@
   </div>
   <div class="col-sm-12 col-md-12 col-lg-6 col-xl-4">
     <div class="card service">
-      <div class="card-body">
-        <div class="item-box text-center">
-          <div class="text-center text-success mb-4">
-            <i class="fe fe-dollar-sign"></i>
-          </div>
-          <div class="item-box-wrap">
-            <h5 class="mb-2">Balance</h5>
-            <h3 class="mb-0">
-              {{ "$ {:,.2f}".format(total_charges - total_payments) }}
-            </h3>
+      <a href="{{ url_for('billing.balance')}}" style="color: #fff">
+        <div class="card-body">
+          <div class="item-box text-center">
+            <div class="text-center text-success mb-4">
+              <i class="fe fe-dollar-sign"></i>
+            </div>
+            <div class="item-box-wrap">
+              <h5 class="mb-2">Balance</h5>
+              <h3 class="mb-0">
+                {{ "$ {:,.2f}".format(total_charges - total_payments) }}
+              </h3>
+            </div>
           </div>
         </div>
-      </div>
+      </a>
     </div>
   </div>
 </div>

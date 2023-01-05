@@ -1,10 +1,8 @@
 {% extends "base.html" %} {% block pagenav %}
-<h1 class="page-title">Payments</h1>
+<h1 class="page-title">Billing</h1>
 <ol class="breadcrumb">
-  <li class="breadcrumb-item">
-    <a href="{{ url_for('billing.ledger') }}">Billing</a>
-  </li>
-  <li class="breadcrumb-item active" aria-current="page">Payments</li>
+  <li class="breadcrumb-item" aria-current="page">Billing</li>
+  <li class="breadcrumb-item active" aria-current="page">Balance</li>
 </ol>
 {% endblock pagenav %} {% block content %} {% include "base_billing_header.html"
 %}
@@ -37,15 +35,15 @@
 </div>
 <br />
 <!-- End Add New Charge -->
-<!-- Start Table -->
-<div class="row row-sm">
-  <div class="col-lg-12">
+<!-- Start People with a balance -->
+<div class="row row-cards">
+  <div class="col-lg-12 col-xl-12">
     <div class="card">
       <div class="card-body">
         <div>
-          <h3 class="card-title mb-1">Payments</h3>
+          <h3 class="card-title mb-1">Outstanding Balances</h3>
           <p class="text-muted card-sub-title">
-            List of payments for all the people you've seen at your practice.
+            List of people that have an outstanding balance owed.
           </p>
         </div>
         <div class="table-responsive">
@@ -55,48 +53,27 @@
           >
             <thead>
               <tr>
-                <th class="border-bottom-0">Date</th>
-                <th class="border-bottom-0">Name</th>
-                <th class="border-bottom-0">Payment Method</th>
-                <th class="border-bottom-0">Amount</th>
-                <th class="border-bottom-0">Actions</th>
+                <th>Person</th>
+                <th>Outstanding Balance</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {% for lp in ledger_payments %}
+              {% if balances %} {% for b in balances %}
               <tr>
-                <td>{{ lp.created_at }}</td>
-                <td>
-                  {% if lp.middle_name == '' and lp.suffix_name == '' %} {{
-                  lp.last_name }}, {{ lp.first_name }} {% elif lp.suffix_name ==
-                  '' %} {{ lp.last_name }}, {{ lp.first_name }} {{
-                  lp.middle_name }} {% else %} {{ lp.last_name }} {{
-                  lp.suffix_name }}, {{ lp.first_name }} {{ lp.middle_name }} {%
-                  endif %}
+                <td class="text-nowrap align-middle">{{ b.first_name }}</td>
+                <td class="text-nowrap align-middle">
+                  {{ "$ {:,.2f}".format(b.outstanding_balance()) }}
                 </td>
-                <td>{{ lp.payment_method }}</td>
-                <td>{{ "$ {:,.2f}".format(lp.amount) }}</td>
-                <td>
-                  <div class="btn-group">
-                    <a href="#" class="btn btn-primary badge" type="button"
-                      ><i class="fe fe-eye"></i> View</a
-                    >
-                    <a
-                      href="#"
-                      class="btn btn-outline-primary badge"
-                      type="button"
-                      ><i class="fe fe-eye"></i> Print Receipt</a
-                    >
-                    <a
-                      href="#"
-                      class="btn btn-outline-primary badge"
-                      type="button"
-                      ><i class="fe fe-eye"></i> Email Receipt</a
-                    >
-                  </div>
+                <td class="text-center align-middle">Actions go here</td>
+              </tr>
+              {% endfor %} {% else %}
+              <tr>
+                <td colspan="7" class="text-center">
+                  No outstanding balances found.
                 </td>
               </tr>
-              {% endfor %}
+              {% endif %}
             </tbody>
           </table>
         </div>
@@ -104,7 +81,7 @@
     </div>
   </div>
 </div>
-<!-- End Table -->
+<!-- End People with a balance -->
 <!-- Select/Add Patient - Charge -->
 <div class="modal fade" id="modalSelectPatient_Charge">
   <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
