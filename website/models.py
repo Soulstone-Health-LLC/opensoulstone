@@ -54,6 +54,7 @@ GENDER_PRONOUN_CHOICES = [('', ''),
                           ('He/Them', 'He/Them'),
                           ('She/Them', 'She/Them'),
                           ('Name/Name', 'Name/Name'),
+                          ('Apache Helicopter', 'Apache Helicopter'),
                           ('Other', 'Other')]
 
 # Phone Type Dictionary
