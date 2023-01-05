@@ -4,8 +4,9 @@ CLI Commands for the website app
 
 # Imports
 from flask import Blueprint
+from datetime import datetime
 from werkzeug.security import generate_password_hash
-from website.models import Practice, User, People, Charges
+from website.models import Practice, User, People, LedgerCharges, Charges
 from website.models import EventTypes
 from .. import db
 
@@ -31,8 +32,9 @@ def db_drop():
 @commands.cli.command('db_seed_min')
 def db_seed_min():
     '''Preloads the database with data'''
+    data = []
     # Support practice
-    support_practice = Practice(name='Support Practice',
+    data.append(Practice(name='Support Practice',
                                 email='support@email.com',
                                 website='www.support.com',
                                 phone_number='5555555555',
@@ -42,9 +44,9 @@ def db_seed_min():
                                 city='San Francisco',
                                 state='CA',
                                 zipcode='94105',
-                                status='Active')
+                                status='Active'))
     # Test practice
-    test_practice = Practice(name='Test Practice',
+    data.append(Practice(name='Test Practice',
                              email='test@email.com',
                              website='www.test.com',
                              phone_number='5555555555',
@@ -54,31 +56,65 @@ def db_seed_min():
                              city='San Francisco',
                              state='CA',
                              zipcode='94105',
-                             status='Active')
+                             status='Active'))
     # Support user
-    support_user = User(practice_id=1,
+    data.append(User(practice_id=1,
                         email='rodneygauna+support@gmail.com',
                         password=generate_password_hash(
                             'rodneygauna+support', method='sha256'),
                         first_name='Support',
                         last_name='User',
                         role='Support',
-                        status='Active')
+                        status='Active'))
     # Test user
-    test_user = User(practice_id=2,
+    data.append(User(practice_id=2,
                      email='rodneygauna+hh@gmail.com',
                      password=generate_password_hash(
                          'rodneygauna+hh', method='sha256'),
                      first_name='Rodney',
                      last_name='Gauna',
                      role='Owner',
-                     status='Active')
-
+                     status='Active'))
+    # Test clients
+    data.append(People(practice_id=1,
+                        first_name='John',
+                        last_name='Doe',
+                        phone_number='5555555555',
+                        phone_type='Mobile',))
+    data.append(People(practice_id=1,
+                        first_name='Jane', 
+                        last_name='Doe',
+                        phone_number='5555555555',
+                        phone_type='Mobile',))
+    # Test Billing
+    data.append(LedgerCharges(created_at=datetime.now(),
+                        practice_id=1,
+                        charge_id=1,
+                        units=1,
+                        unit_amount=222,
+                        tax_rate=0,
+                        created_by=1,
+                        person_id=1))
+    data.append(LedgerCharges(created_at=datetime.now(),
+                        practice_id=1,
+                        units=1,
+                        charge_id=1,
+                        unit_amount=333,
+                        tax_rate=0,
+                        created_by=1,
+                        person_id=1))
+    # Test charges
+    data.append(Charges(
+                        practice_id=1,
+                        code='CHIZ',
+                        created_by=1,
+                        name='Chiz',
+                        description='Chiz Description',
+                        amount=100.00,
+                        status='Active'))
     # Add to the database
-    db.session.add(support_practice)
-    db.session.add(test_practice)
-    db.session.add(support_user)
-    db.session.add(test_user)
+    for entry in data:
+        db.session.add(entry)
     db.session.commit()
     print('Database seeded')
 
