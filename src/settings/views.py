@@ -46,7 +46,7 @@ def practiceSettings():
         if total_charges is None:
             total_charges = 0
 
-        return render_template("settings_practice_info.html",
+        return render_template("settings/settings_practice_info.html",
                                title="Soulstone - Settings - Practice Information",
                                practice=practice,
                                people_count=people_count,
@@ -103,7 +103,7 @@ def editPracticeInformation(id):
 
             return redirect(url_for('settings.practiceSettings'))
 
-    return render_template("edit_practice.html",
+    return render_template("settings/edit_practice.html",
                            title="Soulstone - Edit Practice",
                            user=current_user,
                            practice=practice,
@@ -119,7 +119,7 @@ def practiceUsers():
         users = User.query.filter_by(
             practice_id=current_user.practice_id).all()
 
-        return render_template("settings_practice_users.html",
+        return render_template("settings/settings_practice_users.html",
                                title="Soulstone - Settings - Practice Users",
                                users=users,
                                user=current_user)
@@ -200,7 +200,7 @@ def addPracticeUser():
 
             return redirect(url_for('settings.practiceUsers'))
 
-    return render_template("add_practice_user.html",
+    return render_template("settings/add_practice_user.html",
                            title="Soulstone - Add Practice User",
                            user=current_user,
                            form=form)
@@ -260,7 +260,7 @@ def editPracticeUser(user_id):
 
             return redirect(url_for('settings.practiceUsers'))
 
-    return render_template("edit_practice_user.html",
+    return render_template("settings/edit_practice_user.html",
                            title="Soulstone - Edit Practice User",
                            user=current_user,
                            p_user=p_user,
@@ -279,7 +279,7 @@ def chargeSettings():
         # Practice counts
         charges_count = Charges.query.filter_by(practice_id=pu_id).count()
 
-        return render_template("settings_charges.html",
+        return render_template("settings/settings_charges.html",
                                title="Soulstone - Settings - Charges",
                                charges=charges,
                                charges_count=charges_count,
@@ -326,7 +326,7 @@ def addCharge():
             # Redirect to view people
             return redirect(url_for('settings.chargeSettings'))
 
-    return render_template("add_charge.html",
+    return render_template("settings/add_charge.html",
                            title="Soulstone - Add Charge",
                            user=current_user,
                            form=form)
@@ -346,11 +346,11 @@ def viewCharge(id):
             # Display the charge info
             charge = Charges.query.get_or_404(id)
 
-            return render_template("charge.html",
+            return render_template("settings/charge.html",
                                    user=current_user,
                                    charge=charge)
         else:
-            return render_template("401.html",
+            return render_template("error_pages/401.html",
                                    user=current_user)
 
 
@@ -389,7 +389,7 @@ def editCharge(id):
 
             return redirect(url_for('settings.viewCharge', id=charge.id))
 
-    return render_template("edit_charge.html",
+    return render_template("settings/edit_charge.html",
                            title="Soulstone - Edit Charge",
                            user=current_user,
                            charge=charge,
@@ -409,7 +409,7 @@ def viewEventTypes():
         event_type_count = EventTypes.query.filter_by(
             practice_id=pu_id).count()
 
-        return render_template("settings_event_types.html",
+        return render_template("settings/settings_event_types.html",
                                title="Soulstone - Settings - Event Types",
                                event_types=event_types,
                                event_type_count=event_type_count,
@@ -452,7 +452,7 @@ def addEventType():
                   category='success')
             return redirect(url_for('settings.viewEventTypes'))
 
-    return render_template("add_event_type.html",
+    return render_template("settings/add_event_type.html",
                            title="Soulstone - Add Event Type",
                            form=form,
                            user=current_user)
@@ -491,7 +491,7 @@ def editEventType(id):
 
             return redirect(url_for('settings.viewEventTypes'))
 
-    return render_template("edit_event_type.html",
+    return render_template("settings/edit_event_type.html",
                            title="Soulstone - Edit Event Type",
                            user=current_user,
                            event_type=event_type,

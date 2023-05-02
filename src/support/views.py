@@ -30,7 +30,7 @@ def support():
         if current_user.role == "Support":
             practices = Practice.query.order_by(Practice.id).all()
 
-            return render_template("support.html",
+            return render_template("support/support.html",
                                    user=current_user,
                                    practices=practices)
         else:
@@ -44,7 +44,7 @@ def support():
 def viewpractice(id):
     practice = Practice.query.get_or_404(id)
     practice_user = User.query.order_by(User.last_name).all()
-    return render_template("support_practice.html",
+    return render_template("support/support_practice.html",
                            user=current_user,
                            practice=practice,
                            practice_user=practice_user)
@@ -91,7 +91,7 @@ def addpractice():
         # Redirect user to the Support home page
         return redirect(url_for('views.support'))
 
-    return render_template("add_practice.html",
+    return render_template("support/add_practice.html",
                            title="Soulstone - Add Practice",
                            form=form,
                            user=current_user)
@@ -147,7 +147,7 @@ def addPracticeUser(id):
             # Redirect user to Support home page
             return redirect(url_for('supportapp.support'))
 
-    return render_template("support_add_user.html",
+    return render_template("support/support_add_user.html",
                            title="Soulstone - Add Practice User",
                            user=current_user,
                            form=form,

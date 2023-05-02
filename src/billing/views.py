@@ -51,7 +51,7 @@ def ledger():
         total_charges = 0
     if total_payments is None:
         total_payments = 0
-    return render_template("billing.html",
+    return render_template("billing/billing.html",
                            title="Soulstone - Billing",
                            user=current_user,
                            people=people,
@@ -82,7 +82,7 @@ def balance():
         People.practice_id == current_user.practice_id,
         LedgerCharges.unit_amount > LedgerPayments.amount).all()
 
-    return render_template("balance.html",
+    return render_template("billing/balance.html",
                            title="Soulstone - Balance",
                            user=current_user,
                            people=people,
@@ -127,7 +127,7 @@ def addLedgerCharge(id):
             form.charge_id.choices = [(charge.id, charge.description)
                                       for charge in practice_charges]
 
-            return render_template("add_ledger_charge.html",
+            return render_template("billing/add_ledger_charge.html",
                                    title="Soulstone - Add New Charge",
                                    user=current_user,
                                    person=person,
@@ -136,7 +136,7 @@ def addLedgerCharge(id):
                                    form=form,
                                    balance=balance)
         else:
-            return render_template("401.html",
+            return render_template("error_pages/401.html",
                                    user=current_user)
 
     if form.validate_on_submit and request.method == 'POST':
@@ -170,7 +170,7 @@ def addLedgerCharge(id):
 
         return redirect(url_for('billing.ledger'))
 
-    return render_template("add_ledger_charge.html",
+    return render_template("billing/add_ledger_charge.html",
                            title="Soulstone - Add Charge",
                            user=current_user,
                            form=form)
@@ -204,7 +204,7 @@ def payments():
     if total_payments is None:
         total_payments = 0
 
-    return render_template("payments.html",
+    return render_template("billing/payments.html",
                            title="Soulstone - Payments",
                            user=current_user,
                            people=people,
@@ -244,7 +244,7 @@ def addLedgerPayment(id):
             # Display the person info
             person = People.query.get_or_404(id)
 
-            return render_template("add_ledger_payment.html",
+            return render_template("billing/add_ledger_payment.html",
                                    title="Soulstone - Add New Payment",
                                    user=current_user,
                                    person=person,
@@ -253,7 +253,7 @@ def addLedgerPayment(id):
                                    form=form,
                                    balance=balance)
         else:
-            return render_template("401.html",
+            return render_template("error_pages/401.html",
                                    user=current_user)
 
     if form.validate_on_submit and request.method == 'POST':
@@ -288,7 +288,7 @@ def addLedgerPayment(id):
 
         return redirect(url_for('billing.payments'))
 
-    return render_template("add_ledger_payment.html",
+    return render_template("billing/add_ledger_payment.html",
                            title="Soulstone - Add Payment",
                            user=current_user,
                            form=form)

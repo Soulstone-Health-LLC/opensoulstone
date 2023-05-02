@@ -33,7 +33,7 @@ def people():
         people_count = People.query.filter_by(
             practice_id=current_user.practice_id).count()
 
-    return render_template("people.html",
+    return render_template("persons/people.html",
                            title="Soulstone - People",
                            user=current_user,
                            people_list=people_list,
@@ -54,13 +54,13 @@ def searchPerson():
             results_count = People.query.filter(People.first_name.contains(
                 query) | People.last_name.contains(query)).count()
 
-        return render_template("people_search.html",
+        return render_template("persons/people_search.html",
                                form=form,
                                results=results,
                                results_count=results_count,
                                user=current_user)
 
-    return render_template("people_search.html",
+    return render_template("persons/people_search.html",
                            form=form,
                            user=current_user)
 
@@ -122,7 +122,7 @@ def addPerson():
             # Redirect to view people
             return redirect(url_for('persons.people'))
 
-    return render_template("add_people.html",
+    return render_template("persons/add_people.html",
                            title="Soulstone - Add Person",
                            user=current_user,
                            form=form)
@@ -182,7 +182,7 @@ def editPerson(id):
 
             return redirect(url_for('persons.viewPerson', id=person.id))
 
-    return render_template("edit_person.html",
+    return render_template("persons/edit_person.html",
                            title="Soulstone - Edit Person",
                            user=current_user,
                            person=person,
@@ -223,7 +223,7 @@ def viewPerson(id):
                 total_payments = 0
             balance = total_charges - total_payments
 
-            return render_template("person.html",
+            return render_template("persons/person.html",
                                    user=current_user,
                                    person=person,
                                    notes=notes,
@@ -231,5 +231,5 @@ def viewPerson(id):
                                    ledger_charges=ledger_charges,
                                    balance=balance)
         else:
-            return render_template("401.html",
+            return render_template("error_pages/401.html",
                                    user=current_user)

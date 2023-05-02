@@ -40,7 +40,7 @@ def notes():
 
     people = People.query.filter_by(practice_id=current_user.practice_id).all()
 
-    return render_template("notes.html", title="Soulstone - Notes",
+    return render_template("visit_notes/notes.html", title="Soulstone - Notes",
                            user=current_user,
                            visit_notes=visit_notes,
                            people=people)
@@ -77,14 +77,14 @@ def addVisitNote(id):
             # Display the person info
             person = People.query.get_or_404(id)
 
-            return render_template("add_visit_note.html",
+            return render_template("visit_notes/add_visit_note.html",
                                    title="Soulstone - Add Visit Note",
                                    user=current_user,
                                    person=person,
                                    form=form,
                                    balance=balance)
         else:
-            return render_template("401.html",
+            return render_template("error_pages/401.html",
                                    user=current_user)
 
     if form.validate_on_submit() and request.method == 'POST':
@@ -187,7 +187,7 @@ def editVisitNote(id):
         form.visit_notes.data = note.visit_notes
         form.post_visit_recommendations.data = note.post_visit_recommendations
 
-        return render_template("edit_visit_note.html",
+        return render_template("visit_notes/edit_visit_note.html",
                                title="Soulstone - Edit Visit Note",
                                user=current_user,
                                person=person,
@@ -234,7 +234,7 @@ def pdfVisitNote(id):
     note = Notes.query.get_or_404(id)
     practice = Practice.query.filter_by(id=note.practice_id).first()
     person = People.query.filter_by(id=note.person_id).first()
-    rendered = render_template('pdf_visit_note.html',
+    rendered = render_template('visit_notes/pdf_visit_note.html',
                                note=note,
                                practice=practice,
                                person=person,

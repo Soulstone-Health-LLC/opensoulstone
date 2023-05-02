@@ -64,7 +64,7 @@ def login():
                 flash(f'Account not found for {form.email.data}.',
                       category='error')
 
-    return render_template("login.html",
+    return render_template("users/login.html",
                            title='Soulstone - Login',
                            form=form,
                            user=current_user)
@@ -106,7 +106,7 @@ def reset_request():
             flash(f'Account not found with {form.email.data}',
                   category='error')
 
-    return render_template("reset_request.html",
+    return render_template("users/reset_request.html",
                            title="Soulstone - Password Reset Request",
                            form=form)
 
@@ -132,7 +132,7 @@ def reset_token(token):
         flash(' Password updated!', category='success')
         return redirect(url_for('users.login'))
 
-    return render_template("change_password.html", form=form)
+    return render_template("users/change_password.html", form=form)
 
 
 # Logout
@@ -182,7 +182,7 @@ def sign_up():
                 # redirect the user to landing page
                 return redirect(url_for('core.home'))
 
-    return render_template("sign_up.html",
+    return render_template("users/sign_up.html",
                            title="Soulstone - Register",
                            form=form,
                            user=current_user)

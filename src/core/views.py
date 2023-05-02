@@ -21,4 +21,4 @@ core = Blueprint('core', __name__)
 @login_required
 def home():
     '''Home page'''
-    return render_template("home.html", title="Soulstone", user=current_user)
+    return render_template("core/home.html", title="Soulstone", user=current_user)

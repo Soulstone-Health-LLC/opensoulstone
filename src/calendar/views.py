@@ -43,7 +43,7 @@ def schedule():
             'url': url_for('calendar.viewEvent', event_id=event.id)
         } for event in events]
 
-    return render_template("calendar.html",
+    return render_template("calendar/calendar.html",
                            title="Calendar",
                            events=cal_events,  # TODO: Fix this
                            cal_events=events,  # TODO: Flip this
@@ -106,7 +106,7 @@ def addEvent():
 
             # Redirect to the calendar page
             return redirect(url_for('calendar.schedule'))
-    return render_template("add_event.html",
+    return render_template("calendar/add_event.html",
                            form=form,
                            user=current_user)
 
@@ -130,7 +130,7 @@ def viewEvent(event_id):
         .join(People, Events.person_id == People.id)\
         .join(EventTypes, Events.event_type_id == EventTypes.id).first()
 
-    return render_template("view_event.html",
+    return render_template("calendar/view_event.html",
                            event=event,
                            user=current_user)
 
@@ -192,7 +192,7 @@ def editEvent(event_id):
         form.start_time.data = event.start_time
         form.note.data = event.note
 
-    return render_template("edit_event.html",
+    return render_template("calendar/edit_event.html",
                            form=form,
                            event=event,
                            user=current_user)
