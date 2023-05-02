@@ -5,7 +5,7 @@
 # ------------------------------------------------------------------------------
 import random
 import string
-from datetime import datetime
+from datetime import datetime, timedelta
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 from flask_mail import Message
@@ -429,7 +429,7 @@ def addEventType():
             practice_id = current_user.practice_id
             event_name = form.event_name.data
             event_description = form.event_description.data
-            event_duration = form.event_duration.data
+            event_duration = int(form.event_duration.data)
             event_status = form.event_status.data
 
             # Add new event type to database
@@ -440,7 +440,8 @@ def addEventType():
                                         updated_by=current_user.get_id(),
                                         event_name=event_name,
                                         event_description=event_description,
-                                        event_duration=event_duration,
+                                        event_duration=timedelta(
+                                            minutes=event_duration),
                                         event_status=event_status)
             db.session.add(new_event_type)
             db.session.commit()
@@ -477,7 +478,8 @@ def editEventType(id):
             event_type.updated_by = current_user.get_id()
             event_type.event_name = form.event_name.data
             event_type.event_description = form.event_description.data
-            event_type.event_duration = form.event_duration.data
+            event_type.event_duration = timedelta(
+                minutes=form.event_duration.data)
             event_type.event_status = form.event_status.data
 
             # Update event type to database

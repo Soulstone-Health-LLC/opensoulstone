@@ -77,6 +77,18 @@ PAYMENT_TYPE_CHOICES = [('Cash', 'Cash'),
                         ('Gift Card', 'Gift Card'),
                         ('Other', 'Other')]
 
+# Event Type Minutes
+EVENT_DURATION_CHOICES = [(5, '5 Minutes'),
+                          (10, '10 Minutes'),
+                          (15, '15 Minutes'),
+                          (30, '30 Minutes'),
+                          (45, '45 Minutes'),
+                          (60, '1 Hour (60 Minutes)'),
+                          (75, '1 Hour 15 Minutes (75 Minutes)'),
+                          (90, '1 Hour 30 Minutes (90 Minutes)'),
+                          (105, '1 Hour 45 Minutes (105 Minutes)'),
+                          (120, '2 Hours (120 Minutes)')]
+
 
 # ------------------------------------------------------------------------------
 # Models - Database Tables
