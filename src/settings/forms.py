@@ -9,8 +9,8 @@ from wtforms import IntegerField
 from wtforms.fields.simple import TelField
 from wtforms.validators import DataRequired, Length, Email, InputRequired
 from wtforms.widgets import TextArea
-from website.models import STATE_CHOICES, PHONE_TYPE_CHOICES
-from website.models import STATUS_CHOICES, ROLE_CHOICES
+from src.models import STATE_CHOICES, PHONE_TYPE_CHOICES
+from src.models import STATUS_CHOICES, ROLE_CHOICES
 
 
 # ------------------------------------------------------------------------------

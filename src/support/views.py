@@ -8,9 +8,9 @@ import string
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 from werkzeug.security import generate_password_hash
-from website.support.forms import AddPracticeForm, PracticeUserForm
-from website import db
-from website.models import Practice, User
+from src.support.forms import AddPracticeForm, PracticeUserForm
+from src import db
+from src.models import Practice, User
 
 
 # ------------------------------------------------------------------------------

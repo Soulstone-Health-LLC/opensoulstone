@@ -2,7 +2,7 @@
 This file runs the application using Flask.
 '''
 
-from website import app
+from src import app
 
 
 if __name__ == '__main__':

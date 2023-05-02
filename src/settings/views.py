@@ -10,12 +10,12 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 from flask_mail import Message
 from werkzeug.security import generate_password_hash
-from website.settings.forms import AddChargeForm, EditChargeForm
-from website.settings.forms import EditPracticeForm, EventTypeForm
-from website.settings.forms import PracticeUserForm
-from website import db, mail
-from website.models import Charges, People, Practice, User, Notes
-from website.models import LedgerCharges, EventTypes
+from src.settings.forms import AddChargeForm, EditChargeForm
+from src.settings.forms import EditPracticeForm, EventTypeForm
+from src.settings.forms import PracticeUserForm
+from src import db, mail
+from src.models import Charges, People, Practice, User, Notes
+from src.models import LedgerCharges, EventTypes
 
 
 # ------------------------------------------------------------------------------

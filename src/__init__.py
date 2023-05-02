@@ -43,16 +43,16 @@ mail.init_app(app)
 
 
 # Blueprint routing
-from website.core.views import core
-from website.calendar.views import calendar
-from website.users.views import users
-from website.persons.views import persons
-from website.visit_notes.views import visit_notes
-from website.billing.views import billing
-from website.settings.views import settings
-from website.support.views import supportapp
-from website.error_pages.handler import error_pages
-from website.cli.cli_commands import commands
+from src.core.views import core
+from src.calendar.views import calendar
+from src.users.views import users
+from src.persons.views import persons
+from src.visit_notes.views import visit_notes
+from src.billing.views import billing
+from src.settings.views import settings
+from src.support.views import supportapp
+from src.error_pages.handler import error_pages
+from src.cli.cli_commands import commands
 
 app.register_blueprint(core)
 app.register_blueprint(calendar)

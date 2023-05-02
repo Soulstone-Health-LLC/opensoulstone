@@ -9,9 +9,9 @@ from datetime import datetime
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask import make_response
 from flask_login import login_required, current_user
-from website.visit_notes.forms import AddVisitNoteForm, EditVisitNoteForm
-from website import db
-from website.models import People, Practice, Notes, LedgerCharges, LedgerPayments
+from src.visit_notes.forms import AddVisitNoteForm, EditVisitNoteForm
+from src import db
+from src.models import People, Practice, Notes, LedgerCharges, LedgerPayments
 
 
 # ------------------------------------------------------------------------------

@@ -6,9 +6,9 @@ Views for the calendar section of the website
 from datetime import datetime, timedelta
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
-from website.calendar.forms import EventForm
-from website import db
-from website.models import Events, People, EventTypes
+from src.calendar.forms import EventForm
+from src import db
+from src.models import Events, People, EventTypes
 
 
 # Blueprint

@@ -11,8 +11,8 @@ from wtforms import StringField, SubmitField, SelectField
 from wtforms import EmailField, DateField, SearchField
 from wtforms.fields.simple import TelField
 from wtforms.validators import DataRequired, Length
-from website.models import GENDER_PRONOUN_CHOICES, STATE_CHOICES
-from website.models import PHONE_TYPE_CHOICES, STATUS_CHOICES
+from src.models import GENDER_PRONOUN_CHOICES, STATE_CHOICES
+from src.models import PHONE_TYPE_CHOICES, STATUS_CHOICES
 
 
 # ------------------------------------------------------------------------------

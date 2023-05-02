@@ -6,11 +6,11 @@
 from datetime import datetime
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
-from website.persons.forms import AddPersonForm, EditPersonForm
-from website.persons.forms import SearchPersonForm
-from website import db
-from website.models import People, Notes, Charges, LedgerCharges
-from website.models import LedgerPayments
+from src.persons.forms import AddPersonForm, EditPersonForm
+from src.persons.forms import SearchPersonForm
+from src import db
+from src.models import People, Notes, Charges, LedgerCharges
+from src.models import LedgerPayments
 
 
 # ------------------------------------------------------------------------------

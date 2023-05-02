@@ -9,10 +9,10 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 from flask_mail import Message
-from website.users.forms import RegistrationForm, LoginForm, ResetPasswordForm
-from website.users.forms import ResetRequestForm
-from website.models import User
-from website import db, mail
+from src.users.forms import RegistrationForm, LoginForm, ResetPasswordForm
+from src.users.forms import ResetRequestForm
+from src.models import User
+from src import db, mail
 
 
 # ------------------------------------------------------------------------------
