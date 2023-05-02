@@ -479,7 +479,7 @@ def editEventType(id):
             event_type.event_name = form.event_name.data
             event_type.event_description = form.event_description.data
             event_type.event_duration = timedelta(
-                minutes=form.event_duration.data)
+                minutes=int(form.event_duration.data))
             event_type.event_status = form.event_status.data
 
             # Update event type to database
