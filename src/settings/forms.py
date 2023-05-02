@@ -127,8 +127,8 @@ class EventTypeForm(FlaskForm):
     event_description = StringField(label='Event Type Description *',
                                     widget=TextArea(),
                                     validators=[DataRequired()])
-    event_duration = IntegerField(
-        label='Event Duration (in minutes) *', validators=[DataRequired()])
+    event_duration = IntegerField(label='Event Duration (in minutes) *',
+                                  validators=[DataRequired()])
     event_status = SelectField(label='Status *',
                                choices=STATUS_CHOICES)
     submit = SubmitField(label='Save Event Type')

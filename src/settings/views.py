@@ -427,10 +427,6 @@ def addEventType():
         if request.method == 'POST':
             # Get data from the form
             practice_id = current_user.practice_id
-            created_at = datetime.utcnow()
-            created_by = current_user.get_id()
-            updated_at = datetime.utcnow()
-            updated_by = current_user.get_id()
             event_name = form.event_name.data
             event_description = form.event_description.data
             event_duration = form.event_duration.data
@@ -438,10 +434,10 @@ def addEventType():
 
             # Add new event type to database
             new_event_type = EventTypes(practice_id=practice_id,
-                                        created_at=created_at,
-                                        created_by=created_by,
-                                        updated_at=updated_at,
-                                        updated_by=updated_by,
+                                        created_at=datetime.utcnow(),
+                                        created_by=current_user.get_id(),
+                                        updated_at=datetime.utcnow(),
+                                        updated_by=current_user.get_id(),
                                         event_name=event_name,
                                         event_description=event_description,
                                         event_duration=event_duration,
