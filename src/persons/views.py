@@ -1,8 +1,8 @@
-# soulstone/website/persons/views.py
+"""
+Persons > Views - This file contains the views for the Persons Blueprint.
+"""
 
-# ------------------------------------------------------------------------------
 # Imports
-# ------------------------------------------------------------------------------
 from datetime import datetime
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
@@ -13,66 +13,71 @@ from src.models import People, Notes, Charges, LedgerCharges
 from src.models import LedgerPayments
 
 
-# ------------------------------------------------------------------------------
-# Global Variables
-# ------------------------------------------------------------------------------
-persons = Blueprint('persons', __name__)
+# Blueprint Configuration
+persons = Blueprint("persons", __name__)
 
 
-# ------------------------------------------------------------------------------
-# Routes - Practice - Persons
-# ------------------------------------------------------------------------------
 # Persons
-@persons.route('/people')
+@persons.route("/people")
 @login_required
 def people():
-    if request.method == 'GET':
-        people_list = People.query.filter_by(
-            practice_id=current_user.practice_id).order_by(People.last_name)\
+    if request.method == "GET":
+        people_list = (
+            People.query.filter_by(practice_id=current_user.practice_id)
+            .order_by(People.last_name)
             .all()
+        )
         people_count = People.query.filter_by(
-            practice_id=current_user.practice_id).count()
+            practice_id=current_user.practice_id
+        ).count()
 
-    return render_template("persons/people.html",
-                           title="Soulstone - People",
-                           user=current_user,
-                           people_list=people_list,
-                           people_count=people_count)
+    return render_template(
+        "persons/people.html",
+        title="Soulstone - People",
+        user=current_user,
+        people_list=people_list,
+        people_count=people_count,
+    )
 
 
 # Persons - Search
-@persons.route('/people/search', methods=['GET', 'POST'])
+@persons.route("/people/search", methods=["GET", "POST"])
 @login_required
 def searchPerson():
-    ''' Search for a person '''
+    """Search for a person"""
     form = SearchPersonForm()
     if form.validate_on_submit():
-        if request.method == 'POST':
+        if request.method == "POST":
             query = form.query.data
-            results = People.query.filter(People.first_name.contains(
-                query) | People.last_name.contains(query)).all()
-            results_count = People.query.filter(People.first_name.contains(
-                query) | People.last_name.contains(query)).count()
+            results = People.query.filter(
+                People.first_name.contains(
+                    query) | People.last_name.contains(query)
+            ).all()
+            results_count = People.query.filter(
+                People.first_name.contains(
+                    query) | People.last_name.contains(query)
+            ).count()
 
-        return render_template("persons/people_search.html",
-                               form=form,
-                               results=results,
-                               results_count=results_count,
-                               user=current_user)
+        return render_template(
+            "persons/people_search.html",
+            form=form,
+            results=results,
+            results_count=results_count,
+            user=current_user,
+        )
 
-    return render_template("persons/people_search.html",
-                           form=form,
+    return render_template("persons/people_search.html", form=form,
                            user=current_user)
 
 
 # Persons - Add New Person
-@persons.route('/people/add_person', methods=['GET', 'POST'])
+@persons.route("/people/add_person", methods=["GET", "POST"])
 @login_required
 def addPerson():
     form = AddPersonForm()
 
     if form.validate_on_submit():
-        if request.method == 'POST':
+        if request.method == "POST":
             # Get data from the form
             practice_id = current_user.practice_id
             created_at = datetime.utcnow()
@@ -95,48 +100,52 @@ def addPerson():
             email = form.email.data
 
             # Add new practice to database
-            new_person = People(practice_id=practice_id,
-                                created_at=created_at,
-                                created_by=created_by,
-                                updated_at=updated_at,
-                                updated_by=updated_by,
-                                first_name=first_name,
-                                middle_name=middle_name,
-                                last_name=last_name,
-                                suffix_name=suffix,
-                                date_of_birth=date_of_birth,
-                                gender_identity=gender_identity,
-                                address_1=address_1,
-                                address_2=address_2,
-                                city=city,
-                                state=state,
-                                zipcode=zipcode,
-                                phone_number=phone_number,
-                                phone_type=phone_type,
-                                email=email)
+            new_person = People(
+                practice_id=practice_id,
+                created_at=created_at,
+                created_by=created_by,
+                updated_at=updated_at,
+                updated_by=updated_by,
+                first_name=first_name,
+                middle_name=middle_name,
+                last_name=last_name,
+                suffix_name=suffix,
+                date_of_birth=date_of_birth,
+                gender_identity=gender_identity,
+                address_1=address_1,
+                address_2=address_2,
+                city=city,
+                state=state,
+                zipcode=zipcode,
+                phone_number=phone_number,
+                phone_type=phone_type,
+                email=email,
+            )
             db.session.add(new_person)
             db.session.commit()
-            flash(f'{first_name} {last_name} created successfully.',
-                  category='success')
+            flash(f"{first_name} {last_name} created successfully.",
+                  category="success")
 
             # Redirect to view people
-            return redirect(url_for('persons.people'))
+            return redirect(url_for("persons.people"))
 
-    return render_template("persons/add_people.html",
-                           title="Soulstone - Add Person",
-                           user=current_user,
-                           form=form)
+    return render_template(
+        "persons/add_people.html",
+        title="Soulstone - Add Person",
+        user=current_user,
+        form=form,
+    )
 
 
 # Persons - Edit Person
-@persons.route('/person/<int:id>/edit', methods=['GET', 'POST'])
+@persons.route("/person/<int:id>/edit", methods=["GET", "POST"])
 @login_required
 def editPerson(id):
     form = EditPersonForm()
 
     person = People.query.get_or_404(id)
 
-    if request.method == 'GET':
+    if request.method == "GET":
         # pre-populate form
         form.first_name.data = person.first_name
         form.middle_name.data = person.middle_name
@@ -155,7 +164,7 @@ def editPerson(id):
         form.status.data = person.status
 
     if form.validate_on_submit():
-        if request.method == 'POST':
+        if request.method == "POST":
             # Get data from the form
             person.updated_at = datetime.utcnow()
             person.updated_by = current_user.get_id()
@@ -177,22 +186,27 @@ def editPerson(id):
 
             # Update person to database
             db.session.commit()
-            flash(f'{person.first_name} {person.last_name} updated successfully.',
-                  category='success')
+            flash(
+                f"{person.first_name} {person.last_name}"
+                " updated successfully.",
+                category="success",
+            )
 
-            return redirect(url_for('persons.viewPerson', id=person.id))
+            return redirect(url_for("persons.viewPerson", id=person.id))
 
-    return render_template("persons/edit_person.html",
-                           title="Soulstone - Edit Person",
-                           user=current_user,
-                           person=person,
-                           form=form)
+    return render_template(
+        "persons/edit_person.html",
+        title="Soulstone - Edit Person",
+        user=current_user,
+        person=person,
+        form=form,
+    )
 
 
 # Persons - View Person
-@persons.route('/person/<int:id>')
+@persons.route("/person/<int:id>")
 def viewPerson(id):
-    if request.method == 'GET':
+    if request.method == "GET":
         # current user practice id
         pu_id = current_user.practice_id
         pp_id = People.query.get_or_404(id).practice_id
@@ -203,19 +217,35 @@ def viewPerson(id):
             person = People.query.get_or_404(id)
             notes = Notes.query.filter_by(person_id=id).all()
             notes_count = Notes.query.filter_by(person_id=id).count()
-            ledger_charges = db.session.query(LedgerCharges.created_at,
-                                              LedgerCharges.units,
-                                              LedgerCharges.unit_amount,
-                                              LedgerCharges.tax_rate,
-                                              LedgerCharges.practice_id,
-                                              Charges.code,
-                                              Charges.description)\
-                .filter_by(person_id=id)\
-                .join(Charges, LedgerCharges.charge_id == Charges.id).all()
-            total_charges = db.session.query(db.func.sum(LedgerCharges.units * LedgerCharges.unit_amount + (
-                LedgerCharges.unit_amount * LedgerCharges.tax_rate))).filter_by(practice_id=current_user.practice_id, person_id=id).scalar()
-            total_payments = db.session.query(db.func.sum(LedgerPayments.amount)).filter_by(
-                practice_id=current_user.practice_id, person_id=id).scalar()
+            ledger_charges = (
+                db.session.query(
+                    LedgerCharges.created_at,
+                    LedgerCharges.units,
+                    LedgerCharges.unit_amount,
+                    LedgerCharges.tax_rate,
+                    LedgerCharges.practice_id,
+                    Charges.code,
+                    Charges.description,
+                )
+                .filter_by(person_id=id)
+                .join(Charges, LedgerCharges.charge_id == Charges.id)
+                .all()
+            )
+            total_charges = (
+                db.session.query(
+                    db.func.sum(
+                        LedgerCharges.units * LedgerCharges.unit_amount
+                        + (LedgerCharges.unit_amount * LedgerCharges.tax_rate)
+                    )
+                )
+                .filter_by(practice_id=current_user.practice_id, person_id=id)
+                .scalar()
+            )
+            total_payments = (
+                db.session.query(db.func.sum(LedgerPayments.amount))
+                .filter_by(practice_id=current_user.practice_id, person_id=id)
+                .scalar()
+            )
 
             if total_charges is None:
                 total_charges = 0
@@ -223,13 +253,14 @@ def viewPerson(id):
                 total_payments = 0
             balance = total_charges - total_payments
 
-            return render_template("persons/person.html",
-                                   user=current_user,
-                                   person=person,
-                                   notes=notes,
-                                   notes_count=notes_count,
-                                   ledger_charges=ledger_charges,
-                                   balance=balance)
+            return render_template(
+                "persons/person.html",
+                user=current_user,
+                person=person,
+                notes=notes,
+                notes_count=notes_count,
+                ledger_charges=ledger_charges,
+                balance=balance,
+            )
         else:
-            return render_template("error_pages/401.html",
-                                   user=current_user)
+            return render_template("error_pages/401.html", user=current_user)
