@@ -86,10 +86,10 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-md-3">
+              <div class="col-md-1">
                 <a href="{{ url_for('calendar.editEvent', event_id=event.id) }}" class="btn btn-primary">Edit Event</a>
               </div>
-              <div class="col-md-3">
+              <div class="col-md-1">
                 <form action="{{ url_for('calendar.deleteEvent', event_id=event.id) }}" method="post">
                   <input type="submit" class="btn btn-danger" value="Delete Event">
                 </form>
