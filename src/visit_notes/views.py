@@ -51,6 +51,7 @@ def notes():
     )
 
 
+# Add Visit Note
 @visit_notes.route("/notes/<int:id>/add_visit_note", methods=["GET", "POST"])
 @login_required
 def addVisitNote(id):

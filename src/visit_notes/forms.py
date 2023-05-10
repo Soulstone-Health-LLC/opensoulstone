@@ -58,7 +58,7 @@ class AddVisitNoteForm(FlaskForm):
         label="Third-Eye Chakra Notes", widget=TextArea()
     )
     chakra_assessment_crown_score = SelectField(
-        label="Chakra Score", choices=CHAKRA_SCORE_CHOICES
+        label="Crown Chakra Score", choices=CHAKRA_SCORE_CHOICES
     )
     chakra_assessment_crown_description = StringField(
         label="Crown Chakra Notes", widget=TextArea()
@@ -114,7 +114,7 @@ class EditVisitNoteForm(FlaskForm):
         label="Third-Eye Chakra Notes", widget=TextArea()
     )
     chakra_assessment_crown_score = SelectField(
-        label="Chakra Score", choices=CHAKRA_SCORE_CHOICES
+        label="Crown Chakra Score", choices=CHAKRA_SCORE_CHOICES
     )
     chakra_assessment_crown_description = StringField(
         label="Crown Chakra Notes", widget=TextArea()
