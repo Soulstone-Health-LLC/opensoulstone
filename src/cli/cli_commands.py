@@ -110,7 +110,7 @@ def db_seed():
                            city='San Francisco',
                            state='CA',
                            zipcode='94105',
-                           phone_number='5555555555',
+                           phone_number=random.randint(1000000000, 9999999999),
                            phone_type='Mobile',
                            email=f'test{i}@soulstone.com',
                            status='Active',
