@@ -9,8 +9,8 @@ from wtforms import StringField, SubmitField, SelectField, EmailField
 from wtforms.fields.simple import TelField
 from wtforms.validators import DataRequired, Length, Email
 from wtforms.widgets import TextArea
-from src.models import STATE_CHOICES, ROLE_CHOICES
-from src.models import PHONE_TYPE_CHOICES
+from src.dictionary.general import (STATE_CHOICES, ROLE_CHOICES,
+                                    PHONE_TYPE_CHOICES)
 
 
 # ------------------------------------------------------------------------------

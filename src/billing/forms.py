@@ -6,7 +6,7 @@ from flask_wtf import FlaskForm
 from wtforms import SubmitField, FloatField, IntegerField, SelectField
 from wtforms import TextAreaField
 from wtforms.validators import DataRequired, Length, InputRequired
-from src.models import PAYMENT_TYPE_CHOICES
+from src.dictionary.general import PAYMENT_TYPE_CHOICES
 
 
 # ------------------------------------------------------------------------------
