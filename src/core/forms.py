@@ -1,1 +1,3 @@
-# soulstone/website/core/forms.py
+"""
+Core > Forms - This file contains the forms for the Core Blueprint.
+"""
