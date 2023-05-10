@@ -15,7 +15,6 @@ from src.models import Events, People, EventTypes
 calendar = Blueprint("calendar", __name__)
 
 
-# Routes
 # Calendar Page
 @calendar.route("/calendar")
 @login_required

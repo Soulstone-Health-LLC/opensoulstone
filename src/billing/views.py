@@ -2,9 +2,7 @@
 Billing > Views - This file contains the routes for the billing blueprint.
 """
 
-# ------------------------------------------------------------------------------
 # Imports
-# ------------------------------------------------------------------------------
 from datetime import datetime
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
@@ -14,15 +12,10 @@ from src.models import People, Charges
 from src.models import LedgerCharges, LedgerPayments, Notes
 
 
-# ------------------------------------------------------------------------------
-# Global Variables
-# ------------------------------------------------------------------------------
+# Blueprint configuration
 billing = Blueprint("billing", __name__)
 
 
-# ------------------------------------------------------------------------------
-# Routes - Practice - Billing
-# ------------------------------------------------------------------------------
 # Billing
 @billing.route("/billing")
 @login_required
