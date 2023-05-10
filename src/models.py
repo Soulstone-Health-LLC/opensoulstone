@@ -133,11 +133,13 @@ class People(db.Model):
     # Outstanding Balances
     def outstanding_balance(self):
         ''' Returns the sum of the person's ledger charges minus payments'''
-        charge_sum = db.session.query(db.func.sum(LedgerCharges.unit_amount)).filter(
-            LedgerCharges.person_id == self.id
+        charge_sum = db.session.query(
+            db.func.sum(LedgerCharges.unit_amount)).filter(
+                LedgerCharges.person_id == self.id
         ).scalar()
-        payment_sum = db.session.query(db.func.sum(LedgerPayments.amount)).filter(
-            LedgerPayments.person_id == self.id
+        payment_sum = db.session.query(
+            db.func.sum(LedgerPayments.amount)).filter(
+                LedgerPayments.person_id == self.id
         ).scalar()
 
         return charge_sum - payment_sum
