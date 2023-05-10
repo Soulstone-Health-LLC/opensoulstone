@@ -67,7 +67,7 @@ class User(db.Model, UserMixin):
         serial = Serializer(SECRET_KEY)
         try:
             user_id = serial.loads(token)["user_id"]
-        except:
+        except User.SerialKeyDoesNotExist:
             return None
         return User.query.get(user_id)
 
