@@ -119,3 +119,19 @@ EVENT_DURATION_CHOICES = [
     (105, "1 Hour 45 Minutes (105 Minutes)"),
     (120, "2 Hours (120 Minutes)"),
 ]
+
+# Chakra Score Dictionary
+CHAKRA_SCORE_CHOICES = [
+    ("", ""),
+    ("-5", -5),
+    ("-4", -4),
+    ("-3", -3),
+    ("-2", -2),
+    ("-1", -1),
+    ("0", 0),
+    ("1", 1),
+    ("2", 2),
+    ("3", 3),
+    ("4", 4),
+    ("5", 5),
+]
