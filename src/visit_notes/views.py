@@ -118,7 +118,9 @@ def addVisitNote(id):
         chakra_assessment_root_description = (
             form.chakra_assessment_root_description.data
         )
-        chakra_assessment_sacral_score = form.chakra_assessment_sacral_score.data
+        chakra_assessment_sacral_score = (
+            form.chakra_assessment_sacral_score.data
+        )
         chakra_assessment_sacral_description = (
             form.chakra_assessment_sacral_description.data
         )
@@ -132,11 +134,15 @@ def addVisitNote(id):
         chakra_assessment_heart_description = (
             form.chakra_assessment_heart_description.data
         )
-        chakra_assessment_throat_score = form.chakra_assessment_throat_score.data
+        chakra_assessment_throat_score = (
+            form.chakra_assessment_throat_score.data
+        )
         chakra_assessment_throat_description = (
             form.chakra_assessment_throat_description.data
         )
-        chakra_assessment_third_eye_score = form.chakra_assessment_third_eye_score.data
+        chakra_assessment_third_eye_score = (
+            form.chakra_assessment_third_eye_score.data
+        )
         chakra_assessment_third_eye_description = (
             form.chakra_assessment_third_eye_description.data
         )
@@ -158,19 +164,37 @@ def addVisitNote(id):
             date_of_service=date_of_service,
             reason_for_visit=reason_for_visit,
             chakra_assessment_root_score=chakra_assessment_root_score,
-            chakra_assessment_root_description=chakra_assessment_root_description,
+            chakra_assessment_root_description=(
+                chakra_assessment_root_description
+            ),
             chakra_assessment_sacral_score=chakra_assessment_sacral_score,
-            chakra_assessment_sacral_description=chakra_assessment_sacral_description,
-            chakra_assessment_solar_plexus_score=chakra_assessment_solar_plexus_score,
-            chakra_assessment_solar_plexus_description=chakra_assessment_solar_plexus_description,
+            chakra_assessment_sacral_description=(
+                chakra_assessment_sacral_description
+            ),
+            chakra_assessment_solar_plexus_score=(
+                chakra_assessment_solar_plexus_score
+            ),
+            chakra_assessment_solar_plexus_description=(
+                chakra_assessment_solar_plexus_description
+            ),
             chakra_assessment_heart_score=chakra_assessment_heart_score,
-            chakra_assessment_heart_description=chakra_assessment_heart_description,
+            chakra_assessment_heart_description=(
+                chakra_assessment_heart_description
+            ),
             chakra_assessment_throat_score=chakra_assessment_throat_score,
-            chakra_assessment_throat_description=chakra_assessment_throat_description,
-            chakra_assessment_third_eye_score=chakra_assessment_third_eye_score,
-            chakra_assessment_third_eye_description=chakra_assessment_third_eye_description,
+            chakra_assessment_throat_description=(
+                chakra_assessment_throat_description
+            ),
+            chakra_assessment_third_eye_score=(
+                chakra_assessment_third_eye_score
+            ),
+            chakra_assessment_third_eye_description=(
+                chakra_assessment_third_eye_description
+            ),
             chakra_assessment_crown_score=chakra_assessment_crown_score,
-            chakra_assessment_crown_description=chakra_assessment_crown_description,
+            chakra_assessment_crown_description=(
+                chakra_assessment_crown_description
+            ),
             visit_notes=visit_notes,
             post_visit_recommendations=post_visit_recommendations,
         )
@@ -216,11 +240,15 @@ def editVisitNote(id):
     if request.method == "GET":
         form.reason_for_visit.data = note.reason_for_visit
         form.date_of_service.data = note.date_of_service
-        form.chakra_assessment_root_score.data = note.chakra_assessment_root_score
+        form.chakra_assessment_root_score.data = (
+            note.chakra_assessment_root_score
+        )
         form.chakra_assessment_root_description.data = (
             note.chakra_assessment_root_description
         )
-        form.chakra_assessment_sacral_score.data = note.chakra_assessment_sacral_score
+        form.chakra_assessment_sacral_score.data = (
+            note.chakra_assessment_sacral_score
+        )
         form.chakra_assessment_sacral_description.data = (
             note.chakra_assessment_sacral_description
         )
@@ -230,11 +258,15 @@ def editVisitNote(id):
         form.chakra_assessment_solar_plexus_description.data = (
             note.chakra_assessment_solar_plexus_description
         )
-        form.chakra_assessment_heart_score.data = note.chakra_assessment_heart_score
+        form.chakra_assessment_heart_score.data = (
+            note.chakra_assessment_heart_score
+        )
         form.chakra_assessment_heart_description.data = (
             note.chakra_assessment_heart_description
         )
-        form.chakra_assessment_throat_score.data = note.chakra_assessment_throat_score
+        form.chakra_assessment_throat_score.data = (
+            note.chakra_assessment_throat_score
+        )
         form.chakra_assessment_throat_description.data = (
             note.chakra_assessment_throat_description
         )
@@ -244,7 +276,9 @@ def editVisitNote(id):
         form.chakra_assessment_third_eye_description.data = (
             note.chakra_assessment_third_eye_description
         )
-        form.chakra_assessment_crown_score.data = note.chakra_assessment_crown_score
+        form.chakra_assessment_crown_score.data = (
+            note.chakra_assessment_crown_score
+        )
         form.chakra_assessment_crown_description.data = (
             note.chakra_assessment_crown_description
         )
@@ -265,11 +299,15 @@ def editVisitNote(id):
         note.updated_at = datetime.utcnow()
         note.reason_for_visit = form.reason_for_visit.data
         note.date_of_service = form.date_of_service.data
-        note.chakra_assessment_root_score = form.chakra_assessment_root_score.data
+        note.chakra_assessment_root_score = (
+            form.chakra_assessment_root_score.data
+        )
         note.chakra_assessment_root_description = (
             form.chakra_assessment_root_description.data
         )
-        note.chakra_assessment_sacral_score = form.chakra_assessment_sacral_score.data
+        note.chakra_assessment_sacral_score = (
+            form.chakra_assessment_sacral_score.data
+        )
         note.chakra_assessment_sacral_description = (
             form.chakra_assessment_sacral_description.data
         )
@@ -279,11 +317,15 @@ def editVisitNote(id):
         note.chakra_assessment_solar_plexus_description = (
             form.chakra_assessment_solar_plexus_description.data
         )
-        note.chakra_assessment_heart_score = form.chakra_assessment_heart_score.data
+        note.chakra_assessment_heart_score = (
+            form.chakra_assessment_heart_score.data
+        )
         note.chakra_assessment_heart_description = (
             form.chakra_assessment_heart_description.data
         )
-        note.chakra_assessment_throat_score = form.chakra_assessment_throat_score.data
+        note.chakra_assessment_throat_score = (
+            form.chakra_assessment_throat_score.data
+        )
         note.chakra_assessment_throat_description = (
             form.chakra_assessment_throat_description.data
         )
@@ -293,7 +335,9 @@ def editVisitNote(id):
         note.chakra_assessment_third_eye_description = (
             form.chakra_assessment_third_eye_description.data
         )
-        note.chakra_assessment_crown_score = form.chakra_assessment_crown_score.data
+        note.chakra_assessment_crown_score = (
+            form.chakra_assessment_crown_score.data
+        )
         note.chakra_assessment_crown_description = (
             form.chakra_assessment_crown_description.data
         )
