@@ -11,7 +11,6 @@ from flask_login import login_required, current_user
 core = Blueprint("core", __name__)
 
 
-# Routes - Practice - Dashboard
 # Homepage
 @core.route("/")
 @login_required
