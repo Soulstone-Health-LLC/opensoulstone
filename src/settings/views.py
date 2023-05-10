@@ -1,8 +1,8 @@
-# soulstone/website/settings/views.py
+'''
+Settings > Views - This file contains the routes for the settings blueprint.
+'''
 
-# ------------------------------------------------------------------------------
 # Imports
-# ------------------------------------------------------------------------------
 import random
 import string
 from datetime import datetime, timedelta
@@ -18,15 +18,10 @@ from src.models import Charges, People, Practice, User, Notes
 from src.models import LedgerCharges, EventTypes
 
 
-# ------------------------------------------------------------------------------
-# Global Variables
-# ------------------------------------------------------------------------------
+# Blueprint Configuration
 settings = Blueprint('settings', __name__)
 
 
-# ------------------------------------------------------------------------------
-# Routes - Practice - Settings
-# ------------------------------------------------------------------------------
 # View Practice Information
 @settings.route('/settings/practice_info')
 @login_required

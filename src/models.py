@@ -2,9 +2,8 @@
 Modles for the Soulstone application
 '''
 
-# ------------------------------------------------------------------------------
+
 # Imports
-# ------------------------------------------------------------------------------
 from datetime import timedelta
 from flask import redirect, url_for
 from flask_login import UserMixin
@@ -13,9 +12,7 @@ from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from . import db, login_manager, SECRET_KEY
 
 
-# ------------------------------------------------------------------------------
 # LoginManager - user_loader
-# ------------------------------------------------------------------------------
 @login_manager.user_loader
 def load_user(user_id):
     '''Queries the database for the user_id and returns the user object'''
@@ -28,9 +25,7 @@ def unauthorized():
     return redirect(url_for('users.login'))
 
 
-# ------------------------------------------------------------------------------
 # Models - Database Tables
-# ------------------------------------------------------------------------------
 class User(db.Model, UserMixin):
     '''SQL Table: user'''
     __tablename__ = 'user'
