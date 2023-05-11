@@ -50,7 +50,8 @@ class PracticeUserForm(FlaskForm):
         label="User Role *", choices=ROLE_CHOICES, validators=[InputRequired()]
     )
     user_type = SelectField(
-        label="User Type *", choices=USER_TYPE_CHOICES, validators=[InputRequired()]
+        label="User Type *", choices=USER_TYPE_CHOICES,
+        validators=[InputRequired()]
     )
     first_name = StringField(
         label="First Name *", validators=[DataRequired(),

@@ -10,12 +10,24 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 from flask_mail import Message
 from werkzeug.security import generate_password_hash
-from src.settings.forms import AddChargeForm, EditChargeForm
-from src.settings.forms import EditPracticeForm, EventTypeForm
-from src.settings.forms import PracticeUserForm
+from src.settings.forms import (
+    AddChargeForm,
+    EditChargeForm,
+    EditPracticeForm,
+    EventTypeForm,
+    PracticeUserForm,
+)
 from src import db, mail
-from src.models import Charges, People, Practice, User, Notes
-from src.models import LedgerCharges, EventTypes
+from src.models import (
+    Charges,
+    People,
+    Practice,
+    User,
+    Notes,
+    LedgerCharges,
+    EventTypes,
+)
+from src.decorators.decorators import superuser_required
 
 
 # Blueprint Configuration
@@ -25,6 +37,7 @@ settings = Blueprint("settings", __name__)
 # View Practice Information
 @settings.route("/settings/practice_info")
 @login_required
+@superuser_required
 def practiceSettings():
     """Routes the user to the Settings - Practice Information page"""
     if request.method == "GET":
@@ -65,6 +78,7 @@ def practiceSettings():
 @settings.route("/settings/<int:id>/edit_practice_info",
                 methods=["GET", "POST"])
 @login_required
+@superuser_required
 def editPracticeInformation(id):
     """Routes the user to edit the practice information"""
     form = EditPracticeForm()
@@ -119,6 +133,7 @@ def editPracticeInformation(id):
 # View Practice Users
 @settings.route("/settings/practice_users")
 @login_required
+@superuser_required
 def practiceUsers():
     """Routes the user to the Settings - Practice Users page"""
     if request.method == "GET":
@@ -136,6 +151,7 @@ def practiceUsers():
 # Add Practice User
 @settings.route("/settings/add_practice_user", methods=["GET", "POST"])
 @login_required
+@superuser_required
 def addPracticeUser():
     """Routes the user to add a practice user"""
     form = PracticeUserForm()
@@ -226,6 +242,7 @@ def addPracticeUser():
 @settings.route("/settings/<int:user_id>/edit_practice_user",
                 methods=["GET", "POST"])
 @login_required
+@superuser_required
 def editPracticeUser(user_id):
     """Routes the user to edit the practice user"""
     form = PracticeUserForm()
@@ -291,6 +308,7 @@ def editPracticeUser(user_id):
 # View Charges
 @settings.route("/settings/charges")
 @login_required
+@superuser_required
 def chargeSettings():
     """Routes the user to the Settings - Charges page"""
     if request.method == "GET":
@@ -312,6 +330,7 @@ def chargeSettings():
 # Add New Charge
 @settings.route("/settings/add_charge", methods=["GET", "POST"])
 @login_required
+@superuser_required
 def addCharge():
     """Routes user to add a new charge"""
     form = AddChargeForm()
@@ -361,6 +380,7 @@ def addCharge():
 # View Charge
 @settings.route("/settings/charges/<int:id>")
 @login_required
+@superuser_required
 def viewCharge(id):
     if request.method == "GET":
         # current user practice id
@@ -382,6 +402,7 @@ def viewCharge(id):
 # Edit Charge
 @settings.route("/settings/charges/<int:id>/edit", methods=["GET", "POST"])
 @login_required
+@superuser_required
 def editCharge(id):
     """Routes the user to edit the charge"""
     form = EditChargeForm()
@@ -425,6 +446,7 @@ def editCharge(id):
 # View Event Types
 @settings.route("/settings/event_types")
 @login_required
+@superuser_required
 def viewEventTypes():
     """Route to see the list of event types"""
     if request.method == "GET":
@@ -447,6 +469,7 @@ def viewEventTypes():
 # Add Event Type
 @settings.route("/settings/add_event_type", methods=["GET", "POST"])
 @login_required
+@superuser_required
 def addEventType():
     """Routes the user to add a new event type"""
     form = EventTypeForm()
@@ -488,6 +511,7 @@ def addEventType():
 # Edit Event Type
 @settings.route("/settings/event_types/<int:id>/edit", methods=["GET", "POST"])
 @login_required
+@superuser_required
 def editEventType(id):
     """Routes the user to edit the event type"""
     form = EventTypeForm()
