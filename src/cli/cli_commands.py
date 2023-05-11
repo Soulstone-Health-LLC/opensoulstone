@@ -85,7 +85,8 @@ def db_seed():
         password=generate_password_hash("rodneygauna+hh", method="sha256"),
         first_name="Rodney",
         last_name="Gauna",
-        role="Owner",
+        role="Practitioner",
+        user_type="Owner",
         status="Active",
     )
 

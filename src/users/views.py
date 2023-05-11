@@ -175,6 +175,7 @@ def sign_up():
                     first_name=first_name,
                     last_name=last_name,
                     password=generate_password_hash(password),
+                    user_type="Owner"
                 )
                 db.session.add(new_user)
                 db.session.commit()

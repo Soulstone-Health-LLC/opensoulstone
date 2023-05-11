@@ -94,6 +94,13 @@ PHONE_TYPE_CHOICES = [
 # Role Dictionary
 ROLE_CHOICES = [("Practitioner", "Practitioner"), ("Staff", "Staff")]
 
+# User Type Dictionary
+USER_TYPE_CHOICES = [
+    ("User", "User"),
+    ("Super User", "Super User"),
+    ("Owner", "Owner"),
+]
+
 # Status Dictionary
 STATUS_CHOICES = [("Active", "Active"), ("Inactive", "Inactive")]
 

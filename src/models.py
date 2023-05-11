@@ -55,6 +55,7 @@ class User(db.Model, UserMixin):
     phone_number = db.Column(db.String(10))
     phone_type = db.Column(db.String(10))
     role = db.Column(db.String(50), nullable=False, default="Staff")
+    user_type = db.Column(db.String(10), nullable=False, default="User")
     status = db.Column(db.Text, nullable=False, default="Active")
 
     # For Reset/Forgot Password

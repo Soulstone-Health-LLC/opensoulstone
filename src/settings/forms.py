@@ -13,6 +13,7 @@ from src.dictionary.general import (
     PHONE_TYPE_CHOICES,
     STATUS_CHOICES,
     ROLE_CHOICES,
+    USER_TYPE_CHOICES,
     EVENT_DURATION_CHOICES,
 )
 
@@ -47,6 +48,9 @@ class PracticeUserForm(FlaskForm):
 
     role = SelectField(
         label="User Role *", choices=ROLE_CHOICES, validators=[InputRequired()]
+    )
+    user_type = SelectField(
+        label="User Type *", choices=USER_TYPE_CHOICES, validators=[InputRequired()]
     )
     first_name = StringField(
         label="First Name *", validators=[DataRequired(),
