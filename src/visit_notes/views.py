@@ -62,6 +62,8 @@ def addVisitNote(id):
 
     pers_id = People.query.get_or_404(id).id
 
+    notes_count = Notes.query.filter_by(person_id=pers_id).count()
+
     total_charges = (
         db.session.query(
             db.func.sum(
@@ -101,6 +103,7 @@ def addVisitNote(id):
                 person=person,
                 form=form,
                 balance=balance,
+                notes_count=notes_count,
             )
         else:
             return render_template("error_pages/401.html", user=current_user)
@@ -216,6 +219,8 @@ def editVisitNote(id):
     pers_id = note.person_id
     person = People.query.get_or_404(pers_id)
 
+    notes_count = Notes.query.filter_by(person_id=pers_id).count()
+
     total_charges = (
         db.session.query(
             db.func.sum(
@@ -294,6 +299,7 @@ def editVisitNote(id):
             note=note,
             form=form,
             balance=balance,
+            notes_count=notes_count,
         )
 
     if form.validate_on_submit() and request.method == "POST":
