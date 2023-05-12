@@ -374,7 +374,7 @@ def pdfVisitNote(id):
         person=person,
         user=current_user,
     )
-    config = pdfkit.configuration(wkhtmltopdf="/usr/local/bin/wkhtmltopdf")
+    config = pdfkit.configuration(wkhtmltopdf="/usr/bin/wkhtmltopdf")
     pdf = pdfkit.from_string(rendered, False, configuration=config)
     response = make_response(pdf)
     response.headers["Content-Type"] = "application/pdf"
