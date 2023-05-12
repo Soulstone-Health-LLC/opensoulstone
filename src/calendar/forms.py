@@ -42,4 +42,4 @@ class EventForm(FlaskForm):
         label="Note",
         render_kw={"placeholder": "Add any notes about the event here..."}
     )
-    submit = SubmitField(label="Create New Event")
+    submit = SubmitField(label="Save Event")
