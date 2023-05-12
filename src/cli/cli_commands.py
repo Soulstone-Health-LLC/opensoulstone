@@ -4,12 +4,21 @@ CLI Commands for the website app
 
 # Imports
 import random
+from faker import Faker
 from flask import Blueprint
 from werkzeug.security import generate_password_hash
 from src.models import (
-    Practice, User, People, Charges, EventTypes
+    Practice,
+    User,
+    People,
+    Charges,
+    EventTypes,
+    Notes,
 )
 from src import db
+
+# Faker instance
+fake = Faker()
 
 # Blueprint Configuration
 commands = Blueprint("commands", __name__)
@@ -119,20 +128,32 @@ def db_seed():
         data.append(
             People(
                 practice_id=2,
-                first_name=f"Test {i}",
-                middle_name="Test",
-                last_name=f"Test {i}",
-                suffix_name="Test",
-                address_1="123 Main St",
-                address_2="Suite 100",
-                city="San Francisco",
-                state="CA",
-                zipcode="94105",
+                first_name=fake.first_name(),
+                middle_name=fake.first_name(),
+                last_name=fake.last_name(),
+                suffix_name=fake.suffix(),
+                address_1=fake.street_address(),
+                address_2=fake.secondary_address(),
+                city=fake.city(),
+                state=fake.state_abbr(),
+                zipcode=fake.zipcode(),
                 phone_number=random.randint(1000000000, 9999999999),
                 phone_type="Mobile",
-                email=f"test{i}@soulstone.com",
+                email=fake.email(),
                 status="Active",
                 gender_identity="She/Her",
+            )
+        )
+
+    # Test practice notes
+    for i in range(1, 1100):
+        data.append(
+            Notes(
+                practice_id=2,
+                person_id=i,
+                date_of_service=fake.date_between(
+                    start_date="-1y", end_date="today"),
+                reason_for_visit=f"Test Reason for Visit {i}",
             )
         )
 
