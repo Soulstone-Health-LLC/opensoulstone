@@ -68,7 +68,10 @@ def addEvent():
     form = EventForm()
 
     form.event_type_id.choices = [
-        (event_type.id, event_type.event_name)
+        (
+            event_type.id,
+            f"{event_type.event_name} ({event_type.event_duration.seconds // 3600} hours, {event_type.event_duration.seconds // 60 % 60} minutes)",
+        )
         for event_type in current_user.practice.event_types
     ]
 
@@ -166,7 +169,10 @@ def editEvent(event_id):
     form = EventForm()
 
     form.event_type_id.choices = [
-        (event_type.id, event_type.event_name)
+        (
+            event_type.id,
+            f"{event_type.event_name} ({event_type.event_duration.seconds // 3600} hours, {event_type.event_duration.seconds // 60 % 60} minutes)",
+        )
         for event_type in current_user.practice.event_types
     ]
 
