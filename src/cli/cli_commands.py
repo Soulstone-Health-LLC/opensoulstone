@@ -137,8 +137,9 @@ def db_seed():
                 city=fake.city(),
                 state=fake.state_abbr(),
                 zipcode=fake.zipcode(),
-                phone_number=random.randint(1000000000, 9999999999),
-                phone_type="Mobile",
+                phone_number=fake.random_number(digits=10),
+                phone_type=fake.random_element(
+                    elements=("Mobile", "Office", "Home", "Fax")),
                 email=fake.email(),
                 status="Active",
                 gender_identity="She/Her",
@@ -153,7 +154,9 @@ def db_seed():
                 person_id=i,
                 date_of_service=fake.date_between(
                     start_date="-1y", end_date="today"),
-                reason_for_visit=f"Test Reason for Visit {i}",
+                reason_for_visit=fake.sentence(),
+                visit_notes=fake.paragraph(),
+                post_visit_recommendations=fake.paragraph(),
             )
         )
 
