@@ -46,7 +46,9 @@
             <tbody>
               {% for n in visit_notes %}
               <tr>
-                <td>{{ n.date_of_service }}</td>
+                <td>
+                  {{ n.date_of_service.strftime('%Y-%m-%d (%A, %B %d, %Y)') }}
+                </td>
                 <td>
                   {% if n.middle_name == '' and n.suffix_name == '' %} {{
                   n.last_name }}, {{ n.first_name }} {% elif n.suffix_name == ''
