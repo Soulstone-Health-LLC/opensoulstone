@@ -51,7 +51,7 @@
                     class="form-control"
                     id="eventDate"
                     name="eventDate"
-                    value="{{ event.date }}  {{ event.start_time }}"
+                    value="{{ event.date.strftime('%A, %B %d, %Y') }}  {{ event.start_time.strftime('%I:%M %p') }}"
                     readonly
                   />
                 </div>
@@ -64,7 +64,7 @@
                     class="form-control"
                     id="eventEndTime"
                     name="eventEndTime"
-                    value="{{ event.date }}  {{ event.end_time }}"
+                    value="{{ event.date.strftime('%A, %B %d, %Y') }}  {{ event.end_time.strftime('%I:%M %p') }}"
                     readonly
                   />
                 </div>
