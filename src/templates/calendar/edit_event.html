@@ -28,6 +28,16 @@
                   {% endfor %} {% else %} {{ form.event_type_id }} {% endif %}
                 </div>
               </div>
+              <div class="col-md-4 mb-6">
+                <div class="form-group">
+                  {{ form.practitioner_id.label(class="form-label") }} {% if
+                  form.practitioner_id.errors %} {{
+                  form.practitioner_id(class="form-control select2-show-search
+                  is-invalid") }} {% for error in form.event_type_id.errors %}
+                  <div class="invalid-feedback">{{ error }}</div>
+                  {% endfor %} {% else %} {{ form.practitioner_id }} {% endif %}
+                </div>
+              </div>
             </div>
             <div class="row">
               <div class="col-md-4 mb-6">

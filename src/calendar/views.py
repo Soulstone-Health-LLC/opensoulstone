@@ -8,7 +8,12 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 from src.calendar.forms import EventForm
 from src import db
-from src.models import Events, People, EventTypes
+from src.models import (
+    User,
+    Events,
+    People,
+    EventTypes,
+)
 
 
 # Blueprint
@@ -34,7 +39,7 @@ def schedule():
                 People.suffix_name,
                 EventTypes.event_name,
             )
-            .join(People, Events.person_id == People.id)
+            .outerjoin(People, Events.person_id == People.id)
             .join(EventTypes, Events.event_type_id == EventTypes.id)
             .filter_by(practice_id=current_user.practice_id)
             .all()
@@ -42,8 +47,7 @@ def schedule():
 
         cal_events = [
             {
-                "title": f"{event.first_name} {event.last_name}"
-                f" ({event.event_name})",
+                "title": "Blocked Off Time" if event.first_name is None else f"{event.first_name} {event.last_name} ({event.event_name})",
                 "start": str(event.date) + "T" + str(event.start_time),
                 "end": str(event.date) + "T" + str(event.end_time),
                 "url": url_for("calendar.viewEvent", event_id=event.id),
@@ -54,8 +58,8 @@ def schedule():
     return render_template(
         "calendar/calendar.html",
         title="Calendar",
-        events=cal_events,  # TODO: Fix this
-        cal_events=events,  # TODO: Flip this
+        events=cal_events,
+        cal_events=events,
         user=current_user,
     )
 
@@ -80,6 +84,16 @@ def addEvent():
         for person in current_user.practice.people
     ]
 
+    # Choices of Users that have a role of Practitioner
+    practictioners = db.session.query(User).filter_by(
+        practice_id=current_user.practice_id, role="Practitioner"
+    )
+
+    form.practitioner_id.choices = [(0, "None")] + [
+        (practictioner.id, practictioner.first_name + " " + practictioner.last_name)
+        for practictioner in practictioners
+    ]
+
     if form.validate_on_submit():
         if request.method == "POST":
             # calculate duration
@@ -98,6 +112,7 @@ def addEvent():
             updated_by = current_user.get_id()
             event_type_id = form.event_type_id.data
             person_id = form.person.data
+            practitioner_id = form.practitioner_id.data
             date = form.date.data
             note = form.note.data
 
@@ -113,6 +128,7 @@ def addEvent():
                 updated_by=updated_by,
                 event_type_id=event_type_id,
                 person_id=person_id,
+                practitioner_id=practitioner_id,
                 date=date,
                 start_time=datetime.time(start_datetime),
                 end_time=datetime.time(end_time),
@@ -144,15 +160,20 @@ def viewEvent(event_id):
             Events.date,
             Events.start_time,
             Events.end_time,
-            People.first_name,
+            People.id.label('person_id'),
+            People.first_name.label('person_first_name'),
             People.middle_name,
-            People.last_name,
+            People.last_name.label('person_last_name'),
             People.suffix_name,
             EventTypes.event_name,
+            User.id.label('practitioner_id'),
+            User.first_name.label('practitioner_first_name'),
+            User.last_name.label('practitioner_last_name')
         )
         .filter_by(id=event_id)
-        .join(People, Events.person_id == People.id)
+        .outerjoin(People, Events.person_id == People.id)
         .join(EventTypes, Events.event_type_id == EventTypes.id)
+        .outerjoin(User, Events.practitioner_id == User.id)
         .first()
     )
 
@@ -181,6 +202,16 @@ def editEvent(event_id):
         for person in current_user.practice.people
     ]
 
+    # Choices of Users that have a role of Practitioner
+    practictioners = db.session.query(User).filter_by(
+        practice_id=current_user.practice_id, role="Practitioner"
+    )
+
+    form.practitioner_id.choices = [(0, "None")] + [
+        (practictioner.id, practictioner.first_name + " " + practictioner.last_name)
+        for practictioner in practictioners
+    ]
+
     if form.validate_on_submit():
         if request.method == "POST":
             # calculate duration
@@ -195,6 +226,7 @@ def editEvent(event_id):
             updated_at = datetime.utcnow()
             updated_by = current_user.get_id()
             event_type_id = form.event_type_id.data
+            practitioner_id = form.practitioner_id.data
             person_id = form.person.data
             date = form.date.data
             note = form.note.data
@@ -207,6 +239,7 @@ def editEvent(event_id):
             event.updated_by = updated_by
             event.event_type_id = event_type_id
             event.person_id = person_id
+            event.practitioner_id = practitioner_id
             event.date = date
             event.start_time = datetime.time(start_datetime)
             event.end_time = datetime.time(end_time)
@@ -223,6 +256,7 @@ def editEvent(event_id):
     elif request.method == "GET":
         form.event_type_id.data = event.event_type_id
         form.person.data = event.person_id
+        form.practitioner_id.data = event.practitioner_id
         form.date.data = event.date
         form.start_time.data = event.start_time
         form.note.data = event.note

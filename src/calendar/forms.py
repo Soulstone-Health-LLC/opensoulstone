@@ -32,6 +32,14 @@ class EventForm(FlaskForm):
             "placeholder": "Select Person",
         },
     )
+    practitioner_id = SelectField(
+        label="Practitioner",
+        coerce=int,
+        render_kw={
+            "class": "form-control select2 form-select",
+            "placeholder": "Select Practitioner",
+        },
+    )
     date = DateField(
         label="Start Date *", format="%Y-%m-%d", validators=[DataRequired()]
     )

@@ -264,6 +264,7 @@ class Events(db.Model):
     updated_at = db.Column(db.DateTime(timezone=True))
     updated_by = db.Column(db.Integer, db.ForeignKey("user.id"))
     event_type_id = db.Column(db.Integer, db.ForeignKey("event_types.id"))
+    practitioner_id = db.Column(db.Integer, db.ForeignKey("user.id"))
     date = db.Column(db.Date, nullable=False)
     start_time = db.Column(db.Time, nullable=False)
     end_time = db.Column(db.Time, nullable=False)
