@@ -159,6 +159,8 @@ def addPracticeUser():
     if form.validate_on_submit():
         if request.method == "POST":
             # Get data from the form
+            role = form.role.data
+            user_type = form.user_type.data
             first_name = form.first_name.data
             middle_name = form.middle_name.data
             last_name = form.last_name.data
@@ -184,6 +186,8 @@ def addPracticeUser():
         else:
             # Create person
             new_user = User(
+                role=role,
+                user_type=user_type,
                 first_name=first_name,
                 middle_name=middle_name,
                 last_name=last_name,
