@@ -206,6 +206,7 @@ def addPracticeUser():
                 practice_id=current_user.practice_id,
                 created_at=datetime.utcnow(),
                 created_by=current_user.get_id(),
+                password_reset_by_system=True,
             )
 
             # Add person to database

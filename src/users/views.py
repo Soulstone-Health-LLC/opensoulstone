@@ -45,16 +45,18 @@ def login():
             # Checks if the password is correct
             if user:
                 if check_password_hash(user.password, password):
-                    # Check if password needs to be updated
-                    if user.password_reset_by_system:
-                        flash("Please update your password.", category="error")
-                        return redirect(url_for("users.change_password"))
+                    # Check if user is a Support user
+                    if user.role == "Support":
+                        flash("Logged in successfully", category="success")
+                        login_user(user, remember=True)
+                        return redirect(url_for("supportapp.support"))
                     else:
-                        # Check if user is a Support user
-                        if user.role == "Support":
-                            flash("Logged in successfully", category="success")
+                        # Check if password needs to be updated
+                        if user.password_reset_by_system:
+                            flash("Please update your password.",
+                                  category="error")
                             login_user(user, remember=True)
-                            return redirect(url_for("supportapp.support"))
+                            return redirect(url_for("users.change_password"))
                         else:
                             flash("Logged in successfully", category="success")
                             login_user(user, remember=True)
