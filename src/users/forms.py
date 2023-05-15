@@ -39,7 +39,8 @@ class ChangePasswordForm(FlaskForm):
     """Change Password Form"""
 
     new_password = PasswordField(
-        label="New Password *", validators=[DataRequired(), Length(min=6, max=50)]
+        label="New Password *", validators=[DataRequired(),
+                                            Length(min=6, max=50)]
     )
     confirm_new_password = PasswordField(
         label="Confirm New Password *", validators=[DataRequired(),
