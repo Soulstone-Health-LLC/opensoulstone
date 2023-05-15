@@ -38,10 +38,7 @@
           >
             <thead>
               <tr>
-                <th>First Name</th>
-                <th>Middle Name</th>
-                <th>Last Name</th>
-                <th>Suffix</th>
+                <th>Name</th>
                 <th>Email</th>
                 <th>Phone Number</th>
                 <th>Role</th>
@@ -53,22 +50,35 @@
             <tbody>
               {% for user in users %}
               <tr>
-                <td>{{ user.first_name }}</td>
-                <td>{{ user.middle_name }}</td>
-                <td>{{ user.last_name }}</td>
-                <td>{{ user.suffix_name }}</td>
+                <td>
+                  {% if user.middle_name and user.suffix_name %} {{
+                  user.first_name }} {{ user.middle_name }} {{ user.last_name }}
+                  {{ user.suffix_name }} {% elif user.middle_name %} {{
+                  user.first_name }} {{ user.middle_name }} {{ user.last_name }}
+                  {% elif user.suffix_name %} {{ user.first_name }} {{
+                  user.last_name }} {{ user.suffix_name }} {% else %} {{
+                  user.first_name }} {{ user.last_name }} {% endif %}
+                </td>
                 <td>{{ user.email }}</td>
                 <td>{{ user.phone_number }}</td>
                 <td>{{user.role}}</td>
                 <td>{{user.user_type}}</td>
                 <td>{{ user.status }}</td>
                 <td>
-                  <a
-                    href="{{ url_for('settings.editPracticeUser', user_id=user.id) }}"
-                    class="btn btn-primary badge"
-                    type="button"
-                    ><i class="fe fe-edit"></i> Edit</a
-                  >
+                  <div class="btn-group">
+                    <a
+                      href="{{ url_for('settings.editPracticeUser', user_id=user.id) }}"
+                      class="btn btn-primary badge"
+                      type="button"
+                      ><i class="fe fe-edit"></i> Edit</a
+                    >
+                    <a
+                      href="#"
+                      class="btn btn-outline-primary badge"
+                      type="button"
+                      ><i class="fe fe-lock"></i> Force Password Change</a
+                    >
+                  </div>
                 </td>
               </tr>
               {% endfor %}
