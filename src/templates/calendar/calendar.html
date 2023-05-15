@@ -36,18 +36,19 @@
   document.addEventListener("DOMContentLoaded", function() {
     var calendarEl = document.getElementById("calendar");
     var calendar = new FullCalendar.Calendar(calendarEl, {
+      buttonText: {
+        today: "Today",
+        month: "Month",
+        week: "Week",
+        day: "Day",
+        list: "Day List",
+      },
       headerToolbar: {
-            left: 'prev,next today',
-            center: 'title',
-            right: 'dayGridMonth,timeGridWeek,timeGridDay,listDay'
-        },
-      views: {
-          dayGridMonth: { buttonText: 'month' },
-          timeGridWeek: { buttonText: 'week' },
-          timeGridDay: { buttonText: 'day' },
-          listDay: { buttonText: 'list' }
-        },
-        initialView: 'timeGridDay',
+          left: 'prev,next today',
+          center: 'title',
+          right: 'dayGridMonth,timeGridWeek,timeGridDay,listDay'
+      },
+      initialView: 'timeGridWeek',
       navLinks: true, // can click day/week names to navigate views
       dayMaxEvents: true, // allow "more" link when too many events
       events: cEvents,
