@@ -195,7 +195,7 @@ def addLedgerCharge(id):
         updated_by = current_user.get_id()
         units = form.units.data
         unit_amount = form.unit_amount.data
-        tax_rate = form.tax_rate.data
+        tax_rate = form.tax_rate.data / 100
 
         # Add new ledger charge to the database
         new_ledger_charge = LedgerCharges(

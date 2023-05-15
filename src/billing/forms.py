@@ -20,7 +20,8 @@ class AddLedgerChargeForm(FlaskForm):
                              validators=[DataRequired()])
     units = IntegerField(
         label="Units *", validators=[DataRequired(), Length(min=1)])
-    tax_rate = FloatField(label="Tax Rate", validators=[Length(min=1)])
+    tax_rate = FloatField(label="Tax Rate (Percentage)",
+                          validators=[Length(min=1)])
     submit = SubmitField(label="Add Charge")
 
 
