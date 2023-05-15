@@ -84,6 +84,38 @@ class PracticeUserForm(FlaskForm):
     submit = SubmitField(label="Save Account")
 
 
+# Form - Edit Profile
+class ProfileForm(FlaskForm):
+    """View and Edit User Profile Form"""
+
+    first_name = StringField(
+        label="First Name *", validators=[DataRequired(),
+                                          Length(min=2, max=150)]
+    )
+    middle_name = StringField(label="Middle Name")
+    last_name = StringField(
+        label="Last Name *", validators=[DataRequired(),
+                                         Length(min=2, max=150)]
+    )
+    suffix_name = StringField(label="Suffix")
+    address_1 = StringField(label="Address Line 1")
+    address_2 = StringField(label="Address Line 2")
+    city = StringField(label="City")
+    state = SelectField(label="State", choices=STATE_CHOICES)
+    zipcode = StringField(label="Zipcode")
+    email = EmailField(
+        label="Email *", validators=[DataRequired(), Email(),
+                                     Length(min=3, max=150)]
+    )
+    phone_number = TelField(label="Phone Number *",
+                            validators=[DataRequired()])
+    phone_type = SelectField(
+        label="Phone Type *", choices=PHONE_TYPE_CHOICES,
+        validators=[InputRequired()]
+    )
+    submit = SubmitField(label="Save Profile")
+
+
 # Form - Add Charge
 class AddChargeForm(FlaskForm):
     """Add Billable Charge to the Practice"""

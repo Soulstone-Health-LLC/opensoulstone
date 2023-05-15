@@ -312,6 +312,69 @@ def editPracticeUser(user_id):
     )
 
 
+# Edit Practice User
+@settings.route("/settings/<int:user_id>/profile",
+                methods=["GET", "POST"])
+@login_required
+def profile(user_id):
+    """Routes the user to view and edit their profile information
+    without the ability to change their role or user type"""
+
+    form = ProfileForm()
+
+    p_user = User.query.get_or_404(user_id)
+
+    if request.method == "GET":
+        # pre-populate form
+        form.first_name.data = p_user.first_name
+        form.middle_name.data = p_user.middle_name
+        form.last_name.data = p_user.last_name
+        form.suffix_name.data = p_user.suffix_name
+        form.email.data = p_user.email
+        form.phone_number.data = p_user.phone_number
+        form.phone_type.data = p_user.phone_type
+        form.address_1.data = p_user.address_1
+        form.address_2.data = p_user.address_2
+        form.city.data = p_user.city
+        form.state.data = p_user.state
+        form.zipcode.data = p_user.zipcode
+
+    if form.validate_on_submit():
+        if request.method == "POST":
+            # Update user
+            p_user.updated_at = datetime.utcnow()
+            p_user.updated_by = current_user.get_id()
+            p_user.first_name = form.first_name.data
+            p_user.middle_name = form.middle_name.data
+            p_user.last_name = form.last_name.data
+            p_user.suffix_name = form.suffix_name.data
+            p_user.email = form.email.data
+            p_user.phone_number = form.phone_number.data
+            p_user.phone_type = form.phone_type.data
+            p_user.address_1 = form.address_1.data
+            p_user.address_2 = form.address_2.data
+            p_user.city = form.city.data
+            p_user.state = form.state.data
+            p_user.zipcode = form.zipcode.data
+
+            # Update person to database
+            db.session.commit()
+            flash(
+                "Profile updated successfully.",
+                category="success",
+            )
+
+            return redirect(url_for("core.home"))
+
+    return render_template(
+        "settings/edit_profile.html",
+        title="Soulstone - Profile",
+        user=current_user,
+        p_user=p_user,
+        form=form,
+    )
+
+
 # View Charges
 @settings.route("/settings/charges")
 @login_required
