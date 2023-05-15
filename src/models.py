@@ -43,6 +43,10 @@ class User(db.Model, UserMixin):
     # Data Points - Main
     email = db.Column(db.Text, nullable=False)
     password = db.Column(db.String(150), nullable=False)
+    # Who reset the password and when was it reset
+    password_reset_by_system = db.Column(db.Boolean, default=False)
+    password_reset_at = db.Column(db.DateTime(timezone=True))
+    # Data Points - Personal
     first_name = db.Column(db.String(150), nullable=False)
     middle_name = db.Column(db.String(150))
     last_name = db.Column(db.String(150), nullable=False)

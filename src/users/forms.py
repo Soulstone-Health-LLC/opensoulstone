@@ -34,6 +34,20 @@ class RegistrationForm(FlaskForm):
     submit = SubmitField(label="Register Account")
 
 
+# Form - Change Password
+class ChangePasswordForm(FlaskForm):
+    """Change Password Form"""
+
+    new_password = PasswordField(
+        label="New Password *", validators=[DataRequired(), Length(min=6, max=50)]
+    )
+    confirm_new_password = PasswordField(
+        label="Confirm New Password *", validators=[DataRequired(),
+                                                    EqualTo("new_password")]
+    )
+    submit = SubmitField(label="Change Password")
+
+
 # Form - Login
 class LoginForm(FlaskForm):
     """Login Form"""

@@ -3,12 +3,17 @@ Users > Views - This file contains all of the views for the Users Blueprint.
 """
 
 # Imports
+from datetime import datetime
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 from flask_mail import Message
-from src.users.forms import RegistrationForm, LoginForm, ResetPasswordForm
-from src.users.forms import ResetRequestForm
+from src.users.forms import (
+    RegistrationForm,
+    LoginForm,
+    ResetPasswordForm,
+    ResetRequestForm,
+)
 from src.models import User
 from src import db, mail
 
@@ -40,19 +45,25 @@ def login():
             # Checks if the password is correct
             if user:
                 if check_password_hash(user.password, password):
-                    if user.role == "Support":
-                        flash("Logged in successfully", category="success")
-                        login_user(user, remember=True)
-                        return redirect(url_for("supportapp.support"))
+                    # Check if password needs to be updated
+                    if user.password_reset_by_system:
+                        flash("Please update your password.", category="error")
+                        return redirect(url_for("users.change_password"))
                     else:
-                        flash("Logged in successfully", category="success")
-                        login_user(user, remember=True)
-                        return redirect(url_for("core.home"))
+                        # Check if user is a Support user
+                        if user.role == "Support":
+                            flash("Logged in successfully", category="success")
+                            login_user(user, remember=True)
+                            return redirect(url_for("supportapp.support"))
+                        else:
+                            flash("Logged in successfully", category="success")
+                            login_user(user, remember=True)
+                            return redirect(url_for("core.home"))
                 else:
                     flash(
                         f"""
-                          The account information used for {form.email.data}
-                          is incorrect""",
+                        The account information used for {form.email.data}
+                        is incorrect""",
                         category="error",
                     )
             else:
@@ -193,3 +204,30 @@ def sign_up():
         "users/sign_up.html", title="Soulstone - Register", form=form,
         user=current_user
     )
+
+
+# Change Password Page
+@users.route("/change_password", methods=["GET", "POST"])
+@login_required
+def change_password():
+    """Change password page"""
+
+    form = ResetPasswordForm()
+
+    if form.validate_on_submit():
+        if request.method == "POST":
+            password = generate_password_hash(
+                form.password.data, method="sha256")
+
+            # Update password on database
+            current_user.password = password
+            current_user.password_reset_by_system = False
+            current_user.password_reset_at = datetime.utcnow()
+            current_user.updated_at = datetime.utcnow()
+            current_user.updated_by = current_user.id
+            db.session.commit()
+            flash("Password updated!", category="success")
+            return redirect(url_for("core.home"))
+
+    return render_template("users/change_password.html", form=form,
+                           user=current_user)
