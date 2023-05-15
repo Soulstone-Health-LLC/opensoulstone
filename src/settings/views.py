@@ -16,6 +16,7 @@ from src.settings.forms import (
     EditPracticeForm,
     EventTypeForm,
     PracticeUserForm,
+    ProfileForm,
 )
 from src import db, mail
 from src.models import (
@@ -268,6 +269,7 @@ def editPracticeUser(user_id):
         form.state.data = p_user.state
         form.zipcode.data = p_user.zipcode
         form.role.data = p_user.role
+        form.user_type.data = p_user.user_type
         form.status.data = p_user.status
 
     if form.validate_on_submit():
@@ -288,6 +290,7 @@ def editPracticeUser(user_id):
             p_user.state = form.state.data
             p_user.zipcode = form.zipcode.data
             p_user.role = form.role.data
+            p_user.user_type = form.user_type.data
             p_user.status = form.status.data
 
             # Update person to database
