@@ -68,10 +68,14 @@
                 <td>{{ lc.created_at }}</td>
                 <td>
                   {% if lc.middle_name == '' and lc.suffix_name == '' %} {{
-                  lc.last_name }}, {{ lc.first_name }} {% elif lc.suffix_name ==
-                  '' %} {{ lc.last_name }}, {{ lc.first_name }} {{
-                  lc.middle_name }} {% else %} {{ lc.last_name }} {{
-                  lc.suffix_name }}, {{ lc.first_name }} {{ lc.middle_name }} {%
+                  lc.last_name }}, {{ lc.first_name }}
+                  <span class="text-muted"> ({{lc.gender_identity}})</span> {%
+                  elif lc.suffix_name == '' %} {{ lc.last_name }}, {{
+                  lc.first_name }} {{ lc.middle_name }}
+                  <span class="text-muted"> ({{lc.gender_identity}})</span> {%
+                  else %} {{ lc.last_name }} {{ lc.suffix_name }}, {{
+                  lc.first_name }} {{ lc.middle_name }}
+                  <span class="text-muted"> ({{lc.gender_identity}})</span> {%
                   endif %}
                 </td>
                 <td>{{ lc.code }} - {{ lc.description }}</td>

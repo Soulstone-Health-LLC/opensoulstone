@@ -51,10 +51,15 @@
                 </td>
                 <td>
                   {% if n.middle_name == '' and n.suffix_name == '' %} {{
-                  n.last_name }}, {{ n.first_name }} {% elif n.suffix_name == ''
-                  %} {{ n.last_name }}, {{ n.first_name }} {{ n.middle_name }}
-                  {% else %} {{ n.last_name }} {{ n.suffix_name }}, {{
-                  n.first_name }} {{ n.middle_name }} {% endif %}
+                  n.last_name }}, {{ n.first_name }}
+                  <span class="text-muted"> ({{n.gender_identity}})</span> {%
+                  elif n.suffix_name == '' %} {{ n.last_name }}, {{ n.first_name
+                  }} {{ n.middle_name }}
+                  <span class="text-muted"> ({{n.gender_identity}})</span> {%
+                  else %} {{ n.last_name }} {{ n.suffix_name }}, {{ n.first_name
+                  }} {{ n.middle_name }}
+                  <span class="text-muted"> ({{n.gender_identity}})</span> {%
+                  endif %}
                 </td>
                 <td>{{ n.status }}</td>
                 <td>

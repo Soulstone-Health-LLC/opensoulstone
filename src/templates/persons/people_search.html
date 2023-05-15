@@ -56,10 +56,10 @@
                         </td>
                         <td class="text-nowrap align-middle">
                         {% if p.middle_name == '' and p.suffix_name == '' %} {{
-                        p.last_name }}, {{ p.first_name }} {% elif p.suffix_name == ''
-                        %} {{ p.last_name }}, {{ p.first_name }} {{ p.middle_name }}
+                        p.last_name }}, {{ p.first_name }} <span class="text-muted"> ({{p.gender_identity}})</span> {% elif p.suffix_name == ''
+                        %} {{ p.last_name }}, {{ p.first_name }} {{ p.middle_name }} <span class="text-muted"> ({{p.gender_identity}})</span>
                         {% else %} {{ p.last_name }} {{ p.suffix_name }}, {{
-                        p.first_name }} {{ p.middle_name }} {% endif %}
+                        p.first_name }} {{ p.middle_name }} <span class="text-muted"> ({{p.gender_identity}})</span> {% endif %}
                         </td>
                         {% if p.address_1 == '' %}
                         <td></td>

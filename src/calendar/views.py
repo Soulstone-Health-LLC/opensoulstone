@@ -86,7 +86,8 @@ def addEvent():
     ]
 
     form.person.choices = [(0, "None")] + [
-        (person.id, person.first_name + " " + person.last_name)
+        (person.id, person.first_name + " " +
+         person.last_name + f" ({person.gender_identity})")
         for person in current_user.practice.people
     ]
 
@@ -174,6 +175,7 @@ def viewEvent(event_id):
             People.middle_name,
             People.last_name.label("person_last_name"),
             People.suffix_name,
+            People.gender_identity,
             EventTypes.event_name,
             User.id.label("practitioner_id"),
             User.first_name.label("practitioner_first_name"),
@@ -209,7 +211,8 @@ def editEvent(event_id):
     ]
 
     form.person.choices = [(0, "None")] + [
-        (person.id, person.first_name + " " + person.last_name)
+        (person.id, person.first_name + " " +
+         person.last_name + f" ({person.gender_identity})")
         for person in current_user.practice.people
     ]
 

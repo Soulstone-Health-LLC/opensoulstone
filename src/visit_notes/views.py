@@ -34,6 +34,7 @@ def notes():
             People.middle_name,
             People.last_name,
             People.suffix_name,
+            People.gender_identity,
         )
         .filter_by(practice_id=current_user.practice_id)
         .join(People, Notes.person_id == People.id)

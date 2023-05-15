@@ -33,6 +33,7 @@ def ledger():
             People.middle_name,
             People.last_name,
             People.suffix_name,
+            People.gender_identity,
             Charges.code,
             Charges.description,
         )
@@ -242,6 +243,7 @@ def payments():
             People.middle_name,
             People.last_name,
             People.suffix_name,
+            People.gender_identity,
         )
         .join(People, LedgerPayments.person_id == People.id)
         .filter_by(practice_id=current_user.practice_id)

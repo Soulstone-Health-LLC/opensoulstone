@@ -1,10 +1,14 @@
 {% extends "base.html" %} {% block pagenav %}
 <h1 class="page-title">
   {% if person.middle_name == '' and person.suffix_name == '' %} {{
-  person.first_name }} {{ person.last_name }} {% elif person.suffix_name == ''
-  %} {{ person.first_name }} {{ person.middle_name }} {{ person.last_name }} {%
-  else %} {{ person.first_name }} {{ person.middle_name }} {{ person.last_name
-  }} {{ person.suffix_name }} {% endif %}
+  person.first_name }} {{ person.last_name }}
+  <span class="text-muted"> ({{person.gender_identity}})</span> {% elif
+  person.suffix_name == '' %} {{ person.first_name }} {{ person.middle_name }}
+  {{ person.last_name }}
+  <span class="text-muted"> ({{person.gender_identity}})</span> {% else %} {{
+  person.first_name }} {{ person.middle_name }} {{ person.last_name }} {{
+  person.suffix_name }}
+  <span class="text-muted"> ({{person.gender_identity}})</span> {% endif %}
 </h1>
 <ol class="breadcrumb">
   <li class="breadcrumb-item">
