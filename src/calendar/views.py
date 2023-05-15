@@ -47,7 +47,11 @@ def schedule():
 
         cal_events = [
             {
-                "title": "Blocked Off Time" if event.first_name is None else f"{event.first_name} {event.last_name} ({event.event_name})",
+                "title": "Blocked Off Time"
+                if
+                event.first_name is None
+                else
+                f"{event.first_name} {event.last_name} ({event.event_name})",
                 "start": str(event.date) + "T" + str(event.start_time),
                 "end": str(event.date) + "T" + str(event.end_time),
                 "url": url_for("calendar.viewEvent", event_id=event.id),
@@ -74,7 +78,9 @@ def addEvent():
     form.event_type_id.choices = [
         (
             event_type.id,
-            f"{event_type.event_name} ({event_type.event_duration.seconds // 3600} hours, {event_type.event_duration.seconds // 60 % 60} minutes)",
+            f"{event_type.event_name} "
+            f"({event_type.event_duration.seconds // 3600} hours, "
+            f"{event_type.event_duration.seconds // 60 % 60} minutes)",
         )
         for event_type in current_user.practice.event_types
     ]
@@ -90,7 +96,10 @@ def addEvent():
     )
 
     form.practitioner_id.choices = [(0, "None")] + [
-        (practictioner.id, practictioner.first_name + " " + practictioner.last_name)
+        (
+            practictioner.id, practictioner.first_name + " " +
+            practictioner.last_name
+        )
         for practictioner in practictioners
     ]
 
@@ -160,15 +169,15 @@ def viewEvent(event_id):
             Events.date,
             Events.start_time,
             Events.end_time,
-            People.id.label('person_id'),
-            People.first_name.label('person_first_name'),
+            People.id.label("person_id"),
+            People.first_name.label("person_first_name"),
             People.middle_name,
-            People.last_name.label('person_last_name'),
+            People.last_name.label("person_last_name"),
             People.suffix_name,
             EventTypes.event_name,
-            User.id.label('practitioner_id'),
-            User.first_name.label('practitioner_first_name'),
-            User.last_name.label('practitioner_last_name')
+            User.id.label("practitioner_id"),
+            User.first_name.label("practitioner_first_name"),
+            User.last_name.label("practitioner_last_name"),
         )
         .filter_by(id=event_id)
         .outerjoin(People, Events.person_id == People.id)
@@ -192,7 +201,9 @@ def editEvent(event_id):
     form.event_type_id.choices = [
         (
             event_type.id,
-            f"{event_type.event_name} ({event_type.event_duration.seconds // 3600} hours, {event_type.event_duration.seconds // 60 % 60} minutes)",
+            f"{event_type.event_name} "
+            f"({event_type.event_duration.seconds // 3600} hours, "
+            f"{event_type.event_duration.seconds // 60 % 60} minutes)",
         )
         for event_type in current_user.practice.event_types
     ]
@@ -208,7 +219,8 @@ def editEvent(event_id):
     )
 
     form.practitioner_id.choices = [(0, "None")] + [
-        (practictioner.id, practictioner.first_name + " " + practictioner.last_name)
+        (practictioner.id,
+         practictioner.first_name + " " + practictioner.last_name)
         for practictioner in practictioners
     ]
 
