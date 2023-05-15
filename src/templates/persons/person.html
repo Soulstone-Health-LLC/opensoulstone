@@ -34,18 +34,25 @@
                     {% if person.status == 'Inactive' %} {% if
                     person.middle_name == '' and person.suffix_name == '' %} {{
                     person.first_name }} {{ person.last_name }}
+                    <span class="text-muted">({{person.gender_identity}})</span>
                     <span class="text-danger">({{ person.status }})</span>
                     {% elif person.suffix_name == '' %} {{ person.first_name }}
-                    {{ person.middle_name }} {{ person.last_name }} {% else %}
-                    {{ person.first_name }} {{ person.middle_name }} {{
-                    person.last_name }} {{ person.suffix_name }} {% endif %} {%
-                    else %} {% if person.middle_name == '' and
+                    {{ person.middle_name }} {{ person.last_name }}
+                    <span class="text-muted">({{person.gender_identity}})</span>
+                    {% else %} {{ person.first_name }} {{ person.middle_name }}
+                    {{ person.last_name }} {{ person.suffix_name }}
+                    <span class="text-muted">({{person.gender_identity}})</span>
+                    {% endif %} {% else %} {% if person.middle_name == '' and
                     person.suffix_name == '' %} {{ person.first_name }} {{
-                    person.last_name }} {% elif person.suffix_name == '' %} {{
-                    person.first_name }} {{ person.middle_name }} {{
-                    person.last_name }} {% else %} {{ person.first_name }} {{
-                    person.middle_name }} {{ person.last_name }} {{
-                    person.suffix_name }} {% endif %} {% endif %}
+                    person.last_name }}
+                    <span class="text-muted">({{person.gender_identity}})</span>
+                    {% elif person.suffix_name == '' %} {{ person.first_name }}
+                    {{ person.middle_name }} {{ person.last_name }}
+                    <span class="text-muted">({{person.gender_identity}})</span>
+                    {% else %} {{ person.first_name }} {{ person.middle_name }}
+                    {{ person.last_name }} {{ person.suffix_name }}
+                    <span class="text-muted">({{person.gender_identity}})</span>
+                    {% endif %} {% endif %}
                   </h4>
                   <h6 class="text-muted mb-3">
                     {% if person.address_1 == None or person.address_1 == '' %}
@@ -146,11 +153,21 @@
                       <td>
                         <strong>Full Name: </strong>
                         {% if person.middle_name == '' and person.suffix_name ==
-                        '' %} {{ person.first_name }} {{ person.last_name }} {%
-                        elif person.suffix_name == '' %} {{ person.first_name }}
-                        {{ person.middle_name }} {{ person.last_name }} {% else
-                        %} {{ person.first_name }} {{ person.middle_name }} {{
-                        person.last_name }} {{ person.suffix_name }} {% endif %}
+                        '' %} {{ person.first_name }} {{ person.last_name }}
+                        <span class="text-muted"
+                          >({{person.gender_identity}})</span
+                        >
+                        {% elif person.suffix_name == '' %} {{ person.first_name
+                        }} {{ person.middle_name }} {{ person.last_name }}
+                        <span class="text-muted"
+                          >({{person.gender_identity}})</span
+                        >
+                        {% else %} {{ person.first_name }} {{ person.middle_name
+                        }} {{ person.last_name }} {{ person.suffix_name }}
+                        <span class="text-muted"
+                          >({{person.gender_identity}})</span
+                        >
+                        {% endif %}
                       </td>
                     </tr>
                     <tr>
