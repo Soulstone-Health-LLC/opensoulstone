@@ -39,8 +39,15 @@
       headerToolbar: {
             left: 'prev,next today',
             center: 'title',
-            right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+            right: 'dayGridMonth,timeGridWeek,timeGridDay,listDay'
         },
+      views: {
+          dayGridMonth: { buttonText: 'month' },
+          timeGridWeek: { buttonText: 'week' },
+          timeGridDay: { buttonText: 'day' },
+          listDay: { buttonText: 'list' }
+        },
+        initialView: 'timeGridDay',
       navLinks: true, // can click day/week names to navigate views
       dayMaxEvents: true, // allow "more" link when too many events
       events: cEvents,
