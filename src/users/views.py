@@ -227,7 +227,28 @@ def change_password():
             current_user.updated_by = current_user.id
             db.session.commit()
             flash("Password updated!", category="success")
-            return redirect(url_for("core.home"))
+
+            # Sent email to user informing password was changed
+            msg = Message(
+                "Soulstone - Password Changed",
+                recipients=[current_user.email],
+                sender="noreply@soulstone.com",
+            )
+            msg.body = f"""
+            Your password was changed on
+            {current_user.password_reset_at.strftime('%Y-%m-%d %I:%M:%S %p')}
+            by {current_user.first_name} {current_user.last_name}.
+            
+            If you did not change your password,
+            please your practice's Super User immediately.
+            
+            
+            You can also reset your password by clicking the link below:
+            {url_for('users.reset_request', _external=True)}
+            """
+            mail.send(msg)
+
+            return redirect(url_for("users.logout"))
 
     return render_template("users/change_password.html", form=form,
                            user=current_user)
