@@ -5,7 +5,7 @@ Dashboard - Views -- This file contains the views for the dashboard app.
 
 # Imports
 from datetime import datetime, timedelta
-from flask import Blueprint, render_template, request, flash, redirect, url_for
+from flask import Blueprint, render_template
 from flask_login import login_required, current_user
 from src import db
 from src.models import People, Events, Notes, LedgerCharges, LedgerPayments
@@ -24,7 +24,7 @@ def dashboard_page():
     # Start Date for Dashboard (120 days)
     start_date = datetime.now() - timedelta(days=120)
 
-    # Dashboard - Newly Created Persons (over the last 4 months)
+    # Dashboard - Newly Created Persons
     person_data = (
         db.session.query(
             db.func.count(People.id).label("count"),
@@ -41,15 +41,15 @@ def dashboard_page():
     person_graph_labels = [person.month for person in person_data]
     person_graph_data = [person.count for person in person_data]
 
-    # Dashboard - Newly Created Events (over the last 120 days)
+    # Dashboard - Events by Event Date
     events_data = (
         db.session.query(
             db.func.count(Events.id).label("count"),
-            db.func.strftime("%Y-%m", Events.created_at).label("month")
+            db.func.strftime("%Y-%m", Events.date).label("month")
         )
         .filter(
             Events.practice_id == current_user.practice_id,
-            Events.created_at >= start_date
+            Events.date >= start_date
         )
         .group_by("month")
         .all()
@@ -58,7 +58,7 @@ def dashboard_page():
     events_graph_labels = [event.month for event in events_data]
     events_graph_data = [event.count for event in events_data]
 
-    # Dashboard - Ledger Charges (over the last 120 days)
+    # Dashboard - Ledger Charges
     ledger_charges_data = (
         db.session.query(
             db.func.sum(LedgerCharges.unit_amount * LedgerCharges.units *
@@ -81,7 +81,7 @@ def dashboard_page():
         charge.month for charge in ledger_charges_data]
     ledger_charges_graph_data = [charge.sum for charge in ledger_charges_data]
 
-    # Dashboard - Ledger Payments (over the last 120 days)
+    # Dashboard - Ledger Payments
     ledger_payments_data = (
         db.session.query(
             db.func.sum(LedgerPayments.amount).label("sum"),
@@ -100,15 +100,15 @@ def dashboard_page():
     ledger_payments_graph_data = [
         payment.sum for payment in ledger_payments_data]
 
-    # Dashboard - Newly Created Notes (over the last 120 days)
+    # Dashboard - Visit Notes by Date of Service
     visit_notes_data = (
         db.session.query(
             db.func.count(Notes.id).label("count"),
-            db.func.strftime("%Y-%m", Notes.created_at).label("month")
+            db.func.strftime("%Y-%m", Notes.date_of_service).label("month")
         )
         .filter(
             Notes.practice_id == current_user.practice_id,
-            Notes.created_at >= start_date
+            Notes.date_of_service >= start_date
         )
         .group_by("month")
         .all()
