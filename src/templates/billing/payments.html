@@ -65,7 +65,9 @@
             <tbody>
               {% for lp in ledger_payments %}
               <tr>
-                <td>{{ lp.created_at }}</td>
+                <td>
+                  {{ lp.created_at.strftime('%Y-%m-%d (%A, %B %d, %Y)') }}
+                </td>
                 <td>
                   <a
                     href="{{ url_for('persons.viewPerson', id=lp.person_id) }}"
