@@ -3,6 +3,7 @@ Billing > Views - This file contains the routes for the billing blueprint.
 """
 
 # Imports
+import json
 from datetime import datetime
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
@@ -169,7 +170,9 @@ def addLedgerCharge(id):
 
             # List of charges for the select field
             form.charge_id.choices = [
-                (charge.id, charge.description) for charge in practice_charges
+                (str(charge.id), charge.description +
+                 f' (${charge.amount:.2f})')
+                for charge in practice_charges
             ]
 
             return render_template(
@@ -195,7 +198,11 @@ def addLedgerCharge(id):
         updated_by = current_user.get_id()
         units = form.units.data
         unit_amount = form.unit_amount.data
-        tax_rate = form.tax_rate.data / 100
+        tax_rate_form = form.tax_rate.data
+        if tax_rate_form:
+            tax_rate = tax_rate_form / 100
+        else:
+            tax_rate = 0
 
         # Add new ledger charge to the database
         new_ledger_charge = LedgerCharges(

@@ -1,44 +1,119 @@
-{% extends "base.html" %} {% block pagenav %}
+{%extends "base.html"%} {%block pagenav%}
 <h1 class="page-title">Add New Charge</h1>
 <ol class="breadcrumb">
   <li class="breadcrumb-item">
-    <a href="{{ url_for('billing.ledger') }}">Billing</a>
+    <a href="{{url_for('billing.ledger')}}">Billing</a>
   </li>
   <li class="breadcrumb-item active" aria-current="page">Add New Charge</li>
 </ol>
-{% endblock pagenav %} {% block content %}
+{%endblock pagenav%} {%block content%}
 <!-- Patient Info -->
 <div class="row" id="user-profile">
   <div class="col-lg-12">
-    <div class="card">{% include "base_person_header.html" %}</div>
+    <div class="card">{%include "base_person_header.html"%}</div>
   </div>
 </div>
 <!-- End Patient Info -->
 <!-- Add Charge -->
 <div class="row" id="add-charge">
-  <div class="col-lg-12">
+  <div class="col-lg-8">
     <div class="card">
       <div class="card-header">
         <h4 class="card-title">Add Charge</h4>
       </div>
       <div class="card-body">
-        <form method="post" class="" novalidate>
-          {{ form.hidden_tag() }}
-          <div class="">
-            <div class="row">
-              {{ form.charge_id.label }}{{ form.charge_id(class="form-control",
-              id="charge_id") }} {{ form.unit_amount.label }}{{
-              form.unit_amount(class="form-control", id="unit_amount") }} {{
-              form.units.label }}{{ form.units(class="form-control",
-              id="charge_units") }} {{ form.tax_rate.label }}{{
-              form.tax_rate(class="form-control", id="tax_rate") }}
-            </div>
-            {{ form.submit(class="btn btn-primary") }}
-          </div>
-        </form>
+        <div class="row">
+            <form method="post" class="" novalidate>
+              {{form.hidden_tag()}}
+              <div class="">
+                <div class="row mb-4">
+                  <div class="col-md-6">
+                    {{form.charge_id.label}} {{form.charge_id(id="charge_id",
+                    class="form-control", onchange="updateUnitAmount()")}}
+                  </div>
+                  <div class="col-md-6">
+                    {{form.unit_amount.label}}{{form.unit_amount(id="unit_amount",
+                    class="form-control")}}
+                  </div>
+                </div>
+                <div class="row mb-4">
+                  <div class="col-md-6">
+                    {{form.units.label}}{{form.units(class="form-control",
+                    id="charge_units")}}
+                  </div>
+                  <div class="col-md-6">
+                    {{form.tax_rate.label}}{{form.tax_rate(class="form-control",
+                    id="tax_rate")}}
+                  </div>
+                </div>
+              </div>
+              {{form.submit(class="btn btn-primary")}}
+            </form>
+        </div>
       </div>
     </div>
   </div>
+  <div class="col-md-4">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title">Discount Breakdown:</h4>
+          </div>
+          <div class="card-body">
+            <ul id="discount-breakdown">
+              <li>5% - <span id="discount-5"></span></li>
+              <li>10% - <span id="discount-10"></span></li>
+              <li>15% - <span id="discount-15"></span></li>
+              <li>20% - <span id="discount-20"></span></li>
+              <li>25% - <span id="discount-25"></span></li>
+              <li>30% - <span id="discount-30"></span></li>
+              <li>35% - <span id="discount-35"></span></li>
+              <li>40% - <span id="discount-40"></span></li>
+              <li>45% - <span id="discount-45"></span></li>
+              <li>50% - <span id="discount-50"></span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
 </div>
-<!-- End Add Charge -->
-{% endblock content %}
+    <!-- End Add Charge -->
+    <!-- Script to populate the unit amount field base on the selected charge item -->
+    <script>
+      // Function to update the unit amount field
+      function updateUnitAmount() {
+        var chargeSelect = document.getElementById("charge_id");
+        var unitAmountField = document.getElementById("unit_amount");
+
+        // Get the selected charge's amount
+        var selectedCharge =
+          chargeSelect.options[chargeSelect.selectedIndex].text;
+        var chargeAmount = parseFloat(
+          selectedCharge.match(/\$\s*([0-9.]+)/)[1]
+        );
+
+        // Check if the charge amount is a valid number
+        if (!isNaN(chargeAmount)) {
+          // Set the unit_amount field value
+          unitAmountField.value = chargeAmount.toFixed(2);
+
+          // Calculate and populate the discount breakdown
+          var discountPercentages = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50];
+
+          discountPercentages.forEach(function (percentage) {
+            var discountAmount = chargeAmount * (percentage / 100);
+            var totalAmount = chargeAmount - discountAmount;
+
+            var discountElement = document.getElementById(
+              "discount-" + percentage
+            );
+            discountElement.innerText = "$" + totalAmount.toFixed(2) + " ($" + discountAmount.toFixed(2) + ")";
+          });
+        }
+      }
+
+      // Call the function when the page finishes loading
+      window.addEventListener("load", updateUnitAmount);
+    </script>
+    <!-- End Script -->
+    {%endblock content%}
+  </div>
+</div>

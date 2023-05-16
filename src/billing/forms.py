@@ -16,10 +16,9 @@ class AddLedgerChargeForm(FlaskForm):
 
     charge_id = SelectField(label="Charge *", coerce=int,
                             validators=[InputRequired()])
-    unit_amount = FloatField(label="Unit Amount *",
-                             validators=[DataRequired()])
+    unit_amount = FloatField(label="Unit Amount *")
     units = IntegerField(
-        label="Units *", validators=[DataRequired(), Length(min=1)])
+        label="Units *", default=1, validators=[DataRequired(), Length(min=1)])
     tax_rate = FloatField(label="Tax Rate (Percentage)",
                           validators=[Length(min=1)])
     submit = SubmitField(label="Add Charge")
