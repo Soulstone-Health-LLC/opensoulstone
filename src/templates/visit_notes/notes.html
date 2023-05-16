@@ -50,16 +50,18 @@
                   {{ n.date_of_service.strftime('%Y-%m-%d (%A, %B %d, %Y)') }}
                 </td>
                 <td>
-                  {% if n.middle_name == '' and n.suffix_name == '' %} {{
-                  n.last_name }}, {{ n.first_name }}
-                  <span class="text-muted"> ({{n.gender_identity}})</span> {%
-                  elif n.suffix_name == '' %} {{ n.last_name }}, {{ n.first_name
-                  }} {{ n.middle_name }}
-                  <span class="text-muted"> ({{n.gender_identity}})</span> {%
-                  else %} {{ n.last_name }} {{ n.suffix_name }}, {{ n.first_name
-                  }} {{ n.middle_name }}
-                  <span class="text-muted"> ({{n.gender_identity}})</span> {%
-                  endif %}
+                  <a href="{{ url_for('persons.viewPerson', id=n.person_id) }}">
+                    {% if n.middle_name == '' and n.suffix_name == '' %} {{
+                    n.last_name }}, {{ n.first_name }}
+                    <span class="text-muted"> ({{n.gender_identity}})</span> {%
+                    elif n.suffix_name == '' %} {{ n.last_name }}, {{
+                    n.first_name }} {{ n.middle_name }}
+                    <span class="text-muted"> ({{n.gender_identity}})</span> {%
+                    else %} {{ n.last_name }} {{ n.suffix_name }}, {{
+                    n.first_name }} {{ n.middle_name }}
+                    <span class="text-muted"> ({{n.gender_identity}})</span> {%
+                    endif %}</a
+                  >
                 </td>
                 <td>{{ n.status }}</td>
                 <td>

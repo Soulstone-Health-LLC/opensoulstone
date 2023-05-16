@@ -67,16 +67,20 @@
               <tr>
                 <td>{{ lp.created_at }}</td>
                 <td>
-                  {% if lp.middle_name == '' and lp.suffix_name == '' %} {{
-                  lp.last_name }}, {{ lp.first_name }}
-                  <span class="text-muted"> ({{lp.gender_identity}})</span> {%
-                  elif lp.suffix_name == '' %} {{ lp.last_name }}, {{
-                  lp.first_name }} {{ lp.middle_name }}
-                  <span class="text-muted"> ({{lp.gender_identity}})</span>{%
-                  else %} {{ lp.last_name }} {{ lp.suffix_name }}, {{
-                  lp.first_name }} {{ lp.middle_name }}
-                  <span class="text-muted"> ({{lp.gender_identity}})</span> {%
-                  endif %}
+                  <a
+                    href="{{ url_for('persons.viewPerson', id=lp.person_id) }}"
+                  >
+                    {% if lp.middle_name == '' and lp.suffix_name == '' %} {{
+                    lp.last_name }}, {{ lp.first_name }}
+                    <span class="text-muted"> ({{lp.gender_identity}})</span> {%
+                    elif lp.suffix_name == '' %} {{ lp.last_name }}, {{
+                    lp.first_name }} {{ lp.middle_name }}
+                    <span class="text-muted"> ({{lp.gender_identity}})</span> {%
+                    else %} {{ lp.last_name }} {{ lp.suffix_name }}, {{
+                    lp.first_name }} {{ lp.middle_name }}
+                    <span class="text-muted"> ({{lp.gender_identity}})</span> {%
+                    endif %}</a
+                  >
                 </td>
                 <td>{{ lp.payment_method }}</td>
                 <td>{{ "$ {:,.2f}".format(lp.amount) }}</td>

@@ -30,6 +30,7 @@ def notes():
             Notes.date_of_service,
             Notes.status,
             Notes.practice_id,
+            People.id.label("person_id"),
             People.first_name,
             People.middle_name,
             People.last_name,

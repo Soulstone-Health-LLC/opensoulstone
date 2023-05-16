@@ -61,7 +61,20 @@
             <tbody>
               {% if balances %} {% for b in balances %}
               <tr>
-                <td class="text-nowrap align-middle">{{ b.first_name }}</td>
+                <td class="text-nowrap align-middle">
+                  <a href="{{ url_for('persons.viewPerson', id=b.id) }}">
+                    {% if b.middle_name == '' and b.suffix_name == '' %} {{
+                    b.last_name }}, {{ b.first_name }}
+                    <span class="text-muted"> ({{b.gender_identity}})</span> {%
+                    elif b.suffix_name == '' %} {{ b.last_name }}, {{
+                    b.first_name }} {{ b.middle_name }}
+                    <span class="text-muted"> ({{b.gender_identity}})</span> {%
+                    else %} {{ b.last_name }} {{ b.suffix_name }}, {{
+                    b.first_name }} {{ b.middle_name }}
+                    <span class="text-muted"> ({{b.gender_identity}})</span> {%
+                    endif %}</a
+                  >
+                </td>
                 <td class="text-nowrap align-middle">
                   {{ "$ {:,.2f}".format(b.outstanding_balance()) }}
                 </td>
