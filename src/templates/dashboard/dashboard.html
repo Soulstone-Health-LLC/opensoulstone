@@ -1,0 +1,466 @@
+{%extends "base.html"%} {%block pagenav%}
+<h1 class="page-title">Dashboard</h1>
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Dashboard</li>
+  <li class="breadcrumb-item active">Dashboards</li>
+</ol>
+{%endblock pagenav%} {%block content%}
+<!-- Start Dashboard -->
+<div class="row">
+  <div class="col-lg-6 col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">
+          Newly Created Persons (over the last 120 days)
+        </h3>
+      </div>
+      <div class="card-body">
+        <div class="chart-container">
+          <canvas id="chartBar1" class="h-275"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6 col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">
+          Newly Created Visit Notes (over the last 120 days)
+        </h3>
+      </div>
+      <div class="card-body">
+        <div class="chart-container">
+          <canvas id="chartBar3" class="h-275"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-12 col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">
+          Newly Created Events (over the last 120 days)
+        </h3>
+      </div>
+      <div class="card-body">
+        <div class="chart-container">
+          <canvas id="chartBar2" class="h-275"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--
+<div class="row">
+  <div class="col-lg-6 col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Something goes here</h3>
+      </div>
+      <div class="card-body">
+        <div class="chart-container">
+          <canvas id="chartBar4" class="h-275"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+-->
+<div class="row">
+  <div class="col-lg-6 col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Ledger Charges (over the last 120 days)</h3>
+      </div>
+      <div class="card-body">
+        <div class="chart-container">
+          <canvas id="chartBar5" class="h-275"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6 col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Ledger Payments (over the last 120 days)</h3>
+      </div>
+      <div class="card-body">
+        <div class="chart-container">
+          <canvas id="chartBar6" class="h-275"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Dashboards -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Start Events JSON -->
+<script type="text/javascript">
+  /* Dashbaards */
+  /* Bar Graph 1*/
+    var gPatientsLabels = {{ person_graph_labels | tojson }};
+    var gPatientsData = {{ person_graph_data | tojson }};
+
+    var ctx = document.getElementById("chartBar1").getContext("2d");
+    var myChart = new Chart(ctx, {
+        type: "bar",
+        data: {
+        labels: gPatientsLabels,
+        datasets: [
+            {
+            label: "Persons",
+            data: gPatientsData,
+            borderWidth: 2,
+            backgroundColor: "#6259ca",
+            borderColor: "#6259ca",
+            borderWidth: 2.0,
+            pointBackgroundColor: "#ffffff",
+            },
+        ],
+        },
+        options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        legend: {
+            display: true,
+        },
+        scales: {
+            yAxes: [
+            {
+                ticks: {
+                beginAtZero: true,
+                stepSize: 150,
+                fontColor: "#77778e",
+                },
+                gridLines: {
+                color: "rgba(119, 119, 142, 0.2)",
+                },
+            },
+            ],
+            xAxes: [
+            {
+                ticks: {
+                display: true,
+                fontColor: "#77778e",
+                },
+                gridLines: {
+                display: false,
+                color: "rgba(119, 119, 142, 0.2)",
+                },
+            },
+            ],
+        },
+        legend: {
+            labels: {
+            fontColor: "#77778e",
+            },
+        },
+        },
+    });
+    /* Bar Graph 2*/
+    var gEventsLabels = {{ events_graph_labels | tojson }};
+    var gEventsData = {{ events_graph_data | tojson }};
+
+    var ctx = document.getElementById("chartBar2");
+    var myChart = new Chart(ctx, {
+        type: "bar",
+        data: {
+        labels: gEventsLabels,
+        datasets: [
+            {
+            label: "Events",
+            data: gEventsData,
+            borderWidth: 2,
+            backgroundColor: "#6259ca",
+            borderColor: "#6259ca",
+            borderWidth: 2.0,
+            pointBackgroundColor: "#ffffff",
+            },
+        ],
+        },
+        options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        legend: {
+            display: true,
+        },
+        scales: {
+            yAxes: [
+            {
+                ticks: {
+                beginAtZero: true,
+                stepSize: 150,
+                fontColor: "#77778e",
+                },
+                gridLines: {
+                color: "rgba(119, 119, 142, 0.2)",
+                },
+            },
+            ],
+            xAxes: [
+            {
+                ticks: {
+                display: true,
+                fontColor: "#77778e",
+                },
+                gridLines: {
+                display: false,
+                color: "rgba(119, 119, 142, 0.2)",
+                },
+            },
+            ],
+        },
+        legend: {
+            labels: {
+            fontColor: "#77778e",
+            },
+        },
+        },
+    });
+
+    /* Bar Graph 3 */
+    var gVisitNotesLabels = {{ visit_notes_graph_labels | tojson }};
+    var gVisitNotesData = {{ visit_notes_graph_data | tojson }};
+
+    var ctx = document.getElementById("chartBar3");
+    var myChart = new Chart(ctx, {
+        type: "bar",
+        data: {
+        labels: gVisitNotesLabels,
+        datasets: [
+            {
+            label: "Visit Notes",
+            data: gVisitNotesData,
+            borderWidth: 2,
+            backgroundColor: "#6259ca",
+            borderColor: "#6259ca",
+            borderWidth: 2.0,
+            pointBackgroundColor: "#ffffff",
+            },
+        ],
+        },
+        options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        legend: {
+            display: true,
+        },
+        scales: {
+            yAxes: [
+            {
+                ticks: {
+                beginAtZero: true,
+                stepSize: 150,
+                fontColor: "#77778e",
+                },
+                gridLines: {
+                color: "rgba(119, 119, 142, 0.2)",
+                },
+            },
+            ],
+            xAxes: [
+            {
+                ticks: {
+                display: true,
+                fontColor: "#77778e",
+                },
+                gridLines: {
+                display: false,
+                color: "rgba(119, 119, 142, 0.2)",
+                },
+            },
+            ],
+        },
+        legend: {
+            labels: {
+            fontColor: "#77778e",
+            },
+        },
+        },
+    });
+    /* Bar Graph 4 */
+    var gVisitNotesLabels = {{ visit_notes_graph_labels | tojson }};
+    var gVisitNotesData = {{ visit_notes_graph_data | tojson }};
+
+    var ctx = document.getElementById("chartBar4");
+    var myChart = new Chart(ctx, {
+        type: "bar",
+        data: {
+        labels: gVisitNotesLabels,
+        datasets: [
+            {
+            label: "?????",
+            data: gVisitNotesData,
+            borderWidth: 2,
+            backgroundColor: "#6259ca",
+            borderColor: "#6259ca",
+            borderWidth: 2.0,
+            pointBackgroundColor: "#ffffff",
+            },
+        ],
+        },
+        options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        legend: {
+            display: true,
+        },
+        scales: {
+            yAxes: [
+            {
+                ticks: {
+                beginAtZero: true,
+                stepSize: 150,
+                fontColor: "#77778e",
+                },
+                gridLines: {
+                color: "rgba(119, 119, 142, 0.2)",
+                },
+            },
+            ],
+            xAxes: [
+            {
+                ticks: {
+                display: true,
+                fontColor: "#77778e",
+                },
+                gridLines: {
+                display: false,
+                color: "rgba(119, 119, 142, 0.2)",
+                },
+            },
+            ],
+        },
+        legend: {
+            labels: {
+            fontColor: "#77778e",
+            },
+        },
+        },
+    });
+    /* Bar Graph 5 */
+    var gLedgerChargesLabels = {{ ledger_charges_graph_labels | tojson }};
+    var gLedgerChargesData = {{ ledger_charges_graph_data | tojson }};
+
+    var ctx = document.getElementById("chartBar5");
+    var myChart = new Chart(ctx, {
+        type: "line",
+        data: {
+        labels: gLedgerChargesLabels,
+        datasets: [
+            {
+            label: "Ledger Charges",
+            data: gLedgerChargesData,
+            borderWidth: 2,
+            backgroundColor: "#6259ca",
+            borderColor: "#6259ca",
+            borderWidth: 2.0,
+            pointBackgroundColor: "#ffffff",
+            },
+        ],
+        },
+        options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        legend: {
+            display: true,
+        },
+        scales: {
+            yAxes: [
+            {
+                ticks: {
+                beginAtZero: true,
+                stepSize: 150,
+                fontColor: "#77778e",
+                },
+                gridLines: {
+                color: "rgba(119, 119, 142, 0.2)",
+                },
+            },
+            ],
+            xAxes: [
+            {
+                ticks: {
+                display: true,
+                fontColor: "#77778e",
+                },
+                gridLines: {
+                display: false,
+                color: "rgba(119, 119, 142, 0.2)",
+                },
+            },
+            ],
+        },
+        legend: {
+            labels: {
+            fontColor: "#77778e",
+            },
+        },
+        },
+    });
+    /* Bar Graph 6 */
+    var gLedgerPaymentsLabels = {{ ledger_payments_graph_labels | tojson }};
+    var gLedgerPaymentsData = {{ ledger_payments_graph_data | tojson }};
+
+    var ctx = document.getElementById("chartBar6");
+    var myChart = new Chart(ctx, {
+        type: "line",
+        data: {
+        labels: gLedgerPaymentsLabels,
+        datasets: [
+            {
+            label: "Payments",
+            data: gLedgerPaymentsData,
+            borderWidth: 2,
+            backgroundColor: "#6259ca",
+            borderColor: "#6259ca",
+            borderWidth: 2.0,
+            pointBackgroundColor: "#ffffff",
+            },
+        ],
+        },
+        options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        legend: {
+            display: true,
+        },
+        scales: {
+            yAxes: [
+            {
+                ticks: {
+                beginAtZero: true,
+                stepSize: 150,
+                fontColor: "#77778e",
+                },
+                gridLines: {
+                color: "rgba(119, 119, 142, 0.2)",
+                },
+            },
+            ],
+            xAxes: [
+            {
+                ticks: {
+                display: true,
+                fontColor: "#77778e",
+                },
+                gridLines: {
+                display: false,
+                color: "rgba(119, 119, 142, 0.2)",
+                },
+            },
+            ],
+        },
+        legend: {
+            labels: {
+            fontColor: "#77778e",
+            },
+        },
+        },
+    });
+</script>
+<!-- End Events JSON -->
+{%endblock content%}

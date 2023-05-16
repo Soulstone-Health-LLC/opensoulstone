@@ -173,7 +173,7 @@
               <a
                 class="side-menu__item"
                 data-bs-toggle="slide"
-                href="{{url_for('core.home')}}"
+                href="{{url_for('dashboard.dashboard_page')}}"
                 id="dashboard_link"
                 ><i class="side-menu__icon lnr lnr-pie-chart"></i
                 ><span class="side-menu__label">Dashboard</span></a
@@ -1324,12 +1324,9 @@
     <!-- SPARKLINE JS-->
     <script src="{{ url_for('static', filename='assets/js/jquery.sparkline.min.js') }}"></script>
 
-    <!-- CHART-CIRCLE JS-->
-    <script src="{{ url_for('static', filename='assets/js/circle-progress.min.js') }}"></script>
-
-    <!-- C3 CHART JS -->
-    <script src="{{ url_for('static', filename='assets/plugins/charts-c3/d3.v5.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='assets/plugins/charts-c3/c3-chart.js') }}"></script>
+    <!-- CHARTJS JS-->
+    <script src="{{ url_for('static', filename='assets/plugins/chart/Chart.bundle.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/plugins/chart/utils.js') }}"></script>
 
     <!-- INPUT MASK JS-->
     <script src="{{ url_for('static', filename='assets/plugins/input-mask/dists/inputmask.js') }}"></script>
