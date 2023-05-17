@@ -14,7 +14,7 @@ from src.users.forms import (
     ResetPasswordForm,
     ResetRequestForm,
 )
-from src.models import User
+from src.models import User, TermsOfService, UserAgreement
 from src import db, mail
 
 
@@ -58,9 +58,29 @@ def login():
                             login_user(user, remember=True)
                             return redirect(url_for("users.change_password"))
                         else:
-                            flash("Logged in successfully", category="success")
-                            login_user(user, remember=True)
-                            return redirect(url_for("core.home"))
+                            # Check if user has agreed to the latest TOS
+                            active_tos = TermsOfService.query.filter(
+                                TermsOfService.active_date <= datetime.now(),
+                                TermsOfService.sunset_date > datetime.now())\
+                                .order_by(TermsOfService.active_date.desc())\
+                                .first()
+
+                            user_agreement = UserAgreement.query.filter(
+                                UserAgreement.user_id == user.id,
+                                UserAgreement.tos_id == active_tos.id).first()
+
+                            if not user_agreement:
+                                flash("Please agree to the Terms of Service.",
+                                      category="error")
+                                login_user(user, remember=True)
+                                return redirect(
+                                    url_for("terms_of_service.user_agreement",
+                                            tos_id=active_tos.id))
+                            else:
+                                flash("Logged in successfully",
+                                      category="success")
+                                login_user(user, remember=True)
+                                return redirect(url_for("core.home"))
                 else:
                     flash(
                         f"""

@@ -4,6 +4,7 @@ CLI Commands for the website app
 
 # Imports
 import random
+from datetime import datetime, timedelta
 from faker import Faker
 from flask import Blueprint
 from werkzeug.security import generate_password_hash
@@ -14,6 +15,7 @@ from src.models import (
     Charges,
     EventTypes,
     Notes,
+    TermsOfService,
 )
 from src import db
 
@@ -44,6 +46,14 @@ def db_seed():
     """Preloads the database with data"""
     # Data to seed the database with
     data = []
+
+    # Terms of Service
+    terms_of_service = TermsOfService(
+        created_at=datetime.now(),
+        active_date=datetime.now(),
+        sunset_date=datetime.now() + timedelta(days=365),
+        version=str(datetime.now()),
+    )
 
     # Support practice
     support_practice = Practice(
@@ -161,6 +171,7 @@ def db_seed():
         )
 
     # Add to the database
+    db.session.add(terms_of_service)
     db.session.add(support_practice)
     db.session.add(test_practice)
     db.session.add(support_user)

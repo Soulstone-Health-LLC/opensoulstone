@@ -22,6 +22,7 @@ app = Flask(__name__)
 basedir = SQLITE_LOCATION
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + \
     os.path.join(basedir, 'database.db')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = SECRET_KEY
 
 # Initialize the database
@@ -54,6 +55,7 @@ from src.settings.views import settings
 from src.support.views import supportapp
 from src.error_pages.handler import error_pages
 from src.cli.cli_commands import commands
+from src.terms_of_service.views import terms_of_service
 
 app.register_blueprint(core)
 app.register_blueprint(dashboard)
@@ -66,3 +68,4 @@ app.register_blueprint(settings)
 app.register_blueprint(supportapp)
 app.register_blueprint(error_pages)
 app.register_blueprint(commands)
+app.register_blueprint(terms_of_service)
