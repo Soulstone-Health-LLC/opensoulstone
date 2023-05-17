@@ -11,6 +11,7 @@ from werkzeug.security import generate_password_hash
 from src.support.forms import AddPracticeForm, PracticeUserForm
 from src import db
 from src.models import Practice, User
+from src.decorators.decorators import support_required
 
 
 # Blueprint Configuration
@@ -20,21 +21,20 @@ supportapp = Blueprint("supportapp", __name__)
 # Support - Practices
 @supportapp.route("/support")
 @login_required
+@support_required
 def support():
-    if request.method == "GET":
-        if current_user.role == "Support":
-            practices = Practice.query.order_by(Practice.id).all()
 
-            return render_template(
-                "support/support.html", user=current_user, practices=practices
-            )
-        else:
-            return render_template("401.html", user=current_user)
+    practices = Practice.query.order_by(Practice.id).all()
+
+    return render_template(
+        "support/support.html", user=current_user, practices=practices
+    )
 
 
 # Support - Practices - View Practice
 @supportapp.route("/support/<int:id>")
 @login_required
+@support_required
 def viewpractice(id):
     practice = Practice.query.get_or_404(id)
     practice_user = User.query.order_by(User.last_name).all()
@@ -49,6 +49,7 @@ def viewpractice(id):
 # Support - Practices - Add Practice
 @supportapp.route("/support/add_practice", methods=["GET", "POST"])
 @login_required
+@support_required
 def addpractice():
     """Add practice form and page"""
     form = AddPracticeForm()
@@ -101,6 +102,7 @@ def addpractice():
 @supportapp.route("/support/<int:id>/support_add_user",
                   methods=["GET", "POST"])
 @login_required
+@support_required
 def addPracticeUser(id):
     """Add practice user form and page"""
     form = PracticeUserForm()

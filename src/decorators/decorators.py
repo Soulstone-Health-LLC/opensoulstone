@@ -21,3 +21,15 @@ def superuser_required(f):
         return f(*args, **kwargs)
 
     return decorated_function
+
+
+# Decorator to check if user is a Support User (Soulstone Admin)
+def support_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not current_user.is_authenticated or current_user.role != "Support":
+            return render_template("error_pages/403.html",
+                                   title="Soulstone - 403 Unauthorized")
+        return f(*args, **kwargs)
+
+    return decorated_function
