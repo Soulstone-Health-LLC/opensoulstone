@@ -9,6 +9,7 @@ from datetime import datetime
 from src.terms_of_service.forms import UserAgreementForm
 from src.models import UserAgreement, TermsOfService
 from src import db
+from src.decorators.decorators import support_required
 
 
 # Blueprint Configuration
@@ -48,3 +49,34 @@ def user_agreement(tos_id):
                            form=form,
                            user=current_user,
                            agreement_content=agreement_content)
+
+
+# Support - Terms of Service - List Terms of Service
+@terms_of_service.route("/support/terms_of_service", methods=["GET"])
+@login_required
+@support_required
+def support_list_tos():
+    """Support - Terms of Service - List Terms of Service"""
+
+    # Get all terms of service
+    tos = TermsOfService.query.all()
+
+    return render_template("terms_of_service/support_list_tos.html",
+                           user=current_user,
+                           tos=tos)
+
+
+# Support - Terms of Service - View Terms of Service
+@terms_of_service.route("/support/terms_of_service/<int:tos_id>",
+                        methods=["GET"])
+@login_required
+@support_required
+def support_view_tos(tos_id):
+    """Support - Terms of Service - View Terms of Service"""
+
+    # Get terms of service
+    tos = TermsOfService.query.filter_by(id=tos_id).first()
+
+    return render_template("terms_of_service/support_view_tos.html",
+                           user=current_user,
+                           tos=tos)
