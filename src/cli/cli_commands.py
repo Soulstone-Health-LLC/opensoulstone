@@ -47,44 +47,6 @@ def db_seed():
     # Data to seed the database with
     data = []
 
-    # Terms of Service
-    terms_of_service = TermsOfService(
-        created_at=datetime.now(),
-        active_date=datetime.now(),
-        sunset_date=datetime.now() + timedelta(days=365),
-        version=str(datetime.now()),
-        content="""
-        Terms of Service Agreement
-
-This Terms of Service Agreement ("Agreement") is a legal agreement between you ("User") and Soulstone Health ("Company") governing your use of the Soulstone Health ("Application"). By accessing or using the Application, you agree to be bound by the terms and conditions of this Agreement.
-
-User Responsibilities
-1.1. Acceptable Use: User agrees to use the Application in a lawful and responsible manner and to comply with all applicable laws and regulations.
-1.2. Account Security: User is responsible for maintaining the security of their account credentials and ensuring that unauthorized access does not occur.
-1.3. User Content: User acknowledges that they are solely responsible for any content they upload, submit, or transmit through the Application and that such content complies with applicable laws and regulations.
-
-Intellectual Property
-2.1. Ownership: The Application and all associated intellectual property rights belong to the Company. User acknowledges that they do not acquire any ownership rights by using the Application.
-2.2. License: The Company grants User a limited, non-exclusive, non-transferable license to use the Application for its intended purpose.
-
-Privacy
-3.1. Data Collection: User acknowledges and agrees that the Company may collect and process certain personal data as outlined in the Privacy Policy.
-3.2. Cookies: The Application may use cookies or similar technologies to enhance the User experience. By using the Application, User consents to the use of cookies in accordance with our Cookie Policy.
-
-Limitation of Liability
-4.1. Disclaimer: The Application is provided on an "as is" and "as available" basis, without warranties of any kind, either expressed or implied. The Company disclaims all warranties, including but not limited to, fitness for a particular purpose, non-infringement, and accuracy of information.
-4.2. Indemnification: User agrees to indemnify and hold the Company harmless from any claims, damages, liabilities, and expenses arising out of their use of the Application or violation of this Agreement.
-
-Termination
-5.1. Termination Rights: The Company reserves the right to suspend or terminate User's access to the Application at any time, with or without cause, and without prior notice.
-
-Governing Law
-6.1. Jurisdiction: This Agreement shall be governed by and construed in accordance with the laws of the United States of America. Any disputes arising from this Agreement shall be subject to the exclusive jurisdiction of the courts in the United States of America.
-
-Please read this Agreement carefully before using the Application. By accessing or using the Application, you acknowledge that you have read, understood, and agree to be bound by this Agreement.
-        """
-    )
-
     # Support practice
     support_practice = Practice(
         name="Support Practice",
@@ -137,6 +99,45 @@ Please read this Agreement carefully before using the Application. By accessing 
         role="Practitioner",
         user_type="Owner",
         status="Active",
+    )
+
+    # Terms of Service
+    terms_of_service = TermsOfService(
+        created_at=datetime.now(),
+        created_by=1,
+        active_date=datetime.now(),
+        sunset_date=datetime.now() + timedelta(days=365),
+        version=str(datetime.now()),
+        content="""
+Terms of Service Agreement
+
+This Terms of Service Agreement ("Agreement") is a legal agreement between you ("User") and Soulstone Health ("Company") governing your use of the Soulstone Health ("Application"). By accessing or using the Application, you agree to be bound by the terms and conditions of this Agreement.
+
+User Responsibilities
+1.1. Acceptable Use: User agrees to use the Application in a lawful and responsible manner and to comply with all applicable laws and regulations.
+1.2. Account Security: User is responsible for maintaining the security of their account credentials and ensuring that unauthorized access does not occur.
+1.3. User Content: User acknowledges that they are solely responsible for any content they upload, submit, or transmit through the Application and that such content complies with applicable laws and regulations.
+
+Intellectual Property
+2.1. Ownership: The Application and all associated intellectual property rights belong to the Company. User acknowledges that they do not acquire any ownership rights by using the Application.
+2.2. License: The Company grants User a limited, non-exclusive, non-transferable license to use the Application for its intended purpose.
+
+Privacy
+3.1. Data Collection: User acknowledges and agrees that the Company may collect and process certain personal data as outlined in the Privacy Policy.
+3.2. Cookies: The Application may use cookies or similar technologies to enhance the User experience. By using the Application, User consents to the use of cookies in accordance with our Cookie Policy.
+
+Limitation of Liability
+4.1. Disclaimer: The Application is provided on an "as is" and "as available" basis, without warranties of any kind, either expressed or implied. The Company disclaims all warranties, including but not limited to, fitness for a particular purpose, non-infringement, and accuracy of information.
+4.2. Indemnification: User agrees to indemnify and hold the Company harmless from any claims, damages, liabilities, and expenses arising out of their use of the Application or violation of this Agreement.
+
+Termination
+5.1. Termination Rights: The Company reserves the right to suspend or terminate User's access to the Application at any time, with or without cause, and without prior notice.
+
+Governing Law
+6.1. Jurisdiction: This Agreement shall be governed by and construed in accordance with the laws of the United States of America. Any disputes arising from this Agreement shall be subject to the exclusive jurisdiction of the courts in the United States of America.
+
+Please read this Agreement carefully before using the Application. By accessing or using the Application, you acknowledge that you have read, understood, and agree to be bound by this Agreement.
+        """
     )
 
     # Test practice charges

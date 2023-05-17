@@ -87,7 +87,9 @@ class TermsOfService(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     # Data Points - Created/Updated
     created_at = db.Column(db.DateTime(timezone=True), default=func.now())
+    created_by = db.Column(db.Integer, db.ForeignKey("user.id"))
     updated_at = db.Column(db.DateTime(timezone=True))
+    updated_by = db.Column(db.Integer, db.ForeignKey("user.id"))
     # Data Points - Active/Sunset Dates
     active_date = db.Column(db.DateTime(timezone=True), nullable=False)
     sunset_date = db.Column(db.DateTime(timezone=True))
