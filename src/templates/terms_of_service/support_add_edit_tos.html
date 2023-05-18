@@ -13,4 +13,55 @@
     Add/Edit Terms of Service
   </li>
 </ol>
-{%endblock pagenav%} {%block content%} {%endblock content%}
+{%endblock pagenav%} {%block content%}
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title">Add/Edit Terms of Service</h4>
+      </div>
+      <div class="card-body">
+        <form method="post" class="" novalidate>
+          {{form.hidden_tag()}}
+          <div class="row mb-6">
+            <div class="col-md-6">
+              <div class="form-group">
+                {{form.version.label(class="form-label")}}
+                {{form.version(class="form-control")}}
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                {{form.content.label(class="form-label")}}
+                {{form.content(class="form-control")}}
+              </div>
+            </div>
+          </div>
+          <div class="row mb-6">
+            <div class="col-md-6">
+              <div class="form-group">
+                {{form.active_date.label(class="form-label")}}
+                {{form.active_date(class="form-control")}}
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                {{form.sunset_date.label(class="form-label")}}
+                {{form.sunset_date(class="form-control")}}
+              </div>
+            </div>
+          </div>
+          <div>
+            {{form.submit(class="btn btn-primary")}}
+            <a
+              href="{{url_for('terms_of_service.support_list_tos')}}"
+              class="btn btn-outline-primary"
+              >Cancel</a
+            >
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  {%endblock content%}
+</div>

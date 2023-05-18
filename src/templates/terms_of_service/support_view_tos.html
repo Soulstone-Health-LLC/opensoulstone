@@ -85,7 +85,11 @@
         </div>
         <div class="row">
           <div class="col-md-1">
-            <a href="#" class="btn btn-primary">Edit</a>
+            <a
+              href="{{url_for('terms_of_service.support_edit_tos', tos_id=tos.id)}}"
+              class="btn btn-primary"
+              >Edit</a
+            >
           </div>
         </div>
       </div>

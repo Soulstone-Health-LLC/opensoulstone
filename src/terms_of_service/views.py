@@ -109,7 +109,8 @@ def support_view_tos(tos_id):
 
 
 # Support - Terms of Service - Create Terms of Service
-@terms_of_service.route("/support/terms_of_service/create", methods=["GET", "POST"])
+@terms_of_service.route("/support/terms_of_service/create",
+                        methods=["GET", "POST"])
 @login_required
 @support_required
 def support_create_tos():
@@ -120,16 +121,13 @@ def support_create_tos():
     # If form is submitted
     if form.validate_on_submit():
         if request.method == "POST":
-            # Get current date and time
-            date_time = datetime.now()
-
             # Save terms of service to database
             tos = TermsOfService(
                 content=form.content.data,
                 active_date=form.active_date.data,
                 sunset_date=form.sunset_date.data,
                 version=form.version.data,
-                created_at=date_time,
+                created_at=datetime.now(),
                 created_by=current_user.id,
             )
             db.session.add(tos)
@@ -142,3 +140,44 @@ def support_create_tos():
                            user=current_user,
                            form=form,
                            title="Create Terms of Service")
+
+
+# Support - Terms of Service - Edit Terms of Service
+@terms_of_service.route("/support/terms_of_service/edit/<int:tos_id>",
+                        methods=["GET", "POST"])
+@login_required
+@support_required
+def support_edit_tos(tos_id):
+    """Support - Terms of Service - Edit Terms of Service"""
+
+    form = TermsOfServiceForm()
+
+    # Get terms of service
+    tos = TermsOfService.query.filter_by(id=tos_id).first()
+
+    if request.method == "GET":
+        # Populate form with existing data
+        form.content.data = tos.content
+        form.active_date.data = tos.active_date
+        form.sunset_date.data = tos.sunset_date
+        form.version.data = tos.version
+
+    # If form is submitted
+    if form.validate_on_submit():
+        if request.method == "POST":
+            # Update terms of service in database
+            tos.content = form.content.data
+            tos.active_date = form.active_date.data
+            tos.sunset_date = form.sunset_date.data
+            tos.version = form.version.data
+            tos.updated_at = datetime.now()
+            tos.updated_by = current_user.id
+            db.session.commit()
+
+            # Redirect user to support - list terms of service page
+            return redirect(url_for("terms_of_service.support_list_tos"))
+
+    return render_template("terms_of_service/support_add_edit_tos.html",
+                           user=current_user,
+                           form=form,
+                           title="Soulstone - Edit Terms of Service")

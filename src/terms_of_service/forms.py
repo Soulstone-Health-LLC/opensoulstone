@@ -28,5 +28,5 @@ class TermsOfServiceForm(FlaskForm):
     sunset_date = DateField("Sunset Date", format="%Y-%m-%d")
     version = StringField(
         "Version *", default=str(current_date), validators=[DataRequired()])
-    submit = SubmitField("Submit")
+    submit = SubmitField("Save")
     cancel = SubmitField('Cancel', render_kw={'formnovalidate': True})
