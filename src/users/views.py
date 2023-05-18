@@ -70,8 +70,6 @@ def login():
                                 UserAgreement.tos_id == active_tos.id).first()
 
                             if not user_agreement:
-                                flash("Please agree to the Terms of Service.",
-                                      category="error")
                                 login_user(user, remember=True)
                                 return redirect(
                                     url_for("terms_of_service.user_agreement",
