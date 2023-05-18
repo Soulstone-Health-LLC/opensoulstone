@@ -1,5 +1,5 @@
 {%extends "base_login.html"%} {%block form%}
-<form method="post" class="login100-form" novalidate>
+<form method="post" class="" novalidate>
   {{form.hidden_tag()}}
   <div class="text-center">
     <img
@@ -12,7 +12,7 @@
   <span class="login100-form-title">User Agreement</span>
   <div class="form-group">
     {% if agreement_content.content %}
-    <p>{{agreement_content.content}}</p>
+    <p>{{agreement_content.content|safe}}</p>
     {% else %}
     <h2>Terms of Service Agreement</h2>
     <h3>User Responsibilities</h3>
