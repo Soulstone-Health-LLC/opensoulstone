@@ -37,7 +37,10 @@
                 <td>{{t.active_date.strftime('%Y-%m-%d')}}</td>
                 <td>{{t.sunset_date.strftime('%Y-%m-%d')}}</td>
                 <td>
-                  <a href="#" class="btn btn-primary badge" type="button"
+                  <a
+                    href="{{url_for('terms_of_service.support_view_tos', tos_id=t.id)}}"
+                    class="btn btn-primary badge"
+                    type="button"
                     ><i class="fe fe-eye"></i> View</a
                   >
                 </td>
