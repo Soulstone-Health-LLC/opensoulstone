@@ -154,7 +154,10 @@
           <ul class="side-menu">
             <li><h3></h3></li>
             <li class="slide">
-              <a class="side-menu__item" data-bs-toggle="slide" href="/support"
+              <a
+                class="side-menu__item"
+                data-bs-toggle="slide"
+                href="{{url_for('supportapp.support')}}"
                 ><i class="side-menu__icon fe fe-home"></i
                 ><span class="side-menu__label">Support</span></a
               >
@@ -162,7 +165,7 @@
             <a
               class="side-menu__item"
               data-bs-toggle="slide"
-              href="/support/terms_of_service"
+              href="{{url_for('terms_of_service.support_list_tos')}}"
               ><i class="side-menu__icon fe fe-phone"></i
               ><span class="side-menu__label">Terms of Service</span></a
             >
