@@ -1,0 +1,16 @@
+{%extends "base_support.html"%} {%block pagenav%}
+<h1 class="page-title">Support</h1>
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">
+    <a href="{{url_for('supportapp.support')}}">Support</a>
+  </li>
+  <li class="breadcrumb-item">
+    <a href="{{url_for('terms_of_service.support_list_tos')}}"
+      >Terms of Service</a
+    >
+  </li>
+  <li class="breadcrumb-item active" aria-current="page">
+    Add/Edit Terms of Service
+  </li>
+</ol>
+{%endblock pagenav%} {%block content%} {%endblock content%}

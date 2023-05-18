@@ -21,7 +21,8 @@ class TermsOfServiceForm(FlaskForm):
     current_date = datetime.now()
 
     content = TextAreaField(
-        "Content * (HTML)", render_kw={"rows": 10}, validators=[DataRequired()])
+        "Content * (HTML)", render_kw={"rows": 10},
+        validators=[DataRequired()])
     active_date = DateField(
         "Active Date *", format="%Y-%m-%d", validators=[DataRequired()])
     sunset_date = DateField("Sunset Date", format="%Y-%m-%d")

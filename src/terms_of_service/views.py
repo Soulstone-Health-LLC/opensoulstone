@@ -6,7 +6,7 @@ Terms of Service - User Agreement View
 from flask import Blueprint, render_template, redirect, url_for, request
 from flask_login import current_user, login_required
 from datetime import datetime
-from src.terms_of_service.forms import UserAgreementForm
+from src.terms_of_service.forms import UserAgreementForm, TermsOfServiceForm
 from src.models import UserAgreement, TermsOfService, User
 from src import db
 from sqlalchemy.orm import aliased
@@ -68,7 +68,8 @@ def support_list_tos():
 
 
 # Support - Terms of Service - View Terms of Service
-@terms_of_service.route("/support/terms_of_service/<int:tos_id>", methods=["GET"])
+@terms_of_service.route("/support/terms_of_service/<int:tos_id>",
+                        methods=["GET"])
 @login_required
 @support_required
 def support_view_tos(tos_id):
@@ -105,3 +106,39 @@ def support_view_tos(tos_id):
     return render_template("terms_of_service/support_view_tos.html",
                            user=current_user,
                            tos=tos)
+
+
+# Support - Terms of Service - Create Terms of Service
+@terms_of_service.route("/support/terms_of_service/create", methods=["GET", "POST"])
+@login_required
+@support_required
+def support_create_tos():
+    """Support - Terms of Service - Create Terms of Service"""
+
+    form = TermsOfServiceForm()
+
+    # If form is submitted
+    if form.validate_on_submit():
+        if request.method == "POST":
+            # Get current date and time
+            date_time = datetime.now()
+
+            # Save terms of service to database
+            tos = TermsOfService(
+                content=form.content.data,
+                active_date=form.active_date.data,
+                sunset_date=form.sunset_date.data,
+                version=form.version.data,
+                created_at=date_time,
+                created_by=current_user.id,
+            )
+            db.session.add(tos)
+            db.session.commit()
+
+            # Redirect user to support - list terms of service page
+            return redirect(url_for("terms_of_service.support_list_tos"))
+
+    return render_template("terms_of_service/support_add_edit_tos.html",
+                           user=current_user,
+                           form=form,
+                           title="Create Terms of Service")
