@@ -56,7 +56,11 @@
               <tr>
                 <td class="align-middle text-center">
                   <a href="{{ url_for('persons.viewPerson', id=p.id) }}">
-                    <img alt="image" class="avatar avatar-md br-7" src="#" />
+                    <img
+                      alt="image"
+                      class="avatar avatar-md br-7"
+                      src="{{ url_for('static', filename='assets/images/users/8.jpg') }}"
+                    />
                   </a>
                 </td>
                 <td class="text-nowrap align-middle">

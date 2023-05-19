@@ -6,7 +6,7 @@ Blueprint.
 
 # Imports
 import pdfkit
-from datetime import datetime
+from datetime import datetime, timedelta
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask import make_response
 from flask_login import login_required, current_user
@@ -98,6 +98,43 @@ def addVisitNote(id):
             # Display the person info
             person = People.query.get_or_404(id)
 
+            # Chart - Chakra Assessment
+            # Start Date for Dashboard (365 days)
+            start_date = datetime.now() - timedelta(days=365)
+            chakra_data = (
+                db.session.query(
+                    db.func.strftime(
+                        "%Y-%m-%d", Notes.date_of_service).label("day"),
+                    Notes.chakra_assessment_root_score,
+                    Notes.chakra_assessment_sacral_score,
+                    Notes.chakra_assessment_solar_plexus_score,
+                    Notes.chakra_assessment_heart_score,
+                    Notes.chakra_assessment_throat_score,
+                    Notes.chakra_assessment_third_eye_score,
+                    Notes.chakra_assessment_crown_score,
+                )
+                .filter(
+                    Notes.person_id == pers_id,
+                    Notes.date_of_service >= start_date,
+                )
+                .group_by("day")
+                .all()
+            )
+
+            chakra_graph_labels = [chakra.day for chakra in chakra_data]
+            chakra_graph_data = [
+                {
+                    "Root Score": chakra.chakra_assessment_root_score,
+                    "Sacral Score": chakra.chakra_assessment_sacral_score,
+                    "Solar Plexus Score": chakra.chakra_assessment_solar_plexus_score,
+                    "Heart Score": chakra.chakra_assessment_heart_score,
+                    "Throat Score": chakra.chakra_assessment_throat_score,
+                    "Third Eye Score": chakra.chakra_assessment_third_eye_score,
+                    "Crown Score": chakra.chakra_assessment_crown_score,
+                }
+                for chakra in chakra_data
+            ]
+
             return render_template(
                 "visit_notes/add_visit_note.html",
                 title="Soulstone - Add Visit Note",
@@ -106,6 +143,8 @@ def addVisitNote(id):
                 form=form,
                 balance=balance,
                 notes_count=notes_count,
+                chakra_graph_labels=chakra_graph_labels,
+                chakra_graph_data=chakra_graph_data,
             )
         else:
             return render_template("error_pages/401.html", user=current_user)
@@ -246,6 +285,44 @@ def editVisitNote(id):
     balance = total_charges - total_payments
 
     if request.method == "GET":
+        # Chart - Chakra Assessment
+        # Start Date for Dashboard (365 days)
+        start_date = datetime.now() - timedelta(days=365)
+        chakra_data = (
+            db.session.query(
+                db.func.strftime(
+                    "%Y-%m-%d", Notes.date_of_service).label("day"),
+                Notes.chakra_assessment_root_score,
+                Notes.chakra_assessment_sacral_score,
+                Notes.chakra_assessment_solar_plexus_score,
+                Notes.chakra_assessment_heart_score,
+                Notes.chakra_assessment_throat_score,
+                Notes.chakra_assessment_third_eye_score,
+                Notes.chakra_assessment_crown_score,
+            )
+            .filter(
+                Notes.person_id == pers_id,
+                Notes.date_of_service >= start_date,
+            )
+            .group_by("day")
+            .all()
+        )
+
+        chakra_graph_labels = [chakra.day for chakra in chakra_data]
+        chakra_graph_data = [
+            {
+                "Root Score": chakra.chakra_assessment_root_score,
+                "Sacral Score": chakra.chakra_assessment_sacral_score,
+                "Solar Plexus Score": chakra.chakra_assessment_solar_plexus_score,
+                "Heart Score": chakra.chakra_assessment_heart_score,
+                "Throat Score": chakra.chakra_assessment_throat_score,
+                "Third Eye Score": chakra.chakra_assessment_third_eye_score,
+                "Crown Score": chakra.chakra_assessment_crown_score,
+            }
+            for chakra in chakra_data
+        ]
+
+        # Populate form fields with existing data from database
         form.reason_for_visit.data = note.reason_for_visit
         form.date_of_service.data = note.date_of_service
         form.chakra_assessment_root_score.data = (
@@ -302,6 +379,8 @@ def editVisitNote(id):
             form=form,
             balance=balance,
             notes_count=notes_count,
+            chakra_graph_labels=chakra_graph_labels,
+            chakra_graph_data=chakra_graph_data,
         )
 
     if form.validate_on_submit() and request.method == "POST":

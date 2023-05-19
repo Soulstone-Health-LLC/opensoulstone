@@ -137,6 +137,19 @@
       <div class="row">
         <div class="card">
           <div class="card-header border-bottom-0">
+            <div class="card-title">Chakra Assessment - Graph</div>
+          </div>
+          <div class="card-body">
+            <!-- Chakra Assessment Graph -->
+            <div class="chart-container">
+              <canvas id="caGraph" class="h-275"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="card">
+          <div class="card-header border-bottom-0">
             <div class="card-title">Visit Notes</div>
           </div>
           <div class="card-body">
@@ -171,4 +184,120 @@
   {{form.submit(class="btn btn-primary mb-5")}}
 </form>
 <!-- End Visit Note Form -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script type="text/javascript">
+  var gChakraLabels = {{ chakra_graph_labels | tojson }};
+  var gChakraData = {{ chakra_graph_data | tojson }};
+
+  var ctx = document.getElementById("caGraph").getContext("2d");
+  var myChart = new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: gChakraLabels,
+      datasets: [
+        {
+          label: "Root Score",
+          data: gChakraData.map((item) => item["Root Score"]),
+          borderWidth: 2,
+          backgroundColor: "#6259ca",
+          borderColor: "#6259ca",
+          borderWidth: 2.0,
+          pointBackgroundColor: "#ffffff",
+        },
+        {
+          label: "Sacral Score",
+          data: gChakraData.map((item) => item["Sacral Score"]),
+          borderWidth: 2,
+          backgroundColor: "#eb6f33",
+          borderColor: "#eb6f33",
+          borderWidth: 2.0,
+          pointBackgroundColor: "#ffffff",
+        },
+        {
+          label: "Solar Plexus Score",
+          data: gChakraData.map((item) => item["Solar Plexus Score"]),
+          borderWidth: 2,
+          backgroundColor: "#00bcd4",
+          borderColor: "#00bcd4",
+          borderWidth: 2.0,
+          pointBackgroundColor: "#ffffff",
+        },
+        {
+          label: "Heart Score",
+          data: gChakraData.map((item) => item["Heart Score"]),
+          borderWidth: 2,
+          backgroundColor: "#4caf50",
+          borderColor: "#4caf50",
+          borderWidth: 2.0,
+          pointBackgroundColor: "#ffffff",
+        },
+        {
+          label: "Throat Score",
+          data: gChakraData.map((item) => item["Throat Score"]),
+          borderWidth: 2,
+          backgroundColor: "#ff9800",
+          borderColor: "#ff9800",
+          borderWidth: 2.0,
+          pointBackgroundColor: "#ffffff",
+        },
+        {
+          label: "Third Eye Score",
+          data: gChakraData.map((item) => item["Third Eye Score"]),
+          borderWidth: 2,
+          backgroundColor: "#9c27b0",
+          borderColor: "#9c27b0",
+          borderWidth: 2.0,
+          pointBackgroundColor: "#ffffff",
+        },
+        {
+          label: "Crown Score",
+          data: gChakraData.map((item) => item["Crown Score"]),
+          borderWidth: 2,
+          backgroundColor: "#607d8b",
+          borderColor: "#607d8b",
+          borderWidth: 2.0,
+          pointBackgroundColor: "#ffffff",
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      legend: {
+        display: true,
+      },
+      scales: {
+        yAxes: [
+          {
+            ticks: {
+              beginAtZero: true,
+              stepSize: 150,
+              fontColor: "#77778e",
+            },
+            gridLines: {
+              color: "rgba(119, 119, 142, 0.2)",
+            },
+          },
+        ],
+        xAxes: [
+          {
+            ticks: {
+              display: true,
+              fontColor: "#77778e",
+            },
+            gridLines: {
+              display: false,
+              color: "rgba(119, 119, 142, 0.2)",
+            },
+          },
+        ],
+      },
+      legend: {
+        labels: {
+          fontColor: "#77778e",
+        },
+      },
+    },
+  });
+</script>
 {% endblock content %}
