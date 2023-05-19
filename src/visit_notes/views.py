@@ -442,12 +442,14 @@ def editVisitNote(id):
         return redirect(url_for("visit_notes.notes"))
 
 
+# Visit Note - PDF Visit Note
 @visit_notes.route("/pdf_note/<int:id>")
 @login_required
 def pdfVisitNote(id):
     note = Notes.query.get_or_404(id)
     practice = Practice.query.filter_by(id=note.practice_id).first()
     person = People.query.filter_by(id=note.person_id).first()
+
     rendered = render_template(
         "visit_notes/pdf_visit_note.html",
         note=note,
