@@ -7,10 +7,29 @@ $(function(e) {
 			sSearch: '',
 		}
 	});
-	
+	$('#basic-datatable-2').DataTable({
+		language: {
+			searchPlaceholder: 'Search...',
+			sSearch: '',
+		}
+	});
 
 	//______Basic Data Table
 	$('#responsive-datatable').DataTable({
+		scrollX: "100%",
+		language: {
+			searchPlaceholder: 'Search...',
+			sSearch: '',
+		}
+	});
+	$('#responsive-datatable-2').DataTable({
+		scrollX: "100%",
+		language: {
+			searchPlaceholder: 'Search...',
+			sSearch: '',
+		}
+	});
+	$('#responsive-datatable-3').DataTable({
 		scrollX: "100%",
 		language: {
 			searchPlaceholder: 'Search...',
