@@ -9,8 +9,16 @@ from flask_login import login_required, current_user
 from src.persons.forms import AddPersonForm, EditPersonForm
 from src.persons.forms import SearchPersonForm
 from src import db
-from src.models import People, Notes, Charges, LedgerCharges
-from src.models import LedgerPayments
+from src.models import (
+    People,
+    Notes,
+    Charges,
+    LedgerCharges,
+    LedgerPayments,
+    Events,
+    EventTypes,
+    User,
+)
 
 
 # Blueprint Configuration
@@ -215,8 +223,28 @@ def viewPerson(id):
         if pu_id == pp_id:
             # Display the person info
             person = People.query.get_or_404(id)
+            # Visit Notes
             notes = Notes.query.filter_by(person_id=id).all()
             notes_count = Notes.query.filter_by(person_id=id).count()
+            # Events
+            events = (
+                db.session.query(
+                    Events.id,
+                    Events.date,
+                    Events.start_time,
+                    Events.end_time,
+                    Events.note,
+                    User.first_name,
+                    User.last_name,
+                    EventTypes.event_name,
+                )
+                .filter_by(person_id=id)
+                .outerjoin(User, Events.practitioner_id == User.id)
+                .outerjoin(EventTypes, Events.event_type_id == EventTypes.id)
+                .all()
+            )
+            events_count = Events.query.filter_by(person_id=id).count()
+            # Ledger Charges
             ledger_charges = (
                 db.session.query(
                     LedgerCharges.created_at,
@@ -261,6 +289,8 @@ def viewPerson(id):
                 notes_count=notes_count,
                 ledger_charges=ledger_charges,
                 balance=balance,
+                events=events,
+                events_count=events_count,
             )
         else:
             return render_template("error_pages/401.html", user=current_user)

@@ -101,6 +101,17 @@
                   </div>
                   <div class="me-5 mt-5 mt-md-0">
                     <div class="media">
+                      <div class="media-icon bg-secondary me-3 mt-1">
+                        <i class="fe fe-calendar fs-20 text-white"></i>
+                      </div>
+                      <div class="media-body">
+                        <span class="text-muted">Appointments</span>
+                        <div class="fw-semibold fs-25">{{ events_count }}</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="me-5 mt-5 mt-md-0">
+                    <div class="media">
                       <div class="media-icon bg-success me-3 mt-1">
                         <i class="fe fe-credit-card fs-20 text-white"></i>
                       </div>
@@ -131,6 +142,11 @@
                 <li>
                   <a href="#visitnotes" data-bs-toggle="tab" class=""
                     >Visit Notes</a
+                  >
+                </li>
+                <li>
+                  <a href="#appointments" data-bs-toggle="tab" class=""
+                    >Appointments</a
                   >
                 </li>
                 <li>
@@ -283,6 +299,72 @@
           </div>
         </div>
       </div>
+      <!-- Start Events -->
+      <div class="tab-pane" id="appointments">
+        <div id="profile-log-switch">
+          <div class="card">
+            <div class="card-body">
+              <div class="media-heading">
+                <h5><strong>Appointments</strong></h5>
+              </div>
+              <div class="mb-3">
+                <a
+                  href="{{ url_for('calendar.addEvent') }}"
+                  class="btn btn-primary"
+                  ><i class="fe fe-plus"></i> Add Appointment</a
+                >
+              </div>
+              <div class="table-responsive">
+                <table
+                  data-order='[[ 0, "desc" ]]'
+                  class="table table-bordered text-nowrap border-bottom w-100"
+                  id="basic-datatable-3"
+                >
+                  <thead>
+                    <tr>
+                      <th>Appointment Date</th>
+                      <th>Appointment Time</th>
+                      <th>Appointment Type</th>
+                      <th>Appointment Practitioner</th>
+                      <th>Appointment Notes</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {%if events%} {% for e in events %}
+                    <tr>
+                      <td>{{ e.date.strftime('%Y-%m-%d (%A, %B %d, %Y)') }}</td>
+                      <td>
+                        {{ e.start_time.strftime('%I:%M %p') }} -
+                        {{e.end_time.strftime('%I:%M %p')}}
+                      </td>
+                      <td>{{e.event_name}}</td>
+                      <td>{{e.first_name}} {{e.last_name}}</td>
+                      <td>{{e.note}}</td>
+                      <td>
+                        <div class="btn-group">
+                          <a
+                            href="{{ url_for('calendar.viewEvent', event_id=e.id) }}"
+                            class="btn btn-primary badge"
+                            type="button"
+                            ><i class="fe fe-calendar"></i> View</a
+                          >
+                        </div>
+                      </td>
+                    </tr>
+                    {% endfor %} {% else %}
+                    <tr>
+                      <td colspan="6">No Appointments Found</td>
+                      {% endif %}
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End Events -->
       <div class="tab-pane" id="billing">
         <div id="profile-log-switch">
           <div class="card">

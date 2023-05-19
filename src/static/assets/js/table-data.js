@@ -13,6 +13,12 @@ $(function(e) {
 			sSearch: '',
 		}
 	});
+	$('#basic-datatable-3').DataTable({
+		language: {
+			searchPlaceholder: 'Search...',
+			sSearch: '',
+		}
+	});
 
 	//______Basic Data Table
 	$('#responsive-datatable').DataTable({
