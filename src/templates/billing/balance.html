@@ -77,7 +77,9 @@
                   >
                 </td>
                 <td class="text-nowrap align-middle">
-                  {{ "$ {:,.2f}".format(b.outstanding_balance()) }}
+                  {% if b.outstanding_balance() is not none %} {{ "$
+                  {:,.2f}".format(b.outstanding_balance()) }} {% else %} N/A {%
+                  endif %}
                 </td>
                 <td class="text-center align-middle">Actions go here</td>
               </tr>

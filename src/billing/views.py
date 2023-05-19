@@ -6,6 +6,7 @@ Billing > Views - This file contains the routes for the billing blueprint.
 from datetime import datetime
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
+from sqlalchemy import case, literal
 from src.billing.forms import AddLedgerChargeForm, AddLedgerPaymentForm
 from src import db
 from src.models import People, Charges
@@ -81,35 +82,51 @@ def balance():
     """Routes the user to the Balance page"""
     # queries
     people = People.query.filter_by(practice_id=current_user.practice_id).all()
+
     total_charges = (
         db.session.query(
-            db.func.sum(
-                LedgerCharges.units * LedgerCharges.unit_amount
-                + (LedgerCharges.unit_amount * LedgerCharges.tax_rate)
+            db.func.coalesce(
+                db.func.sum(
+                    LedgerCharges.units * LedgerCharges.unit_amount
+                    + (LedgerCharges.unit_amount * LedgerCharges.tax_rate)
+                ),
+                0  # Replace None with 0
             )
         )
         .filter_by(practice_id=current_user.practice_id)
         .scalar()
     )
+
     total_payments = (
-        db.session.query(db.func.sum(LedgerPayments.amount))
+        db.session.query(
+            db.func.coalesce(
+                db.func.sum(LedgerPayments.amount),
+                0  # Replace None with 0
+            )
+        )
         .filter_by(practice_id=current_user.practice_id)
         .scalar()
     )
 
-    if total_charges is None:
-        total_charges = 0
-    if total_payments is None:
-        total_payments = 0
-
     # List of outstanding balances
     balances = (
-        People.query.join(LedgerCharges)
-        .join(LedgerPayments)
-        .filter(
-            People.practice_id == current_user.practice_id,
-            LedgerCharges.unit_amount > LedgerPayments.amount,
+        People.query.outerjoin(LedgerCharges)
+        .outerjoin(LedgerPayments)
+        .group_by(People.id)
+        .having(
+            db.func.coalesce(
+                db.func.sum(
+                    LedgerCharges.unit_amount * LedgerCharges.units
+                    + (LedgerCharges.unit_amount * LedgerCharges.tax_rate)
+                ),
+                0
+            ) > db.func.coalesce(
+                # Replace with the correct column name
+                db.func.sum(LedgerPayments.amount),
+                0
+            )
         )
+        .filter(People.practice_id == current_user.practice_id)
         .all()
     )
 

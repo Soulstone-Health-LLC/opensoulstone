@@ -168,19 +168,34 @@ class People(db.Model):
 
     # Outstanding Balances
     def outstanding_balance(self):
-        """Returns the sum of the person's ledger charges minus payments"""
+        """Returns the outstanding balance for the person"""
         charge_sum = (
-            db.session.query(db.func.sum(LedgerCharges.unit_amount))
-            .filter(LedgerCharges.person_id == self.id)
+            db.session.query(
+                db.func.coalesce(
+                    db.func.sum(
+                        db.func.ifnull(
+                            LedgerCharges.unit_amount * LedgerCharges.units
+                            + (LedgerCharges.unit_amount *
+                               LedgerCharges.tax_rate),
+                            0
+                        )
+                    ),
+                    0
+                )
+            )
+            .filter(
+                LedgerCharges.person_id == self.id
+            )
             .scalar()
         )
         payment_sum = (
-            db.session.query(db.func.sum(LedgerPayments.amount))
+            db.session.query(db.func.coalesce(
+                db.func.sum(LedgerPayments.amount), 0))
             .filter(LedgerPayments.person_id == self.id)
             .scalar()
         )
 
-        return charge_sum - payment_sum
+        return charge_sum - payment_sum if charge_sum is not None and payment_sum is not None else 0
 
 
 class Charges(db.Model):
