@@ -195,7 +195,11 @@ class People(db.Model):
             .scalar()
         )
 
-        return charge_sum - payment_sum if charge_sum is not None and payment_sum is not None else 0
+        return (
+            charge_sum - payment_sum
+            if charge_sum is not None and payment_sum is not None
+            else 0
+        )
 
 
 class Charges(db.Model):

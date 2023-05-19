@@ -6,7 +6,6 @@ Billing > Views - This file contains the routes for the billing blueprint.
 from datetime import datetime
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
-from sqlalchemy import case, literal
 from src.billing.forms import AddLedgerChargeForm, AddLedgerPaymentForm
 from src import db
 from src.models import People, Charges
