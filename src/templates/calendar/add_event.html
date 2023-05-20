@@ -25,7 +25,9 @@
                   form.event_type_id(class="form-control select2-show-search
                   is-invalid") }} {% for error in form.event_type_id.errors %}
                   <div class="invalid-feedback">{{ error }}</div>
-                  {% endfor %} {% else %} {{ form.event_type_id }} {% endif %}
+                  {% endfor %} {% else %} {{
+                  form.event_type_id(class="form-control select2") }} {% endif
+                  %}
                 </div>
               </div>
               <div class="col-md-6 mb-6">
@@ -35,7 +37,9 @@
                   form.practitioner_id(class="form-control select2-show-search
                   is-invalid") }} {% for error in form.practitioner_id.errors %}
                   <div class="invalid-feedback">{{ error }}</div>
-                  {% endfor %} {% else %} {{ form.practitioner_id }} {% endif %}
+                  {% endfor %} {% else %} {{
+                  form.practitioner_id(class="form-control select2") }} {% endif
+                  %}
                 </div>
               </div>
             </div>
@@ -45,7 +49,8 @@
                 form.person(class="form-control is-invalid") }} {% for error in
                 form.person.errors %}
                 <div class="invalid-feedback">{{ error }}</div>
-                {% endfor %} {% else %} {{ form.person }} {% endif %}
+                {% endfor %} {% else %} {{ form.person(class="form-control
+                select2") }} {% endif %}
               </div>
             </div>
             <div class="row">
