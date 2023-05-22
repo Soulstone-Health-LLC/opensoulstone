@@ -75,6 +75,7 @@ def addEvent():
     """Add Event page"""
     form = EventForm()
 
+    # Choices of Event Types
     form.event_type_id.choices = [
         (
             event_type.id,
@@ -85,6 +86,7 @@ def addEvent():
         for event_type in current_user.practice.event_types
     ]
 
+    # Choices of People
     form.person.choices = [(0, "None")] + [
         (person.id, person.first_name + " " +
          person.last_name + f" ({person.gender_identity})")

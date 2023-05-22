@@ -17,40 +17,23 @@
         <form method="post" class="" novalidate>
           {{ form.hidden_tag() }}
           <div class="">
-            <div class="row">
-              <div class="col-md-6 mb-6">
+            <div class="row mb-6">
+              <div class="col-md-6">
                 <div class="form-group">
-                  {{ form.event_type_id.label(class="form-label") }} {% if
-                  form.event_type_id.errors %} {{
-                  form.event_type_id(class="form-control select2-show-search
-                  is-invalid") }} {% for error in form.event_type_id.errors %}
-                  <div class="invalid-feedback">{{ error }}</div>
-                  {% endfor %} {% else %} {{
-                  form.event_type_id(class="form-control select2") }} {% endif
-                  %}
+                  {{form.event_type_id.label(class="form-label")}}
+                  {{form.event_type_id()}}
                 </div>
               </div>
-              <div class="col-md-6 mb-6">
+              <div class="col-md-6">
                 <div class="form-group">
-                  {{ form.practitioner_id.label(class="form-label") }} {% if
-                  form.practitioner_id.errors %} {{
-                  form.practitioner_id(class="form-control select2-show-search
-                  is-invalid") }} {% for error in form.practitioner_id.errors %}
-                  <div class="invalid-feedback">{{ error }}</div>
-                  {% endfor %} {% else %} {{
-                  form.practitioner_id(class="form-control select2") }} {% endif
-                  %}
+                  {{form.practitioner_id.label(class="form-label")}}
+                  {{form.practitioner_id()}}
                 </div>
               </div>
             </div>
-            <div class="row">
-              <div class="col-md-6 mb-6">
-                {{ form.person.label() }} {% if form.person.errors %} {{
-                form.person(class="form-control is-invalid") }} {% for error in
-                form.person.errors %}
-                <div class="invalid-feedback">{{ error }}</div>
-                {% endfor %} {% else %} {{ form.person(class="form-control
-                select2") }} {% endif %}
+            <div class="row mb-6">
+              <div class="col-md-6">
+                {{form.person.label(class="form-label")}} {{form.person()}}
               </div>
             </div>
             <div class="row">
@@ -88,4 +71,12 @@
     </div>
   </div>
 </div>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var eventTypeSelect = document.getElementById("event_type_id");
+    if (eventTypeSelect) {
+      console.log(eventTypeSelect); // Print the select element itself
+    }
+  });
+</script>
 {% endblock content %}

@@ -201,39 +201,6 @@
 			$('body').addClass('light-mode');
 		}
 	});
-	
-	// Display Current Data and Time //
-	const d = new Date();
-	const month = d.getMonth();
-	const date = d.getDate();
-	const year = d.getFullYear();
-	if (month == 0) {
-		var monthstr = "January"
-	} else if (month == 1) {
-		var monthstr = "February"
-	} else if (month == 2) {
-		var monthstr = "March"
-	} else if (month == 3) {
-		var monthstr = "April"
-	} else if (month == 4) {
-		var monthstr = "May"
-	} else if (month == 5) {
-		var monthstr = "June"
-	} else if (month == 6) {
-		var monthstr = "July"
-	} else if (month == 7) {
-		var monthstr = "August"
-	} else if (month == 8) {
-		var monthstr = "September"
-	} else if (month == 9) {
-		var monthstr = "October"
-	} else if (month == 10) {
-		var monthstr = "November"
-	} else {
-		var monthstr = "December"
-	};
-	const currentDate = `${monthstr} ${date}, ${year}`;
-	document.getElementById("currentdate").innerHTML = currentDate;
 
 	/*Theme Layout*/
 	// $('body').addClass('dark-mode');
