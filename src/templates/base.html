@@ -55,19 +55,6 @@
       rel="stylesheet"
     />
 
-    <!-- SELECT2 CSS -->
-    <link
-      href="{{ url_for('static', filename='assets/plugins/select2/select2.css') }}"
-      rel="stylesheet"
-    />
-
-    <!-- SINGLE-PAGE CSS -->
-    <link
-      href="{{ url_for('static', filename='assets/plugins/single-page/css/main.css') }}"
-      rel="stylesheet"
-      type="text/css"
-    />
-
     <!-- P-scroll bar css-->
     <link
       href="{{ url_for('static', filename='assets/plugins/p-scroll/perfect-scrollbar.css') }}"
@@ -84,6 +71,37 @@
     <link
       href="{{ url_for('static', filename='assets/plugins/sidebar/sidebar.css') }}"
       rel="stylesheet"
+    />
+
+    <!-- SELECT2 CSS -->
+    <link
+      href="{{ url_for('static', filename='assets/plugins/select2/select2.css') }}"
+      rel="stylesheet"
+    />
+
+    <!-- INTERNAL Sumoselect css-->
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='assets/plugins/sumoselect/sumoselect.css') }}"
+    />
+
+    <!-- SINGLE-PAGE CSS -->
+    <link
+      href="{{ url_for('static', filename='assets/plugins/single-page/css/main.css') }}"
+      rel="stylesheet"
+      type="text/css"
+    />
+
+    <!-- MULTI SELECT CSS -->
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='assets/plugins/multipleselect/multiple-select.css') }}"
+    />
+
+    <!-- INTERNAL multi css-->
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='assets/plugins/multi/multi.min.css') }}"
     />
 
     <!-- DATA TABLE CSS -->
@@ -1311,15 +1329,20 @@
     <script src="{{ url_for('static', filename='assets/plugins/bootstrap/js/popper.min.js') }}"></script>
     <script src="{{ url_for('static', filename='assets/plugins/bootstrap/js/bootstrap.min.js') }}"></script>
 
-    <!-- SPARKLINE JS-->
-    <script src="{{ url_for('static', filename='assets/js/jquery.sparkline.min.js') }}"></script>
+    <!-- SIDE-MENU JS -->
+    <script src="{{ url_for('static', filename='assets/plugins/sidemenu/sidemenu.js') }}"></script>
+
+    <!-- SIDEBAR JS -->
+    <script src="{{ url_for('static', filename='assets/plugins/sidebar/sidebar.js') }}"></script>
+
+    <!-- Perfect SCROLLBAR JS-->
+    <script src="{{ url_for('static', filename='assets/plugins/p-scroll/perfect-scrollbar.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/plugins/p-scroll/pscroll.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/plugins/p-scroll/pscroll-1.js') }}"></script>
 
     <!-- CHARTJS JS-->
     <script src="{{ url_for('static', filename='assets/plugins/chart/Chart.bundle.js') }}"></script>
     <script src="{{ url_for('static', filename='assets/plugins/chart/utils.js') }}"></script>
-
-    <!-- SIDE-MENU JS -->
-    <script src="{{ url_for('static', filename='assets/plugins/sidemenu/sidemenu.js') }}"></script>
 
     <!-- SELECT2 JS -->
     <script src="{{ url_for('static', filename='assets/plugins/select2/select2.full.js') }}"></script>
@@ -1336,17 +1359,22 @@
     <script src="{{ url_for('static', filename='assets/plugins/datatable/responsive.bootstrap5.min.js') }}"></script>
     <script src="{{ url_for('static', filename='assets/js/table-data.js') }}"></script>
 
-    <!-- SIDEBAR JS -->
-    <script src="{{ url_for('static', filename='assets/plugins/sidebar/sidebar.js') }}"></script>
-
-    <!-- Perfect SCROLLBAR JS-->
-    <script src="{{ url_for('static', filename='assets/plugins/p-scroll/perfect-scrollbar.js') }}"></script>
-    <script src="{{ url_for('static', filename='assets/plugins/p-scroll/pscroll.js') }}"></script>
-    <script src="{{ url_for('static', filename='assets/plugins/p-scroll/pscroll-1.js') }}"></script>
-
     <!-- FULL CALENDAR JS -->
     <script src="{{ url_for('static', filename='assets/plugins/fullcalendar/moment.min.js') }}"></script>
     <script src="{{ url_for('static', filename='assets/plugins/fullcalendar/fullcalendar.min.js') }}"></script>
+
+    <!-- INTERNAL Sumoselect js-->
+    <script src="{{ url_for('static', filename='assets/plugins/sumoselect/jquery.sumoselect.js') }}"></script>
+
+    <!-- INTERNAL jquery transfer js-->
+    <script src="{{ url_for('static', filename='assets/plugins/jQuerytransfer/jquery.transfer.js') }}"></script>
+
+    <!-- INTERNAL multi js-->
+    <script src="{{ url_for('static', filename='assets/plugins/multi/multi.min.js') }}"></script>
+
+    <!-- MULTI SELECT JS-->
+    <script src="{{ url_for('static', filename='assets/plugins/multipleselect/multiple-select.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/plugins/multipleselect/multi-select.js') }}"></script>
 
     <!-- CUSTOM JS-->
     <script src="{{ url_for('static', filename='assets/js/custom.js') }}"></script>
