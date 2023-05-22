@@ -184,7 +184,8 @@
   {{form.submit(class="btn btn-primary mb-5")}}
 </form>
 <!-- End Visit Note Form -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+
 <script type="text/javascript">
   var gChakraLabels = {{ chakra_graph_labels | tojson }};
   var gChakraData = {{ chakra_graph_data | tojson }};
@@ -265,32 +266,6 @@
       maintainAspectRatio: false,
       legend: {
         display: true,
-      },
-      scales: {
-        yAxes: [
-          {
-            ticks: {
-              beginAtZero: true,
-              stepSize: 150,
-              fontColor: "#77778e",
-            },
-            gridLines: {
-              color: "rgba(119, 119, 142, 0.2)",
-            },
-          },
-        ],
-        xAxes: [
-          {
-            ticks: {
-              display: true,
-              fontColor: "#77778e",
-            },
-            gridLines: {
-              display: false,
-              color: "rgba(119, 119, 142, 0.2)",
-            },
-          },
-        ],
       },
       legend: {
         labels: {

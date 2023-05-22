@@ -89,7 +89,7 @@
   </div>
 </div>
 <!-- End Dashboards -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
 
 <!-- Start Events JSON -->
 <script type="text/javascript">
@@ -120,32 +120,6 @@
         maintainAspectRatio: false,
         legend: {
             display: true,
-        },
-        scales: {
-            yAxes: [
-            {
-                ticks: {
-                beginAtZero: true,
-                stepSize: 150,
-                fontColor: "#77778e",
-                },
-                gridLines: {
-                color: "rgba(119, 119, 142, 0.2)",
-                },
-            },
-            ],
-            xAxes: [
-            {
-                ticks: {
-                display: true,
-                fontColor: "#77778e",
-                },
-                gridLines: {
-                display: false,
-                color: "rgba(119, 119, 142, 0.2)",
-                },
-            },
-            ],
         },
         legend: {
             labels: {
@@ -180,32 +154,6 @@
         maintainAspectRatio: false,
         legend: {
             display: true,
-        },
-        scales: {
-            yAxes: [
-            {
-                ticks: {
-                beginAtZero: true,
-                stepSize: 150,
-                fontColor: "#77778e",
-                },
-                gridLines: {
-                color: "rgba(119, 119, 142, 0.2)",
-                },
-            },
-            ],
-            xAxes: [
-            {
-                ticks: {
-                display: true,
-                fontColor: "#77778e",
-                },
-                gridLines: {
-                display: false,
-                color: "rgba(119, 119, 142, 0.2)",
-                },
-            },
-            ],
         },
         legend: {
             labels: {
@@ -242,92 +190,6 @@
         legend: {
             display: true,
         },
-        scales: {
-            yAxes: [
-            {
-                ticks: {
-                beginAtZero: true,
-                stepSize: 150,
-                fontColor: "#77778e",
-                },
-                gridLines: {
-                color: "rgba(119, 119, 142, 0.2)",
-                },
-            },
-            ],
-            xAxes: [
-            {
-                ticks: {
-                display: true,
-                fontColor: "#77778e",
-                },
-                gridLines: {
-                display: false,
-                color: "rgba(119, 119, 142, 0.2)",
-                },
-            },
-            ],
-        },
-        legend: {
-            labels: {
-            fontColor: "#77778e",
-            },
-        },
-        },
-    });
-    /* Bar Graph 4 */
-    var gVisitNotesLabels = {{ visit_notes_graph_labels | tojson }};
-    var gVisitNotesData = {{ visit_notes_graph_data | tojson }};
-
-    var ctx = document.getElementById("chartBar4");
-    var myChart = new Chart(ctx, {
-        type: "bar",
-        data: {
-        labels: gVisitNotesLabels,
-        datasets: [
-            {
-            label: "?????",
-            data: gVisitNotesData,
-            borderWidth: 2,
-            backgroundColor: "#6259ca",
-            borderColor: "#6259ca",
-            borderWidth: 2.0,
-            pointBackgroundColor: "#ffffff",
-            },
-        ],
-        },
-        options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        legend: {
-            display: true,
-        },
-        scales: {
-            yAxes: [
-            {
-                ticks: {
-                beginAtZero: true,
-                stepSize: 150,
-                fontColor: "#77778e",
-                },
-                gridLines: {
-                color: "rgba(119, 119, 142, 0.2)",
-                },
-            },
-            ],
-            xAxes: [
-            {
-                ticks: {
-                display: true,
-                fontColor: "#77778e",
-                },
-                gridLines: {
-                display: false,
-                color: "rgba(119, 119, 142, 0.2)",
-                },
-            },
-            ],
-        },
         legend: {
             labels: {
             fontColor: "#77778e",
@@ -362,32 +224,6 @@
         legend: {
             display: true,
         },
-        scales: {
-            yAxes: [
-            {
-                ticks: {
-                beginAtZero: true,
-                stepSize: 150,
-                fontColor: "#77778e",
-                },
-                gridLines: {
-                color: "rgba(119, 119, 142, 0.2)",
-                },
-            },
-            ],
-            xAxes: [
-            {
-                ticks: {
-                display: true,
-                fontColor: "#77778e",
-                },
-                gridLines: {
-                display: false,
-                color: "rgba(119, 119, 142, 0.2)",
-                },
-            },
-            ],
-        },
         legend: {
             labels: {
             fontColor: "#77778e",
@@ -421,32 +257,6 @@
         maintainAspectRatio: false,
         legend: {
             display: true,
-        },
-        scales: {
-            yAxes: [
-            {
-                ticks: {
-                beginAtZero: true,
-                stepSize: 150,
-                fontColor: "#77778e",
-                },
-                gridLines: {
-                color: "rgba(119, 119, 142, 0.2)",
-                },
-            },
-            ],
-            xAxes: [
-            {
-                ticks: {
-                display: true,
-                fontColor: "#77778e",
-                },
-                gridLines: {
-                display: false,
-                color: "rgba(119, 119, 142, 0.2)",
-                },
-            },
-            ],
         },
         legend: {
             labels: {
