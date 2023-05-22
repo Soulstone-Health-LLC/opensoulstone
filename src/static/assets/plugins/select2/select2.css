@@ -140,7 +140,8 @@
 }
 
 .select2-search--dropdown.select2-search--hide {
-  display: none;
+  /* Something in the CSS is forcing this class on the basic select2 class */
+  /* display: none; */
 }
 
 .select2-close-mask {

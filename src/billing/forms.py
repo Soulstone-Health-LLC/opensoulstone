@@ -15,7 +15,10 @@ class AddLedgerChargeForm(FlaskForm):
     """Add new Ledger Charge"""
 
     charge_id = SelectField(label="Charge *", coerce=int,
-                            validators=[InputRequired()])
+                            validators=[InputRequired()],
+                            render_kw={
+                                "class": "form-control select2 form-select"},
+                            )
     unit_amount = FloatField(label="Unit Amount *")
     units = IntegerField(
         label="Units *", default=1, validators=[DataRequired(), Length(min=1)])

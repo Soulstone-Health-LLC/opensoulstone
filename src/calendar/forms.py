@@ -23,14 +23,14 @@ class EventForm(FlaskForm):
     person = SelectField(
         label="Person",
         coerce=int,
-        render_kw={"class": "form-control select2-show-search form-select",
-                   "data-placeholder": "Select a person..."},
+        render_kw={"class": "form-control select2 form-select",
+                   }
     )
     practitioner_id = SelectField(
         label="Practitioner",
         coerce=int,
-        render_kw={"class": "form-control select2-show-search form-select",
-                   "data-placeholder": "Select a practitioner..."},
+        render_kw={"class": "form-control select2 form-select",
+                   },
     )
     date = DateField(
         label="Start Date *", format="%Y-%m-%d", validators=[DataRequired()]

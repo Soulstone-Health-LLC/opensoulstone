@@ -33,7 +33,9 @@
             </div>
             <div class="row mb-6">
               <div class="col-md-6">
-                {{form.person.label(class="form-label")}} {{form.person()}}
+                <div class="form-group">
+                  {{form.person.label(class="form-label")}} {{form.person()}}
+                </div>
               </div>
             </div>
             <div class="row">
@@ -76,6 +78,16 @@
     var eventTypeSelect = document.getElementById("event_type_id");
     if (eventTypeSelect) {
       console.log(eventTypeSelect); // Print the select element itself
+    }
+
+    var practitionerSelect = document.getElementById("practitioner_id");
+    if (practitionerSelect) {
+      console.log(practitionerSelect); // Print the select element itself
+    }
+
+    var personSelect = document.getElementById("person");
+    if (personSelect) {
+      console.log(personSelect); // Print the select element itself
     }
   });
 </script>
