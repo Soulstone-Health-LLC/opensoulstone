@@ -326,43 +326,43 @@ def editVisitNote(id):
         form.reason_for_visit.data = note.reason_for_visit
         form.date_of_service.data = note.date_of_service
         form.chakra_assessment_root_score.data = (
-            note.chakra_assessment_root_score
+            str(note.chakra_assessment_root_score)
         )
         form.chakra_assessment_root_description.data = (
             note.chakra_assessment_root_description
         )
         form.chakra_assessment_sacral_score.data = (
-            note.chakra_assessment_sacral_score
+            str(note.chakra_assessment_sacral_score)
         )
         form.chakra_assessment_sacral_description.data = (
             note.chakra_assessment_sacral_description
         )
         form.chakra_assessment_solar_plexus_score.data = (
-            note.chakra_assessment_solar_plexus_score
+            str(note.chakra_assessment_solar_plexus_score)
         )
         form.chakra_assessment_solar_plexus_description.data = (
             note.chakra_assessment_solar_plexus_description
         )
         form.chakra_assessment_heart_score.data = (
-            note.chakra_assessment_heart_score
+            str(note.chakra_assessment_heart_score)
         )
         form.chakra_assessment_heart_description.data = (
             note.chakra_assessment_heart_description
         )
         form.chakra_assessment_throat_score.data = (
-            note.chakra_assessment_throat_score
+            str(note.chakra_assessment_throat_score)
         )
         form.chakra_assessment_throat_description.data = (
             note.chakra_assessment_throat_description
         )
         form.chakra_assessment_third_eye_score.data = (
-            note.chakra_assessment_third_eye_score
+            str(note.chakra_assessment_third_eye_score)
         )
         form.chakra_assessment_third_eye_description.data = (
             note.chakra_assessment_third_eye_description
         )
         form.chakra_assessment_crown_score.data = (
-            note.chakra_assessment_crown_score
+            str(note.chakra_assessment_crown_score)
         )
         form.chakra_assessment_crown_description.data = (
             note.chakra_assessment_crown_description
