@@ -58,7 +58,8 @@
                     <span class="text-muted">({{person.gender_identity}})</span>
                     {% endif %} {% endif %}
                   </h4>
-                  <h6 class="text-muted mb-3">
+                  <br />
+                  <h6 class="mb-3">
                     {% if person.address_1 == None or person.address_1 == '' %}
                     <span></span>
                     {% elif person.address_2 == None or person.address_2 == ''%}
@@ -70,10 +71,11 @@
                     person.city }}, {{ person.state }} {{ person.zipcode }} {%
                     endif %}
                   </h6>
-                  <h6 class="text-muted mb-3">
+                  <h6 class="mb-3">
                     <i class="fe fe-phone"></i>
                     ({{ person.phone_number[:3] }}) {{ person.phone_number[3:6]
-                    }}-{{ person.phone_number[6:10] }} ({{ person.phone_type }})
+                    }}-{{ person.phone_number[6:10] }}
+                    <span class="text-muted">({{ person.phone_type }})</span>
                   </h6>
                 </div>
               </div>
@@ -235,7 +237,10 @@
                         <br />
                         ({{ person.phone_number[:3] }}) {{
                         person.phone_number[3:6] }}-{{ person.phone_number[6:10]
-                        }} ({{ person.phone_type }})
+                        }}
+                        <span class="text-muted"
+                          >({{ person.phone_type }})</span
+                        >
                       </td>
                     </tr>
                   </tbody>

@@ -83,7 +83,7 @@
                   {% else %}
                   <span
                     >({{ p.phone_number[:3] }}) {{ p.phone_number[3:6] }}-{{
-                    p.phone_number[6:10] }} ({{ p.phone_type }})</span
+                    p.phone_number[6:10] }} <span class="text-muted">({{ p.phone_type }})<span></span
                   >
                   {% endif %}
                 </td>

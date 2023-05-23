@@ -142,7 +142,6 @@
                     <thead>
                       <tr>
                         <th class="wd-15p border-bottom-0">Name</th>
-                        <th class="wd-15p border-bottom-0">Address</th>
                         <th class="wd-15p border-bottom-0">Phone Number</th>
                         <th class="wd-15p border-bottom-0">Email</th>
                         <th class="wd-15p border-bottom-0">Status</th>
@@ -160,17 +159,16 @@
                           p.last_name }} {{ p.suffix_name }}, {{ p.first_name }}
                           {{ p.middle_name }} {% endif %}
                         </td>
-                        {% if p.address_1 == '' %}
-                        <td></td>
-                        {% else %}
                         <td>
-                          {% if p.address_2 == '' %} {{ p.address_1 }}<br />{{
-                          p.city }}, {{ p.state }} {{ p.zipcode }} {% else %} {{
-                          p.address_1 }}<br />{{ p.address_2 }}<br />{{ p.city
-                          }}, {{ p.state }} {{ p.zipcode }} {% endif %}
+                          {% if p.phone_1 == '' %}
+                          <span> </span>
+                          {% else %}
+                          <span
+                            >({{ p.phone_number[:3] }}) {{ p.phone_number[3:6] }}-{{
+                            p.phone_number[6:10] }} <span class="text-muted">({{ p.phone_type }})<span></span
+                          >
+                          {% endif %}
                         </td>
-                        {% endif %}
-                        <td>{{ p.phone_number }} ({{ p.phone_type }})</td>
                         <td>{{ p.email }}</td>
                         <td>{{ p.status }}</td>
                         <td>
