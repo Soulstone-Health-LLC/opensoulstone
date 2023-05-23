@@ -593,7 +593,9 @@ def editEventType(id):
         # pre-populate form
         form.event_name.data = event_type.event_name
         form.event_description.data = event_type.event_description
-        form.event_duration.data = event_type.event_duration
+        form.event_duration.data = form.event_duration.data = str(
+            int(event_type.event_duration.total_seconds() / 60))
+        print(form.event_duration.data)
         form.event_status.data = event_type.event_status
 
     if form.validate_on_submit():

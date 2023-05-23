@@ -150,7 +150,7 @@ class EditChargeForm(FlaskForm):
     submit = SubmitField(label="Save Charge")
 
 
-# Form - Add Event Type
+# Form - Add and Edit Event Type
 class EventTypeForm(FlaskForm):
     """Add New Event Type to the Practice"""
 
@@ -159,7 +159,8 @@ class EventTypeForm(FlaskForm):
     )
     event_description = StringField(
         label="Event Type Description *", widget=TextArea(),
-        validators=[DataRequired()]
+        validators=[DataRequired()],
+        render_kw={"rows": 5},
     )
     event_duration = SelectField(
         label="Event Duration (in minutes) *",
