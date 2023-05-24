@@ -8,8 +8,14 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 from src.billing.forms import AddLedgerChargeForm, AddLedgerPaymentForm
 from src import db
-from src.models import People, Charges
-from src.models import LedgerCharges, LedgerPayments, Notes
+from src.models import (
+    People,
+    Charges,
+    LedgerCharges,
+    LedgerPayments,
+    Notes,
+    Practice,
+)
 
 
 # Blueprint configuration
@@ -400,4 +406,97 @@ def addLedgerPayment(id):
         title="Soulstone - Add Payment",
         user=current_user,
         form=form,
+    )
+
+
+# Generate Invoice for Person
+@billing.route("/billing/invoices/<int:person_id>/generate_invoice")
+@login_required
+def generateInvoice(person_id):
+    """Generates an invoice for the person"""
+
+    # Current Date
+    current_date = datetime.utcnow()
+
+    # Ledger Charges
+    ledger_charges = (
+        db.session.query(
+            LedgerCharges.created_at,
+            LedgerCharges.charge_id,
+            LedgerCharges.units,
+            LedgerCharges.unit_amount,
+            LedgerCharges.tax_rate,
+            LedgerCharges.practice_id,
+            LedgerCharges.person_id,
+            Charges.id,
+            Charges.name,
+            Charges.description,
+        )
+        .filter_by(practice_id=current_user.practice_id, person_id=person_id)
+        .outerjoin(Charges, Charges.id == LedgerCharges.charge_id)
+        .order_by(LedgerCharges.created_at.desc())
+        .all()
+    )
+
+    # Ledger Payments
+    ledger_payments = (
+        db.session.query(
+            LedgerPayments.created_at,
+            LedgerPayments.payment_method,
+            LedgerPayments.amount,
+            LedgerPayments.payment_note,
+            LedgerPayments.practice_id,
+            LedgerPayments.person_id,
+        )
+        .filter_by(practice_id=current_user.practice_id, person_id=person_id)
+        .order_by(LedgerPayments.created_at.desc())
+        .all()
+    )
+
+    # Person
+    person = People.query.get_or_404(person_id)
+
+    # Practice
+    practice = Practice.query.get_or_404(current_user.practice_id)
+
+    # Total Charges
+    total_charges = (
+        db.session.query(
+            db.func.sum(
+                LedgerCharges.units * LedgerCharges.unit_amount
+                + (LedgerCharges.unit_amount * LedgerCharges.tax_rate)
+            )
+        )
+        .filter_by(practice_id=current_user.practice_id, person_id=person_id)
+        .scalar()
+    )
+
+    # Total Payments
+    total_payments = (
+        db.session.query(db.func.sum(LedgerPayments.amount))
+        .filter_by(practice_id=current_user.practice_id, person_id=person_id)
+        .scalar()
+    )
+
+    # Balance
+    if total_charges is None:
+        total_charges = 0
+    if total_payments is None:
+        total_payments = 0
+
+    balance = total_charges - total_payments
+
+    # Render the invoice
+    return render_template(
+        "billing/invoice.html",
+        title="Soulstone - Invoice",
+        user=current_user,
+        current_date=current_date,
+        ledger_charges=ledger_charges,
+        ledger_payments=ledger_payments,
+        person=person,
+        practice=practice,
+        total_charges=total_charges,
+        total_payments=total_payments,
+        balance=balance,
     )

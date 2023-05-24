@@ -81,7 +81,13 @@
                   {:,.2f}".format(b.outstanding_balance()) }} {% else %} N/A {%
                   endif %}
                 </td>
-                <td class="text-center align-middle">Actions go here</td>
+                <td class="">
+                  <div class="btn-group">
+                    <a href="{{url_for('billing.generateInvoice', person_id=b.id)}}" class="btn btn-primary badge" type="button"
+                      ><i class="fe fe-eye"></i> Invoice</a
+                    >
+                  </div>
+                </td>
               </tr>
               {% endfor %} {% else %}
               <tr>

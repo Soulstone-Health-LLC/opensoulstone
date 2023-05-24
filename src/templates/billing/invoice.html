@@ -1,0 +1,222 @@
+{%extends "base.html"%} {%block pagenav%}
+<h1 class="page-title">Invoice</h1>
+{%endblock pagenav%} {%block content%}
+<!-- Start Totals -->
+<div id="invoice">
+  <div class="row mb-4">
+    <!-- Start Charges -->
+    <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
+      <div class="card service">
+        <div class="card-body">
+          <div class="item-box text-center">
+            <div class="text-center mb-4 text-primary">
+              <i class="ion-card"></i>
+            </div>
+            <div class="item-box-wrap">
+              <h5 class="mb-2">Total Charges</h5>
+              <h3 class="mb-0">{{ "$ {:,.2f}".format(total_charges) }}</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End Charges -->
+    <!-- Start Payments -->
+    <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
+      <div class="card service">
+        <div class="card-body">
+          <div class="item-box text-center">
+            <div class="text-center mb-4 text-success">
+              <i class="ion-cash"></i>
+            </div>
+            <div class="item-box-wrap">
+              <h5 class="mb-2">Total Payments</h5>
+              <h3 class="mb-0">{{ "$ {:,.2f}".format(total_payments) }}</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End Payments -->
+    <!-- Start Payments -->
+    <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
+      <div class="card service">
+        <div class="card-body">
+          <div class="item-box text-center">
+            <div class="text-center text-danger mb-4">
+              <i class="fe fe-dollar-sign"></i>
+            </div>
+            <div class="item-box-wrap">
+              <h5 class="mb-2">Total Balance</h5>
+              <h3 class="mb-0">{{ "$ {:,.2f}".format(balance) }}</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End Payments -->
+  </div>
+  <!-- End Totals -->
+
+  <!-- Start Invoice -->
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="clearfix">
+            <div class="float-start">
+              <h3 class="card-title mb-0">Invoice</h3>
+            </div>
+            <div class="float-end">
+              <h3 class="card-title">
+                Invoice Date: {{ current_date.strftime('%A, %B %d, %Y') }}
+              </h3>
+            </div>
+          </div>
+          <hr />
+          <div class="row">
+            <div class="col-md-6">
+              <p class="h3">Invoice Form:</p>
+              <address>
+                {{practice.name}}<br />
+                {{practice.address_1}}<br />
+                {{practice.address_2}}<br />
+                {{practice.city}}, {{practice.state}} {{practice.zipcode}}<br />
+                ({{ practice.phone_number[:3] }}) {{ practice.phone_number[3:6]
+                }}-{{ practice.phone_number[6:10] }}<br />
+                {{practice.email}}
+              </address>
+            </div>
+            <div class="col-md-6 text-end">
+              <p class="h3">Invoice To:</p>
+              <address>
+                {% if person.middle_name == '' and person.suffix_name == '' %}
+                {{ person.last_name }}, {{ person.first_name }}
+                <span class="text-muted"> ({{person.gender_identity}})</span> {%
+                elif person.suffix_name == '' %} {{ person.last_name }}, {{
+                person.first_name }} {{ person.middle_name }}
+                <span class="text-muted"> ({{person.gender_identity}})</span> {%
+                else %} {{ person.last_name }} {{ person.suffix_name }}, {{
+                person.first_name }} {{ person.middle_name }}
+                <span class="text-muted"> ({{person.gender_identity}})</span> {%
+                endif %}<br />
+                {{person.address_1}}<br />
+                {{person.address_2}}<br />
+                {{person.city}}, {{person.state}} {{person.zipcode}}<br />
+                ({{ person.phone_number[:3] }}) {{ person.phone_number[3:6]
+                }}-{{ person.phone_number[6:10] }}<br />
+                {{person.email}}
+              </address>
+            </div>
+          </div>
+          <div class="table-responsive push mt-4">
+            <table
+              data-order='[[ 0, "desc"]]'
+              class="table table-bordered table-hover mb-0"
+            >
+              <tbody>
+                <tr>
+                  <th>Date</th>
+                  <th>Type (Charge/Payment)</th>
+                  <th>Item</th>
+                  <th class="text-center">Quantity</th>
+                  <th class="text-end">Unit Price</th>
+                  <th class="text-end">Sub Total</th>
+                </tr>
+                {% for charge in ledger_charges %}
+                <tr>
+                  <td>{{charge.created_at.strftime('%Y-%m-%d')}}</td>
+                  <td>Charge</td>
+                  <td>
+                    <p class="mb-1">{{charge.name}}</p>
+                    <div class="text-muted">
+                      <div class="text-muted">{{charge.description}}</div>
+                    </div>
+                  </td>
+                  <td class="text-center">{{charge.units}}</td>
+                  <td class="text-end">
+                    {{"$ {:,.2f}".format(charge.unit_amount)}}
+                  </td>
+                  <td class="text-end">
+                    {{"$ {:,.2f}".format((charge.unit_amount +
+                    (charge.unit_amount * charge.tax_rate)) * charge.units)}}
+                  </td>
+                </tr>
+                {% endfor %} {% for payment in ledger_payments %}
+                <tr>
+                  <td>{{payment.created_at.strftime('%Y-%m-%d')}}</td>
+                  <td>Payment</td>
+                  <td>
+                    <p class="mb-1">{{payment.payment_method}}</p>
+                    <div class="text-muted">
+                      <div class="text-muted">
+                        {% if payment.check_number %} {{payment.check_number}}
+                        {% elif payment.credit_card_last_four %}
+                        {{payment.credit_card_last_four}} {% endif %}
+                      </div>
+                    </div>
+                  </td>
+                  <td class="text-center"></td>
+                  <td class="text-end"></td>
+                  <td class="text-end">
+                    {{"$ {:,.2f}".format(payment.amount)}}
+                  </td>
+                </tr>
+                {% endfor %}
+                <tr>
+                  <td colspan="5" class="fw-bold text-uppercase text-end">
+                    Total
+                  </td>
+                  <td class="fw-bold text-end h4">
+                    {{"$ {:,.2f}".format(balance)}}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Invoice -->
+<!-- Start Buttons -->
+<div class="text-end" id="invoice-buttons">
+  <a
+    href="{{ url_for('billing.addLedgerPayment', id=person.id) }}"
+    class="btn btn-primary mb-1"
+    ><i class="si si-wallet"></i> Pay Invoice</a
+  >
+  {% if person.email %}
+  <a href="#" class="btn btn-success mb-1"
+    ><i class="si si-paper-plane"></i> Email Invoice</a
+  >
+  {% endif %}
+  <button type="button" class="btn btn-info mb-1" id="print-invoice-button">
+    <i class="si si-printer"></i> Print Invoice
+  </button>
+</div>
+<!-- End Buttons -->
+<script>
+  // Function to hide buttons when printing
+  function hideButtonsOnPrint() {
+    var buttons = document.getElementById("invoice-buttons");
+    buttons.style.display = "none";
+  }
+
+  // Function to show buttons after printing
+  function showButtonsAfterPrint() {
+    var buttons = document.getElementById("invoice-buttons");
+    buttons.style.display = "block";
+  }
+
+  // Add event listener to "Print Invoice" button
+  var printButton = document.querySelector("#print-invoice-button");
+  printButton.addEventListener("click", function () {
+    hideButtonsOnPrint();
+    window.print();
+    showButtonsAfterPrint();
+  });
+</script>
+
+{%endblock content%}
