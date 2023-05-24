@@ -1,9 +1,20 @@
 {%extends "base.html"%} {%block pagenav%}
-<h1 class="page-title">Invoice</h1>
+<div id="page-header">
+  <h1 class="page-title">Invoice</h1>
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">
+      <a href="{{url_for('billing.ledger')}}">Billing</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="{{url_for('billing.balance')}}">Balance</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Invoice</li>
+  </ol>
+</div>
 {%endblock pagenav%} {%block content%}
 <!-- Start Totals -->
 <div id="invoice">
-  <div class="row mb-4">
+  <div class="row mb-4" id="patient-totals">
     <!-- Start Charges -->
     <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
       <div class="card service">
@@ -182,7 +193,7 @@
 </div>
 <!-- End Invoice -->
 <!-- Start Buttons -->
-<div class="text-end" id="invoice-buttons">
+<div id="invoice-buttons">
   <a
     href="{{ url_for('billing.addLedgerPayment', id=person.id) }}"
     class="btn btn-primary mb-1"
@@ -199,24 +210,22 @@
 </div>
 <!-- End Buttons -->
 <script>
-  // Function to hide buttons when printing
-  function hideButtonsOnPrint() {
+  // Function to hide elements when printing
+  function hideOnPrint() {
     var buttons = document.getElementById("invoice-buttons");
+    var patientTotals = document.getElementById("patient-totals");
+    var pageHeader = document.getElementById("page-header");
     buttons.style.display = "none";
-  }
-
-  // Function to show buttons after printing
-  function showButtonsAfterPrint() {
-    var buttons = document.getElementById("invoice-buttons");
-    buttons.style.display = "block";
+    patientTotals.style.display = "none";
+    pageHeader.style.display = "none";
   }
 
   // Add event listener to "Print Invoice" button
   var printButton = document.querySelector("#print-invoice-button");
   printButton.addEventListener("click", function () {
-    hideButtonsOnPrint();
+    hideOnPrint();
     window.print();
-    showButtonsAfterPrint();
+    location.reload();
   });
 
   // Sort table rows by Date column in ascending order
