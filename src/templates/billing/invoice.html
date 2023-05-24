@@ -12,6 +12,13 @@
   </ol>
 </div>
 {%endblock pagenav%} {%block content%}
+<!-- Patient Info -->
+<div class="row" id="user-profile">
+  <div class="col-lg-12">
+    <div class="card">{%include "base_person_header.html"%}</div>
+  </div>
+</div>
+<!-- End Patient Info -->
 <!-- Start Totals -->
 <div id="invoice">
   <div class="row mb-4" id="patient-totals">
@@ -215,9 +222,11 @@
     var buttons = document.getElementById("invoice-buttons");
     var patientTotals = document.getElementById("patient-totals");
     var pageHeader = document.getElementById("page-header");
+    var userProfile = document.getElementById("user-profile");
     buttons.style.display = "none";
     patientTotals.style.display = "none";
     pageHeader.style.display = "none";
+    userProfile.style.display = "none";
   }
 
   // Add event listener to "Print Invoice" button
