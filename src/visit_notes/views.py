@@ -13,6 +13,7 @@ from flask_login import login_required, current_user
 from src.visit_notes.forms import AddVisitNoteForm, EditVisitNoteForm
 from src import db
 from src.models import People, Practice, Notes, LedgerCharges, LedgerPayments
+from src.persons.person_header import personHeader
 
 
 # Blueprint Configuration
@@ -64,30 +65,6 @@ def addVisitNote(id):
 
     pers_id = People.query.get_or_404(id).id
 
-    notes_count = Notes.query.filter_by(person_id=pers_id).count()
-
-    total_charges = (
-        db.session.query(
-            db.func.sum(
-                LedgerCharges.units * LedgerCharges.unit_amount
-                + (LedgerCharges.unit_amount * LedgerCharges.tax_rate)
-            )
-        )
-        .filter_by(practice_id=current_user.practice_id, person_id=id)
-        .scalar()
-    )
-    total_payments = (
-        db.session.query(db.func.sum(LedgerPayments.amount))
-        .filter_by(practice_id=current_user.practice_id, person_id=id)
-        .scalar()
-    )
-
-    if total_charges is None:
-        total_charges = 0
-    if total_payments is None:
-        total_payments = 0
-    balance = total_charges - total_payments
-
     # current user practice id
     pu_id = current_user.practice_id
     pp_id = People.query.get_or_404(id).practice_id
@@ -97,6 +74,10 @@ def addVisitNote(id):
         if pu_id == pp_id:
             # Display the person info
             person = People.query.get_or_404(id)
+
+            # Base Person Header
+            person_header, notes_count, events_count, balance = personHeader(
+                id)
 
             # Chart - Chakra Assessment
             # Start Date for Dashboard (365 days)
@@ -141,8 +122,10 @@ def addVisitNote(id):
                 user=current_user,
                 person=person,
                 form=form,
-                balance=balance,
+                person_header=person_header,
                 notes_count=notes_count,
+                events_count=events_count,
+                balance=balance,
                 chakra_graph_labels=chakra_graph_labels,
                 chakra_graph_data=chakra_graph_data,
             )
@@ -260,31 +243,11 @@ def editVisitNote(id):
     pers_id = note.person_id
     person = People.query.get_or_404(pers_id)
 
-    notes_count = Notes.query.filter_by(person_id=pers_id).count()
-
-    total_charges = (
-        db.session.query(
-            db.func.sum(
-                LedgerCharges.units * LedgerCharges.unit_amount
-                + (LedgerCharges.unit_amount * LedgerCharges.tax_rate)
-            )
-        )
-        .filter_by(practice_id=current_user.practice_id, person_id=id)
-        .scalar()
-    )
-    total_payments = (
-        db.session.query(db.func.sum(LedgerPayments.amount))
-        .filter_by(practice_id=current_user.practice_id, person_id=id)
-        .scalar()
-    )
-
-    if total_charges is None:
-        total_charges = 0
-    if total_payments is None:
-        total_payments = 0
-    balance = total_charges - total_payments
-
     if request.method == "GET":
+        # Base Person Header
+        person_header, notes_count, events_count, balance = personHeader(
+            pers_id)
+
         # Chart - Chakra Assessment
         # Start Date for Dashboard (365 days)
         start_date = datetime.now() - timedelta(days=365)
@@ -377,8 +340,10 @@ def editVisitNote(id):
             person=person,
             note=note,
             form=form,
-            balance=balance,
+            person_header=person_header,
             notes_count=notes_count,
+            events_count=events_count,
+            balance=balance,
             chakra_graph_labels=chakra_graph_labels,
             chakra_graph_data=chakra_graph_data,
         )

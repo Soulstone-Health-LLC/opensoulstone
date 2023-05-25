@@ -19,6 +19,12 @@ $(function(e) {
 			sSearch: '',
 		}
 	});
+	$('#basic-datatable-4').DataTable({
+		language: {
+			searchPlaceholder: 'Search...',
+			sSearch: '',
+		}
+	});
 
 	//______Basic Data Table
 	$('#responsive-datatable').DataTable({

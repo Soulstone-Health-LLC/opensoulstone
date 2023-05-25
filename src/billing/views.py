@@ -13,9 +13,9 @@ from src.models import (
     Charges,
     LedgerCharges,
     LedgerPayments,
-    Notes,
     Practice,
 )
+from src.persons.person_header import personHeader
 
 
 # Blueprint configuration
@@ -161,34 +161,16 @@ def addLedgerCharge(id):
     # current user practice id
     pu_id = current_user.practice_id
     pp_id = People.query.get_or_404(id).practice_id
-    notes_count = Notes.query.filter_by(person_id=id).count()
-    total_charges = (
-        db.session.query(
-            db.func.sum(
-                LedgerCharges.units * LedgerCharges.unit_amount
-                + (LedgerCharges.unit_amount * LedgerCharges.tax_rate)
-            )
-        )
-        .filter_by(practice_id=current_user.practice_id, person_id=id)
-        .scalar()
-    )
-    total_payments = (
-        db.session.query(db.func.sum(LedgerPayments.amount))
-        .filter_by(practice_id=current_user.practice_id, person_id=id)
-        .scalar()
-    )
-
-    if total_charges is None:
-        total_charges = 0
-    if total_payments is None:
-        total_payments = 0
-    balance = total_charges - total_payments
 
     if request.method == "GET":
         # check if user practice id matches patient user id
         if pu_id == pp_id:
             # Display the person info
             person = People.query.get_or_404(id)
+
+            # Base Person Header
+            person_header, notes_count, events_count, balance = personHeader(
+                id)
 
             # List of charges for the select field
             form.charge_id.choices = [
@@ -202,9 +184,11 @@ def addLedgerCharge(id):
                 title="Soulstone - Add New Charge",
                 user=current_user,
                 person=person,
-                notes_count=notes_count,
                 practice_charges=practice_charges,
                 form=form,
+                person_header=person_header,
+                notes_count=notes_count,
+                events_count=events_count,
                 balance=balance,
             )
         else:
@@ -326,28 +310,6 @@ def addLedgerPayment(id):
     # current user practice id
     pu_id = current_user.practice_id
     pp_id = People.query.get_or_404(id).practice_id
-    notes_count = Notes.query.filter_by(person_id=id).count()
-    total_charges = (
-        db.session.query(
-            db.func.sum(
-                LedgerCharges.units * LedgerCharges.unit_amount
-                + (LedgerCharges.unit_amount * LedgerCharges.tax_rate)
-            )
-        )
-        .filter_by(practice_id=current_user.practice_id, person_id=id)
-        .scalar()
-    )
-    total_payments = (
-        db.session.query(db.func.sum(LedgerPayments.amount))
-        .filter_by(practice_id=current_user.practice_id, person_id=id)
-        .scalar()
-    )
-
-    if total_charges is None:
-        total_charges = 0
-    if total_payments is None:
-        total_payments = 0
-    balance = total_charges - total_payments
 
     if request.method == "GET":
         # check if user practice id matches patient user id
@@ -355,14 +317,20 @@ def addLedgerPayment(id):
             # Display the person info
             person = People.query.get_or_404(id)
 
+            # Base Person Header
+            person_header, notes_count, events_count, balance = personHeader(
+                id)
+
             return render_template(
                 "billing/add_ledger_payment.html",
                 title="Soulstone - Add New Payment",
                 user=current_user,
                 person=person,
-                notes_count=notes_count,
                 practice_charges=practice_charges,
                 form=form,
+                person_header=person_header,
+                notes_count=notes_count,
+                events_count=events_count,
                 balance=balance,
             )
         else:
@@ -478,13 +446,9 @@ def generateInvoice(person_id):
         .scalar()
     )
 
-    # Balance
-    if total_charges is None:
-        total_charges = 0
-    if total_payments is None:
-        total_payments = 0
-
-    balance = total_charges - total_payments
+    # Base Person Header
+    person_header, notes_count, events_count, balance = personHeader(
+        person_id)
 
     # Render the invoice
     return render_template(
@@ -498,5 +462,8 @@ def generateInvoice(person_id):
         practice=practice,
         total_charges=total_charges,
         total_payments=total_payments,
+        person_header=person_header,
+        notes_count=notes_count,
+        events_count=events_count,
         balance=balance,
     )

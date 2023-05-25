@@ -6,8 +6,11 @@ Persons > Views - This file contains the views for the Persons Blueprint.
 from datetime import datetime
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
-from src.persons.forms import AddPersonForm, EditPersonForm
-from src.persons.forms import SearchPersonForm
+from src.persons.forms import (
+    AddPersonForm,
+    EditPersonForm,
+    SearchPersonForm,
+)
 from src import db
 from src.models import (
     People,
@@ -19,6 +22,7 @@ from src.models import (
     EventTypes,
     User,
 )
+from src.persons.person_header import personHeader
 
 
 # Blueprint Configuration
@@ -225,7 +229,7 @@ def viewPerson(id):
             person = People.query.get_or_404(id)
             # Visit Notes
             notes = Notes.query.filter_by(person_id=id).all()
-            notes_count = Notes.query.filter_by(person_id=id).count()
+
             # Events
             events = (
                 db.session.query(
@@ -243,7 +247,7 @@ def viewPerson(id):
                 .outerjoin(EventTypes, Events.event_type_id == EventTypes.id)
                 .all()
             )
-            events_count = Events.query.filter_by(person_id=id).count()
+
             # Ledger Charges
             ledger_charges = (
                 db.session.query(
@@ -259,38 +263,38 @@ def viewPerson(id):
                 .join(Charges, LedgerCharges.charge_id == Charges.id)
                 .all()
             )
-            total_charges = (
+
+            # Ledger Payments
+            ledger_payments = (
                 db.session.query(
-                    db.func.sum(
-                        LedgerCharges.units * LedgerCharges.unit_amount
-                        + (LedgerCharges.unit_amount * LedgerCharges.tax_rate)
-                    )
+                    LedgerPayments.practice_id,
+                    LedgerPayments.created_at,
+                    LedgerPayments.amount,
+                    LedgerPayments.payment_method,
+                    LedgerPayments.check_number,
+                    LedgerPayments.credit_card_last_four,
+                    LedgerPayments.payment_note,
                 )
-                .filter_by(practice_id=current_user.practice_id, person_id=id)
-                .scalar()
-            )
-            total_payments = (
-                db.session.query(db.func.sum(LedgerPayments.amount))
-                .filter_by(practice_id=current_user.practice_id, person_id=id)
-                .scalar()
+                .filter_by(person_id=id)
+                .all()
             )
 
-            if total_charges is None:
-                total_charges = 0
-            if total_payments is None:
-                total_payments = 0
-            balance = total_charges - total_payments
+            # Base Person Header
+            person_header, notes_count, events_count, balance = personHeader(
+                id)
 
             return render_template(
                 "persons/person.html",
                 user=current_user,
                 person=person,
                 notes=notes,
-                notes_count=notes_count,
                 ledger_charges=ledger_charges,
-                balance=balance,
+                ledger_payments=ledger_payments,
                 events=events,
+                person_header=person_header,
+                notes_count=notes_count,
                 events_count=events_count,
+                balance=balance,
             )
         else:
             return render_template("error_pages/401.html", user=current_user)
