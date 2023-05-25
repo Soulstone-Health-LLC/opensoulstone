@@ -87,10 +87,14 @@ def addEvent():
     ]
 
     # Choices of People
+    persons = db.session.query(People).filter_by(
+        practice_id=current_user.practice_id
+    ).order_by(People.last_name)
+
     form.person.choices = [(0, "None")] + [
-        (person.id, person.first_name + " " +
-         person.last_name + f" ({person.gender_identity})")
-        for person in current_user.practice.people
+        (person.id, person.last_name + ", " +
+         person.first_name + f" ({person.gender_identity})")
+        for person in persons
     ]
 
     # Choices of Users that have a role of Practitioner
