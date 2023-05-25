@@ -76,6 +76,10 @@ def addEvent():
     form = EventForm()
 
     # Choices of Event Types
+    event_types = db.session.query(EventTypes).filter_by(
+        practice_id=current_user.practice_id
+    ).order_by(EventTypes.event_name)
+
     form.event_type_id.choices = [
         (
             event_type.id,
@@ -83,7 +87,7 @@ def addEvent():
             f"({event_type.event_duration.seconds // 3600} hours, "
             f"{event_type.event_duration.seconds // 60 % 60} minutes)",
         )
-        for event_type in current_user.practice.event_types
+        for event_type in event_types
     ]
 
     # Choices of People
@@ -100,7 +104,7 @@ def addEvent():
     # Choices of Users that have a role of Practitioner
     practictioners = db.session.query(User).filter_by(
         practice_id=current_user.practice_id, role="Practitioner"
-    )
+    ).order_by(User.first_name)
 
     form.practitioner_id.choices = [(0, "None")] + [
         (
@@ -206,6 +210,11 @@ def editEvent(event_id):
     event = Events.query.get_or_404(event_id)
     form = EventForm()
 
+    # Choices of Event Types
+    event_types = db.session.query(EventTypes).filter_by(
+        practice_id=current_user.practice_id
+    ).order_by(EventTypes.event_name)
+
     form.event_type_id.choices = [
         (
             event_type.id,
@@ -213,19 +222,24 @@ def editEvent(event_id):
             f"({event_type.event_duration.seconds // 3600} hours, "
             f"{event_type.event_duration.seconds // 60 % 60} minutes)",
         )
-        for event_type in current_user.practice.event_types
+        for event_type in event_types
     ]
+
+    # Choices of People
+    persons = db.session.query(People).filter_by(
+        practice_id=current_user.practice_id
+    ).order_by(People.last_name)
 
     form.person.choices = [(0, "None")] + [
         (person.id, person.first_name + " " +
          person.last_name + f" ({person.gender_identity})")
-        for person in current_user.practice.people
+        for person in persons
     ]
 
     # Choices of Users that have a role of Practitioner
     practictioners = db.session.query(User).filter_by(
         practice_id=current_user.practice_id, role="Practitioner"
-    )
+    ).order_by(User.first_name)
 
     form.practitioner_id.choices = [(0, "None")] + [
         (practictioner.id,
