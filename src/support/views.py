@@ -254,7 +254,8 @@ def editReleaseNotes(release_note_id):
 
     # If the user hits cancel, redirect to the Release Notes list page
     if form.cancel.data:
-        return redirect(url_for("supportapp.viewReleaseNoteDetails", release_note_id=release_note_id))
+        return redirect(url_for("supportapp.viewReleaseNoteDetails",
+                                release_note_id=release_note_id))
 
     # Gets the data from the form and saves as variables
     if form.validate_on_submit():
@@ -272,7 +273,8 @@ def editReleaseNotes(release_note_id):
         flash("Release note updated successfully.", category="success")
 
         # Redirect user to the Release Notes list page
-        return redirect(url_for("supportapp.viewReleaseNoteDetails", release_note_id=release_note_id))
+        return redirect(url_for("supportapp.viewReleaseNoteDetails",
+                                release_note_id=release_note_id))
 
     return render_template(
         "support/add_release_notes.html",
