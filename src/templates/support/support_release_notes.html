@@ -40,7 +40,10 @@
                 <td>{{rn.id}}</td>
                 <td>{{rn.release_note_date}}</td>
                 <td>
-                  <a href="#" class="btn btn-primary badge" type="button"
+                  <a
+                    href="{{url_for('supportapp.viewReleaseNoteDetails', release_note_id=rn.id)}}"
+                    class="btn btn-primary badge"
+                    type="button"
                     ><i class="fe fe-eye"></i> View</a
                   >
                 </td>

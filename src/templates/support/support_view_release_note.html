@@ -1,0 +1,37 @@
+{% extends "base_support.html" %} {% block pagenav %}
+<h1 class="page-title">Support</h1>
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">
+    <a href="{{url_for('supportapp.support')}}">Support</a>
+  </li>
+  <li class="breadcrumb-item">
+    <a href="{{url_for('supportapp.viewReleaseNotes')}}">Release Notes</a>
+  </li>
+</ol>
+{% endblock %} {% block content %}
+<!-- Practice Info -->
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title">
+          Release Note -
+          {{release_notes.release_note_date.strftime('%y-%m-%d')}}
+        </h4>
+      </div>
+      <div class="card-body">{{release_notes.release_note_content|safe}}</div>
+    </div>
+    <a
+      class="btn btn-primary mb-4"
+      href="{{url_for('supportapp.editReleaseNotes', release_note_id=release_notes.id)}}"
+      ><i class="fe fe-edit"></i> Edit Release Note</a
+    >
+    <a
+      class="btn btn-danger mb-4"
+      href="{{url_for('supportapp.deleteReleaseNotes', release_note_id=release_notes.id)}}"
+      ><i class="fe fe-trash"></i> Delete Release Note</a
+    >
+  </div>
+</div>
+<!-- End Practice Info -->
+{% endblock %}
