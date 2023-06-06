@@ -5,12 +5,15 @@ Support > Views - This file contains the views for the Support Blueprint.
 # Imports
 import random
 import string
+from datetime import datetime
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 from werkzeug.security import generate_password_hash
-from src.support.forms import AddPracticeForm, PracticeUserForm
+from src.support.forms import (
+    AddPracticeForm, PracticeUserForm, ReleaseNotesForm)
 from src import db
-from src.models import Practice, User
+from src.models import (
+    Practice, User, ReleaseNotes)
 from src.decorators.decorators import support_required
 
 
@@ -156,4 +159,58 @@ def addPracticeUser(id):
         user=current_user,
         form=form,
         practice=practice,
+    )
+
+
+# Support App - View Release Notes
+@supportapp.route("/support/release_notes")
+@login_required
+@support_required
+def viewReleaseNotes():
+    """View release notes form and page"""
+
+    release_notes = ReleaseNotes.query.order_by(
+        ReleaseNotes.release_note_date.desc()).all()
+
+    return render_template(
+        "support/support_release_notes.html",
+        user=current_user,
+        release_notes=release_notes,
+    )
+
+
+# Support App - Add Release Notes
+@supportapp.route("/support/add_release_notes", methods=["GET", "POST"])
+@login_required
+@support_required
+def addReleaseNotes():
+    """Add release notes form and page"""
+
+    form = ReleaseNotesForm()
+
+    # Gets the data from the form and saves as variables
+    if form.validate_on_submit():
+        if request.method == "POST":
+            release_note_date = form.release_note_date.data
+            release_note_content = form.release_note_content.data
+
+        # Add new release notes to database
+        new_release_notes = ReleaseNotes(
+            release_note_date=release_note_date,
+            release_note_content=release_note_content,
+            created_by=current_user.id,
+            created_at=datetime.now(),
+        )
+        db.session.add(new_release_notes)
+        db.session.commit()
+        flash("Release note created successfully.", category="success")
+
+        # Redirect user to the Support home page
+        return redirect(url_for("supportapp.support"))
+
+    return render_template(
+        "support/add_release_notes.html",
+        title="Soulstone - Add Release Notes",
+        form=form,
+        user=current_user,
     )

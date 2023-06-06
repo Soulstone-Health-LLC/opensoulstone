@@ -1,0 +1,56 @@
+{%extends "base_support.html"%} {%block pagenav%}
+<h1 class="page-title">Support</h1>
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><a href="#">Support</a></li>
+  <li class="breadcrumb-item">
+    <a href="#">Release Notes</a>
+  </li>
+</ol>
+{%endblock pagenav%} {%block content%}
+<div class="row">
+  <a href="{{url_for('supportapp.addReleaseNotes')}}"
+    ><button class="btn btn-primary mb-4" type="button">
+      <i class="fe fe-plus"></i> Add Release Note
+    </button></a
+  >
+</div>
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-body">
+        <div>
+          <h3 class="card-title mb-1">Release Notes</h3>
+          <p class="text-muted card-sub-title">List of all Release Notes</p>
+        </div>
+        <div class="table-responsive">
+          <table
+            class="table table-bordered text-nowrap border-bottom w-100"
+            id="responsive-datatable"
+          >
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Release Note Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {%for rn in release_notes%}
+              <tr>
+                <td>{{rn.id}}</td>
+                <td>{{rn.release_note_date}}</td>
+                <td>
+                  <a href="#" class="btn btn-primary badge" type="button"
+                    ><i class="fe fe-eye"></i> View</a
+                  >
+                </td>
+              </tr>
+              {%endfor%}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{%endblock content%}

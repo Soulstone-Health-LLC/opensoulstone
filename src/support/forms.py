@@ -5,7 +5,9 @@ Blueprint.
 
 # Imports
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, SelectField, EmailField
+from wtforms import (
+    StringField, SubmitField, SelectField, EmailField, DateField,
+    TextAreaField)
 from wtforms.fields.simple import TelField
 from wtforms.validators import DataRequired, Length, Email
 from wtforms.widgets import TextArea
@@ -64,3 +66,17 @@ class PracticeUserForm(FlaskForm):
     phone = TelField(label="Phone Number *", validators=[DataRequired()])
     phone_type = SelectField(label="Phone Type *", choices=PHONE_TYPE_CHOICES)
     submit = SubmitField(label="Register Account")
+
+
+# Form - Release Notes
+class ReleaseNotesForm(FlaskForm):
+    """Add or edit release notes form"""
+
+    release_note_date = DateField(label="Release Note Date *",
+                                  validators=[DataRequired()])
+    release_note_content = TextAreaField(label="Release Note *",
+                                         validators=[DataRequired()],
+                                         widget=TextArea(),
+                                         render_kw={"rows": 10})
+    submit = SubmitField(label="Save")
+    cancel = SubmitField('Cancel', render_kw={'formnovalidate': True})
