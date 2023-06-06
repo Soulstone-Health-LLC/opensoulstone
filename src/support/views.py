@@ -162,7 +162,7 @@ def addPracticeUser(id):
     )
 
 
-# Support App - View Release Notes
+# Support App - Release Notes - View list of Release Notes
 @supportapp.route("/support/release_notes")
 @login_required
 @support_required
@@ -179,7 +179,7 @@ def viewReleaseNotes():
     )
 
 
-# Support App - Add Release Notes
+# Support App - Release Notes - Add Release Note
 @supportapp.route("/support/add_release_notes", methods=["GET", "POST"])
 @login_required
 @support_required
@@ -205,8 +205,8 @@ def addReleaseNotes():
         db.session.commit()
         flash("Release note created successfully.", category="success")
 
-        # Redirect user to the Support home page
-        return redirect(url_for("supportapp.support"))
+        # Redirect user to the Release Notes list page
+        return redirect(url_for("supportapp.viewReleaseNotes"))
 
     return render_template(
         "support/add_release_notes.html",
@@ -214,3 +214,19 @@ def addReleaseNotes():
         form=form,
         user=current_user,
     )
+
+
+# Support App - Release Notes - Delete Release Note
+@supportapp.route("/support/delete_release_notes/<int:release_note_id>")
+@login_required
+@support_required
+def deleteReleaseNotes(release_note_id):
+    """Delete release notes from database"""
+
+    release_notes = ReleaseNotes.query.get_or_404(release_note_id)
+    db.session.delete(release_notes)
+    db.session.commit()
+    flash("Release note deleted successfully.", category="success")
+
+    # Redirect user to the Release Notes list page
+    return redirect(url_for("supportapp.viewReleaseNotes"))
