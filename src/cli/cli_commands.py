@@ -286,6 +286,19 @@ understood, and agree to be bound by this Agreement.
             )
         )
 
+    # Test practice ledger payments
+    for i in range(1, 1100):
+        data.append(
+            LedgerPayments(
+                practice_id=2,
+                person_id=random.randint(1, 1100),
+                amount=round(random.uniform(1.00, 200.00)),
+                payment_method=fake.random_element(
+                    elements=("Cash", "Check", "Credit Card", "Other")),
+                payment_note=fake.paragraph(),
+            )
+        )
+
     # Add to the database
     db.session.add(terms_of_service)
     db.session.add(support_practice)
