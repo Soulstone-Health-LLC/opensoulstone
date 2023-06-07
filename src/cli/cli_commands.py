@@ -16,6 +16,7 @@ from src.models import (
     EventTypes,
     Notes,
     TermsOfService,
+    Events,
 )
 from src import db
 
@@ -232,12 +233,42 @@ understood, and agree to be bound by this Agreement.
         data.append(
             Notes(
                 practice_id=2,
-                person_id=i,
+                person_id=random.randint(1, 1100),
                 date_of_service=fake.date_between(
                     start_date="-1y", end_date="today"),
                 reason_for_visit=fake.sentence(),
+                chakra_assessment_root_score=random.randint(-5, 5),
+                chakra_assessment_root_description=fake.paragraph(),
+                chakra_assessment_sacral_score=random.randint(-5, 5),
+                chakra_assessment_sacral_description=fake.paragraph(),
+                chakra_assessment_solar_plexus_score=random.randint(-5, 5),
+                chakra_assessment_solar_plexus_description=fake.paragraph(),
+                chakra_assessment_heart_score=random.randint(-5, 5),
+                chakra_assessment_heart_description=fake.paragraph(),
+                chakra_assessment_throat_score=random.randint(-5, 5),
+                chakra_assessment_throat_description=fake.paragraph(),
+                chakra_assessment_third_eye_score=random.randint(-5, 5),
+                chakra_assessment_third_eye_description=fake.paragraph(),
+                chakra_assessment_crown_score=random.randint(-5, 5),
+                chakra_assessment_crown_description=fake.paragraph(),
                 visit_notes=fake.paragraph(),
                 post_visit_recommendations=fake.paragraph(),
+            )
+        )
+
+    # Test practice events
+    for i in range(1, 1100):
+        data.append(
+            Events(
+                practice_id=2,
+                person_id=random.randint(1, 1100),
+                event_type_id=random.randint(1, 11),
+                practitioner_id=2,
+                date=fake.date_between(
+                    start_date="-1y", end_date="today"),
+                start_time=fake.time_object(),
+                end_time=fake.time_object(),
+                note=fake.paragraph(),
             )
         )
 
