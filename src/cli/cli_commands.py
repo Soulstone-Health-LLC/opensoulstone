@@ -17,6 +17,8 @@ from src.models import (
     Notes,
     TermsOfService,
     Events,
+    LedgerCharges,
+    LedgerPayments,
 )
 from src import db
 
@@ -269,6 +271,18 @@ understood, and agree to be bound by this Agreement.
                 start_time=fake.time_object(),
                 end_time=fake.time_object(),
                 note=fake.paragraph(),
+            )
+        )
+
+    # Test practice ledger charges
+    for i in range(1, 1100):
+        data.append(
+            LedgerCharges(
+                practice_id=2,
+                charge_id=random.randint(1, 11),
+                person_id=random.randint(1, 1100),
+                units=1,
+                unit_amount=round(random.uniform(1.00, 1000.00)),
             )
         )
 
