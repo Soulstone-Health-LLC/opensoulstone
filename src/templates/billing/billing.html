@@ -92,7 +92,7 @@
                 </td>
                 <td>
                   <div class="btn-group">
-                    <a href="#" class="btn btn-primary badge" type="button"
+                    <a href="{{ url_for('billing.view_ledger_charge', ledger_charge_id=lc.id) }}" class="btn btn-primary badge" type="button"
                       ><i class="fe fe-eye"></i> View</a
                     >
                   </div>

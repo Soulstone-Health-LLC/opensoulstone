@@ -30,6 +30,7 @@ def ledger():
     people = People.query.filter_by(practice_id=current_user.practice_id).all()
     ledger_charges = (
         db.session.query(
+            LedgerCharges.id,
             LedgerCharges.created_at,
             LedgerCharges.units,
             LedgerCharges.unit_amount,
@@ -236,6 +237,61 @@ def addLedgerCharge(id):
         user=current_user,
         form=form,
     )
+
+
+# Billing - Ledger Charge - View
+@billing.route("/billing/ledger_charge/<int:ledger_charge_id>")
+@login_required
+def view_ledger_charge(ledger_charge_id):
+    """View a ledger charge"""
+
+    # queries
+    ledger_charge = LedgerCharges.query.get_or_404(ledger_charge_id)
+    person = People.query.get_or_404(ledger_charge.person_id)
+    charge = Charges.query.get_or_404(ledger_charge.charge_id)
+
+    # current user practice id
+    pu_id = current_user.practice_id
+    pp_id = person.practice_id
+
+    # check if user practice id matches patient user id
+    if pu_id == pp_id:
+        # Base Person Header
+        person_header, notes_count, events_count, balance = personHeader(
+            person.id)
+
+        return render_template(
+            "billing/view_ledger_charge.html",
+            title="Soulstone - Ledger Charge",
+            user=current_user,
+            ledger_charge=ledger_charge,
+            person=person,
+            charge=charge,
+            person_header=person_header,
+            notes_count=notes_count,
+            events_count=events_count,
+            balance=balance,
+        )
+    else:
+        return render_template("error_pages/401.html", user=current_user)
+
+
+# Billing - Ledger Charge - Delete
+@billing.route("/billing/ledger_charge/<int:ledger_charge_id>/delete",
+               methods=["POST"])
+@login_required
+def delete_ledger_charge(ledger_charge_id):
+    """Delete a ledger charge"""
+
+    # queries
+    ledger_charge = LedgerCharges.query.get_or_404(ledger_charge_id)
+
+    # Delete the ledger charge
+    if request.method == "POST":
+        db.session.delete(ledger_charge)
+        db.session.commit()
+        flash("Ledger charge deleted successfully.", category="success")
+        return redirect(url_for("billing.ledger"))
 
 
 # Payments

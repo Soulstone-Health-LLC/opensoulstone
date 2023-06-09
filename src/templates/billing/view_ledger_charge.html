@@ -1,0 +1,117 @@
+{%extends "base.html"%} {%block pagenav%}
+<h1 class="page-title">Add New Charge</h1>
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">
+    <a href="{{url_for('billing.ledger')}}">Billing</a>
+  </li>
+  <li class="breadcrumb-item active" aria-current="page">Add New Charge</li>
+</ol>
+{%endblock pagenav%} {%block content%}
+<!-- Patient Info -->
+<div class="row" id="user-profile">
+  <div class="col-lg-12">
+    <div class="card">{%include "base_person_header.html"%}</div>
+  </div>
+</div>
+<!-- End Patient Info -->
+<!-- Start View Charge -->
+<div class="card">
+  <div class="card-header"><h3>{{ charge.code }} ({{ charge.name }})</h3></div>
+  <div class="card-body">
+    <div class="row mb-6">
+      <div class="col">
+        <h4>Unit Amount</h4>
+        {{ "$ {:,.2f}".format(ledger_charge.unit_amount) }}
+      </div>
+      <div class="col">
+        <h4>Units</h4>
+        {{ ledger_charge.units }}
+      </div>
+    </div>
+    <div class="row mb-6">
+      <div class="col">
+        <h4>Tax Rate</h4>
+        {{ "{:,.3f}".format(ledger_charge.tax_rate) }}%
+      </div>
+      <div class="col">
+        <h4>Total Charges</h4>
+        {{ "$ {:,.2f}".format((ledger_charge.unit_amount +
+        (ledger_charge.unit_amount * ledger_charge.tax_rate)) *
+        ledger_charge.units) }}
+      </div>
+    </div>
+    <div>
+      <a href="#" class="btn btn-primary"
+        ><i class="fe fe-edit"></i> Edit Charge</a
+      >
+      <a
+        data-bs-target="#modalDeleteLedgerCharge"
+        data-bs-toggle="modal"
+        href=""
+        class="btn btn-danger btn-icon text-white me-2"
+        id="deleteLedgerCharge"
+      >
+        <span>
+          <i class="fe fe-trash"></i>
+        </span>
+        Delete Charge
+      </a>
+    </div>
+  </div>
+</div>
+<!-- End View Charge -->
+<!-- Start Confirm Delete Ledger Charge -->
+<div class="modal fade" id="modalDeleteLedgerCharge">
+  <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
+    <div class="modal-content modal-content-demo">
+      <div class="modal-header">
+        <h6 class="modal-title">Delete Ledger Charge</h6>
+        <button aria-label="Close" class="btn-close" data-bs-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-body">
+                <strong
+                  >Are you sure you want to delete this ledger charge?</strong
+                >
+              </div>
+              <div>
+                <div class="card-footer">
+                  <div class="row">
+                    <div class="col-md-1">
+                      <form
+                        action="{{ url_for('billing.delete_ledger_charge', ledger_charge_id=ledger_charge.id) }}"
+                        method="post"
+                      >
+                        <input
+                          class="btn btn-danger"
+                          type="submit"
+                          value="Delete Charge"
+                        />
+                      </form>
+                    </div>
+                    <div class="col-md-1">
+                      <button
+                        class="btn btn-outline-primary"
+                        data-bs-dismiss="modal"
+                        type="button"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Confirm Delete Ledger Charge -->
+{% endblock content %}
