@@ -49,7 +49,11 @@
             </div>
             <div class="item-box-wrap">
               <h5 class="mb-2">Total Payments</h5>
+              {% if total_payments %}
               <h3 class="mb-0">{{ "$ {:,.2f}".format(total_payments) }}</h3>
+              {% else %}
+              <h3 class="mb-0">$ 0.00</h3>
+              {% endif %}
             </div>
           </div>
         </div>
@@ -200,7 +204,7 @@
 </div>
 <!-- End Invoice -->
 <!-- Start Buttons -->
-<div id="invoice-buttons">
+<div id="invoice-buttons" class="mb-4">
   <a
     href="{{ url_for('billing.addLedgerPayment', id=person.id) }}"
     class="btn btn-primary mb-1"
