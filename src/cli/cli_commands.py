@@ -275,7 +275,7 @@ understood, and agree to be bound by this Agreement.
         )
 
     # Test practice ledger charges
-    for i in range(1, 1100):
+    for i in range(1, 2100):
         data.append(
             LedgerCharges(
                 practice_id=2,
@@ -291,7 +291,7 @@ understood, and agree to be bound by this Agreement.
         data.append(
             LedgerPayments(
                 practice_id=2,
-                person_id=random.randint(1, 1100),
+                person_id=random.randint(1, 2100),
                 amount=round(random.uniform(1.00, 200.00)),
                 payment_method=fake.random_element(
                     elements=("Cash", "Check", "Credit Card", "Other")),
