@@ -319,10 +319,10 @@
                       <td>
                         <div class="btn-group">
                           <a
-                            href="#"
+                            href="{{ url_for('billing.view_ledger_charge', ledger_charge_id=c.id) }}"
                             class="btn btn-primary badge"
                             type="button"
-                            ><i class="fe fe-edit"></i> Edit</a
+                            ><i class="fe fe-eye"></i> View</a
                           >
                         </div>
                       </td>

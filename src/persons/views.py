@@ -251,6 +251,7 @@ def viewPerson(id):
             # Ledger Charges
             ledger_charges = (
                 db.session.query(
+                    LedgerCharges.id,
                     LedgerCharges.created_at,
                     LedgerCharges.units,
                     LedgerCharges.unit_amount,
@@ -267,6 +268,7 @@ def viewPerson(id):
             # Ledger Payments
             ledger_payments = (
                 db.session.query(
+                    LedgerPayments.id,
                     LedgerPayments.practice_id,
                     LedgerPayments.created_at,
                     LedgerPayments.amount,
