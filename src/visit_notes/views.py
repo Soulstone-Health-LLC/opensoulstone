@@ -105,13 +105,20 @@ def addVisitNote(id):
             chakra_graph_labels = [chakra.day for chakra in chakra_data]
             chakra_graph_data = [
                 {
-                    "Root Score": chakra.chakra_assessment_root_score,
-                    "Sacral Score": chakra.chakra_assessment_sacral_score,
-                    "Solar Plexus Score": chakra.chakra_assessment_solar_plexus_score,
-                    "Heart Score": chakra.chakra_assessment_heart_score,
-                    "Throat Score": chakra.chakra_assessment_throat_score,
-                    "Third Eye Score": chakra.chakra_assessment_third_eye_score,
-                    "Crown Score": chakra.chakra_assessment_crown_score,
+                    "Root Score":
+                        chakra.chakra_assessment_root_score,
+                    "Sacral Score":
+                        chakra.chakra_assessment_sacral_score,
+                    "Solar Plexus Score":
+                        chakra.chakra_assessment_solar_plexus_score,
+                    "Heart Score":
+                        chakra.chakra_assessment_heart_score,
+                    "Throat Score":
+                        chakra.chakra_assessment_throat_score,
+                    "Third Eye Score":
+                        chakra.chakra_assessment_third_eye_score,
+                    "Crown Score":
+                        chakra.chakra_assessment_crown_score,
                 }
                 for chakra in chakra_data
             ]
@@ -274,13 +281,20 @@ def editVisitNote(id):
         chakra_graph_labels = [chakra.day for chakra in chakra_data]
         chakra_graph_data = [
             {
-                "Root Score": chakra.chakra_assessment_root_score,
-                "Sacral Score": chakra.chakra_assessment_sacral_score,
-                "Solar Plexus Score": chakra.chakra_assessment_solar_plexus_score,
-                "Heart Score": chakra.chakra_assessment_heart_score,
-                "Throat Score": chakra.chakra_assessment_throat_score,
-                "Third Eye Score": chakra.chakra_assessment_third_eye_score,
-                "Crown Score": chakra.chakra_assessment_crown_score,
+                "Root Score":
+                    chakra.chakra_assessment_root_score,
+                "Sacral Score":
+                    chakra.chakra_assessment_sacral_score,
+                "Solar Plexus Score":
+                    chakra.chakra_assessment_solar_plexus_score,
+                "Heart Score":
+                    chakra.chakra_assessment_heart_score,
+                "Throat Score":
+                    chakra.chakra_assessment_throat_score,
+                "Third Eye Score":
+                    chakra.chakra_assessment_third_eye_score,
+                "Crown Score":
+                    chakra.chakra_assessment_crown_score,
             }
             for chakra in chakra_data
         ]
