@@ -12,7 +12,7 @@ from flask import make_response
 from flask_login import login_required, current_user
 from src.visit_notes.forms import AddVisitNoteForm, EditVisitNoteForm
 from src import db
-from src.models import People, Practice, Notes, LedgerCharges, LedgerPayments
+from src.models import People, Practice, Notes
 from src.persons.person_header import personHeader
 
 
