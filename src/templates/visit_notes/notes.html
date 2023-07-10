@@ -67,6 +67,14 @@
                 <td>{{ n.status }}</td>
                 <td>
                   <div class="btn-group">
+                    {% if n.status == 'Deleted' %}
+                    <a
+                      href="{{ url_for('visit_notes.changeStatus', visit_note_id=n.id) }}"
+                      class="btn btn-outline-primary badge"
+                      type="button"
+                      ><i class="fe fe-rotate-cw"></i> Restore Visit Note</a
+                    >
+                    {% else %}
                     <a
                       href="{{ url_for('visit_notes.editVisitNote', id=n.id) }}"
                       class="btn btn-primary badge"
@@ -85,6 +93,7 @@
                       type="button"
                       ><i class="fe fe-check-square"></i> Change Status</a
                     >
+                    {% endif %}
                   </div>
                 </td>
               </tr>
