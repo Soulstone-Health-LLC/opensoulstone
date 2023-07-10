@@ -154,3 +154,10 @@ class ChangeVisitNoteStatusForm(FlaskForm):
 
     status = SelectField(label="Status", choices=VISIT_NOTE_STATUS_CHOICES)
     submit = SubmitField(label="Change Status")
+
+
+# Form - Delete Visit Note
+class DeleteVisitNoteForm(FlaskForm):
+    """Delete Visit Note"""
+
+    submit = SubmitField(label="Delete Visit Note")

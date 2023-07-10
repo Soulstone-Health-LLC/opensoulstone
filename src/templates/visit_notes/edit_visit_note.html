@@ -25,6 +25,11 @@
         class="btn btn-secondary mb-5"
         >Change Visit Note Status</a
       >
+      <a
+        href="{{ url_for('visit_notes.changeStatusDelete', visit_note_id=note.id) }}"
+        class="btn btn-danger mb-5"
+        >Delete Visit Note</a
+      >
     </div>
   </div>
   <div class="row">

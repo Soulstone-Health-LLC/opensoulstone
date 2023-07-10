@@ -11,7 +11,8 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask import make_response
 from flask_login import login_required, current_user
 from src.visit_notes.forms import (
-    AddVisitNoteForm, EditVisitNoteForm, ChangeVisitNoteStatusForm
+    AddVisitNoteForm, EditVisitNoteForm, ChangeVisitNoteStatusForm,
+    DeleteVisitNoteForm,
 )
 from src import db
 from src.models import People, Practice, Notes
@@ -466,6 +467,38 @@ def changeStatus(visit_note_id):
         note=note,
     )
 
+
+# Visit Note - Delete
+@visit_notes.route("/change_delete/<int:visit_note_id>",
+                   methods=["GET", "POST"])
+@login_required
+def changeStatusDelete(visit_note_id):
+    note = Notes.query.filter_by(id=visit_note_id).first_or_404()
+
+    form = DeleteVisitNoteForm()
+
+    if form.validate_on_submit() and request.method == "POST":
+        note.status = "Deleted"
+        note.updated_at = datetime.utcnow()
+        note.updated_by = current_user.id
+
+        # Update visit note to database
+        try:
+            db.session.commit()
+            flash("Visit Note status updated to 'Deleted' successfully.",
+                  category="success")
+        except note.GeneralSaveError:
+            flash("Something went wrong. Try again.", category="danger")
+
+        return redirect(url_for("visit_notes.notes"))
+
+    return render_template(
+        "visit_notes/delete_visit_note.html",
+        title="Soulstone - Delete Visit Note",
+        form=form,
+        user=current_user,
+        note=note,
+    )
 
 # Visit Note - PDF Visit Note
 @visit_notes.route("/pdf_note/<int:id>")
