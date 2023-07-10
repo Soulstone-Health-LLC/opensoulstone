@@ -142,3 +142,9 @@ CHAKRA_SCORE_CHOICES = [
     (4, "4"),
     (5, "5"),
 ]
+
+# Vist Notes Status Dictionary
+VISIT_NOTE_STATUS_CHOICES = [
+    ("Open", "Open"),
+    ("Completed", "Completed"),
+]

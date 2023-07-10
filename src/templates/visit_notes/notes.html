@@ -79,6 +79,12 @@
                       type="button"
                       ><i class="fe fe-printer"></i> Print</a
                     >
+                    <a
+                      href="{{ url_for('visit_notes.changeStatus', visit_note_id=n.id) }}"
+                      class="btn btn-outline-primary badge"
+                      type="button"
+                      ><i class="fe fe-check-square"></i> Change Status</a
+                    >
                   </div>
                 </td>
               </tr>

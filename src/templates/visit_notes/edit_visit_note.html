@@ -16,7 +16,17 @@
 <!-- End Patient Info Header -->
 <!--Visit Note Form-->
 <form method="post" class="" novalidate>
-  {{form.hidden_tag()}} {{form.submit(class="btn btn-primary mb-5")}}
+  {{form.hidden_tag()}}
+  <div class="row">
+    <div>
+      {{form.submit(class="btn btn-primary mb-5")}}
+      <a
+        href="{{url_for('visit_notes.changeStatus', visit_note_id=note.id)}}"
+        class="btn btn-secondary mb-5"
+        >Change Visit Note Status</a
+      >
+    </div>
+  </div>
   <div class="row">
     <div class="col-md-12">
       <div class="card">

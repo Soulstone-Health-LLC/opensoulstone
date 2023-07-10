@@ -10,7 +10,9 @@ from datetime import datetime, timedelta
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask import make_response
 from flask_login import login_required, current_user
-from src.visit_notes.forms import AddVisitNoteForm, EditVisitNoteForm
+from src.visit_notes.forms import (
+    AddVisitNoteForm, EditVisitNoteForm, ChangeVisitNoteStatusForm
+)
 from src import db
 from src.models import People, Practice, Notes
 from src.persons.person_header import personHeader
@@ -419,6 +421,50 @@ def editVisitNote(id):
             flash("Something went wrong. Try again.", category="danger")
 
         return redirect(url_for("visit_notes.notes"))
+
+
+# Visit Note - Change Status
+@visit_notes.route("/change_status/<int:visit_note_id>",
+                   methods=["GET", "POST"])
+@login_required
+def changeStatus(visit_note_id):
+    note = Notes.query.filter_by(id=visit_note_id).first_or_404()
+
+    form = ChangeVisitNoteStatusForm()
+
+    if request.method == "GET":
+        # If visit note is open,
+        # change status default status option to completed
+        if note.status == "Open":
+            form.status.default = "Completed"
+            form.process()
+
+    if form.validate_on_submit() and request.method == "POST":
+        note.status = form.status.data
+        note.updated_at = datetime.utcnow()
+        note.updated_by = current_user.id
+
+        # Update visit note to database
+        try:
+            db.session.commit()
+            flash("Visit Note status updated successfully.",
+                  category="success")
+        except note.GeneralSaveError:
+            flash("Something went wrong. Try again.", category="danger")
+
+        if note.status == "Completed":
+            return redirect(url_for("visit_notes.pdfVisitNote",
+                                    id=note.id))
+        return redirect(url_for("visit_notes.editVisitNote",
+                                id=note.id))
+
+    return render_template(
+        "visit_notes/change_status.html",
+        title="Soulstone - Change Status",
+        form=form,
+        user=current_user,
+        note=note,
+    )
 
 
 # Visit Note - PDF Visit Note

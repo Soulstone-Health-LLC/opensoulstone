@@ -9,7 +9,9 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, SelectField, DateField
 from wtforms.validators import DataRequired
 from wtforms.widgets import TextArea
-from src.dictionary.general import CHAKRA_SCORE_CHOICES
+from src.dictionary.general import (
+    CHAKRA_SCORE_CHOICES, VISIT_NOTE_STATUS_CHOICES
+)
 
 
 # Form - Add Visit Note
@@ -144,3 +146,11 @@ class EditVisitNoteForm(FlaskForm):
         render_kw={"rows": 10}
     )
     submit = SubmitField(label="Save Visit Note")
+
+
+# Form - Change Visit Note Status
+class ChangeVisitNoteStatusForm(FlaskForm):
+    """Change Visit Note Status"""
+
+    status = SelectField(label="Status", choices=VISIT_NOTE_STATUS_CHOICES)
+    submit = SubmitField(label="Change Status")
