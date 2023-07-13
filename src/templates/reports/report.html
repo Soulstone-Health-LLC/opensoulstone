@@ -12,14 +12,11 @@
 <div class="e-table px-5 pb-5">
   <div class="table-responsive table-lg">
     <table
-      {%
-      if
-      selected_report=="person_report"
-      %}
+      {%if selected_report=="Person Report"%}
       data-order='[[ 2, "asc" ]]'
-      {%
-      endif
-      %}
+      {%elif selected_report=="Event Report"%}
+      data-order='[[ 1, "desc" ]]'
+      {%endif%}
       class="table table-bordered text-nowrap border-bottom w-100"
       id="responsive-datatable"
     >

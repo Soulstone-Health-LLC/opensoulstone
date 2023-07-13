@@ -9,7 +9,10 @@ from flask import Blueprint, request, redirect, url_for, render_template
 from flask_login import login_required, current_user
 from src.reports.forms import GenerateReportForm
 from src import db
-from src.models import People, Events, Notes, LedgerCharges, LedgerPayments
+from src.models import (
+    User, People, Events, Notes, LedgerCharges, LedgerPayments,
+    EventTypes,
+)
 
 
 # Blueprint Configuration
@@ -25,9 +28,12 @@ def generate_report():
     form = GenerateReportForm()
 
     # Report Options
+    # Make sure to update the following functions:
+    # - get_column_labels()
+    # - generate_report_data()
     form.report_options.choices = [
-        ("person_report", "Person Report"),
-        ("event_report", "Event Report"),
+        ("Person Report", "Person Report"),
+        ("Event Report", "Event Report"),
     ]
 
     if request.method == "POST":
@@ -55,7 +61,6 @@ def generate_report():
             column_labels=column_labels,
         )
 
-    # Render the form to generate reports
     return render_template(
         "reports/generate_report.html", title="Soulstone - Generate Report",
         form=form,
@@ -66,7 +71,7 @@ def generate_report():
 def get_column_labels(report):
     """Get custom column labels based on the selected report."""
 
-    if report == "person_report":
+    if report == "Person Report":
         return [
             "First Name",
             "Middle Name",
@@ -75,8 +80,19 @@ def get_column_labels(report):
             "Email",
             "Created At",
         ]
-    elif report == "event_report":
-        return ["Event Name", "Event Date", "Location"]
+    elif report == "Event Report":
+        return [
+            "Event Name",
+            "Event Date",
+            "Event Start Time",
+            "Event End Time",
+            "Person ID",
+            "Person First Name",
+            "Person Last Name",
+            "Practitioner First Name",
+            "Practitioner Last Name",
+            "Event Notes",
+        ]
     else:
         # Handle other report options if needed
         return []
@@ -88,11 +104,7 @@ def generate_report_data(report, start_date, end_date):
     and date parameters.
     """
 
-    if report == "person_report":
-        # Generate person report data using the provided start_date and end_date
-        # Query the database based on the date parameters and return the data
-
-        # Example query:
+    if report == "Person Report":
         person_report_data = (
             db.session.query(
                 People.first_name,
@@ -111,15 +123,23 @@ def generate_report_data(report, start_date, end_date):
         )
 
         return person_report_data
-    elif report == "event_report":
-        # Generate event report data using the provided start_date and end_date
-        # Query the database based on the date parameters and return the data
-
-        # Example query:
+    elif report == "Event Report":
         event_report_data = (
             db.session.query(
-                Events.name, Events.date, Events.location
+                EventTypes.event_name,
+                Events.date,
+                Events.start_time,
+                Events.end_time,
+                People.id,
+                People.first_name,
+                People.last_name,
+                User.first_name,
+                User.last_name,
+                Events.note,
             )
+            .outerjoin(People, People.id == Events.person_id)
+            .outerjoin(User, User.id == Events.practitioner_id)
+            .join(EventTypes, EventTypes.id == Events.event_type_id)
             .filter(
                 Events.practice_id == current_user.practice_id,
                 Events.date >= start_date,
