@@ -1,13 +1,46 @@
-{%extends "base.html"%} {%block pagenav%}
+{% extends "base.html" %} {% block pagenav %}
 <h1 class="page-title">Reports</h1>
 <ol class="breadcrumb">
   <li class="breadcrumb-item">
-    <a href="{{url_for('reports.generate_report')}}">Generate Report</a>
+    <a href="{{ url_for('reports.generate_report') }}">Generate Report</a>
   </li>
-  <li class="breadcrumb-item active">{{selected_report}}</li>
+  <li class="breadcrumb-item active">{{ selected_report }}</li>
 </ol>
-{%endblock pagenav%} {%block content%}
+{% endblock %} {% block content %}
+{{ start_date }} - {{ end_date }}
 <!-- Reports - Start -->
-<div class="row">{{report_data|safe}}</div>
+<div class="e-table px-5 pb-5">
+  <div class="table-responsive table-lg">
+    <table
+      {%
+      if
+      selected_report=="person_report"
+      %}
+      data-order='[[ 2, "asc" ]]'
+      {%
+      endif
+      %}
+      class="table table-bordered text-nowrap border-bottom w-100"
+      id="responsive-datatable"
+    >
+      <thead>
+        <tr>
+          {% for column_label in column_labels %}
+          <th>{{ column_label }}</th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in report_data %}
+        <tr>
+          {% for cell in row %}
+          <td>{{ cell }}</td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
 <!-- Reports - End -->
-{%endblock content%}
+{% endblock %}

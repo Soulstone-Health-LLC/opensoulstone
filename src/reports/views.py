@@ -40,6 +40,9 @@ def generate_report():
         report_data = generate_report_data(
             selected_report, start_date, end_date)
 
+        # Define custom column labels based on the selected report
+        column_labels = get_column_labels(selected_report)
+
         # Render the report template with the generated data
         return render_template(
             "reports/report.html",
@@ -47,6 +50,9 @@ def generate_report():
             user=current_user,
             report_data=report_data,
             selected_report=selected_report,
+            start_date=start_date,
+            end_date=end_date,
+            column_labels=column_labels,
         )
 
     # Render the form to generate reports
@@ -55,6 +61,25 @@ def generate_report():
         form=form,
         user=current_user,
     )
+
+
+def get_column_labels(report):
+    """Get custom column labels based on the selected report."""
+
+    if report == "person_report":
+        return [
+            "First Name",
+            "Middle Name",
+            "Last Name",
+            "Suffix",
+            "Email",
+            "Created At",
+        ]
+    elif report == "event_report":
+        return ["Event Name", "Event Date", "Location"]
+    else:
+        # Handle other report options if needed
+        return []
 
 
 def generate_report_data(report, start_date, end_date):
@@ -70,7 +95,12 @@ def generate_report_data(report, start_date, end_date):
         # Example query:
         person_report_data = (
             db.session.query(
-                People.first_name, People.email, People.created_at
+                People.first_name,
+                People.middle_name,
+                People.last_name,
+                People.suffix_name,
+                People.email,
+                People.created_at,
             )
             .filter(
                 People.practice_id == current_user.practice_id,
