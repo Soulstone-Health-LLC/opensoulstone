@@ -46,6 +46,7 @@ mail.init_app(app)
 # Blueprint routing
 from src.core.views import core
 from src.dashboard.views import dashboard
+from src.reports.views import reports
 from src.calendar.views import calendar
 from src.users.views import users
 from src.persons.views import persons
@@ -59,6 +60,7 @@ from src.terms_of_service.views import terms_of_service
 
 app.register_blueprint(core)
 app.register_blueprint(dashboard)
+app.register_blueprint(reports)
 app.register_blueprint(calendar)
 app.register_blueprint(users)
 app.register_blueprint(persons)

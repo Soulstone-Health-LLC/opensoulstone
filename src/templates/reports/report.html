@@ -1,0 +1,13 @@
+{%extends "base.html"%} {%block pagenav%}
+<h1 class="page-title">Reports</h1>
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">
+    <a href="{{url_for('reports.generate_report')}}">Generate Report</a>
+  </li>
+  <li class="breadcrumb-item active">{{selected_report}}</li>
+</ol>
+{%endblock pagenav%} {%block content%}
+<!-- Reports - Start -->
+<div class="row">{{report_data|safe}}</div>
+<!-- Reports - End -->
+{%endblock content%}
