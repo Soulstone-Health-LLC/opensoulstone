@@ -4,8 +4,12 @@ Reports - Views -- This file contains the views for the reports app.
 
 
 # Imports
+import io
 import csv
-from flask import Blueprint, request, redirect, url_for, render_template
+from datetime import datetime
+from flask import (
+    Blueprint, request, redirect, url_for, render_template, make_response
+)
 from flask_login import login_required, current_user
 from src.reports.forms import GenerateReportForm
 from src import db
@@ -67,6 +71,54 @@ def generate_report():
         form=form,
         user=current_user,
     )
+
+
+@reports.route("/reports/export-csv", methods=["POST"])
+@login_required
+def export_csv():
+    """Route for exporting report data as CSV."""
+
+    # Current Time
+    current_time = datetime.utcnow()
+
+    # Get the selected report and date parameters from the form
+    selected_report = request.form.get("selected_report")
+    start_date = request.form.get("start_date")
+    end_date = request.form.get("end_date")
+
+    # Generate report data based on the selected report and date parameters
+    report_data = generate_report_data(selected_report, start_date, end_date)
+
+    # Define custom column labels based on the selected report
+    column_labels = get_column_labels(selected_report)
+
+    # Generate a CSV file in memory
+    csv_output = generate_csv(report_data, column_labels)
+
+    # Create a response with the CSV file
+    response = make_response(csv_output.getvalue())
+
+    # Set the appropriate headers for CSV download
+    response.headers["Content-Disposition"] = \
+        f"attachment; filename={selected_report}_{current_time}.csv"
+    response.headers["Content-type"] = "text/csv"
+
+    return response
+
+
+def generate_csv(data, column_labels):
+    """Generate a CSV file from the provided data and column labels."""
+    output = io.StringIO()
+    writer = csv.writer(output)
+
+    # Write the header row
+    writer.writerow(column_labels)
+
+    # Write the data rows
+    for row in data:
+        writer.writerow(row)
+
+    return output
 
 
 def get_column_labels(report):
