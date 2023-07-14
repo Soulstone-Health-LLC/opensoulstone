@@ -36,6 +36,7 @@ def generate_report():
     # - generate_report_data()
     form.report_options.choices = [
         ("Person Report", "Person Report"),
+        ("Birthday Report", "Birthday Report"),
         ("Event Report", "Event Report"),
         ("Open Visit Notes Report", "Open Visit Notes Report"),
     ]
@@ -157,6 +158,16 @@ def get_column_labels(report):
             "Visit Note Created Date",
             "Visit Note Status",
         ]
+    # Birthday Report
+    elif report == "Birthday Report":
+        return [
+            "Person ID",
+            "Person First Name",
+            "Person Middle Name",
+            "Person Last Name",
+            "Person Suffix",
+            "Date of Birth",
+        ]
     else:
         # Handle other report options if needed
         return []
@@ -185,7 +196,6 @@ def generate_report_data(report, start_date, end_date):
             )
             .all()
         )
-
         return person_report_data
     elif report == "Event Report":
         event_report_data = (
@@ -211,7 +221,6 @@ def generate_report_data(report, start_date, end_date):
             )
             .all()
         )
-
         return event_report_data
     # Open Visit Notes Report
     elif report == "Open Visit Notes Report":
@@ -235,8 +244,25 @@ def generate_report_data(report, start_date, end_date):
             )
             .all()
         )
-
         return open_visit_notes_report_data
+    # Birthday Report
+    elif report == "Birthday Report":
+        birthday_report_data = (
+            db.session.query(
+                People.id,
+                People.first_name,
+                People.middle_name,
+                People.last_name,
+                People.suffix_name,
+                People.date_of_birth,
+            )
+            .filter(
+                People.practice_id == current_user.practice_id,
+                People.date_of_birth >= start_date,
+                People.date_of_birth <= end_date,
+            )
+        )
+        return birthday_report_data
     else:
         # Handle other report options if needed
         return []
