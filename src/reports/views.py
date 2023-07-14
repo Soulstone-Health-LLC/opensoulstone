@@ -34,6 +34,7 @@ def generate_report():
     form.report_options.choices = [
         ("Person Report", "Person Report"),
         ("Event Report", "Event Report"),
+        ("Open Visit Notes Report", "Open Visit Notes Report"),
     ]
 
     if request.method == "POST":
@@ -93,6 +94,18 @@ def get_column_labels(report):
             "Practitioner Last Name",
             "Event Notes",
         ]
+    # Open Visit Notes Report
+    elif report == "Open Visit Notes Report":
+        return [
+            "Person ID",
+            "Person First Name",
+            "Person Middle Name",
+            "Person Last Name",
+            "Person Suffix",
+            "Visit Note ID",
+            "Visit Note Created Date",
+            "Visit Note Status",
+        ]
     else:
         # Handle other report options if needed
         return []
@@ -149,6 +162,30 @@ def generate_report_data(report, start_date, end_date):
         )
 
         return event_report_data
+    # Open Visit Notes Report
+    elif report == "Open Visit Notes Report":
+        open_visit_notes_report_data = (
+            db.session.query(
+                People.id,
+                People.first_name,
+                People.middle_name,
+                People.last_name,
+                People.suffix_name,
+                Notes.id,
+                Notes.created_at,
+                Notes.status,
+            )
+            .join(People, People.id == Notes.person_id)
+            .filter(
+                Notes.practice_id == current_user.practice_id,
+                Notes.status == "Open",
+                Notes.created_at >= start_date,
+                Notes.created_at <= end_date,
+            )
+            .all()
+        )
+
+        return open_visit_notes_report_data
     else:
         # Handle other report options if needed
         return []
