@@ -2,13 +2,12 @@
 Reports - Views -- This file contains the views for the reports app.
 """
 
-
 # Imports
 import io
 import csv
 from datetime import datetime
 from flask import (
-    Blueprint, request, redirect, url_for, render_template, make_response
+    Blueprint, request, render_template, make_response
 )
 from flask_login import login_required, current_user
 from src.reports.forms import GenerateReportForm
