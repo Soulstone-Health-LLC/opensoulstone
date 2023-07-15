@@ -39,6 +39,7 @@ def generate_report():
         ("Birthday Report", "Birthday Report"),
         ("Event Report", "Event Report"),
         ("Open Visit Notes Report", "Open Visit Notes Report"),
+        ("Open Balances Report", "Open Balances Report"),
     ]
 
     if request.method == "POST":
@@ -168,6 +169,14 @@ def get_column_labels(report):
             "Person Suffix",
             "Date of Birth",
         ]
+    # People with Open Balances
+    elif report == "Open Balances Report":
+        return [
+            "Person ID",
+            "Person First Name",
+            "Person Last Name",
+            "Balance",
+        ]
     else:
         # Handle other report options if needed
         return []
@@ -263,6 +272,43 @@ def generate_report_data(report, start_date, end_date):
             )
         )
         return birthday_report_data
+    # People with Open Balances
+    elif report == "Open Balances Report":
+        open_balance_report_data = (
+            db.session.query(
+                People.id,
+                People.first_name,
+                People.last_name,
+                db.func.coalesce(
+                    db.func.sum(
+                        LedgerCharges.unit_amount * LedgerCharges.units
+                        + (LedgerCharges.unit_amount * LedgerCharges.tax_rate)
+                    ) - db.func.coalesce(
+                        db.func.sum(LedgerPayments.amount),
+                        0
+                    ),
+                    0
+                ).label("balance")
+            )
+            .outerjoin(LedgerCharges)
+            .outerjoin(LedgerPayments)
+            .group_by(People.id, People.first_name, People.last_name)
+            .having(
+                db.func.coalesce(
+                    db.func.sum(
+                        LedgerCharges.unit_amount * LedgerCharges.units
+                        + (LedgerCharges.unit_amount * LedgerCharges.tax_rate)
+                    ),
+                    0
+                ) > db.func.coalesce(
+                    db.func.sum(LedgerPayments.amount),
+                    0
+                )
+            )
+            .filter(People.practice_id == current_user.practice_id)
+            .all()
+        )
+        return open_balance_report_data
     else:
         # Handle other report options if needed
         return []
