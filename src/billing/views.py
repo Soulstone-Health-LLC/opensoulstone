@@ -3,8 +3,12 @@ Billing > Views - This file contains the routes for the billing blueprint.
 """
 
 # Imports
+import pdfkit
 from datetime import datetime
-from flask import Blueprint, render_template, request, flash, redirect, url_for
+from flask import (
+    Blueprint, render_template, request, flash, redirect, url_for,
+    make_response
+)
 from flask_login import login_required, current_user
 from src.billing.forms import AddLedgerChargeForm, AddLedgerPaymentForm
 from src import db
@@ -303,6 +307,7 @@ def payments():
     people = People.query.filter_by(practice_id=current_user.practice_id).all()
     ledger_payments = (
         db.session.query(
+            LedgerPayments.id,
             LedgerPayments.created_at,
             LedgerPayments.payment_method,
             LedgerPayments.amount,
@@ -523,3 +528,29 @@ def generateInvoice(person_id):
         events_count=events_count,
         balance=balance,
     )
+
+
+# Billing - Payments - Print Receipt
+@billing.route("/billing/payments/<int:payment_id>/print_receipt")
+@login_required
+def pdfPaymentReceipt(payment_id):
+    """Prints the payment receipt"""
+
+    payment = LedgerPayments.query.get_or_404(payment_id)
+    practice = Practice.query.filter_by(id=payment.practice_id).first()
+    person = People.query.filter_by(id=payment.person_id).first()
+
+    rendered = render_template(
+        "billing/pdf_payment_receipt.html",
+        payment=payment,
+        practice=practice,
+        person=person,
+        user=current_user,
+    )
+    config = pdfkit.configuration(wkhtmltopdf="/usr/bin/wkhtmltopdf")
+    pdf = pdfkit.from_string(rendered, False, configuration=config)
+    response = make_response(pdf)
+    response.headers["Content-Type"] = "application/pdf"
+    response.headers["Content-Disposition"] = \
+        "inline; filename=payment_receipt.pdf"
+    return response

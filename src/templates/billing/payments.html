@@ -93,7 +93,7 @@
                       ><i class="fe fe-eye"></i> View</a
                     >
                     <a
-                      href="#"
+                      href="{{ url_for('billing.pdfPaymentReceipt', payment_id=lp.id) }}"
                       class="btn btn-outline-primary badge"
                       type="button"
                       ><i class="fe fe-eye"></i> Print Receipt</a
