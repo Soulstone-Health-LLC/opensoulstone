@@ -54,7 +54,7 @@
                         <td class="align-middle text-center">
                         <img alt="image" class="avatar avatar-md br-7" src="{{ url_for('static', filename='profile_pics/' + p.profile_image) }}" />
                         </td>
-                        <td class="text-nowrap align-middle">
+                        <td class="align-middle">
                         <a href="{{ url_for('persons.viewPerson', id=p.id) }}">
                           {% if p.middle_name == '' and p.suffix_name == '' %} {{
                           p.last_name }}, {{ p.first_name }}
@@ -79,7 +79,7 @@
                         </td>
                         {% endif %}
                         </td>
-                        <td class="text-nowrap align-middle">
+                        <td class="align-middle">
                         {% if p.phone_1 == '' %}
                         <span>
                         </span>
@@ -88,7 +88,7 @@
                     p.phone_number[6:10] }} ({{ p.phone_type }})</span>
                         {% endif %}
                         </td>
-                        <td class="text-nowrap align-middle">
+                        <td class="align-middle">
                         {% if p.email == '' %}
                         <span>
                         </span>
@@ -96,7 +96,7 @@
                         <span>{{ p.email }}</span>
                         {% endif %}
                         </td>
-                        <td class="text-nowrap align-middle">{{ p.status }}</td>
+                        <td class="align-middle">{{ p.status }}</td>
                         <td class="text-center align-middle">
                         <div class="btn-group align-top">
                             <a

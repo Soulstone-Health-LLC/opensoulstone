@@ -62,7 +62,7 @@
             <tbody>
               {% if balances %} {% for b in balances %}
               <tr>
-                <td class="text-nowrap align-middle">
+                <td class="align-middle">
                   <a href="{{ url_for('persons.viewPerson', id=b.id) }}">
                     {% if b.middle_name == '' and b.suffix_name == '' %} {{
                     b.last_name }}, {{ b.first_name }}
@@ -76,7 +76,7 @@
                     endif %}</a
                   >
                 </td>
-                <td class="text-nowrap align-middle">
+                <td class="align-middle">
                   {% if b.outstanding_balance() is not none %} {{ "$
                   {:,.2f}".format(b.outstanding_balance()) }} {% else %} N/A {%
                   endif %}
@@ -152,7 +152,7 @@
                 </div>
                 <div class="table-responsive">
                   <table
-                    class="table table-bordered text-nowrap border-bottom w-100"
+                    class="table table-bordered border-bottom w-100"
                     id="basic-datatable"
                   >
                     <thead>
@@ -264,7 +264,7 @@
                 </div>
                 <div class="table-responsive">
                   <table
-                    class="table table-bordered text-nowrap border-bottom w-100"
+                    class="table table-bordered border-bottom w-100"
                     id="basic-datatable"
                   >
                     <thead>
@@ -376,7 +376,7 @@
                 </div>
                 <div class="table-responsive">
                   <table
-                    class="table table-bordered text-nowrap border-bottom w-100"
+                    class="table table-bordered border-bottom w-100"
                     id="basic-datatable-2"
                   >
                     <thead>
