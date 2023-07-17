@@ -396,7 +396,13 @@
                             href="#"
                             class="btn btn-primary badge"
                             type="button"
-                            ><i class="fe fe-edit"></i> Edit</a
+                            ><i class="fe fe-eye"></i> View</a
+                          >
+                          <a
+                            href="{{ url_for('billing.pdfPaymentReceipt', payment_id=payment.id) }}"
+                            class="btn btn-outline-primary badge"
+                            type="button"
+                            ><i class="fe fe-printer"></i> Print Receipt</a
                           >
                         </div>
                       </td>
