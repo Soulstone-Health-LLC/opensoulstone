@@ -814,7 +814,7 @@
                 </div>
                 <a
                   class="dropdown-item d-flex border-bottom border-top"
-                  href="profile.html"
+                  href="{{ url_for('settings.profile', user_id=current_user.id) }}"
                 >
                   <div class="d-flex">
                     <i class="fe fe-user me-3 tx-20 text-muted"></i>
