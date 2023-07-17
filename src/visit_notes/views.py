@@ -500,6 +500,7 @@ def changeStatusDelete(visit_note_id):
         note=note,
     )
 
+
 # Visit Note - PDF Visit Note
 @visit_notes.route("/pdf_note/<int:id>")
 @login_required
