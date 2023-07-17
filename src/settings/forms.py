@@ -4,6 +4,7 @@ Settings > Forms - Forms for the Settings Blueprint
 
 # Imports
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileAllowed
 from wtforms import StringField, SubmitField, SelectField, EmailField
 from wtforms.fields.simple import TelField
 from wtforms.validators import DataRequired, Length, Email, InputRequired
@@ -46,6 +47,8 @@ class EditPracticeForm(FlaskForm):
 class PracticeUserForm(FlaskForm):
     """Add or Edit a User to the Practice Form"""
 
+    picture = FileField("Upload Profile Picture",
+                        validators=[FileAllowed(["jpg", "png"])])
     role = SelectField(
         label="User Role *", choices=ROLE_CHOICES, validators=[InputRequired()]
     )
@@ -88,6 +91,8 @@ class PracticeUserForm(FlaskForm):
 class ProfileForm(FlaskForm):
     """View and Edit User Profile Form"""
 
+    picture = FileField("Upload Profile Picture",
+                        validators=[FileAllowed(["jpg", "png"])])
     first_name = StringField(
         label="First Name *", validators=[DataRequired(),
                                           Length(min=2, max=150)]

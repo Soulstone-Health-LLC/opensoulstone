@@ -33,11 +33,13 @@
         </div>
         <div class="table-responsive">
           <table
-            class="table table-bordered text-nowrap border-bottom w-100"
+            data-order='[[ 1, "asc" ]]'
+            class="table table-bordered border-bottom w-100"
             id="responsive-datatable"
           >
             <thead>
               <tr>
+                <th>Picture</th>
                 <th>Name</th>
                 <th>Email</th>
                 <th>Phone Number</th>
@@ -50,6 +52,13 @@
             <tbody>
               {% for user in users %}
               <tr>
+                <td class="align-middle text-center">
+                  <img
+                    alt="image"
+                    class="avatar avatar-md br-7"
+                    src="{{ url_for('static', filename='profile_pics/' + user.profile_image) }}"
+                  />
+                </td>
                 <td>
                   {% if user.middle_name and user.suffix_name %} {{
                   user.first_name }} {{ user.middle_name }} {{ user.last_name }}

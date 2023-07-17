@@ -29,6 +29,7 @@ from src.models import (
     EventTypes,
 )
 from src.decorators.decorators import superuser_required
+from src.utils.picture_handler import add_profile_pic
 
 
 # Blueprint Configuration
@@ -174,46 +175,84 @@ def addPracticeUser():
             city = form.city.data
             state = form.state.data
             zipcode = form.zipcode.data
+            status = form.status.data
+            # If profile picture is included, save it to the filesystem
+            if form.picture.data:
+                username = first_name + last_name + str(
+                    datetime.utcnow()
+                )
+                pic = add_profile_pic(form.picture.data, username)
 
         # Generate a random password
         rand_password = "".join(
             random.choices(string.ascii_lowercase + string.digits, k=12)
         )
 
-        check_email = User.query.filter_by(email=email).first()
-        if check_email:
-            # security issue - should look at some better wording
-            flash("Email is already in use.", category="error")
-        else:
-            # Create person
-            new_user = User(
-                role=role,
-                user_type=user_type,
-                first_name=first_name,
-                middle_name=middle_name,
-                last_name=last_name,
-                suffix_name=suffix_name,
-                email=email,
-                password=generate_password_hash(
-                    rand_password, method="sha256"),
-                phone_number=phone_number,
-                phone_type=phone_type,
-                address_1=address_1,
-                address_2=address_2,
-                city=city,
-                state=state,
-                zipcode=zipcode,
-                practice_id=current_user.practice_id,
-                created_at=datetime.utcnow(),
-                created_by=current_user.get_id(),
-                password_reset_by_system=True,
+        # If email already exists, flaash error message
+        email_exists = User.query.filter_by(email=email).first()
+        if email_exists:
+            flash(
+                f"An account with the email {email} already exists.",
+                category="error",
             )
-
-            # Add person to database
-            db.session.add(new_user)
-            db.session.commit()
-            flash(f"{first_name} {last_name} added successfully.",
-                  category="success")
+        else:
+            # Create new user
+            # If profile picture is included, save it to the filesystem
+            if form.picture.data:
+                new_user = User(
+                    practice_id=current_user.practice_id,
+                    created_at=datetime.utcnow(),
+                    created_by=current_user.id,
+                    email=email,
+                    password=generate_password_hash(rand_password),
+                    first_name=first_name,
+                    middle_name=middle_name,
+                    last_name=last_name,
+                    suffix_name=suffix_name,
+                    address_1=address_1,
+                    address_2=address_2,
+                    city=city,
+                    state=state,
+                    zipcode=zipcode,
+                    phone_number=phone_number,
+                    phone_type=phone_type,
+                    role=role,
+                    user_type=user_type,
+                    status=status,
+                    profile_image=pic,
+                )
+                # Add person to database
+                db.session.add(new_user)
+                db.session.commit()
+                flash(f"{first_name} {last_name} added successfully.",
+                      category="success")
+            else:
+                new_user = User(
+                    practice_id=current_user.practice_id,
+                    created_at=datetime.utcnow(),
+                    created_by=current_user.id,
+                    email=email,
+                    password=generate_password_hash(rand_password),
+                    first_name=first_name,
+                    middle_name=middle_name,
+                    last_name=last_name,
+                    suffix_name=suffix_name,
+                    address_1=address_1,
+                    address_2=address_2,
+                    city=city,
+                    state=state,
+                    zipcode=zipcode,
+                    phone_number=phone_number,
+                    phone_type=phone_type,
+                    role=role,
+                    user_type=user_type,
+                    status=status,
+                )
+                # Add person to database
+                db.session.add(new_user)
+                db.session.commit()
+                flash(f"{first_name} {last_name} added successfully.",
+                      category="success")
 
             # send email to new user
             msg = Message(
@@ -276,6 +315,13 @@ def editPracticeUser(user_id):
     if form.validate_on_submit():
         if request.method == "POST":
             # Update user
+            # If profile picture is included, save it to the filesystem
+            if form.picture.data:
+                username = p_user.first_name + p_user.last_name + str(
+                    datetime.utcnow()
+                )
+                pic = add_profile_pic(form.picture.data, username)
+                p_user.profile_image = pic
             p_user.updated_at = datetime.utcnow()
             p_user.updated_by = current_user.get_id()
             p_user.first_name = form.first_name.data
@@ -343,6 +389,13 @@ def profile(user_id):
     if form.validate_on_submit():
         if request.method == "POST":
             # Update user
+            # If profile picture is included, save it to the filesystem
+            if form.picture.data:
+                username = p_user.first_name + p_user.last_name + str(
+                    datetime.utcnow()
+                )
+                pic = add_profile_pic(form.picture.data, username)
+                p_user.profile_image = pic
             p_user.updated_at = datetime.utcnow()
             p_user.updated_by = current_user.get_id()
             p_user.first_name = form.first_name.data
@@ -365,7 +418,7 @@ def profile(user_id):
                 category="success",
             )
 
-            return redirect(url_for("core.home"))
+            return redirect(url_for("settings.profile", user_id=user_id))
 
     return render_template(
         "settings/edit_profile.html",
