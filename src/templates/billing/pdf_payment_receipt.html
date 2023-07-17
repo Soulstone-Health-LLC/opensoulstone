@@ -8,7 +8,8 @@
 }}<br />{{ practice.address_2 }}<br />{{ practice.city }}, {{ practice.state }}
 {{ practice.zipcode }} {% endif %}
 <br />
-{{ practice.phone_number }}
+({{ practice.phone_number[:3] }}) {{ practice.phone_number[3:6] }}-{{
+practice.phone_number[6:10] }}
 <br />
 {{ practice.email }}
 <br />
@@ -36,18 +37,36 @@
 {% elif person.address_2 == None or person.address_2 == ''%} {{ person.address_1
 }}, {{ person.city }}, {{ person.state }} {{ person.zipcode }} {% else %} {{
 person.address_1 }}, {{ person.address_2 }}, {{ person.city }}, {{ person.state
-}} {{ person.zipcode }} {% endif %} {{ person.phone_number }} ({{
-person.phone_type }})
+}} {{ person.zipcode }} {% endif %}
+<br />
+({{ person.phone_number[:3] }}) {{ person.phone_number[3:6] }}-{{
+person.phone_number[6:10] }} ({{ person.phone_type }})
 <br />
 {% if person.email == None or person.email == '' %}
 <!-- no email-->
 {% else %} {{ person.email }} {% endif %}
 <br />
 <br />
-<h2>Payment Receipt</h2>
-<h3>Date of Payment:</h3>
+<h2>Payment Information</h2>
+<strong>Date of Payment:</strong>
+<br />
 {{ payment.created_at.strftime('%A, %B %d, %Y') }}
-<h3>Payment Method:</h3>
-{{ payment.payment_method }}
-<h3>Payment Amount:</h3>
+<br />
+<br />
+<strong>Payment Method:</strong>
+<br />
+{{ payment.payment_method }} {% if payment.payment_method == 'Credit Card' %}
+<br />
+<strong>Credit Card Last Four:</strong>
+<br />
+{{ payment.credit_card_last_four }} {% endif %} {% if payment.payment_method ==
+'Check' %}
+<br />
+<strong>Check Number:</strong>
+<br />
+{{ payment.check_number }} {% endif %}
+<br />
+<br />
+<strong>Payment Amount:</strong>
+<br />
 {{ "$ {:,.2f}".format(payment.amount) }}
