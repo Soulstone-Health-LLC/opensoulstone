@@ -55,16 +55,24 @@
               <span></span>
               {% elif person_header.address_2 == None or person_header.address_2
               == ''%}
-              <i class="fe fe-home"></i>
-              {{ person_header.address_1 }}, {{ person_header.city }}, {{
-              person_header.state }} {{ person_header.zipcode }} {% else %}
-              <i class="fe fe-home"></i>
-              {{ person_header.address_1 }}, {{ person_header.address_2 }}, {{
-              person_header.city }}, {{ person_header.state }} {{
+              <i class="fe fe-home"></i> Address:
+              <br />
+              {{ person_header.address_1 }}
+              <br />
+              {{ person_header.city }}, {{ person_header.state }} {{
+              person_header.zipcode }} {% else %}
+              <i class="fe fe-home"></i> Address:
+              <br />
+              {{ person_header.address_1 }}
+              <br />
+              {{ person_header.address_2 }}
+              <br />
+              {{ person_header.city }}, {{ person_header.state }} {{
               person_header.zipcode }} {% endif %}
             </h6>
             <h6 class="text-muted mb-3">
-              <i class="fe fe-phone"></i>
+              <i class="fe fe-phone"></i> Phone:
+              <br />
               ({{ person_header.phone_number[:3] }}) {{
               person_header.phone_number[3:6] }}-{{
               person_header.phone_number[6:10] }} ({{ person_header.phone_type

@@ -98,7 +98,7 @@
           <hr />
           <div class="row">
             <div class="col-md-6">
-              <p class="h3">Invoice Form:</p>
+              <p class="h3">Invoice From:</p>
               <address>
                 {{practice.name}}<br />
                 {{practice.address_1}}<br />
@@ -210,57 +210,11 @@
     class="btn btn-primary mb-1"
     ><i class="si si-wallet"></i> Pay Invoice</a
   >
-  {% if person.email %}
-  <a href="#" class="btn btn-success mb-1"
-    ><i class="si si-paper-plane"></i> Email Invoice</a
+  <a
+    href="{{ url_for('billing.pdfInvoice', person_id=person.id) }}"
+    class="btn btn-outline-primary mb-1"
+    ><i class="si si-printer"></i> Print Invoice</a
   >
-  {% endif %}
-  <button type="button" class="btn btn-info mb-1" id="print-invoice-button">
-    <i class="si si-printer"></i> Print Invoice
-  </button>
 </div>
 <!-- End Buttons -->
-<script>
-  // Function to hide elements when printing
-  function hideOnPrint() {
-    var buttons = document.getElementById("invoice-buttons");
-    var patientTotals = document.getElementById("patient-totals");
-    var pageHeader = document.getElementById("page-header");
-    var userProfile = document.getElementById("user-profile");
-    buttons.style.display = "none";
-    patientTotals.style.display = "none";
-    pageHeader.style.display = "none";
-    userProfile.style.display = "none";
-  }
-
-  // Add event listener to "Print Invoice" button
-  var printButton = document.querySelector("#print-invoice-button");
-  printButton.addEventListener("click", function () {
-    hideOnPrint();
-    window.print();
-    location.reload();
-  });
-
-  // Sort table rows by Date column in ascending order
-  function sortTableByDate() {
-    var table = document.getElementById("invoice-table");
-    var tbody = table.getElementsByTagName("tbody")[0];
-    var rows = [].slice.call(tbody.rows); // Convert rows NodeList to an array
-
-    rows.sort(function (a, b) {
-      var dateA = new Date(a.cells[0].textContent.trim());
-      var dateB = new Date(b.cells[0].textContent.trim());
-
-      return dateA - dateB; // Sort in ascending order
-    });
-
-    for (var i = 0; i < rows.length; i++) {
-      tbody.appendChild(rows[i]);
-    }
-  }
-
-  // Call the sorting function when the page loads
-  window.addEventListener("DOMContentLoaded", sortTableByDate);
-</script>
-
 {%endblock content%}

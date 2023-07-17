@@ -301,7 +301,7 @@
                   ><i class="fe fe-plus"></i> Add New Charge</a
                 >
                 <a
-                  href="{{ url_for('billing.generateInvoice', person_id=person.id) }}"
+                  href="{{ url_for('billing.pdfInvoice', person_id=person.id) }}"
                   class="btn btn-outline-primary"
                   ><i class="fe fe-file-plus"></i> Generate Invoice</a
                 >

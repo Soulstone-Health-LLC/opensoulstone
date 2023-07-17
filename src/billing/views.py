@@ -530,6 +530,104 @@ def generateInvoice(person_id):
     )
 
 
+# Billing - Invoice - Print Invoice
+@billing.route("/billing/invoices/<int:person_id>/print_invoice")
+@login_required
+def pdfInvoice(person_id):
+    """Prints the invoice for a person"""
+
+    # Current Date
+    current_date = datetime.utcnow()
+
+    # Ledger Charges
+    ledger_charges = (
+        db.session.query(
+            LedgerCharges.created_at,
+            LedgerCharges.charge_id,
+            LedgerCharges.units,
+            LedgerCharges.unit_amount,
+            LedgerCharges.tax_rate,
+            LedgerCharges.practice_id,
+            LedgerCharges.person_id,
+            Charges.id,
+            Charges.name,
+            Charges.description,
+        )
+        .filter_by(practice_id=current_user.practice_id, person_id=person_id)
+        .outerjoin(Charges, Charges.id == LedgerCharges.charge_id)
+        .order_by(LedgerCharges.created_at.desc())
+        .all()
+    )
+
+    # Ledger Payments
+    ledger_payments = (
+        db.session.query(
+            LedgerPayments.created_at,
+            LedgerPayments.payment_method,
+            LedgerPayments.amount,
+            LedgerPayments.payment_note,
+            LedgerPayments.practice_id,
+            LedgerPayments.person_id,
+        )
+        .filter_by(practice_id=current_user.practice_id, person_id=person_id)
+        .order_by(LedgerPayments.created_at.desc())
+        .all()
+    )
+
+    # Person
+    person = People.query.get_or_404(person_id)
+
+    # Practice
+    practice = Practice.query.get_or_404(current_user.practice_id)
+
+    # Total Charges
+    total_charges = (
+        db.session.query(
+            db.func.sum(
+                LedgerCharges.units * LedgerCharges.unit_amount
+                + (LedgerCharges.unit_amount * LedgerCharges.tax_rate)
+            )
+        )
+        .filter_by(practice_id=current_user.practice_id, person_id=person_id)
+        .scalar()
+    )
+
+    # Total Payments
+    total_payments = (
+        db.session.query(db.func.sum(LedgerPayments.amount))
+        .filter_by(practice_id=current_user.practice_id, person_id=person_id)
+        .scalar()
+    )
+
+    # Balance
+    if total_charges is None:
+        total_charges = 0
+    if total_payments is None:
+        total_payments = 0
+
+    balance = total_charges - total_payments
+
+    # Create PDF
+    rendered = render_template(
+        "billing/pdf_invoice.html",
+        title=f"Soulstone - {person.first_name} {person.last_name} Invoice",
+        current_date=current_date,
+        ledger_charges=ledger_charges,
+        ledger_payments=ledger_payments,
+        balance=balance,
+        practice=practice,
+        person=person,
+        user=current_user,
+    )
+    config = pdfkit.configuration(wkhtmltopdf="/usr/bin/wkhtmltopdf")
+    pdf = pdfkit.from_string(rendered, False, configuration=config)
+    response = make_response(pdf)
+    response.headers["Content-Type"] = "application/pdf"
+    response.headers["Content-Disposition"] = \
+        f"inline; filename={person.first_name}_{person.last_name}_invoice_{current_date}.pdf"
+    return response
+
+
 # Billing - Payments - Print Receipt
 @billing.route("/billing/payments/<int:payment_id>/print_receipt")
 @login_required

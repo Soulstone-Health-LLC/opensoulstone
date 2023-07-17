@@ -1,0 +1,110 @@
+<!-- Start Invoice -->
+<style>
+  /* Custom styles for the two-column layout */
+  .two-columns {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+  }
+
+  /* Optional: Add some additional styling to the address sections */
+  .address-section {
+    flex-basis: 48%; /* Adjust the width of the columns as needed */
+  }
+</style>
+
+<div>
+  <h1>Invoice</h1>
+</div>
+<div>
+  <h2>Invoice Date: {{ current_date.strftime('%A, %B %d, %Y') }}</h2>
+</div>
+<hr />
+<div class="two-columns">
+  <div class="address-section">
+    <h3>Invoice From:</h3>
+    <address>
+      {{practice.name}}<br />
+      {{practice.address_1}}<br />
+      {{practice.address_2}}<br />
+      {{practice.city}}, {{practice.state}} {{practice.zipcode}}<br />
+      ({{ practice.phone_number[:3] }}) {{ practice.phone_number[3:6] }}-{{
+      practice.phone_number[6:10] }}<br />
+      {{practice.email}}
+    </address>
+  </div>
+  <div class="address-section">
+    <h3>Invoice To:</h3>
+    <address>
+      {% if person.middle_name == '' and person.suffix_name == '' %} {{
+      person.last_name }}, {{ person.first_name }}
+      <span> ({{person.gender_identity}})</span> {% elif person.suffix_name ==
+      '' %} {{ person.last_name }}, {{ person.first_name }} {{
+      person.middle_name }} <span> ({{person.gender_identity}})</span> {% else
+      %} {{ person.last_name }} {{ person.suffix_name }}, {{ person.first_name
+      }} {{ person.middle_name }} <span> ({{person.gender_identity}})</span> {%
+      endif %}<br />
+      {{person.address_1}}<br />
+      {{person.address_2}}<br />
+      {{person.city}}, {{person.state}} {{person.zipcode}}<br />
+      ({{ person.phone_number[:3] }}) {{ person.phone_number[3:6] }}-{{
+      person.phone_number[6:10] }}<br />
+      {{person.email}}
+    </address>
+  </div>
+</div>
+<div>
+  <table id="invoice-table">
+    <tbody>
+      <tr>
+        <th>Date</th>
+        <th>Type (Charge/Payment)</th>
+        <th>Item</th>
+        <th>Quantity</th>
+        <th>Unit Price</th>
+        <th>Sub Total</th>
+      </tr>
+      {% for charge in ledger_charges %}
+      <tr>
+        <td>{{charge.created_at.strftime('%Y-%m-%d')}}</td>
+        <td>Charge</td>
+        <td>
+          <p>{{charge.name}}</p>
+          <div>
+            <div>{{charge.description}}</div>
+          </div>
+        </td>
+        <td>{{charge.units}}</td>
+        <td>{{"$ {:,.2f}".format(charge.unit_amount)}}</td>
+        <td>
+          {{"$ {:,.2f}".format((charge.unit_amount + (charge.unit_amount *
+          charge.tax_rate)) * charge.units)}}
+        </td>
+      </tr>
+      {% endfor %} {% for payment in ledger_payments %}
+      <tr>
+        <td>{{payment.created_at.strftime('%Y-%m-%d')}}</td>
+        <td>Payment</td>
+        <td>
+          <p>{{payment.payment_method}}</p>
+          <div>
+            <div>
+              {% if payment.check_number %} {{payment.check_number}} {% elif
+              payment.credit_card_last_four %} {{payment.credit_card_last_four}}
+              {% endif %}
+            </div>
+          </div>
+        </td>
+        <td></td>
+        <td></td>
+        <td>{{"$ {:,.2f}".format(payment.amount)}}</td>
+      </tr>
+      {% endfor %}
+      <tr>
+        <td colspan="5"><strong>Total Balance</strong></td>
+        <td><strong>{{"$ {:,.2f}".format(balance)}}</strong></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- End Invoice -->
