@@ -470,7 +470,7 @@ def addCharge():
             code = form.code.data
             name = form.name.data
             description = form.description.data
-            amount = request.form.get("amount")
+            amount = form.amount.data
             status = form.status.data
 
             # Add new charge to database

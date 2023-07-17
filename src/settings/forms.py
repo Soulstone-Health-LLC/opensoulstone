@@ -5,7 +5,9 @@ Settings > Forms - Forms for the Settings Blueprint
 # Imports
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, SubmitField, SelectField, EmailField
+from wtforms import (
+    StringField, SubmitField, SelectField, EmailField, DecimalField
+)
 from wtforms.fields.simple import TelField
 from wtforms.validators import DataRequired, Length, Email, InputRequired
 from wtforms.widgets import TextArea
@@ -134,6 +136,7 @@ class AddChargeForm(FlaskForm):
         label="Charge Description *", widget=TextArea(),
         validators=[DataRequired()]
     )
+    amount = DecimalField(label="Amount *", validators=[DataRequired()])
     status = SelectField(label="Status *", choices=STATUS_CHOICES)
     submit = SubmitField(label="Add New Charge")
 
@@ -151,6 +154,7 @@ class EditChargeForm(FlaskForm):
         label="Charge Description *", widget=TextArea(),
         validators=[DataRequired()]
     )
+    amount = DecimalField(label="Amount *", validators=[DataRequired()])
     status = SelectField(label="Status *", choices=STATUS_CHOICES)
     submit = SubmitField(label="Save Charge")
 
