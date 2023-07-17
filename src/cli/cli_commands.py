@@ -85,7 +85,7 @@ def db_seed():
         practice_id=1,
         email="rodneygauna+support@gmail.com",
         password=generate_password_hash(
-            "rodneygauna+support", method="sha256"),
+            "rodneygauna+support"),
         first_name="Support",
         last_name="User",
         role="Support",
@@ -96,7 +96,7 @@ def db_seed():
     test_user = User(
         practice_id=2,
         email="rodneygauna+hh@gmail.com",
-        password=generate_password_hash("rodneygauna+hh", method="sha256"),
+        password=generate_password_hash("rodneygauna+hh"),
         first_name="Rodney",
         last_name="Gauna",
         role="Practitioner",
