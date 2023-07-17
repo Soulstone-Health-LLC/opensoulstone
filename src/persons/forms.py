@@ -5,8 +5,11 @@ Persons > Forms - This file contains the forms for the Persons Blueprint.
 
 # Imports
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, SelectField
-from wtforms import EmailField, DateField, SearchField
+from flask_wtf.file import FileField, FileAllowed
+from wtforms import (
+    StringField, SubmitField, SelectField, EmailField, DateField,
+    SearchField,
+)
 from wtforms.fields.simple import TelField
 from wtforms.validators import DataRequired, Length
 from src.dictionary.general import (
@@ -21,6 +24,8 @@ from src.dictionary.general import (
 class AddPersonForm(FlaskForm):
     """Add User to the Practice Form"""
 
+    picture = FileField("Upload Profile Picture",
+                        validators=[FileAllowed(["jpg", "png"])])
     first_name = StringField(
         label="First Name *", validators=[DataRequired(),
                                           Length(min=2, max=150)]
@@ -51,6 +56,8 @@ class AddPersonForm(FlaskForm):
 class EditPersonForm(FlaskForm):
     """Add User to the Practice Form"""
 
+    picture = FileField("Upload Profile Picture",
+                        validators=[FileAllowed(["jpg", "png"])])
     first_name = StringField(
         label="First Name *", validators=[DataRequired(),
                                           Length(min=2, max=150)]

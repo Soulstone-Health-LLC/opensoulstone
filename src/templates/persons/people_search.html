@@ -52,7 +52,7 @@
                     {% for p in results %}
                     <tr>
                         <td class="align-middle text-center">
-                        <img alt="image" class="avatar avatar-md br-7" src="#" />
+                        <img alt="image" class="avatar avatar-md br-7" src="{{ url_for('static', filename='profile_pics/' + p.profile_image) }}" />
                         </td>
                         <td class="text-nowrap align-middle">
                         <a href="{{ url_for('persons.viewPerson', id=p.id) }}">

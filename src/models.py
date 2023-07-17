@@ -61,6 +61,8 @@ class User(db.Model, UserMixin):
     role = db.Column(db.String(50), nullable=False, default="Staff")
     user_type = db.Column(db.String(10), nullable=False, default="User")
     status = db.Column(db.Text, nullable=False, default="Active")
+    profile_image = db.Column(
+        db.String(255), nullable=False, default='default_profile.jpg')
 
     # For Reset/Forgot Password
     def get_token(self, expires_sec=900):
@@ -163,6 +165,8 @@ class People(db.Model):
     status = db.Column(db.Text, default="Active")
     date_of_birth = db.Column(db.Date)
     gender_identity = db.Column(db.Text)
+    profile_image = db.Column(
+        db.String(255), nullable=False, default='default_profile.jpg')
     # Relationships
     events = db.relationship("Events")
 

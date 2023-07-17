@@ -23,6 +23,7 @@ from src.models import (
     User,
 )
 from src.persons.person_header import personHeader
+from src.utils.picture_handler import add_profile_pic
 
 
 # Blueprint Configuration
@@ -110,33 +111,66 @@ def addPerson():
             phone_number = form.phone.data
             phone_type = form.phone_type.data
             email = form.email.data
+            # If profile picture is included, save it to the filesystem
+            if form.picture.data:
+                username = first_name + last_name + str(datetime.utcnow())
+                pic = add_profile_pic(form.picture.data, username)
 
             # Add new practice to database
-            new_person = People(
-                practice_id=practice_id,
-                created_at=created_at,
-                created_by=created_by,
-                updated_at=updated_at,
-                updated_by=updated_by,
-                first_name=first_name,
-                middle_name=middle_name,
-                last_name=last_name,
-                suffix_name=suffix,
-                date_of_birth=date_of_birth,
-                gender_identity=gender_identity,
-                address_1=address_1,
-                address_2=address_2,
-                city=city,
-                state=state,
-                zipcode=zipcode,
-                phone_number=phone_number,
-                phone_type=phone_type,
-                email=email,
-            )
-            db.session.add(new_person)
-            db.session.commit()
-            flash(f"{first_name} {last_name} created successfully.",
-                  category="success")
+            # If a profile picture was uploaded, add it to the database
+            if form.picture.data:
+                new_person = People(
+                    practice_id=practice_id,
+                    created_at=created_at,
+                    created_by=created_by,
+                    updated_at=updated_at,
+                    updated_by=updated_by,
+                    first_name=first_name,
+                    middle_name=middle_name,
+                    last_name=last_name,
+                    suffix_name=suffix,
+                    date_of_birth=date_of_birth,
+                    gender_identity=gender_identity,
+                    address_1=address_1,
+                    address_2=address_2,
+                    city=city,
+                    state=state,
+                    zipcode=zipcode,
+                    phone_number=phone_number,
+                    phone_type=phone_type,
+                    email=email,
+                    profile_image=pic,
+                )
+                db.session.add(new_person)
+                db.session.commit()
+                flash(f"{first_name} {last_name} created successfully.",
+                      category="success")
+            else:
+                new_person = People(
+                    practice_id=practice_id,
+                    created_at=created_at,
+                    created_by=created_by,
+                    updated_at=updated_at,
+                    updated_by=updated_by,
+                    first_name=first_name,
+                    middle_name=middle_name,
+                    last_name=last_name,
+                    suffix_name=suffix,
+                    date_of_birth=date_of_birth,
+                    gender_identity=gender_identity,
+                    address_1=address_1,
+                    address_2=address_2,
+                    city=city,
+                    state=state,
+                    zipcode=zipcode,
+                    phone_number=phone_number,
+                    phone_type=phone_type,
+                    email=email,
+                )
+                db.session.add(new_person)
+                db.session.commit()
+                flash(f"{first_name} {last_name} created successfully.",
+                      category="success")
 
             # Redirect to view people
             return redirect(url_for("persons.people"))
@@ -178,6 +212,13 @@ def editPerson(id):
     if form.validate_on_submit():
         if request.method == "POST":
             # Get data from the form
+            # If profile picture is included, save it to the filesystem
+            if form.picture.data:
+                username = person.first_name + person.last_name + str(
+                    datetime.utcnow()
+                )
+                pic = add_profile_pic(form.picture.data, username)
+                person.profile_image = pic
             person.updated_at = datetime.utcnow()
             person.updated_by = current_user.get_id()
             person.first_name = form.first_name.data

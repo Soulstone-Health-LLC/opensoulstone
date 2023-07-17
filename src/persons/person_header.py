@@ -30,6 +30,7 @@ def personHeader(person_id):
             People.status,
             People.date_of_birth,
             People.gender_identity,
+            People.profile_image,
         )
         .filter_by(id=person_id)
         .first()
