@@ -30,9 +30,11 @@ mccabe==0.7.0
 outcome==1.1.0
 packaging==21.2
 pdfkit==1.0.0
+Pillow==10.0.0
 platformdirs==2.6.2
 pluggy==1.0.0
 py==1.10.0
+py3-wkhtmltopdf==0.4.1
 pycparser==2.21
 pylint==2.15.9
 pylint-flask==0.6
