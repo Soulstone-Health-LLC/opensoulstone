@@ -351,7 +351,7 @@
                   >
                     <span>
                       <img
-                        src="{{ url_for('static', filename='assets/images/users/8.jpg') }}"
+                        src="{{ url_for('static', filename='profile_pics/' + current_user.profile_image) }}"
                         alt="profile-user"
                         class="avatar profile-user brround cover-image"
                       />
@@ -642,6 +642,24 @@
           {% with messages=get_flashed_messages(with_categories=true) %} {% if
           messages %} {% for category, message in messages %} {% if category ==
           'error' %}
+          <div
+            class="alert alert-danger alert-dismissible fade show mb-0"
+            role="alert"
+          >
+            <span class="alert-inner--icon"><i class="fe fe-slash"></i></span>
+            <span class="alert-inner--text"
+              ><strong>Danger! </strong>{{ message }}</span
+            >
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="alert"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          {% elif category == 'danger' %}
           <div
             class="alert alert-danger alert-dismissible fade show mb-0"
             role="alert"
