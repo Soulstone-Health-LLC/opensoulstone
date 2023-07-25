@@ -93,7 +93,7 @@ class SearchPersonForm(FlaskForm):
         label="Search",
         render_kw={
             "class": "form-control",
-            "placeholder": "Search for a person by first or last name...",
+            "placeholder": "Search for a person by first name, last name, phone number, or email...",
         },
         validators=[DataRequired()],
     )

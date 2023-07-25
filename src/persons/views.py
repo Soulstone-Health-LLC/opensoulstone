@@ -63,8 +63,10 @@ def searchPerson():
         if request.method == "POST":
             query = form.query.data
             results = People.query.filter(
-                People.first_name.contains(
-                    query) | People.last_name.contains(query)
+                People.first_name.contains(query) |
+                People.last_name.contains(query) |
+                People.email.contains(query) |
+                People.phone_number.contains(query)
             ).all()
             results_count = People.query.filter(
                 People.first_name.contains(
