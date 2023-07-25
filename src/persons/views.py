@@ -143,8 +143,10 @@ def addPerson():
                 )
                 db.session.add(new_person)
                 db.session.commit()
-                flash(f"{first_name} {last_name} created successfully.",
-                      category="success")
+                flash(
+                    f"{first_name} {last_name} created successfully.",
+                    category="success",
+                )
             else:
                 new_person = People(
                     practice_id=practice_id,
@@ -169,8 +171,10 @@ def addPerson():
                 )
                 db.session.add(new_person)
                 db.session.commit()
-                flash(f"{first_name} {last_name} created successfully.",
-                      category="success")
+                flash(
+                    f"{first_name} {last_name} created successfully.",
+                    category="success",
+                )
 
             # Redirect to view people
             return redirect(url_for("persons.people"))
@@ -214,9 +218,8 @@ def editPerson(id):
             # Get data from the form
             # If profile picture is included, save it to the filesystem
             if form.picture.data:
-                username = person.first_name + person.last_name + str(
-                    datetime.utcnow()
-                )
+                username = person.first_name + \
+                    person.last_name + str(datetime.utcnow())
                 pic = add_profile_pic(form.picture.data, username)
                 person.profile_image = pic
             person.updated_at = datetime.utcnow()
@@ -240,8 +243,9 @@ def editPerson(id):
             # Update person to database
             db.session.commit()
             flash(
-                f"{person.first_name} {person.last_name}"
-                " updated successfully.",
+                f"""
+                {person.first_name} {person.last_name} updated successfully.
+                """,
                 category="success",
             )
 
