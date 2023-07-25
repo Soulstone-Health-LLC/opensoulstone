@@ -26,23 +26,47 @@
           {{ form.hidden_tag() }}
           <div class="">
             <div class="row">
-              {{ form.payment_amount.label}}{{
-              form.payment_amount(class="form-control") }} {{
-              form.check_number.label }}{{
-              form.check_number(class="form-control") }} {{
-              form.credit_card_number.label }}{{
-              form.credit_card_number(class="form-control") }} {{
-              form.payment_method.label }}{{
-              form.payment_method(class="form-control") }} {{
-              form.payment_note.label}}{{
-              form.payment_note(class="form-control") }}
+              <div class="col-sm-12 col-md-6 col-lg-6">
+                {{ form.payment_method.label }}{{
+                form.payment_method(class="form-control") }}
+              </div>
+              <div class="col-sm-12 col-md-6 col-lg-6">
+                {{ form.payment_amount.label}}{{
+                form.payment_amount(class="form-control", id="payment_method")
+                }}
+              </div>
             </div>
-            {{ form.submit(class="btn btn-primary") }}
+            <div class="row">
+              <div class="col-sm-12 col-md-6 col-lg-6">
+                {{ form.check_number.label }}{{
+                form.check_number(class="form-control") }}
+              </div>
+              <div class="col-sm-12 col-md-6 col-lg-6">
+                {{ form.credit_card_number.label }}{{
+                form.credit_card_number(class="form-control") }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                {{ form.payment_note.label}}{{
+                form.payment_note(class="form-control") }}
+              </div>
+            </div>
+            <div class="row mt-4">
+              <div>{{ form.submit(class="btn btn-primary") }}</div>
+            </div>
           </div>
         </form>
       </div>
     </div>
   </div>
 </div>
+<script>
+  function displaySecondTypeField() {
+    var paymentMethodType = document.getElementById("payment_method");
+    var selectedMethod =
+      paymentMethodType.options[paymentMethodType.selectedIndex].text;
+  }
+</script>
 <!-- End Add Charge -->
 {% endblock content %}
