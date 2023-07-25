@@ -89,7 +89,7 @@
                 <td>{{ "$ {:,.2f}".format(lp.amount) }}</td>
                 <td>
                   <div class="btn-group">
-                    <a href="#" class="btn btn-primary badge" type="button"
+                    <a href="{{ url_for('billing.view_ledger_payment', ledger_payment_id=lp.id) }}" class="btn btn-primary badge" type="button"
                       ><i class="fe fe-eye"></i> View</a
                     >
                     <a

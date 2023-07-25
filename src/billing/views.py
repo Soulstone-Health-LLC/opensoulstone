@@ -438,6 +438,59 @@ def addLedgerPayment(id):
     )
 
 
+# Billing - Ledger Payment - View
+@billing.route("/billing/ledger_payment/<int:ledger_payment_id>")
+@login_required
+def view_ledger_payment(ledger_payment_id):
+    """View the ledger payment"""
+
+    # queries
+    ledger_payment = LedgerPayments.query.get_or_404(ledger_payment_id)
+    person = People.query.get_or_404(ledger_payment.person_id)
+
+    # current user practice id
+    pu_id = current_user.practice_id
+    pp_id = person.practice_id
+
+    # check if user practice id matches patient user id
+    if pu_id == pp_id:
+        # Base Person Header
+        person_header, notes_count, events_count, balance = personHeader(
+            person.id)
+
+        return render_template(
+            "billing/view_ledger_payment.html",
+            title="Soulstone - Ledger Payment",
+            user=current_user,
+            ledger_payment=ledger_payment,
+            person=person,
+            person_header=person_header,
+            notes_count=notes_count,
+            events_count=events_count,
+            balance=balance,
+        )
+    else:
+        return render_template("error_pages/401.html", user=current_user)
+
+
+# Billing - Ledger Payment - Delete
+@billing.route("/billing/ledger_payment/<int:ledger_payment_id>/delete",
+               methods=["POST"])
+@login_required
+def delete_ledger_payment(ledger_payment_id):
+    """Delete a ledger payment"""
+
+    # queries
+    ledger_payment = LedgerPayments.query.get_or_404(ledger_payment_id)
+
+    # Delete the ledger charge
+    if request.method == "POST":
+        db.session.delete(ledger_payment)
+        db.session.commit()
+        flash("Ledger payment deleted successfully.", category="success")
+        return redirect(url_for("billing.payments"))
+
+
 # Generate Invoice for Person
 @billing.route("/billing/invoices/<int:person_id>/generate_invoice")
 @login_required
