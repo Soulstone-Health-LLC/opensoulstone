@@ -227,6 +227,8 @@ understood, and agree to be bound by this Agreement.
                 email=fake.email(),
                 status="Active",
                 gender_identity="She/Her",
+                created_at=fake.date_between(
+                    start_date="-1y", end_date="today"),
             )
         )
 
@@ -283,6 +285,8 @@ understood, and agree to be bound by this Agreement.
                 person_id=random.randint(1, 1100),
                 units=1,
                 unit_amount=round(random.uniform(1.00, 1000.00)),
+                created_at=fake.date_between(
+                    start_date="-1y", end_date="today"),
             )
         )
 
@@ -296,6 +300,8 @@ understood, and agree to be bound by this Agreement.
                 payment_method=fake.random_element(
                     elements=("Cash", "Check", "Credit Card", "Other")),
                 payment_note=fake.paragraph(),
+                created_at=fake.date_between(
+                    start_date="-1y", end_date="today"),
             )
         )
 
