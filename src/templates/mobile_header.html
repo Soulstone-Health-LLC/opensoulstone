@@ -85,9 +85,9 @@
             <div class="drop-heading">
               <div class="text-center">
                 <h5 class="text-dark mb-0">
-                  {{ user.first_name}} {{ user.last_name}}
+                  {{ current_user.first_name}} {{ current_user.last_name}}
                 </h5>
-                <small class="text-muted">{{ user.role }}</small>
+                <small class="text-muted">{{ current_user.role }}</small>
               </div>
             </div>
             <div class="dropdown-divider m-0"></div>
@@ -120,7 +120,7 @@
 >
   <div class="collapse navbar-collapse" id="navbarSupportedContent-4">
     <div class="d-flex order-lg-2 ms-auto">
-      <div class="dropdown d-md-flex">
+      <!-- <div class="dropdown d-md-flex">
         <a class="nav-link icon theme-layout nav-link-bg layout-setting">
           <span
             class="dark-layout"
@@ -137,15 +137,15 @@
             ><i class="fe fe-sun"></i
           ></span>
         </a>
-      </div>
+      </div> -->
       <!-- Theme-Layout -->
-      <div class="dropdown d-md-flex">
+      <!-- <div class="dropdown d-md-flex">
         <a class="nav-link icon full-screen-link nav-link-bg">
           <i class="fe fe-minimize fullscreen-button"></i>
         </a>
-      </div>
+      </div> -->
       <!-- FULL-SCREEN -->
-      <div class="dropdown d-md-flex notifications">
+      <!-- <div class="dropdown d-md-flex notifications">
         <a class="nav-link icon" data-bs-toggle="dropdown"
           ><i class="fe fe-bell"></i><span class="pulse"></span>
         </a>
@@ -198,9 +198,9 @@
             >View all Notification</a
           >
         </div>
-      </div>
+      </div> -->
       <!-- NOTIFICATIONS -->
-      <div class="dropdown d-md-flex message">
+      <!-- <div class="dropdown d-md-flex message">
         <a class="nav-link icon text-center" data-bs-toggle="dropdown">
           <i class="fe fe-message-square"></i><span class="pulse-danger"></span>
         </a>
@@ -280,7 +280,7 @@
             >See all Messages</a
           >
         </div>
-      </div>
+      </div> -->
       <!-- MESSAGE-BOX -->
       <div class="dropdown d-md-flex profile-1">
         <a
@@ -290,7 +290,7 @@
         >
           <span>
             <img
-              src="{{ url_for('static', filename='assets/images/users/8.jpg') }}"
+              src="{{ url_for('static', filename='profile_pics/' + current_user.profile_image) }}"
               alt="profile-user"
               class="avatar profile-user brround cover-image"
             />
@@ -299,30 +299,34 @@
         <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
           <div class="drop-heading">
             <div class="text-center">
-              <h5 class="text-dark mb-0">Elizabeth Dyer</h5>
-              <small class="text-muted">Administrator</small>
+              <h5 class="text-dark mb-0">
+                {{ current_user.first_name }} {{ current_user.last_name }}
+              </h5>
+              <small class="text-muted">{{ current_user.role }}</small>
             </div>
           </div>
           <div class="dropdown-divider m-0"></div>
-          <a class="dropdown-item" href="#">
+          <a
+            class="dropdown-item"
+            href="{{url_for('settings.profile', user_id=current_user.id)}}"
+          >
             <i class="dropdown-icon fe fe-user"></i> Profile
           </a>
-          <a class="dropdown-item" href="#">
-            <i class="dropdown-icon fe fe-mail"></i> Inbox
-            <span class="badge bg-primary float-end">3</span>
-          </a>
-          <a class="dropdown-item" href="#">
-            <i class="dropdown-icon fe fe-settings"></i> Settings
+          <a
+            class="dropdown-item"
+            href="{{ url_for('core.release_notes_page')}}"
+          >
+            <i class="dropdown-icon fa fa-bullhorn"></i> Release Notes
           </a>
           <a class="dropdown-item" href="#">
             <i class="dropdown-icon fe fe-alert-triangle"></i> Need help?
           </a>
-          <a class="dropdown-item" href="login.html">
+          <a class="dropdown-item" href="{{url_for('users.logout')}}">
             <i class="dropdown-icon fe fe-alert-circle"></i> Sign out
           </a>
         </div>
       </div>
-      <div class="dropdown d-md-flex header-settings">
+      <!-- <div class="dropdown d-md-flex header-settings">
         <a
           href="#"
           class="nav-link icon"
@@ -331,7 +335,7 @@
         >
           <i class="fe fe-menu"></i>
         </a>
-      </div>
+      </div> -->
       <!-- SIDE-MENU -->
     </div>
   </div>
