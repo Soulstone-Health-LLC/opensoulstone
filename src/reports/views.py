@@ -6,14 +6,17 @@ Reports - Views -- This file contains the views for the reports app.
 import io
 import csv
 from datetime import datetime
-from flask import (
-    Blueprint, request, render_template, make_response
-)
+from flask import Blueprint, request, render_template, make_response
 from flask_login import login_required, current_user
 from src.reports.forms import GenerateReportForm
 from src import db
 from src.models import (
-    User, People, Events, Notes, LedgerCharges, LedgerPayments,
+    User,
+    People,
+    Events,
+    Notes,
+    LedgerCharges,
+    LedgerPayments,
     EventTypes,
 )
 
@@ -68,7 +71,8 @@ def generate_report():
         )
 
     return render_template(
-        "reports/generate_report.html", title="Soulstone - Generate Report",
+        "reports/generate_report.html",
+        title="Soulstone - Generate Report",
         form=form,
         user=current_user,
     )
@@ -100,8 +104,9 @@ def export_csv():
     response = make_response(csv_output.getvalue())
 
     # Set the appropriate headers for CSV download
-    response.headers["Content-Disposition"] = \
-        f"attachment; filename={selected_report}_{current_time}.csv"
+    response.headers[
+        "Content-Disposition"
+    ] = f"attachment; filename={selected_report}_{current_time}.csv"
     response.headers["Content-type"] = "text/csv"
 
     return response
@@ -201,7 +206,7 @@ def generate_report_data(report, start_date, end_date):
             .filter(
                 People.practice_id == current_user.practice_id,
                 People.created_at >= start_date,
-                People.created_at <= end_date
+                People.created_at <= end_date,
             )
             .all()
         )
@@ -226,7 +231,7 @@ def generate_report_data(report, start_date, end_date):
             .filter(
                 Events.practice_id == current_user.practice_id,
                 Events.date >= start_date,
-                Events.date <= end_date
+                Events.date <= end_date,
             )
             .all()
         )
@@ -256,20 +261,17 @@ def generate_report_data(report, start_date, end_date):
         return open_visit_notes_report_data
     # Birthday Report
     elif report == "Birthday Report":
-        birthday_report_data = (
-            db.session.query(
-                People.id,
-                People.first_name,
-                People.middle_name,
-                People.last_name,
-                People.suffix_name,
-                People.date_of_birth,
-            )
-            .filter(
-                People.practice_id == current_user.practice_id,
-                People.date_of_birth >= start_date,
-                People.date_of_birth <= end_date,
-            )
+        birthday_report_data = db.session.query(
+            People.id,
+            People.first_name,
+            People.middle_name,
+            People.last_name,
+            People.suffix_name,
+            People.date_of_birth,
+        ).filter(
+            People.practice_id == current_user.practice_id,
+            People.date_of_birth >= start_date,
+            People.date_of_birth <= end_date,
         )
         return birthday_report_data
     # People with Open Balances
@@ -283,12 +285,10 @@ def generate_report_data(report, start_date, end_date):
                     db.func.sum(
                         LedgerCharges.unit_amount * LedgerCharges.units
                         + (LedgerCharges.unit_amount * LedgerCharges.tax_rate)
-                    ) - db.func.coalesce(
-                        db.func.sum(LedgerPayments.amount),
-                        0
-                    ),
-                    0
-                ).label("balance")
+                    )
+                    - db.func.coalesce(db.func.sum(LedgerPayments.amount), 0),
+                    0,
+                ).label("balance"),
             )
             .outerjoin(LedgerCharges)
             .outerjoin(LedgerPayments)
@@ -299,11 +299,9 @@ def generate_report_data(report, start_date, end_date):
                         LedgerCharges.unit_amount * LedgerCharges.units
                         + (LedgerCharges.unit_amount * LedgerCharges.tax_rate)
                     ),
-                    0
-                ) > db.func.coalesce(
-                    db.func.sum(LedgerPayments.amount),
-                    0
+                    0,
                 )
+                > db.func.coalesce(db.func.sum(LedgerPayments.amount), 0)
             )
             .filter(People.practice_id == current_user.practice_id)
             .all()
