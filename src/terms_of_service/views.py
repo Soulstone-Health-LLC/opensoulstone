@@ -46,10 +46,12 @@ def user_agreement(tos_id):
             # Redirect user to home page
             return redirect(url_for("core.home"))
 
-    return render_template("terms_of_service/user_agreement.html",
-                           form=form,
-                           user=current_user,
-                           agreement_content=agreement_content)
+    return render_template(
+        "terms_of_service/user_agreement.html",
+        form=form,
+        user=current_user,
+        agreement_content=agreement_content,
+    )
 
 
 # Support - Terms of Service - List Terms of Service
@@ -62,9 +64,9 @@ def support_list_tos():
     # Get all terms of service
     tos = TermsOfService.query.all()
 
-    return render_template("terms_of_service/support_list_tos.html",
-                           user=current_user,
-                           tos=tos)
+    return render_template(
+        "terms_of_service/support_list_tos.html", user=current_user, tos=tos
+    )
 
 
 # Support - Terms of Service - View Terms of Service
@@ -91,10 +93,10 @@ def support_view_tos(tos_id):
             TermsOfService.updated_by,
             TermsOfService.active_date,
             TermsOfService.sunset_date,
-            created_by_user.first_name.label('created_by_first_name'),
-            created_by_user.last_name.label('created_by_last_name'),
-            updated_by_user.first_name.label('updated_by_first_name'),
-            updated_by_user.last_name.label('updated_by_last_name'),
+            created_by_user.first_name.label("created_by_first_name"),
+            created_by_user.last_name.label("created_by_last_name"),
+            updated_by_user.first_name.label("updated_by_first_name"),
+            updated_by_user.last_name.label("updated_by_last_name"),
         )
         .join(created_by_user, TermsOfService.created_by == created_by_user.id)
         .outerjoin(updated_by_user,
@@ -103,9 +105,9 @@ def support_view_tos(tos_id):
         .first()
     )
 
-    return render_template("terms_of_service/support_view_tos.html",
-                           user=current_user,
-                           tos=tos)
+    return render_template(
+        "terms_of_service/support_view_tos.html", user=current_user, tos=tos
+    )
 
 
 # Support - Terms of Service - Create Terms of Service
@@ -136,15 +138,18 @@ def support_create_tos():
             # Redirect user to support - list terms of service page
             return redirect(url_for("terms_of_service.support_list_tos"))
 
-    return render_template("terms_of_service/support_add_edit_tos.html",
-                           user=current_user,
-                           form=form,
-                           title="Create Terms of Service")
+    return render_template(
+        "terms_of_service/support_add_edit_tos.html",
+        user=current_user,
+        form=form,
+        title="Create Terms of Service",
+    )
 
 
 # Support - Terms of Service - Edit Terms of Service
-@terms_of_service.route("/support/terms_of_service/edit/<int:tos_id>",
-                        methods=["GET", "POST"])
+@terms_of_service.route(
+    "/support/terms_of_service/edit/<int:tos_id>", methods=["GET", "POST"]
+)
 @login_required
 @support_required
 def support_edit_tos(tos_id):
@@ -177,7 +182,9 @@ def support_edit_tos(tos_id):
             # Redirect user to support - list terms of service page
             return redirect(url_for("terms_of_service.support_list_tos"))
 
-    return render_template("terms_of_service/support_add_edit_tos.html",
-                           user=current_user,
-                           form=form,
-                           title="Soulstone - Edit Terms of Service")
+    return render_template(
+        "terms_of_service/support_add_edit_tos.html",
+        user=current_user,
+        form=form,
+        title="Soulstone - Edit Terms of Service",
+    )
