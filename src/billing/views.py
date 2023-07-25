@@ -6,8 +6,13 @@ Billing > Views - This file contains the routes for the billing blueprint.
 import pdfkit
 from datetime import datetime
 from flask import (
-    Blueprint, render_template, request, flash, redirect, url_for,
-    make_response
+    Blueprint,
+    render_template,
+    request,
+    flash,
+    redirect,
+    url_for,
+    make_response,
 )
 from flask_login import login_required, current_user
 from src.billing.forms import AddLedgerChargeForm, AddLedgerPaymentForm
@@ -100,7 +105,7 @@ def balance():
                     LedgerCharges.units * LedgerCharges.unit_amount
                     + (LedgerCharges.unit_amount * LedgerCharges.tax_rate)
                 ),
-                0  # Replace None with 0
+                0,  # Replace None with 0
             )
         )
         .filter_by(practice_id=current_user.practice_id)
@@ -110,8 +115,7 @@ def balance():
     total_payments = (
         db.session.query(
             db.func.coalesce(
-                db.func.sum(LedgerPayments.amount),
-                0  # Replace None with 0
+                db.func.sum(LedgerPayments.amount), 0  # Replace None with 0
             )
         )
         .filter_by(practice_id=current_user.practice_id)
@@ -129,11 +133,12 @@ def balance():
                     LedgerCharges.unit_amount * LedgerCharges.units
                     + (LedgerCharges.unit_amount * LedgerCharges.tax_rate)
                 ),
-                0
-            ) > db.func.coalesce(
+                0,
+            )
+            > db.func.coalesce(
                 # Replace with the correct column name
                 db.func.sum(LedgerPayments.amount),
-                0
+                0,
             )
         )
         .filter(People.practice_id == current_user.practice_id)
@@ -180,7 +185,7 @@ def addLedgerCharge(id):
             # List of charges for the select field
             form.charge_id.choices = [
                 (str(charge.id), charge.description +
-                 f' (${charge.amount:.2f})')
+                 f" (${charge.amount:.2f})")
                 for charge in practice_charges
             ]
 
@@ -474,8 +479,9 @@ def view_ledger_payment(ledger_payment_id):
 
 
 # Billing - Ledger Payment - Delete
-@billing.route("/billing/ledger_payment/<int:ledger_payment_id>/delete",
-               methods=["POST"])
+@billing.route(
+    "/billing/ledger_payment/<int:ledger_payment_id>/delete", methods=["POST"]
+)
 @login_required
 def delete_ledger_payment(ledger_payment_id):
     """Delete a ledger payment"""
@@ -561,8 +567,7 @@ def generateInvoice(person_id):
     )
 
     # Base Person Header
-    person_header, notes_count, events_count, balance = personHeader(
-        person_id)
+    person_header, notes_count, events_count, balance = personHeader(person_id)
 
     # Render the invoice
     return render_template(
@@ -676,8 +681,10 @@ def pdfInvoice(person_id):
     pdf = pdfkit.from_string(rendered, False, configuration=config)
     response = make_response(pdf)
     response.headers["Content-Type"] = "application/pdf"
-    response.headers["Content-Disposition"] = \
-        f"inline; filename={person.first_name}_{person.last_name}_invoice_{current_date}.pdf"
+    response.headers[
+        "Content-Disposition"
+    ] = f"inline;\
+        filename={person.first_name}_{person.last_name}_invoice_{current_date}.pdf"
     return response
 
 
@@ -702,6 +709,6 @@ def pdfPaymentReceipt(payment_id):
     pdf = pdfkit.from_string(rendered, False, configuration=config)
     response = make_response(pdf)
     response.headers["Content-Type"] = "application/pdf"
-    response.headers["Content-Disposition"] = \
-        "inline; filename=payment_receipt.pdf"
+    response.headers["Content-Disposition"] = "inline;\
+        filename=payment_receipt.pdf"
     return response
