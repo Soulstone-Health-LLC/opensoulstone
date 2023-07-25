@@ -262,6 +262,16 @@ understood, and agree to be bound by this Agreement.
 
     # Test practice events
     for i in range(1, 1100):
+        start_time = fake.time_object()
+
+        # Select a random end time increment: 15, 30, 45, or 60 minutes
+        end_time_increments = [15, 30, 45, 60]
+        end_time_increment = random.choice(end_time_increments)
+
+        # Calculate the end time
+        end_time = (datetime.combine(datetime.min, start_time) +
+                    timedelta(minutes=end_time_increment)).time()
+
         data.append(
             Events(
                 practice_id=2,
@@ -270,8 +280,8 @@ understood, and agree to be bound by this Agreement.
                 practitioner_id=2,
                 date=fake.date_between(
                     start_date="-1y", end_date="today"),
-                start_time=fake.time_object(),
-                end_time=fake.time_object(),
+                start_time=start_time,
+                end_time=end_time,
                 note=fake.paragraph(),
             )
         )
