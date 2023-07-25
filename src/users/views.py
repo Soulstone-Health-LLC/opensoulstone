@@ -59,21 +59,30 @@ def login():
                             return redirect(url_for("users.change_password"))
                         else:
                             # Check if user has agreed to the latest TOS
-                            active_tos = TermsOfService.query.filter(
-                                TermsOfService.active_date <= datetime.now(),
-                                TermsOfService.sunset_date > datetime.now())\
-                                .order_by(TermsOfService.active_date.desc())\
+                            active_tos = (
+                                TermsOfService.query.filter(
+                                    TermsOfService.active_date <=
+                                    datetime.now(),
+                                    TermsOfService.sunset_date >
+                                    datetime.now(),
+                                )
+                                .order_by(TermsOfService.active_date.desc())
                                 .first()
+                            )
 
                             user_agreement = UserAgreement.query.filter(
                                 UserAgreement.user_id == user.id,
-                                UserAgreement.tos_id == active_tos.id).first()
+                                UserAgreement.tos_id == active_tos.id,
+                            ).first()
 
                             if not user_agreement:
                                 login_user(user, remember=True)
                                 return redirect(
-                                    url_for("terms_of_service.user_agreement",
-                                            tos_id=active_tos.id))
+                                    url_for(
+                                        "terms_of_service.user_agreement",
+                                        tos_id=active_tos.id,
+                                    )
+                                )
                             else:
                                 flash("Logged in successfully",
                                       category="success")
@@ -206,7 +215,7 @@ def sign_up():
                     first_name=first_name,
                     last_name=last_name,
                     password=generate_password_hash(password),
-                    user_type="Owner"
+                    user_type="Owner",
                 )
                 db.session.add(new_user)
                 db.session.commit()
