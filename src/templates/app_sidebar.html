@@ -1,0 +1,139 @@
+{% block app_sidebar %}
+<!--APP-SIDEBAR-->
+<div class="app-sidebar__overlay" data-bs-toggle="sidebar"></div>
+<aside class="app-sidebar">
+  <div class="side-header">
+    <a class="header-brand1" href="{{url_for('core.home')}}">
+      <img
+        src="{{ url_for('static', filename='assets/images/brand/logo.png') }}"
+        class="header-brand-img desktop-logo"
+        alt="logo"
+      />
+      <img
+        src="{{ url_for('static', filename='assets/images/brand/logo_.png') }}"
+        class="header-brand-img toggle-logo"
+        alt="logo"
+      />
+      <img
+        src="{{ url_for('static', filename='assets/images/brand/logo_.png') }}"
+        class="header-brand-img light-logo"
+        alt="logo"
+      />
+      <img
+        src="{{ url_for('static', filename='assets/images/brand/logo_.png') }}"
+        class="header-brand-img light-logo1"
+        alt="logo"
+      /> </a
+    ><!-- LOGO -->
+  </div>
+  <ul class="side-menu">
+    <li><h3></h3></li>
+    <li class="slide">
+      <a
+        class="side-menu__item"
+        data-bs-toggle="slide"
+        href="{{url_for('dashboard.dashboard_page')}}"
+        id="dashboard_link"
+        ><i class="side-menu__icon lnr lnr-pie-chart"></i
+        ><span class="side-menu__label">Dashboard</span></a
+      >
+    </li>
+    <li class="slide">
+      <a
+        class="side-menu__item"
+        data-bs-toggle="slide"
+        href="{{url_for('calendar.schedule')}}"
+        id="dashboard_link"
+        ><i class="side-menu__icon fe fe-calendar"></i
+        ><span class="side-menu__label">Calendar</span></a
+      >
+    </li>
+    <li class="slide">
+      <a
+        class="side-menu__item"
+        data-bs-toggle="slide"
+        href="{{url_for('persons.people')}}"
+        id="people_link"
+        ><i class="side-menu__icon fe fe-users"></i
+        ><span class="side-menu__label">People</span></a
+      >
+    </li>
+    <li class="slide">
+      <a
+        class="side-menu__item"
+        data-bs-toggle="slide"
+        href="{{url_for('visit_notes.notes')}}"
+        id="visit_notes_link"
+        ><i class="side-menu__icon fe fe-edit-3"></i
+        ><span class="side-menu__label">Visit Notes</span></a
+      >
+    </li>
+    <li class="slide">
+      <a
+        class="side-menu__item"
+        data-bs-toggle="slide"
+        href="{{url_for('billing.ledger')}}"
+        id="billing_link"
+        ><i class="side-menu__icon fe fe-credit-card"></i
+        ><span class="side-menu__label">Billing</span></a
+      >
+    </li>
+    <li class="slide">
+      <a
+        class="side-menu__item"
+        data-bs-toggle="slide"
+        href="{{url_for('reports.generate_report')}}"
+        id="billing_link"
+        ><i class="side-menu__icon fe fe-download-cloud"></i
+        ><span class="side-menu__label">Reports</span></a
+      >
+    </li>
+    <li class="slide">
+      <a class="side-menu__item" data-bs-toggle="slide" href="#"
+        ><i class="side-menu__icon fe fe-settings" id="settings_link"></i
+        ><span class="side-menu__label">Settings</span
+        ><i class="angle fa fa-angle-right"></i
+      ></a>
+      <ul class="slide-menu" style="display: none">
+        <li>
+          <a
+            href="{{url_for('settings.practiceSettings')}}"
+            class="slide-item"
+            id="settings_practice_information_link"
+          >
+            Practice Information</a
+          >
+        </li>
+        <li>
+          <a
+            href="{{url_for('settings.practiceUsers')}}"
+            class="slide-item"
+            id="settings_user_maintenance_link"
+          >
+            User Maintenance</a
+          >
+        </li>
+        <li>
+          <a
+            href="{{url_for('settings.chargeSettings')}}"
+            class="slide-item"
+            id="settings_charge_settings_link"
+          >
+            Billing Charges</a
+          >
+        </li>
+        <li>
+          <a
+            href="{{url_for('settings.viewEventTypes')}}"
+            class="slide-item"
+            id="settings_event_types_link"
+          >
+            Event Types</a
+          >
+        </li>
+      </ul>
+    </li>
+  </ul>
+</aside>
+<!--/APP-SIDEBAR-->
+{% endblock app_sidebar %}
