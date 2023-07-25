@@ -48,10 +48,10 @@ def schedule():
         cal_events = [
             {
                 "title": "Blocked Off Time"
-                if
-                event.first_name is None
-                else
-                f"{event.first_name} {event.last_name} ({event.event_name})",
+                if event.first_name is None
+                else f"""
+                    {event.first_name} {event.last_name} ({event.event_name})
+                """,
                 "start": str(event.date) + "T" + str(event.start_time),
                 "end": str(event.date) + "T" + str(event.end_time),
                 "url": url_for("calendar.viewEvent", event_id=event.id),
@@ -76,9 +76,11 @@ def addEvent():
     form = EventForm()
 
     # Choices of Event Types
-    event_types = db.session.query(EventTypes).filter_by(
-        practice_id=current_user.practice_id
-    ).order_by(EventTypes.event_name)
+    event_types = (
+        db.session.query(EventTypes)
+        .filter_by(practice_id=current_user.practice_id)
+        .order_by(EventTypes.event_name)
+    )
 
     form.event_type_id.choices = [
         (
@@ -91,26 +93,33 @@ def addEvent():
     ]
 
     # Choices of People
-    persons = db.session.query(People).filter_by(
-        practice_id=current_user.practice_id
-    ).order_by(People.last_name)
+    persons = (
+        db.session.query(People)
+        .filter_by(practice_id=current_user.practice_id)
+        .order_by(People.last_name)
+    )
 
     form.person.choices = [(0, "None")] + [
-        (person.id, person.last_name + ", " +
-         person.first_name + f" ({person.gender_identity})")
+        (
+            person.id,
+            person.last_name
+            + ", "
+            + person.first_name
+            + f" ({person.gender_identity})",
+        )
         for person in persons
     ]
 
     # Choices of Users that have a role of Practitioner
-    practictioners = db.session.query(User).filter_by(
-        practice_id=current_user.practice_id, role="Practitioner"
-    ).order_by(User.first_name)
+    practictioners = (
+        db.session.query(User)
+        .filter_by(practice_id=current_user.practice_id, role="Practitioner")
+        .order_by(User.first_name)
+    )
 
     form.practitioner_id.choices = [(0, "None")] + [
-        (
-            practictioner.id, practictioner.first_name + " " +
-            practictioner.last_name
-        )
+        (practictioner.id,
+         practictioner.first_name + " " + practictioner.last_name)
         for practictioner in practictioners
     ]
 
@@ -211,9 +220,11 @@ def editEvent(event_id):
     form = EventForm()
 
     # Choices of Event Types
-    event_types = db.session.query(EventTypes).filter_by(
-        practice_id=current_user.practice_id
-    ).order_by(EventTypes.event_name)
+    event_types = (
+        db.session.query(EventTypes)
+        .filter_by(practice_id=current_user.practice_id)
+        .order_by(EventTypes.event_name)
+    )
 
     form.event_type_id.choices = [
         (
@@ -226,20 +237,27 @@ def editEvent(event_id):
     ]
 
     # Choices of People
-    persons = db.session.query(People).filter_by(
-        practice_id=current_user.practice_id
-    ).order_by(People.last_name)
+    persons = (
+        db.session.query(People)
+        .filter_by(practice_id=current_user.practice_id)
+        .order_by(People.last_name)
+    )
 
     form.person.choices = [(0, "None")] + [
-        (person.id, person.first_name + " " +
-         person.last_name + f" ({person.gender_identity})")
+        (
+            person.id,
+            person.first_name + " " + person.last_name +
+            f" ({person.gender_identity})",
+        )
         for person in persons
     ]
 
     # Choices of Users that have a role of Practitioner
-    practictioners = db.session.query(User).filter_by(
-        practice_id=current_user.practice_id, role="Practitioner"
-    ).order_by(User.first_name)
+    practictioners = (
+        db.session.query(User)
+        .filter_by(practice_id=current_user.practice_id, role="Practitioner")
+        .order_by(User.first_name)
+    )
 
     form.practitioner_id.choices = [(0, "None")] + [
         (practictioner.id,
