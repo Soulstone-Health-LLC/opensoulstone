@@ -20,11 +20,12 @@
 <!-- End Add Event Link -->
 <!-- Start FULL CALENDAR -->
 <div class="row">
-  <div class="col-md-12">
-    <div class="card">
-      <div class="card-body">
-        <div id="calendar"></div>
-      </div>
+  <div class="card">
+    <div class="card-body">
+      <div
+        id="calendar"
+        class="fc fc-media-screen fc-direction-ltr fc-theme-standard fc-liquid-hack"
+      ></div>
     </div>
   </div>
 </div>
@@ -32,8 +33,12 @@
 <!-- Start Events JSON -->
 <script type="text/javascript">
   var cEvents = {{ events | tojson }};
+  var browserWidth = window.innerWidth;
 
   document.addEventListener("DOMContentLoaded", function() {
+    var browserHeight = $(window).height();
+    var browserWidth = $(window).width();
+
     var calendarEl = document.getElementById("calendar");
     var calendar = new FullCalendar.Calendar(calendarEl, {
       buttonText: {
@@ -48,11 +53,16 @@
           center: 'title',
           right: 'dayGridMonth,timeGridWeek,timeGridDay,listDay'
       },
-      initialView: 'timeGridWeek',
+      initialView: "timeGridWeek",
       navLinks: true, // can click day/week names to navigate views
       dayMaxEvents: true, // allow "more" link when too many events
       events: cEvents,
     });
+    // if browser width is less than 768px, set initialView to "listDay"
+    if (browserWidth < 768) {
+      calendar.changeView('listDay');
+      calendar.setOption("height", 5000);
+    }
     calendar.render();
   });
 </script>
