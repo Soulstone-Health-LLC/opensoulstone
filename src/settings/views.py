@@ -178,9 +178,7 @@ def addPracticeUser():
             status = form.status.data
             # If profile picture is included, save it to the filesystem
             if form.picture.data:
-                username = first_name + last_name + str(
-                    datetime.utcnow()
-                )
+                username = first_name + last_name + str(datetime.utcnow())
                 pic = add_profile_pic(form.picture.data, username)
 
         # Generate a random password
@@ -224,8 +222,10 @@ def addPracticeUser():
                 # Add person to database
                 db.session.add(new_user)
                 db.session.commit()
-                flash(f"{first_name} {last_name} added successfully.",
-                      category="success")
+                flash(
+                    f"{first_name} {last_name} added successfully.",
+                    category="success"
+                )
             else:
                 new_user = User(
                     practice_id=current_user.practice_id,
@@ -251,8 +251,10 @@ def addPracticeUser():
                 # Add person to database
                 db.session.add(new_user)
                 db.session.commit()
-                flash(f"{first_name} {last_name} added successfully.",
-                      category="success")
+                flash(
+                    f"{first_name} {last_name} added successfully.",
+                    category="success"
+                )
 
             # send email to new user
             msg = Message(
@@ -317,9 +319,8 @@ def editPracticeUser(user_id):
             # Update user
             # If profile picture is included, save it to the filesystem
             if form.picture.data:
-                username = p_user.first_name + p_user.last_name + str(
-                    datetime.utcnow()
-                )
+                username = p_user.first_name + \
+                    p_user.last_name + str(datetime.utcnow())
                 pic = add_profile_pic(form.picture.data, username)
                 p_user.profile_image = pic
             p_user.updated_at = datetime.utcnow()
@@ -343,8 +344,9 @@ def editPracticeUser(user_id):
             # Update person to database
             db.session.commit()
             flash(
-                f"{p_user.first_name} {p_user.last_name}"
-                " updated successfully.",
+                f"""
+                {p_user.first_name} {p_user.last_name} updated successfully.
+                """,
                 category="success",
             )
 
@@ -360,8 +362,7 @@ def editPracticeUser(user_id):
 
 
 # Edit Practice User
-@settings.route("/settings/<int:user_id>/profile",
-                methods=["GET", "POST"])
+@settings.route("/settings/<int:user_id>/profile", methods=["GET", "POST"])
 @login_required
 def profile(user_id):
     """Routes the user to view and edit their profile information
@@ -391,9 +392,8 @@ def profile(user_id):
             # Update user
             # If profile picture is included, save it to the filesystem
             if form.picture.data:
-                username = p_user.first_name + p_user.last_name + str(
-                    datetime.utcnow()
-                )
+                username = p_user.first_name + \
+                    p_user.last_name + str(datetime.utcnow())
                 pic = add_profile_pic(form.picture.data, username)
                 p_user.profile_image = pic
             p_user.updated_at = datetime.utcnow()
@@ -647,7 +647,8 @@ def editEventType(id):
         form.event_name.data = event_type.event_name
         form.event_description.data = event_type.event_description
         form.event_duration.data = form.event_duration.data = str(
-            int(event_type.event_duration.total_seconds() / 60))
+            int(event_type.event_duration.total_seconds() / 60)
+        )
         print(form.event_duration.data)
         form.event_status.data = event_type.event_status
 
