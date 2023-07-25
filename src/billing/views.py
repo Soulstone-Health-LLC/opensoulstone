@@ -4,7 +4,7 @@ Billing > Views - This file contains the routes for the billing blueprint.
 
 # Imports
 import pdfkit
-from datetime import datetime
+from datetime import datetime, timedelta
 from flask import (
     Blueprint,
     render_template,
@@ -36,6 +36,9 @@ billing = Blueprint("billing", __name__)
 @login_required
 def ledger():
     """Routes the user to the Billing page"""
+
+    start_date = datetime.utcnow() - timedelta(days=120)
+
     people = People.query.filter_by(practice_id=current_user.practice_id).all()
     ledger_charges = (
         db.session.query(
@@ -56,7 +59,8 @@ def ledger():
         )
         .join(People, LedgerCharges.person_id == People.id)
         .join(Charges, LedgerCharges.charge_id == Charges.id)
-        .filter_by(practice_id=current_user.practice_id)
+        .filter(LedgerCharges.practice_id == current_user.practice_id,
+                LedgerCharges.created_at >= start_date)
         .all()
     )
     total_charges = (
@@ -308,7 +312,9 @@ def delete_ledger_charge(ledger_charge_id):
 @login_required
 def payments():
     """Routes the user to the Billing > Payments page"""
-    # queries
+
+    start_date = datetime.utcnow() - timedelta(days=120)
+
     people = People.query.filter_by(practice_id=current_user.practice_id).all()
     ledger_payments = (
         db.session.query(
@@ -326,7 +332,8 @@ def payments():
             People.gender_identity,
         )
         .join(People, LedgerPayments.person_id == People.id)
-        .filter_by(practice_id=current_user.practice_id)
+        .filter(LedgerPayments.practice_id == current_user.practice_id,
+                LedgerPayments.created_at >= start_date)
         .all()
     )
     total_charges = (

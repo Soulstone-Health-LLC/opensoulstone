@@ -3,7 +3,7 @@ Calendar > Views - This file contains the views for the Calendar Blueprint.
 """
 
 # Imports
-from datetime import datetime
+from datetime import datetime, timedelta
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 from src.calendar.forms import EventForm
@@ -25,6 +25,9 @@ calendar = Blueprint("calendar", __name__)
 @login_required
 def schedule():
     """Calendar page"""
+
+    start_date = datetime.now() - timedelta(days=120)
+
     if request.method == "GET":
         events = (
             db.session.query(
@@ -41,7 +44,8 @@ def schedule():
             )
             .outerjoin(People, Events.person_id == People.id)
             .join(EventTypes, Events.event_type_id == EventTypes.id)
-            .filter_by(practice_id=current_user.practice_id)
+            .filter(Events.practice_id == current_user.practice_id,
+                    Events.date >= start_date)
             .all()
         )
 

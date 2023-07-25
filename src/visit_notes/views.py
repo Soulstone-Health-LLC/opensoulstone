@@ -30,6 +30,9 @@ visit_notes = Blueprint("visit_notes", __name__)
 @login_required
 def notes():
     """Routes the user to the Notes page"""
+
+    start_date = datetime.now() - timedelta(days=120)
+
     visit_notes = (
         db.session.query(
             Notes.id,
@@ -43,7 +46,8 @@ def notes():
             People.suffix_name,
             People.gender_identity,
         )
-        .filter_by(practice_id=current_user.practice_id)
+        .filter(Notes.practice_id == current_user.practice_id,
+                Notes.date_of_service >= start_date)
         .join(People, Notes.person_id == People.id)
         .all()
     )
