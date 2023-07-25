@@ -10,10 +10,10 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 from werkzeug.security import generate_password_hash
 from src.support.forms import (
-    AddPracticeForm, PracticeUserForm, ReleaseNotesForm)
+    AddPracticeForm, PracticeUserForm, ReleaseNotesForm
+)
 from src import db
-from src.models import (
-    Practice, User, ReleaseNotes)
+from src.models import Practice, User, ReleaseNotes
 from src.decorators.decorators import support_required
 
 
@@ -170,7 +170,8 @@ def viewReleaseNotes():
     """View release notes form and page"""
 
     release_notes = ReleaseNotes.query.order_by(
-        ReleaseNotes.release_note_date.desc()).all()
+        ReleaseNotes.release_note_date.desc()
+    ).all()
 
     return render_template(
         "support/support_release_notes.html",
@@ -237,8 +238,10 @@ def viewReleaseNoteDetails(release_note_id):
 
 
 # Support App - Release Notes - Edit Release Note
-@supportapp.route("/support/edit_release_notes/<int:release_note_id>",
-                  methods=["GET", "POST"])
+@supportapp.route(
+    "/support/edit_release_notes/<int:release_note_id>",
+    methods=["GET", "POST"]
+)
 @login_required
 @support_required
 def editReleaseNotes(release_note_id):
@@ -254,8 +257,12 @@ def editReleaseNotes(release_note_id):
 
     # If the user hits cancel, redirect to the Release Notes list page
     if form.cancel.data:
-        return redirect(url_for("supportapp.viewReleaseNoteDetails",
-                                release_note_id=release_note_id))
+        return redirect(
+            url_for(
+                "supportapp.viewReleaseNoteDetails",
+                release_note_id=release_note_id
+            )
+        )
 
     # Gets the data from the form and saves as variables
     if form.validate_on_submit():
@@ -273,8 +280,12 @@ def editReleaseNotes(release_note_id):
         flash("Release note updated successfully.", category="success")
 
         # Redirect user to the Release Notes list page
-        return redirect(url_for("supportapp.viewReleaseNoteDetails",
-                                release_note_id=release_note_id))
+        return redirect(
+            url_for(
+                "supportapp.viewReleaseNoteDetails",
+                release_note_id=release_note_id
+            )
+        )
 
     return render_template(
         "support/add_release_notes.html",
