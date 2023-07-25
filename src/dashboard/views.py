@@ -28,11 +28,11 @@ def dashboard_page():
     person_data = (
         db.session.query(
             db.func.count(People.id).label("count"),
-            db.func.strftime("%Y-%m", People.created_at).label("month")
+            db.func.strftime("%Y-%m", People.created_at).label("month"),
         )
         .filter(
             People.practice_id == current_user.practice_id,
-            People.created_at >= start_date
+            People.created_at >= start_date,
         )
         .group_by("month")
         .all()
@@ -45,7 +45,7 @@ def dashboard_page():
     events_data = (
         db.session.query(
             db.func.count(Events.id).label("count"),
-            db.func.strftime("%Y-%m", Events.date).label("month")
+            db.func.strftime("%Y-%m", Events.date).label("month"),
         )
         .filter(
             Events.practice_id == current_user.practice_id,
@@ -61,13 +61,16 @@ def dashboard_page():
     # Dashboard - Ledger Charges
     ledger_charges_data = (
         db.session.query(
-            db.func.sum(LedgerCharges.unit_amount * LedgerCharges.units *
-                        (1 + LedgerCharges.tax_rate)).label("sum"),
-            db.func.strftime("%Y-%m", LedgerCharges.created_at).label("month")
+            db.func.sum(
+                LedgerCharges.unit_amount
+                * LedgerCharges.units
+                * (1 + LedgerCharges.tax_rate)
+            ).label("sum"),
+            db.func.strftime("%Y-%m", LedgerCharges.created_at).label("month"),
         )
         .filter(
             LedgerCharges.practice_id == current_user.practice_id,
-            LedgerCharges.created_at >= start_date
+            LedgerCharges.created_at >= start_date,
         )
         .group_by("month")
         .all()
@@ -85,11 +88,12 @@ def dashboard_page():
     ledger_payments_data = (
         db.session.query(
             db.func.sum(LedgerPayments.amount).label("sum"),
-            db.func.strftime("%Y-%m", LedgerPayments.created_at).label("month")
+            db.func.strftime(
+                "%Y-%m", LedgerPayments.created_at).label("month"),
         )
         .filter(
             LedgerPayments.practice_id == current_user.practice_id,
-            LedgerPayments.created_at >= start_date
+            LedgerPayments.created_at >= start_date,
         )
         .group_by("month")
         .all()
@@ -104,11 +108,11 @@ def dashboard_page():
     visit_notes_data = (
         db.session.query(
             db.func.count(Notes.id).label("count"),
-            db.func.strftime("%Y-%m", Notes.date_of_service).label("month")
+            db.func.strftime("%Y-%m", Notes.date_of_service).label("month"),
         )
         .filter(
             Notes.practice_id == current_user.practice_id,
-            Notes.date_of_service >= start_date
+            Notes.date_of_service >= start_date,
         )
         .group_by("month")
         .all()
@@ -118,7 +122,8 @@ def dashboard_page():
     visit_notes_graph_data = [note.count for note in visit_notes_data]
 
     return render_template(
-        "dashboard/dashboard.html", title="Soulstone - Dashboard",
+        "dashboard/dashboard.html",
+        title="Soulstone - Dashboard",
         user=current_user,
         person_graph_labels=person_graph_labels,
         person_graph_data=person_graph_data,
