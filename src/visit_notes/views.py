@@ -11,7 +11,9 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask import make_response
 from flask_login import login_required, current_user
 from src.visit_notes.forms import (
-    AddVisitNoteForm, EditVisitNoteForm, ChangeVisitNoteStatusForm,
+    AddVisitNoteForm,
+    EditVisitNoteForm,
+    ChangeVisitNoteStatusForm,
     DeleteVisitNoteForm,
 )
 from src import db
@@ -61,8 +63,7 @@ def notes():
 @visit_notes.route("/notes/<int:id>/add_visit_note", methods=["GET", "POST"])
 @login_required
 def addVisitNote(id):
-    # TODO: figure out how to select the person before starting the form
-    # TODO: should the form be broken up and save each step?
+    """Add a new visit note to the database"""
 
     form = AddVisitNoteForm()
 
@@ -108,20 +109,15 @@ def addVisitNote(id):
             chakra_graph_labels = [chakra.day for chakra in chakra_data]
             chakra_graph_data = [
                 {
-                    "Root Score":
-                        chakra.chakra_assessment_root_score,
-                    "Sacral Score":
-                        chakra.chakra_assessment_sacral_score,
+                    "Root Score": chakra.chakra_assessment_root_score,
+                    "Sacral Score": chakra.chakra_assessment_sacral_score,
                     "Solar Plexus Score":
                         chakra.chakra_assessment_solar_plexus_score,
-                    "Heart Score":
-                        chakra.chakra_assessment_heart_score,
-                    "Throat Score":
-                        chakra.chakra_assessment_throat_score,
+                    "Heart Score": chakra.chakra_assessment_heart_score,
+                    "Throat Score": chakra.chakra_assessment_throat_score,
                     "Third Eye Score":
                         chakra.chakra_assessment_third_eye_score,
-                    "Crown Score":
-                        chakra.chakra_assessment_crown_score,
+                    "Crown Score": chakra.chakra_assessment_crown_score,
                 }
                 for chakra in chakra_data
             ]
@@ -156,9 +152,8 @@ def addVisitNote(id):
         chakra_assessment_root_description = (
             form.chakra_assessment_root_description.data
         )
-        chakra_assessment_sacral_score = (
+        chakra_assessment_sacral_score =\
             form.chakra_assessment_sacral_score.data
-        )
         chakra_assessment_sacral_description = (
             form.chakra_assessment_sacral_description.data
         )
@@ -172,15 +167,13 @@ def addVisitNote(id):
         chakra_assessment_heart_description = (
             form.chakra_assessment_heart_description.data
         )
-        chakra_assessment_throat_score = (
+        chakra_assessment_throat_score =\
             form.chakra_assessment_throat_score.data
-        )
         chakra_assessment_throat_description = (
             form.chakra_assessment_throat_description.data
         )
-        chakra_assessment_third_eye_score = (
+        chakra_assessment_third_eye_score =\
             form.chakra_assessment_third_eye_score.data
-        )
         chakra_assessment_third_eye_description = (
             form.chakra_assessment_third_eye_description.data
         )
@@ -203,36 +196,29 @@ def addVisitNote(id):
             reason_for_visit=reason_for_visit,
             chakra_assessment_root_score=chakra_assessment_root_score,
             chakra_assessment_root_description=(
-                chakra_assessment_root_description
-            ),
+                chakra_assessment_root_description),
             chakra_assessment_sacral_score=chakra_assessment_sacral_score,
             chakra_assessment_sacral_description=(
-                chakra_assessment_sacral_description
-            ),
+                chakra_assessment_sacral_description),
             chakra_assessment_solar_plexus_score=(
-                chakra_assessment_solar_plexus_score
-            ),
+                chakra_assessment_solar_plexus_score),
             chakra_assessment_solar_plexus_description=(
                 chakra_assessment_solar_plexus_description
             ),
             chakra_assessment_heart_score=chakra_assessment_heart_score,
             chakra_assessment_heart_description=(
-                chakra_assessment_heart_description
-            ),
+                chakra_assessment_heart_description),
             chakra_assessment_throat_score=chakra_assessment_throat_score,
             chakra_assessment_throat_description=(
-                chakra_assessment_throat_description
-            ),
+                chakra_assessment_throat_description),
             chakra_assessment_third_eye_score=(
-                chakra_assessment_third_eye_score
-            ),
+                chakra_assessment_third_eye_score),
             chakra_assessment_third_eye_description=(
                 chakra_assessment_third_eye_description
             ),
             chakra_assessment_crown_score=chakra_assessment_crown_score,
             chakra_assessment_crown_description=(
-                chakra_assessment_crown_description
-            ),
+                chakra_assessment_crown_description),
             visit_notes=visit_notes,
             post_visit_recommendations=post_visit_recommendations,
         )
@@ -284,20 +270,14 @@ def editVisitNote(id):
         chakra_graph_labels = [chakra.day for chakra in chakra_data]
         chakra_graph_data = [
             {
-                "Root Score":
-                    chakra.chakra_assessment_root_score,
-                "Sacral Score":
-                    chakra.chakra_assessment_sacral_score,
+                "Root Score": chakra.chakra_assessment_root_score,
+                "Sacral Score": chakra.chakra_assessment_sacral_score,
                 "Solar Plexus Score":
-                    chakra.chakra_assessment_solar_plexus_score,
-                "Heart Score":
-                    chakra.chakra_assessment_heart_score,
-                "Throat Score":
-                    chakra.chakra_assessment_throat_score,
-                "Third Eye Score":
-                    chakra.chakra_assessment_third_eye_score,
-                "Crown Score":
-                    chakra.chakra_assessment_crown_score,
+                chakra.chakra_assessment_solar_plexus_score,
+                "Heart Score": chakra.chakra_assessment_heart_score,
+                "Throat Score": chakra.chakra_assessment_throat_score,
+                "Third Eye Score": chakra.chakra_assessment_third_eye_score,
+                "Crown Score": chakra.chakra_assessment_crown_score,
             }
             for chakra in chakra_data
         ]
@@ -305,44 +285,43 @@ def editVisitNote(id):
         # Populate form fields with existing data from database
         form.reason_for_visit.data = note.reason_for_visit
         form.date_of_service.data = note.date_of_service
-        form.chakra_assessment_root_score.data = (
-            str(note.chakra_assessment_root_score)
-        )
+        form.chakra_assessment_root_score.data = str(
+            note.chakra_assessment_root_score)
         form.chakra_assessment_root_description.data = (
             note.chakra_assessment_root_description
         )
-        form.chakra_assessment_sacral_score.data = (
-            str(note.chakra_assessment_sacral_score)
+        form.chakra_assessment_sacral_score.data = str(
+            note.chakra_assessment_sacral_score
         )
         form.chakra_assessment_sacral_description.data = (
             note.chakra_assessment_sacral_description
         )
-        form.chakra_assessment_solar_plexus_score.data = (
-            str(note.chakra_assessment_solar_plexus_score)
+        form.chakra_assessment_solar_plexus_score.data = str(
+            note.chakra_assessment_solar_plexus_score
         )
         form.chakra_assessment_solar_plexus_description.data = (
             note.chakra_assessment_solar_plexus_description
         )
-        form.chakra_assessment_heart_score.data = (
-            str(note.chakra_assessment_heart_score)
+        form.chakra_assessment_heart_score.data = str(
+            note.chakra_assessment_heart_score
         )
         form.chakra_assessment_heart_description.data = (
             note.chakra_assessment_heart_description
         )
-        form.chakra_assessment_throat_score.data = (
-            str(note.chakra_assessment_throat_score)
+        form.chakra_assessment_throat_score.data = str(
+            note.chakra_assessment_throat_score
         )
         form.chakra_assessment_throat_description.data = (
             note.chakra_assessment_throat_description
         )
-        form.chakra_assessment_third_eye_score.data = (
-            str(note.chakra_assessment_third_eye_score)
+        form.chakra_assessment_third_eye_score.data = str(
+            note.chakra_assessment_third_eye_score
         )
         form.chakra_assessment_third_eye_description.data = (
             note.chakra_assessment_third_eye_description
         )
-        form.chakra_assessment_crown_score.data = (
-            str(note.chakra_assessment_crown_score)
+        form.chakra_assessment_crown_score.data = str(
+            note.chakra_assessment_crown_score
         )
         form.chakra_assessment_crown_description.data = (
             note.chakra_assessment_crown_description
@@ -369,15 +348,13 @@ def editVisitNote(id):
         note.updated_at = datetime.utcnow()
         note.reason_for_visit = form.reason_for_visit.data
         note.date_of_service = form.date_of_service.data
-        note.chakra_assessment_root_score = (
+        note.chakra_assessment_root_score =\
             form.chakra_assessment_root_score.data
-        )
         note.chakra_assessment_root_description = (
             form.chakra_assessment_root_description.data
         )
-        note.chakra_assessment_sacral_score = (
+        note.chakra_assessment_sacral_score =\
             form.chakra_assessment_sacral_score.data
-        )
         note.chakra_assessment_sacral_description = (
             form.chakra_assessment_sacral_description.data
         )
@@ -387,15 +364,13 @@ def editVisitNote(id):
         note.chakra_assessment_solar_plexus_description = (
             form.chakra_assessment_solar_plexus_description.data
         )
-        note.chakra_assessment_heart_score = (
+        note.chakra_assessment_heart_score =\
             form.chakra_assessment_heart_score.data
-        )
         note.chakra_assessment_heart_description = (
             form.chakra_assessment_heart_description.data
         )
-        note.chakra_assessment_throat_score = (
+        note.chakra_assessment_throat_score =\
             form.chakra_assessment_throat_score.data
-        )
         note.chakra_assessment_throat_description = (
             form.chakra_assessment_throat_description.data
         )
@@ -405,9 +380,8 @@ def editVisitNote(id):
         note.chakra_assessment_third_eye_description = (
             form.chakra_assessment_third_eye_description.data
         )
-        note.chakra_assessment_crown_score = (
+        note.chakra_assessment_crown_score =\
             form.chakra_assessment_crown_score.data
-        )
         note.chakra_assessment_crown_description = (
             form.chakra_assessment_crown_description.data
         )
@@ -454,10 +428,8 @@ def changeStatus(visit_note_id):
             flash("Something went wrong. Try again.", category="danger")
 
         if note.status == "Completed":
-            return redirect(url_for("visit_notes.pdfVisitNote",
-                                    id=note.id))
-        return redirect(url_for("visit_notes.editVisitNote",
-                                id=note.id))
+            return redirect(url_for("visit_notes.pdfVisitNote", id=note.id))
+        return redirect(url_for("visit_notes.editVisitNote", id=note.id))
 
     return render_template(
         "visit_notes/change_status.html",
@@ -485,8 +457,10 @@ def changeStatusDelete(visit_note_id):
         # Update visit note to database
         try:
             db.session.commit()
-            flash("Visit Note status updated to 'Deleted' successfully.",
-                  category="success")
+            flash(
+                "Visit Note status updated to 'Deleted' successfully.",
+                category="success",
+            )
         except note.GeneralSaveError:
             flash("Something went wrong. Try again.", category="danger")
 
