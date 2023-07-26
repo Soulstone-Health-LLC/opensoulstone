@@ -31,7 +31,7 @@
     <div class="row mb-6">
       <div class="col">
         <h4>Tax Rate</h4>
-        {{ "{:,.3f}".format(ledger_charge.tax_rate) }}%
+        {{ "{:.3%}".format(ledger_charge.tax_rate) }}
       </div>
       <div class="col">
         <h4>Total Charges</h4>
