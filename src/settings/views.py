@@ -6,6 +6,7 @@ Settings > Views - This file contains the routes for the settings blueprint.
 import random
 import string
 from datetime import datetime, timedelta
+from decimal import Decimal
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 from flask_mail import Message
@@ -471,6 +472,11 @@ def addCharge():
             name = form.name.data
             description = form.description.data
             amount = form.amount.data
+            tax_rate_form = form.tax_rate.data
+            if tax_rate_form:
+                tax_rate = tax_rate_form / 100
+            else:
+                tax_rate = 0
             status = form.status.data
 
             # Add new charge to database
@@ -484,6 +490,7 @@ def addCharge():
                 name=name,
                 description=description,
                 amount=amount,
+                tax_rate=tax_rate,
                 status=status,
             )
             db.session.add(new_charge)
@@ -539,6 +546,7 @@ def editCharge(id):
         form.name.data = charge.name
         form.description.data = charge.description
         form.amount.data = charge.amount
+        form.tax_rate.data = Decimal(charge.tax_rate) * 100
         form.status.data = charge.status
 
     if form.validate_on_submit():
@@ -550,6 +558,12 @@ def editCharge(id):
             charge.name = form.name.data
             charge.description = form.description.data
             charge.amount = form.amount.data
+            tax_rate_form = form.tax_rate.data
+            if tax_rate_form:
+                tax_rate = tax_rate_form / 100
+            else:
+                tax_rate = 0
+            charge.tax_rate = tax_rate
             charge.status = form.status.data
 
             # Update person to database

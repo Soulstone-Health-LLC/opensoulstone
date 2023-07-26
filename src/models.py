@@ -223,6 +223,7 @@ class Charges(db.Model):
     name = db.Column(db.Text, nullable=False)
     description = db.Column(db.Text, nullable=False)
     amount = db.Column(db.Float, nullable=False)
+    tax_rate = db.Column(db.Float)
     status = db.Column(db.Text, default="Active")
 
 

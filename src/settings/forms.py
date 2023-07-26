@@ -137,6 +137,7 @@ class AddChargeForm(FlaskForm):
         validators=[DataRequired()]
     )
     amount = DecimalField(label="Amount *", validators=[DataRequired()])
+    tax_rate = DecimalField(label="Tax Rate (Percentage)")
     status = SelectField(label="Status *", choices=STATUS_CHOICES)
     submit = SubmitField(label="Add New Charge")
 
@@ -155,6 +156,7 @@ class EditChargeForm(FlaskForm):
         validators=[DataRequired()]
     )
     amount = DecimalField(label="Amount *", validators=[DataRequired()])
+    tax_rate = DecimalField(label="Tax Rate (Percentage)")
     status = SelectField(label="Status *", choices=STATUS_CHOICES)
     submit = SubmitField(label="Save Charge")
 

@@ -38,6 +38,14 @@
                 <p class="mb-6">{{ charge.description }}</p>
                 <h5 class="mt-0 mb-4">Amount:</h5>
                 <p class="mb-6">{{ "$ {:,.2f}".format(charge.amount) }}</p>
+                <h5 class="mt-0 mb-4">Tax Rate:</h5>
+                <p class="mb-6">
+                    {% if charge.tax_rate %}
+                    {{ "{:.3%}".format(charge.tax_rate) }}
+                    {% else %}
+                        None
+                    {% endif %}
+                </p>
             </div>
         </div>
     </div>
