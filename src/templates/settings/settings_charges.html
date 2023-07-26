@@ -37,6 +37,7 @@
                 <th class="border-bottom-0">Code</th>
                 <th class="border-bottom-0">Name</th>
                 <th class="border-bottom-0">Amount</th>
+                <th class="border-bottom-0">Tax Rate</th>
                 <th class="border-bottom-0">Status</th>
                 <th class="border-bottom-0">Actions</th>
               </tr>
@@ -47,6 +48,10 @@
                 <td>{{ c.code }}</td>
                 <td>{{ c.name }}</td>
                 <td>{{ "$%.2f"|format(c.amount) }}</td>
+                <td>
+                  {% if c.tax_rate %} {{ "{:.3%}".format(c.tax_rate) }} {% else
+                  %} 0.000% {% endif %}
+                </td>
                 <td>{{ c.status }}</td>
                 <td>
                   <div class="btn-group">
