@@ -189,7 +189,8 @@ def addLedgerCharge(id):
             # List of charges for the select field
             form.charge_id.choices = [
                 (str(charge.id), charge.description +
-                 f" (${charge.amount:.2f})")
+                 f" (${charge.amount:.2f})" +
+                 f" ({charge.tax_rate}%)")
                 for charge in practice_charges
             ]
 
