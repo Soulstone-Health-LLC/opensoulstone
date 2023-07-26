@@ -37,7 +37,7 @@
                 <h5 class="mt-0 mb-4">Description:</h5>
                 <p class="mb-6">{{ charge.description }}</p>
                 <h5 class="mt-0 mb-4">Amount:</h5>
-                <p class="mb-6">{{ charge.amount }}</p>
+                <p class="mb-6">{{ "$ {:,.2f}".format(charge.amount) }}</p>
             </div>
         </div>
     </div>
