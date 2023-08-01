@@ -16,8 +16,19 @@ class Login:
     Tests - Login Page Object
     '''
 
+    # URL
+    LOCAL = "http://127.0.0.1:5000"
+
     def __init__(self, driver):
         self.map = LoginMap(driver)
+
+    # Loads the page
+    def load(self):
+        '''
+        Navigate to the login page
+        '''
+
+        self.map.get(self.LOCAL)
 
     def sendkeys_email(self, email):
         '''

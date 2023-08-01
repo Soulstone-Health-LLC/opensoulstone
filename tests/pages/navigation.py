@@ -27,6 +27,14 @@ class LeftNav:
 
         self.map.dashboard_link.click()
 
+    def goto_calendar_page(self):
+        '''
+        Test - Left Navigation - Clicks on the CALENDAR link in the
+        navigation bar
+        '''
+
+        self.map.calendar_link.click()
+
     def goto_people_page(self):
         '''
         Test - Left Navigation - Clicks on the PEOPLE link in the navigation
@@ -38,7 +46,7 @@ class LeftNav:
     def goto_visit_notes_page(self):
         '''
         Test - Left Navigation - Clicks on the VISIT NOTES link in the
-        navigationn bar
+        navigation bar
         '''
 
         self.map.visit_notes_link.click()
@@ -50,6 +58,14 @@ class LeftNav:
         '''
 
         self.map.billing_link.click()
+
+    def goto_reports_page(self):
+        '''
+        Test - Left Navigation - Clicks on the REPORTS link in the
+        navigation bar
+        '''
+
+        self.map.reports_link.click()
 
     def goto_settings_page(self):
         '''
@@ -106,6 +122,15 @@ class LeftNavMap:
         return self._driver.find_element(By.ID, 'dashboard_link')
 
     @property
+    def calendar_link(self):
+        '''
+        Tests - Left Navigation - Location of the CALENDAR link in the
+        navigation bar
+        '''
+
+        return self._driver.find_element(By.ID, 'calendar_link')
+
+    @property
     def people_link(self):
         '''
         Tests - Left Navigation - Location of the PEOPLE link in the
@@ -131,6 +156,15 @@ class LeftNavMap:
         '''
 
         return self._driver.find_element(By.ID, 'billing_link')
+
+    @property
+    def reports_link(self):
+        '''
+        Tests - Left Navigation - Location of the REPROTS link in the
+        navigation bar
+        '''
+
+        return self._driver.find_element(By.ID, 'reports_link')
 
     @property
     def settings_link(self):

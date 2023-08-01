@@ -1,41 +1,31 @@
-'''
-This module contains shared fixtures
-'''
-
+"""
+Configuration file for the pytest framework.
+"""
 
 # Imports
 import pytest
-import selenium.webdriver
+from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.chrome.options import Options as ChromeOptions
 
 
-# Fixtures
 @pytest.fixture
 def browserChrome():
-    '''Create a Chrome WebDriver instance and return it to the test'''
-    # Initialize the ChromeDriver instance
-    b = selenium.webdriver.Chrome()
+    # Set the Chrome options
+    chrome_options = ChromeOptions()
+    chrome_options.add_argument("--headless")
+    chrome_service = ChromeService(ChromeDriverManager().install())
 
-    # Make its calls wait up to 10 seconds for elements to appear
+    # Initialize Chrome browser
+    b = webdriver.Chrome(options=chrome_options,
+                         service=chrome_service)
+
+    # Implicitly wait for 10 seconds before throwing an exception
     b.implicitly_wait(10)
 
-    # Return the WebDriver instance for the setup
+    # Return the driver object at the end of setup
     yield b
 
-    # Quit the WebDriver instance for the cleanup
-    b.quit()
-
-
-@pytest.fixture
-def browserFirefox():
-    '''Create a Firefox WebDriver instance and return it to the test'''
-    # Initialize the Firefox instance
-    b = selenium.webdriver.Firefox()
-
-    # Make its calls wait up to 10 seconds for elements to appear
-    b.implicitly_wait(10)
-
-    # Return the WebDriver instance for the setup
-    yield b
-
-    # Quit the WebDriver instance for the cleanup
+    # Quit the browser after the test is completed
     b.quit()
