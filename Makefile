@@ -24,7 +24,7 @@ login-soulstone:
 init_db:
 		docker-compose exec soulstone-app flask commands db_create
 seed_db:
-		docker-compose exec soulstone-app flask commands db_seed_min
+		docker-compose exec soulstone-app flask commands db_seed
 test_env: destroy up init_db seed_db
 test:
 		pytest -v
