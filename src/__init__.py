@@ -23,10 +23,11 @@ app.config['SECRET_KEY'] = SECRET_KEY
 # Database configuration
 database_path = os.path.join(app.root_path, 'data', 'database.db')
 os.makedirs(os.path.join(app.root_path, 'data'), exist_ok=True)
-app.config["SQLALCHEMY_DATABASE_URL"] = "sqlite:///" + database_path
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + database_path
 
 # Initialize the database
 db = SQLAlchemy(app)
+
 
 # Function to create the database if it doesn't exist
 def create_database_if_not_exists():
@@ -44,6 +45,7 @@ def create_database_if_not_exists():
         except Exception as e_inner:
             app.logger.error("Database creation failed due to: %s", e_inner)
             raise e_inner
+
 
 # Initializes the login manager
 login_manager = LoginManager()
