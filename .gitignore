@@ -128,24 +128,15 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-secretkey.txt
 
-HTML_TEMPLATE/HTML/LTR/.DS_Store
-
-website/database.db
-
-database.db
-
-.DS_Store
-
-emailpassword.txt
-
-pyvenv.cfg
-
+# VS Code project settings
 .vscode/
 
-Scripts/
-bin
-include
-database
-!database/.gitkeep
+# Database - Local SQLite files
+data/database.db
+src/database.db
+src/data/database.db
+.src/data/database.db
+
+# Log file
+logs.txt
