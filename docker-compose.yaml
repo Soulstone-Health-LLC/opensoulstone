@@ -1,18 +1,17 @@
-services:
-  soulstone:
-    user: 1000:1000
-    build: 
-      context: .
-      dockerfile: ./build/Dockerfile
-    ports:
-      - "3000:3000"
-    environment:
-      - SECRET_KEY=${SECRET_KEY}
-      - EMAIL_PASSWORD=${EMAIL_PASSWORD}
-      - SQLITE_LOCATION=/app/database
-    volumes:
-      - database:/app/database
+# docker-compose file
+version: '3'
 
-volumes:
-  database:
-  
+services:
+  soulstone-app:
+    build:
+      context: .
+      args:
+        SECRET_KEY: ${SECRET_KEY}
+        EMAIL_PASSWORD: ${EMAIL_PASSWORD}
+      command: ["python3", "app.py"]
+      ports:
+        - "3000:3000"
+      volumes:
+        - ./src/data:/app/src/data
+      env_file:
+        - ./.env
