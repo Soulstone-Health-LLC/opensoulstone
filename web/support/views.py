@@ -6,9 +6,7 @@ from datetime import datetime, timezone
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 from werkzeug.security import generate_password_hash
-from support.forms import (
-    AddPracticeForm, PracticeUserForm, ReleaseNotesForm
-)
+from support.forms import AddPracticeForm, PracticeUserForm, ReleaseNotesForm
 from app import db
 from settings.models import Practice
 from .models import ReleaseNotes
