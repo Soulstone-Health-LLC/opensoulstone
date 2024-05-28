@@ -1,4 +1,4 @@
-.PHONY: help build up down destroy start stop restart logs ps login-soulstone debug-soulstone test_db test_env test 
+.PHONY: help build up down destroy start stop restart logs ps login-soulstone debug-soulstone test_db test_env test
 build:
 		docker-compose build $(c)
 up-no-db:
