@@ -93,12 +93,12 @@
             </div>
             <div class="row">
               <div class="col-md-6 mb-6">
-                {{ form.phone.label() }} {% if form.phone.errors %} {{
-                form.phone(class="form-control is-invalid") }} {% for error in
-                form.phone.errors %}
+                {{ form.phone_number.label() }} {% if form.phone_number.errors
+                %} {{ form.phone(class="form-control is-invalid") }} {% for
+                error in form.phone_number.errors %}
                 <div class="invalid-feedback">{{ error }}</div>
-                {% endfor %} {% else %} {{ form.phone(class="form-control") }}
-                {% endif %}
+                {% endfor %} {% else %} {{
+                form.phone_number(class="form-control") }} {% endif %}
               </div>
               <div class="col-md-6 mb-6">
                 {{ form.phone_type.label() }} {% if form.phone_type.errors %} {{

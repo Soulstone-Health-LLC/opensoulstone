@@ -11,11 +11,7 @@ from wtforms import (
 from wtforms.fields.simple import TelField
 from wtforms.validators import DataRequired, Length, Email
 from wtforms.widgets import TextArea
-from dictionary.general import (
-    STATE_CHOICES,
-    ROLE_CHOICES,
-    PHONE_TYPE_CHOICES,
-)
+from dictionary.general import STATE_CHOICES, ROLE_CHOICES, PHONE_TYPE_CHOICES
 
 
 # Form - Support - Add New Practice
@@ -34,11 +30,12 @@ class AddPracticeForm(FlaskForm):
         label="State *", choices=STATE_CHOICES, validators=[DataRequired()]
     )
     zipcode = StringField(label="Zipcode *", validators=[DataRequired()])
-    email = EmailField(label="Practice Email *", validators=[Email()])
-    website = StringField(label="Practice Website")
-    phone = TelField(label="Practice Phone Number *",
-                     validators=[DataRequired()])
+    phone_number = TelField(label="Practice Phone Number *",
+                            validators=[DataRequired()])
     phone_type = SelectField(label="Phone Type *", choices=PHONE_TYPE_CHOICES)
+    email = EmailField(label="Practice Email *",
+                       validators=[Email(), DataRequired()])
+    website = StringField(label="Practice Website")
     submit = SubmitField(label="Add New Practice")
 
 

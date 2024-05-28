@@ -1,11 +1,8 @@
-"""
-Support > Views - This file contains the views for the Support Blueprint.
-"""
-
+"""Support > Views - This file contains the views for the Support Blueprint."""
 # Imports
 import random
 import string
-from datetime import datetime
+from datetime import datetime, timezone
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 from werkzeug.security import generate_password_hash
@@ -14,7 +11,7 @@ from support.forms import (
 )
 from app import db
 from settings.models import Practice
-from support.models import ReleaseNotes
+from .models import ReleaseNotes
 from users.models import User
 from decorators.decorators import support_required
 
@@ -28,90 +25,95 @@ supportapp = Blueprint("supportapp", __name__)
 @login_required
 @support_required
 def support():
+    """Support home page"""
 
     practices = Practice.query.order_by(Practice.id).all()
 
     return render_template(
-        "support/support.html", user=current_user, practices=practices
+        "support/support.html", practices=practices
     )
 
 
 # Support - Practices - View Practice
-@supportapp.route("/support/<int:id>")
+@supportapp.route("/support/<int:practice_id>")
 @login_required
 @support_required
-def viewpractice(id):
-    practice = Practice.query.get_or_404(id)
-    practice_user = User.query.order_by(User.last_name).all()
+def view_practice(practice_id):
+    """View practice page"""
+    practice = Practice.query.get_or_404(practice_id)
+    practice_users = User.query.filter_by(practice_id=practice_id).all()
+
     return render_template(
         "support/support_practice.html",
-        user=current_user,
         practice=practice,
-        practice_user=practice_user,
+        practice_users=practice_users,
     )
 
 
 # Support - Practices - Add Practice
-@supportapp.route("/support/add_practice", methods=["GET", "POST"])
-@login_required
-@support_required
-def addpractice():
+@ supportapp.route("/support/add_practice", methods=["GET", "POST"])
+@ login_required
+@ support_required
+def add_practice():
     """Add practice form and page"""
     form = AddPracticeForm()
 
     # Gets the data from the form and saves as variables
     if form.validate_on_submit():
-        if request.method == "POST":
-            name = form.name.data
-            biography = form.biography.data
-            address_1 = form.address_1.data
-            address_2 = form.address_2.data
-            city = form.city.data
-            state = form.state.data
-            zipcode = form.zipcode.data
-            email = form.email.data
-            website = form.website.data
-            phone_number = form.phone.data
-            phone_type = form.phone_type.data
-
-        # Add new practice to database
-        new_practice = Practice(
-            name=name,
-            biography=biography,
-            address_1=address_1,
-            address_2=address_2,
-            city=city,
-            state=state,
-            zipcode=zipcode,
-            email=email,
-            website=website,
-            phone_number=phone_number,
-            phone_type=phone_type,
-        )
+        new_practice = Practice()
+        form.populate_obj(new_practice)
+        new_practice.created_by = current_user.id
         db.session.add(new_practice)
         db.session.commit()
-        flash(f"{name} created successfully.", category="success")
+        flash(f"{new_practice.name} created successfully.", category="success")
 
         # Redirect user to the Support home page
-        return redirect(url_for("views.support"))
+        return redirect(url_for("supportapp.support"))
 
     return render_template(
         "support/add_practice.html",
         title="Soulstone - Add Practice",
-        form=form,
-        user=current_user,
+        form=form
+    )
+
+
+# Support - Practices - Edit Practice
+@ supportapp.route("/support/edit_practice/<int:practice_id>",
+                   methods=["GET", "POST"])
+@ login_required
+@ support_required
+def edit_practice(practice_id):
+    """Edit practice form and page"""
+    practice = Practice.query.get_or_404(practice_id)
+    form = AddPracticeForm(obj=practice)
+
+    # Gets the data from the form and saves as variables
+    if form.validate_on_submit():
+        form.populate_obj(practice)
+        practice.updated_by = current_user.id
+        practice.updated_at = datetime.now(tz=timezone.utc)
+        db.session.commit()
+        flash(f"{practice.name} updated successfully.", category="success")
+
+        # Redirect user to the Support home page
+        return redirect(url_for("supportapp.support"))
+
+    return render_template(
+        "support/add_practice.html",
+        title="Soulstone - Edit Practice",
+        form=form
     )
 
 
 # Support - Practices - Add Practice User
-@supportapp.route("/support/<int:id>/support_add_user",
-                  methods=["GET", "POST"])
-@login_required
-@support_required
-def addPracticeUser(id):
+@ supportapp.route("/support/<int:practice_id>/support_add_user",
+                   methods=["GET", "POST"])
+@ login_required
+@ support_required
+def add_practice_user(practice_id):
     """Add practice user form and page"""
     form = PracticeUserForm()
-    practice = Practice.query.get(id)
+    practice = Practice.query.get(practice_id)
 
     # Random string
     def randompass(length):
@@ -143,7 +145,7 @@ def addPracticeUser(id):
                 last_name=lastname,
                 suffix_name=suffix,
                 email=email,
-                password=generate_password_hash(password, method="sha384"),
+                password=generate_password_hash(password),
                 phone_number=phonenumber,
                 phone_type=phonetype,
                 status="Active",
@@ -153,7 +155,8 @@ def addPracticeUser(id):
             flash(f"{form.email} created successfully.", category="success")
 
             # Redirect user to Support home page
-            return redirect(url_for("supportapp.support"))
+            return redirect(url_for("supportapp.view_practice",
+                                    practice_id=practice_id))
 
     return render_template(
         "support/support_add_user.html",
@@ -165,10 +168,10 @@ def addPracticeUser(id):
 
 
 # Support App - Release Notes - View list of Release Notes
-@supportapp.route("/support/release_notes")
-@login_required
-@support_required
-def viewReleaseNotes():
+@ supportapp.route("/support/release_notes")
+@ login_required
+@ support_required
+def view_release_notes():
     """View release notes form and page"""
 
     release_notes = ReleaseNotes.query.order_by(
@@ -183,17 +186,17 @@ def viewReleaseNotes():
 
 
 # Support App - Release Notes - Add Release Note
-@supportapp.route("/support/add_release_notes", methods=["GET", "POST"])
-@login_required
-@support_required
-def addReleaseNotes():
+@ supportapp.route("/support/add_release_notes", methods=["GET", "POST"])
+@ login_required
+@ support_required
+def add_release_notes():
     """Add release notes form and page"""
 
     form = ReleaseNotesForm()
 
     # If the user hits cancel, redirect to the Release Notes list page
     if form.cancel.data:
-        return redirect(url_for("supportapp.viewReleaseNotes"))
+        return redirect(url_for("supportapp.view_release_notes"))
 
     # Gets the data from the form and saves as variables
     if form.validate_on_submit():
@@ -206,14 +209,14 @@ def addReleaseNotes():
             release_note_date=release_note_date,
             release_note_content=release_note_content,
             created_by=current_user.id,
-            created_at=datetime.now(),
+            created_at=datetime.now(tz=timezone.utc),
         )
         db.session.add(new_release_notes)
         db.session.commit()
         flash("Release note created successfully.", category="success")
 
         # Redirect user to the Release Notes list page
-        return redirect(url_for("supportapp.viewReleaseNotes"))
+        return redirect(url_for("supportapp.view_release_notes"))
 
     return render_template(
         "support/add_release_notes.html",
@@ -224,10 +227,10 @@ def addReleaseNotes():
 
 
 # Support App - Release Notes - View a Release Note
-@supportapp.route("/support/release_notes/<int:release_note_id>")
-@login_required
-@support_required
-def viewReleaseNoteDetails(release_note_id):
+@ supportapp.route("/support/release_notes/<int:release_note_id>")
+@ login_required
+@ support_required
+def view_release_note_details(release_note_id):
     """View release note details form and page"""
 
     release_notes = ReleaseNotes.query.get_or_404(release_note_id)
@@ -240,13 +243,13 @@ def viewReleaseNoteDetails(release_note_id):
 
 
 # Support App - Release Notes - Edit Release Note
-@supportapp.route(
+@ supportapp.route(
     "/support/edit_release_notes/<int:release_note_id>",
     methods=["GET", "POST"]
 )
-@login_required
-@support_required
-def editReleaseNotes(release_note_id):
+@ login_required
+@ support_required
+def edit_release_notes(release_note_id):
     """Edit release notes form and page"""
 
     form = ReleaseNotesForm()
@@ -261,7 +264,7 @@ def editReleaseNotes(release_note_id):
     if form.cancel.data:
         return redirect(
             url_for(
-                "supportapp.viewReleaseNoteDetails",
+                "supportapp.view_release_note_details",
                 release_note_id=release_note_id
             )
         )
@@ -277,14 +280,14 @@ def editReleaseNotes(release_note_id):
         release_notes.release_note_date = release_note_date
         release_notes.release_note_content = release_note_content
         release_notes.updated_by = current_user.id
-        release_notes.updated_at = datetime.now()
+        release_notes.updated_at = datetime.now(tz=timezone.utc)
         db.session.commit()
         flash("Release note updated successfully.", category="success")
 
         # Redirect user to the Release Notes list page
         return redirect(
             url_for(
-                "supportapp.viewReleaseNoteDetails",
+                "supportapp.view_release_note_details",
                 release_note_id=release_note_id
             )
         )
@@ -298,10 +301,10 @@ def editReleaseNotes(release_note_id):
 
 
 # Support App - Release Notes - Delete Release Note
-@supportapp.route("/support/delete_release_notes/<int:release_note_id>")
-@login_required
-@support_required
-def deleteReleaseNotes(release_note_id):
+@ supportapp.route("/support/delete_release_notes/<int:release_note_id>")
+@ login_required
+@ support_required
+def delete_release_notes(release_note_id):
     """Delete release notes from database"""
 
     release_notes = ReleaseNotes.query.get_or_404(release_note_id)
@@ -310,4 +313,4 @@ def deleteReleaseNotes(release_note_id):
     flash("Release note deleted successfully.", category="success")
 
     # Redirect user to the Release Notes list page
-    return redirect(url_for("supportapp.viewReleaseNotes"))
+    return redirect(url_for("supportapp.view_release_notes"))

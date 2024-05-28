@@ -9,7 +9,7 @@ endblock %} {% block pagenav %}
 <!-- Add Practice User -->
 <div class="">
   <a
-    href="/support/{{practice.id}}/support_add_user"
+    href="{{ url_for('supportapp.add_practice_user', practice_id=practice.id) }}"
     class="btn btn-primary btn-icon text-white me-2"
   >
     <span>
@@ -17,6 +17,11 @@ endblock %} {% block pagenav %}
     </span>
     Add New Practice User
   </a>
+  <a
+    href="{{ url_for('supportapp.edit_practice', practice_id=practice.id) }}"
+    class="btn btn-outline-primary btn-icon text-white me-2"
+    ><span><i class="fe fe-pencil"></i></span> Edit Practice</a
+  >
 </div>
 <br />
 <!-- End Add Practice User -->
@@ -50,16 +55,16 @@ endblock %} {% block pagenav %}
               </tr>
             </thead>
             <tbody>
-              {% for user in practice.users %}
+              {% for u in practice_users %}
               <tr>
-                <td>{{ user.id }}</td>
-                <td>{{ user.first_name }}</td>
-                <td>{{ user.middle_name }}</td>
-                <td>{{ user.last_name }}</td>
-                <td>{{ user.suffix_name }}</td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.phone_number }}</td>
-                <td>{{ user.status }}</td>
+                <td>{{ u.id }}</td>
+                <td>{{ u.first_name }}</td>
+                <td>{{ u.middle_name }}</td>
+                <td>{{ u.last_name }}</td>
+                <td>{{ u.suffix_name }}</td>
+                <td>{{ u.email }}</td>
+                <td>{{ u.phone_number }}</td>
+                <td>{{ u.status }}</td>
                 <td>
                   <a href="#">View</a>
                 </td>
