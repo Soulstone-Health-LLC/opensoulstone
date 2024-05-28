@@ -38,6 +38,7 @@ def support():
 @support_required
 def view_practice(practice_id):
     """View practice page"""
+
     practice = Practice.query.get_or_404(practice_id)
     practice_users = User.query.filter_by(practice_id=practice_id).all()
 
@@ -54,6 +55,7 @@ def view_practice(practice_id):
 @ support_required
 def add_practice():
     """Add practice form and page"""
+
     form = AddPracticeForm()
 
     # Gets the data from the form and saves as variables
@@ -82,6 +84,7 @@ def add_practice():
 @ support_required
 def edit_practice(practice_id):
     """Edit practice form and page"""
+
     practice = Practice.query.get_or_404(practice_id)
     form = AddPracticeForm(obj=practice)
 
@@ -110,6 +113,7 @@ def edit_practice(practice_id):
 @ support_required
 def add_practice_user(practice_id):
     """Add practice user form and page"""
+
     form = PracticeUserForm()
     practice = Practice.query.get(practice_id)
 
