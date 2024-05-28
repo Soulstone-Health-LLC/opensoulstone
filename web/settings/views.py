@@ -25,7 +25,7 @@ from persons.models import People
 from settings.models import Practice
 from users.models import User
 from visit_notes.models import Notes
-from calendar.models import EventTypes
+from events.models import EventTypes
 from decorators.decorators import superuser_required
 from utils.picture_handler import add_profile_pic
 

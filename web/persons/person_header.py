@@ -8,7 +8,7 @@ from flask_login import current_user
 from app import db
 from persons.models import People
 from visit_notes.models import Notes
-from calendar.models import Events
+from events.models import Events
 from billing.models import LedgerCharges, LedgerPayments
 
 

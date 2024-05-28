@@ -15,7 +15,7 @@ from app import db
 from persons.models import People
 from visit_notes.models import Notes
 from billing.models import Charges, LedgerCharges, LedgerPayments
-from calendar.models import Events, EventTypes
+from events.models import Events, EventTypes
 from users.models import User
 from persons.person_header import personHeader
 from utils.picture_handler import add_profile_pic

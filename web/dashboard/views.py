@@ -9,7 +9,7 @@ from flask import Blueprint, render_template
 from flask_login import login_required, current_user
 from app import db
 from persons.models import People
-from calendar.models import Events
+from events.models import Events
 from visit_notes.models import Notes
 from billing.models import LedgerCharges, LedgerPayments
 

@@ -17,7 +17,7 @@ db = SQLAlchemy(app)
 
 # Importing the models to create the tables
 from billing.models import *
-from calendar.models import *
+from events.models import *
 from persons.models import *
 from support.models import *
 from terms_of_service.models import *
@@ -41,7 +41,7 @@ mail.init_app(app)
 from core.views import core
 from dashboard.views import dashboard
 from reports.views import reports
-from calendar.views import calendar
+from events.views import events
 from users.views import users
 from persons.views import persons
 from visit_notes.views import visit_notes
@@ -55,7 +55,7 @@ from terms_of_service.views import terms_of_service
 app.register_blueprint(core)
 app.register_blueprint(dashboard)
 app.register_blueprint(reports)
-app.register_blueprint(calendar)
+app.register_blueprint(events)
 app.register_blueprint(users)
 app.register_blueprint(persons)
 app.register_blueprint(visit_notes)

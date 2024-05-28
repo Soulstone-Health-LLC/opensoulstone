@@ -6,19 +6,19 @@ Calendar > Views - This file contains the views for the Calendar Blueprint.
 from datetime import datetime, timedelta
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
-from calendar.forms import EventForm
+from .forms import EventForm
 from app import db
 from users.models import User
-from calendar.models import Events, EventTypes
+from .models import Events, EventTypes
 from persons.models import People
 
 
 # Blueprint
-calendar = Blueprint("calendar", __name__)
+events = Blueprint("events", __name__)
 
 
 # Calendar Page
-@calendar.route("/calendar")
+@events.route("/calendar")
 @login_required
 def schedule():
     """Calendar page"""
@@ -70,7 +70,7 @@ def schedule():
 
 
 # Add Event Page
-@calendar.route("/calendar/add_event", methods=["GET", "POST"])
+@events.route("/calendar/add_event", methods=["GET", "POST"])
 @login_required
 def addEvent():
     """Add Event page"""
@@ -179,7 +179,7 @@ def addEvent():
 
 
 # View Event
-@calendar.route("/calendar/view_event/<int:event_id>")
+@events.route("/calendar/view_event/<int:event_id>")
 @login_required
 def viewEvent(event_id):
     """View Event page"""
@@ -213,7 +213,7 @@ def viewEvent(event_id):
 
 
 # Edit Event
-@calendar.route("/calendar/edit_event/<int:event_id>", methods=["GET", "POST"])
+@events.route("/calendar/edit_event/<int:event_id>", methods=["GET", "POST"])
 @login_required
 def editEvent(event_id):
     """Edit Event page"""
@@ -321,7 +321,7 @@ def editEvent(event_id):
 
 
 # Delete Event
-@calendar.route("/calendar/delete_event/<int:event_id>", methods=["POST"])
+@events.route("/calendar/delete_event/<int:event_id>", methods=["POST"])
 @login_required
 def deleteEvent(event_id):
     """Delete Event page"""

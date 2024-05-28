@@ -12,7 +12,7 @@ from reports.forms import GenerateReportForm
 from app import db
 from users.models import User
 from persons.models import People
-from calendar.models import Events, EventTypes
+from events.models import Events, EventTypes
 from visit_notes.models import Notes
 from billing.models import LedgerCharges, LedgerPayments
 
