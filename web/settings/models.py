@@ -17,7 +17,7 @@ class Practice(db.Model):
     name = db.Column(db.Text, nullable=False)
     biography = db.Column(db.Text)
     address_1 = db.Column(db.Text, nullable=False)
-    address_2 = db.Column(db.Text, nullable=False)
+    address_2 = db.Column(db.Text)
     city = db.Column(db.Text, nullable=False)
     state = db.Column(db.Text, nullable=False)
     zipcode = db.Column(db.Integer, nullable=False)

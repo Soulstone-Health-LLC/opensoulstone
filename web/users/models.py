@@ -39,7 +39,7 @@ class User(db.Model, UserMixin):
     updated_by = db.Column(db.Integer, db.ForeignKey("user.id"))
     # Data Points - Main
     email = db.Column(db.Text, nullable=False)
-    password = db.Column(db.String(150), nullable=False)
+    password = db.Column(db.Text, nullable=False)
     # Who reset the password and when was it reset
     password_reset_by_system = db.Column(db.Boolean, default=False)
     password_reset_at = db.Column(db.DateTime(timezone=True))
