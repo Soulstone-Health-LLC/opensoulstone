@@ -11,13 +11,13 @@ class People(db.Model):
     __tablename__ = "people"
     id = db.Column(db.Integer, primary_key=True)
     # Foreign Keys
-    practice_id = db.Column(db.Integer, db.ForeignKey("practice.id"))
+    practice_id = db.Column(db.Integer, db.ForeignKey("practices.id"))
     # Data Points - Created/Updated
     created_at = db.Column(db.DateTime(timezone=True),
                            default=datetime.now(tz=timezone.utc))
-    created_by = db.Column(db.Integer, db.ForeignKey("user.id"))
+    created_by = db.Column(db.Integer, db.ForeignKey("users.id"))
     updated_at = db.Column(db.DateTime(timezone=True))
-    updated_by = db.Column(db.Integer, db.ForeignKey("user.id"))
+    updated_by = db.Column(db.Integer, db.ForeignKey("users.id"))
     # Data Points - Main
     first_name = db.Column(db.String(150))
     middle_name = db.Column(db.String(150))

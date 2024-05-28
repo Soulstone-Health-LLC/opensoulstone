@@ -7,12 +7,14 @@ from app import db
 class Practice(db.Model):
     """SQL Table: practice"""
 
-    __tablename__ = "practice"
+    __tablename__ = "practices"
     id = db.Column(db.Integer, primary_key=True)
     # Data Points - Created/Updated
-    created_at = db.Column(db.DateTime(timezone=True),
-                           default=datetime.now(tz=timezone.utc))
-    updated_at = db.Column(db.DateTime(timezone=True))
+    created_date = db.Column(db.DateTime(timezone=True), nullable=False,
+                             default=datetime.now(tz=timezone.utc))
+    created_by = db.Column(db.Integer, db.ForeignKey("users.id"))
+    updated_date = db.Column(db.DateTime(timezone=True))
+    updated_by = db.Column(db.Integer, db.ForeignKey("users.id"))
     # Data Points - Main
     name = db.Column(db.Text, nullable=False)
     biography = db.Column(db.Text)

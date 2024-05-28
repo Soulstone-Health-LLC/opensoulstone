@@ -9,15 +9,15 @@ class Events(db.Model):
 
     __tablename__ = "events"
     id = db.Column(db.Integer, primary_key=True)
-    practice_id = db.Column(db.Integer, db.ForeignKey("practice.id"))
+    practice_id = db.Column(db.Integer, db.ForeignKey("practices.id"))
     person_id = db.Column(db.Integer, db.ForeignKey("people.id"))
     created_at = db.Column(db.DateTime(timezone=True),
                            default=datetime.now(tz=timezone.utc))
-    created_by = db.Column(db.Integer, db.ForeignKey("user.id"))
+    created_by = db.Column(db.Integer, db.ForeignKey("users.id"))
     updated_at = db.Column(db.DateTime(timezone=True))
-    updated_by = db.Column(db.Integer, db.ForeignKey("user.id"))
+    updated_by = db.Column(db.Integer, db.ForeignKey("users.id"))
     event_type_id = db.Column(db.Integer, db.ForeignKey("event_types.id"))
-    practitioner_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    practitioner_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     date = db.Column(db.Date, nullable=False)
     start_time = db.Column(db.Time, nullable=False)
     end_time = db.Column(db.Time, nullable=False)
@@ -28,13 +28,13 @@ class EventTypes(db.Model):
     """SQL Table: event_types"""
 
     id = db.Column(db.Integer, primary_key=True)
-    practice_id = db.Column(db.Integer, db.ForeignKey("practice.id"))
+    practice_id = db.Column(db.Integer, db.ForeignKey("practices.id"))
     person_id = db.Column(db.Integer, db.ForeignKey("people.id"))
     created_at = db.Column(db.DateTime(timezone=True),
                            default=datetime.now(tz=timezone.utc))
-    created_by = db.Column(db.Integer, db.ForeignKey("user.id"))
+    created_by = db.Column(db.Integer, db.ForeignKey("users.id"))
     updated_at = db.Column(db.DateTime(timezone=True))
-    updated_by = db.Column(db.Integer, db.ForeignKey("user.id"))
+    updated_by = db.Column(db.Integer, db.ForeignKey("users.id"))
     event_name = db.Column(db.Text, nullable=False)
     event_description = db.Column(db.Text)
     event_status = db.Column(db.Text, nullable=False, default="Active")

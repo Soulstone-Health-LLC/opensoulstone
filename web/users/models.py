@@ -26,17 +26,17 @@ def unauthorized():
 class User(db.Model, UserMixin):
     """SQL Table: user"""
 
-    __tablename__ = "user"
+    __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
     # Foreign Keys
     practice_id = db.Column(
-        db.Integer, db.ForeignKey("practice.id"), default=1)
+        db.Integer, db.ForeignKey("practices.id"), default=1)
     # Data Points - Create/Updated
     created_at = db.Column(db.DateTime(timezone=True),
                            default=datetime.now(tz=timezone.utc))
-    created_by = db.Column(db.Integer, db.ForeignKey("user.id"))
+    created_by = db.Column(db.Integer, db.ForeignKey("users.id"))
     updated_at = db.Column(db.DateTime(timezone=True))
-    updated_by = db.Column(db.Integer, db.ForeignKey("user.id"))
+    updated_by = db.Column(db.Integer, db.ForeignKey("users.id"))
     # Data Points - Main
     email = db.Column(db.Text, nullable=False)
     password = db.Column(db.Text, nullable=False)

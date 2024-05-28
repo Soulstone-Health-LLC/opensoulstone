@@ -10,14 +10,14 @@ class Notes(db.Model):
     __tablename__ = "notes"
     id = db.Column(db.Integer, primary_key=True)
     # Foreign Keys
-    practice_id = db.Column(db.Integer, db.ForeignKey("practice.id"))
+    practice_id = db.Column(db.Integer, db.ForeignKey("practices.id"))
     person_id = db.Column(db.Integer, db.ForeignKey("people.id"))
     # Data Points - Created/Updated
     created_at = db.Column(db.DateTime(timezone=True),
                            default=datetime.now(tz=timezone.utc))
-    created_by = db.Column(db.Integer, db.ForeignKey("user.id"))
+    created_by = db.Column(db.Integer, db.ForeignKey("users.id"))
     updated_at = db.Column(db.DateTime(timezone=True))
-    updated_by = db.Column(db.Integer, db.ForeignKey("user.id"))
+    updated_by = db.Column(db.Integer, db.ForeignKey("users.id"))
     # Data Points - Main
     date_of_service = db.Column(db.DateTime, nullable=False)
     reason_for_visit = db.Column(db.Text)
