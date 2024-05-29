@@ -7,9 +7,10 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 from werkzeug.security import generate_password_hash
 from support.forms import AddPracticeForm, PracticeUserForm, ReleaseNotesForm
-from app import db
+from app import db, mail
 from settings.models import Practice
 from .models import ReleaseNotes
+from .controls import send_email
 from users.models import User
 from decorators.decorators import support_required
 
@@ -58,7 +59,7 @@ def add_practice():
 
     form = AddPracticeForm()
 
-    # Gets the data from the form and saves as variables
+    # Gets the data from the form and saves to the database
     if form.validate_on_submit():
         new_practice = Practice()
         form.populate_obj(new_practice)
@@ -88,7 +89,7 @@ def edit_practice(practice_id):
     practice = Practice.query.get_or_404(practice_id)
     form = AddPracticeForm(obj=practice)
 
-    # Gets the data from the form and saves as variables
+    # Gets the data from the form and saves to the database
     if form.validate_on_submit():
         form.populate_obj(practice)
         practice.updated_by = current_user.id
@@ -124,48 +125,40 @@ def add_practice_user(practice_id):
         letters = s.ascii_lowercase + s.ascii_uppercase + s.digits
         return "".join(random.choice(letters) for i in range(length))
 
-    # Gets the data from the form and saves as variables
+    # Gets the data from the form and saves to the database
     if form.validate_on_submit():
-        if request.method == "POST":
-            practice_id = request.form.get("practice_id")
-            role = form.role.data
-            firstname = form.first_name.data
-            middlename = form.middle_name.data
-            lastname = form.last_name.data
-            suffix = form.suffix_name.data
-            email = form.email.data
-            phonenumber = form.phone.data
-            phonetype = form.phone_type.data
-            password = randompass(10)
+        new_practice_user = User()
+        form.populate_obj(new_practice_user)
+        new_practice_user.practice_id = practice_id
+        new_practice_user.password = randompass(10)
+        new_practice_user.created_by = current_user.id
+        db.session.add(new_practice_user)
+        db.session.commit()
 
-            # Add new practice user to database
-            new_practice_user = User(
-                practice_id=practice_id,
-                role=role,
-                first_name=firstname,
-                middle_name=middlename,
-                last_name=lastname,
-                suffix_name=suffix,
-                email=email,
-                password=generate_password_hash(password),
-                phone_number=phonenumber,
-                phone_type=phonetype,
-                status="Active",
-            )
-            db.session.add(new_practice_user)
-            db.session.commit()
-            flash(f"{form.email} created successfully.", category="success")
+        # Send email to user
+        send_email('Soulstone - Account Created',
+                   new_practice_user.email,
+                   f"Your Soulstone account has been created for {
+                       practice.name}."
+                   f"\n\nEmail: {new_practice_user.email}"
+                   f"\nTemporary Password: {new_practice_user.password}"
+                   f"\n\nPlease login at: https://soulstone.app/login"
+                   f"\nand update your password at your earliest convenience."
+                   f"\n\nThank you!"
+                   f"\nSoulstone Support")
 
-            # Redirect user to Support home page
-            return redirect(url_for("supportapp.view_practice",
-                                    practice_id=practice_id))
+        flash(f"{form.email} created successfully and email sent to user.",
+              category="success")
+
+        # Redirect user to Support home page
+        return redirect(url_for("supportapp.view_practice",
+                                practice_id=practice_id))
 
     return render_template(
         "support/support_add_user.html",
         title="Soulstone - Add Practice User",
-        user=current_user,
         form=form,
-        practice=practice,
+        practice=practice
     )
 
 

@@ -60,7 +60,8 @@ class PracticeUserForm(FlaskForm):
         label="Email *", validators=[DataRequired(), Email(),
                                      Length(min=3, max=150)]
     )
-    phone = TelField(label="Phone Number *", validators=[DataRequired()])
+    phone_number = TelField(label="Phone Number *",
+                            validators=[DataRequired()])
     phone_type = SelectField(label="Phone Type *", choices=PHONE_TYPE_CHOICES)
     submit = SubmitField(label="Register Account")
 
