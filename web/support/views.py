@@ -226,61 +226,39 @@ def view_release_note_details(release_note_id):
 
 
 # Support App - Release Notes - Edit Release Note
-@ supportapp.route(
-    "/support/edit_release_notes/<int:release_note_id>",
-    methods=["GET", "POST"]
-)
+@ supportapp.route("/support/edit_release_notes/<int:release_note_id>",
+                   methods=["GET", "POST"])
 @ login_required
 @ support_required
 def edit_release_notes(release_note_id):
     """Edit release notes form and page"""
 
-    form = ReleaseNotesForm()
-
-    # Pre-populate the form with the existing data
-    if request.method == "GET":
-        release_notes = ReleaseNotes.query.get_or_404(release_note_id)
-        form.release_note_date.data = release_notes.release_note_date
-        form.release_note_content.data = release_notes.release_note_content
+    release_note = ReleaseNotes.query.get_or_404(release_note_id)
+    form = ReleaseNotesForm(obj=release_note)
 
     # If the user hits cancel, redirect to the Release Notes list page
     if form.cancel.data:
         return redirect(
-            url_for(
-                "supportapp.view_release_note_details",
-                release_note_id=release_note_id
-            )
+            url_for("supportapp.view_release_note_details",
+                    release_note_id=release_note_id)
         )
 
-    # Gets the data from the form and saves as variables
     if form.validate_on_submit():
-        if request.method == "POST":
-            release_note_date = form.release_note_date.data
-            release_note_content = form.release_note_content.data
-
-        # Update release notes in database
-        release_notes = ReleaseNotes.query.get_or_404(release_note_id)
-        release_notes.release_note_date = release_note_date
-        release_notes.release_note_content = release_note_content
-        release_notes.updated_by = current_user.id
-        release_notes.updated_at = datetime.now(tz=timezone.utc)
+        form.populate_obj(release_note)
+        release_note.updated_by = current_user.id
+        release_note.updated_at = datetime.now(tz=timezone.utc)
         db.session.commit()
         flash("Release note updated successfully.", category="success")
 
         # Redirect user to the Release Notes list page
         return redirect(
-            url_for(
-                "supportapp.view_release_note_details",
-                release_note_id=release_note_id
-            )
+            url_for("supportapp.view_release_note_details",
+                    release_note_id=release_note_id)
         )
 
     return render_template(
         "support/add_release_notes.html",
-        title="Soulstone - Edit Release Notes",
-        form=form,
-        user=current_user,
-    )
+        title="Soulstone - Edit Release Notes", form=form)
 
 
 # Support App - Release Notes - Delete Release Note
@@ -290,8 +268,8 @@ def edit_release_notes(release_note_id):
 def delete_release_notes(release_note_id):
     """Delete release notes from database"""
 
-    release_notes = ReleaseNotes.query.get_or_404(release_note_id)
-    db.session.delete(release_notes)
+    release_note = ReleaseNotes.query.get_or_404(release_note_id)
+    db.session.delete(release_note)
     db.session.commit()
     flash("Release note deleted successfully.", category="success")
 
