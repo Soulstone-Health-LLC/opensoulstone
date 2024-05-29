@@ -8,7 +8,7 @@
 </ol>
 {%endblock pagenav%} {%block content%}
 <div class="row">
-  <a href="{{url_for('supportapp.addReleaseNotes')}}"
+  <a href="{{url_for('supportapp.add_release_notes')}}"
     ><button class="btn btn-primary mb-4" type="button">
       <i class="fe fe-plus"></i> Add Release Note
     </button></a
@@ -24,6 +24,7 @@
         </div>
         <div class="table-responsive">
           <table
+            data-order='[[ 1, "desc"]]'
             class="table table-bordered border-bottom w-100"
             id="responsive-datatable"
           >
@@ -41,7 +42,7 @@
                 <td>{{rn.release_note_date}}</td>
                 <td>
                   <a
-                    href="{{url_for('supportapp.viewReleaseNoteDetails', release_note_id=rn.id)}}"
+                    href="{{url_for('supportapp.view_release_note_details', release_note_id=rn.id)}}"
                     class="btn btn-primary badge"
                     type="button"
                     ><i class="fe fe-eye"></i> View</a

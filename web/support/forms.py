@@ -4,6 +4,7 @@ Blueprint.
 """
 
 # Imports
+from datetime import datetime, timezone
 from flask_wtf import FlaskForm
 from wtforms import (
     StringField, SubmitField, SelectField, EmailField, DateField,
@@ -71,6 +72,7 @@ class ReleaseNotesForm(FlaskForm):
     """Add or edit release notes form"""
 
     release_note_date = DateField(label="Release Note Date *",
+                                  default=datetime.now(tz=timezone.utc).date(),
                                   validators=[DataRequired()])
     release_note_content = TextAreaField(label="Release Note *",
                                          validators=[DataRequired()],

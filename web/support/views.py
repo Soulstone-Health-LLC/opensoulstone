@@ -175,8 +175,7 @@ def view_release_notes():
 
     return render_template(
         "support/support_release_notes.html",
-        user=current_user,
-        release_notes=release_notes,
+        release_notes=release_notes
     )
 
 
@@ -193,19 +192,11 @@ def add_release_notes():
     if form.cancel.data:
         return redirect(url_for("supportapp.view_release_notes"))
 
-    # Gets the data from the form and saves as variables
+    # Gets the data from the form and saves to the database
     if form.validate_on_submit():
-        if request.method == "POST":
-            release_note_date = form.release_note_date.data
-            release_note_content = form.release_note_content.data
-
-        # Add new release notes to database
-        new_release_notes = ReleaseNotes(
-            release_note_date=release_note_date,
-            release_note_content=release_note_content,
-            created_by=current_user.id,
-            created_at=datetime.now(tz=timezone.utc),
-        )
+        new_release_notes = ReleaseNotes()
+        form.populate_obj(new_release_notes)
+        new_release_notes.created_by = current_user.id
         db.session.add(new_release_notes)
         db.session.commit()
         flash("Release note created successfully.", category="success")
@@ -213,12 +204,9 @@ def add_release_notes():
         # Redirect user to the Release Notes list page
         return redirect(url_for("supportapp.view_release_notes"))
 
-    return render_template(
-        "support/add_release_notes.html",
-        title="Soulstone - Add Release Notes",
-        form=form,
-        user=current_user,
-    )
+    return render_template("support/add_release_notes.html",
+                           title="Soulstone - Add Release Notes", form=form
+                           )
 
 
 # Support App - Release Notes - View a Release Note
