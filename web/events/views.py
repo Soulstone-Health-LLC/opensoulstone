@@ -173,7 +173,7 @@ def addEvent():
             flash("New event created", "success")
 
             # Redirect to the calendar page
-            return redirect(url_for("calendar.schedule"))
+            return redirect(url_for("events.schedule"))
     return render_template("calendar/add_event.html", form=form,
                            user=current_user)
 
@@ -306,7 +306,7 @@ def editEvent(event_id):
             flash("Event updated", "success")
 
             # Redirect to the calendar page
-            return redirect(url_for("calendar.schedule"))
+            return redirect(url_for("events.schedule"))
     elif request.method == "GET":
         form.event_type_id.data = event.event_type_id
         form.person.data = event.person_id
@@ -336,4 +336,4 @@ def deleteEvent(event_id):
         flash("Event deleted", "success")
 
         # Redirect to the calendar page
-        return redirect(url_for("calendar.schedule"))
+        return redirect(url_for("events.schedule"))
