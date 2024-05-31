@@ -1,17 +1,13 @@
-"""
-Terms of Service - User Agreement View
-"""
-
+"""Terms of Service - User Agreement View"""
 # Imports
-from flask import Blueprint, render_template, redirect, url_for, request
+from datetime import datetime, timezone
+from flask import Blueprint, render_template, redirect, url_for, flash
 from flask_login import current_user, login_required
-from datetime import datetime
-from terms_of_service.forms import UserAgreementForm, TermsOfServiceForm
-from terms_of_service.models import UserAgreement, TermsOfService
-from users.models import User
-from app import db
-from sqlalchemy.orm import aliased
 from decorators.decorators import support_required
+from app import db
+from .controls import get_tos_details
+from .forms import UserAgreementForm, TermsOfServiceForm
+from .models import UserAgreement, TermsOfService
 
 
 # Blueprint Configuration
@@ -26,32 +22,25 @@ def user_agreement(tos_id):
     """User Agreement page"""
 
     form = UserAgreementForm()
-
     agreement_content = TermsOfService.query.filter_by(id=tos_id).first()
 
     # If user clicks "I Agree"
     if form.validate_on_submit():
-        if request.method == "POST":
-            # Get current date and time
-            date_time = datetime.now()
+        # Save user agreement to database
+        user_agreement_signed = UserAgreement(
+            user_id=current_user.id,
+            tos_id=tos_id,
+            agreed_date=datetime.now(tz=timezone.utc),
+        )
+        db.session.add(user_agreement_signed)
+        db.session.commit()
 
-            # Save user agreement to database
-            user_agreement = UserAgreement(
-                user_id=current_user.id,
-                tos_id=tos_id,
-                agreed_date=date_time,
-            )
-            db.session.add(user_agreement)
-            db.session.commit()
-
-            # Redirect user to home page
-            return redirect(url_for("core.home"))
+        # Redirect user to home page
+        return redirect(url_for("core.home"))
 
     return render_template(
         "terms_of_service/user_agreement.html",
-        form=form,
-        user=current_user,
-        agreement_content=agreement_content,
+        form=form, agreement_content=agreement_content
     )
 
 
@@ -78,36 +67,11 @@ def support_list_tos():
 def support_view_tos(tos_id):
     """Support - Terms of Service - View Terms of Service"""
 
-    # Create aliases for the User table
-    created_by_user = aliased(User)
-    updated_by_user = aliased(User)
-
-    # Get terms of service
-    tos = (
-        db.session.query(
-            TermsOfService.id,
-            TermsOfService.version,
-            TermsOfService.content,
-            TermsOfService.created_at,
-            TermsOfService.created_by,
-            TermsOfService.updated_at,
-            TermsOfService.updated_by,
-            TermsOfService.active_date,
-            TermsOfService.sunset_date,
-            created_by_user.first_name.label("created_by_first_name"),
-            created_by_user.last_name.label("created_by_last_name"),
-            updated_by_user.first_name.label("updated_by_first_name"),
-            updated_by_user.last_name.label("updated_by_last_name"),
-        )
-        .join(created_by_user, TermsOfService.created_by == created_by_user.id)
-        .outerjoin(updated_by_user,
-                   TermsOfService.updated_by == updated_by_user.id)
-        .filter(TermsOfService.id == tos_id)
-        .first()
-    )
+    # Get terms of service details
+    tos = get_tos_details(tos_id)
 
     return render_template(
-        "terms_of_service/support_view_tos.html", user=current_user, tos=tos
+        "terms_of_service/support_view_tos.html", tos=tos
     )
 
 
@@ -123,27 +87,19 @@ def support_create_tos():
 
     # If form is submitted
     if form.validate_on_submit():
-        if request.method == "POST":
-            # Save terms of service to database
-            tos = TermsOfService(
-                content=form.content.data,
-                active_date=form.active_date.data,
-                sunset_date=form.sunset_date.data,
-                version=form.version.data,
-                created_at=datetime.now(),
-                created_by=current_user.id,
-            )
-            db.session.add(tos)
-            db.session.commit()
+        new_tos = TermsOfService()
+        form.populate_obj(new_tos)
+        new_tos.created_by = current_user.id
+        db.session.add(new_tos)
+        db.session.commit()
+        flash("Terms of Service created successfully.", category="success")
 
-            # Redirect user to support - list terms of service page
-            return redirect(url_for("terms_of_service.support_list_tos"))
+        # Redirect user to support - list terms of service page
+        return redirect(url_for("terms_of_service.support_list_tos"))
 
     return render_template(
         "terms_of_service/support_add_edit_tos.html",
-        user=current_user,
-        form=form,
-        title="Create Terms of Service",
+        title="Create Terms of Service", form=form
     )
 
 
@@ -156,36 +112,20 @@ def support_create_tos():
 def support_edit_tos(tos_id):
     """Support - Terms of Service - Edit Terms of Service"""
 
-    form = TermsOfServiceForm()
-
-    # Get terms of service
     tos = TermsOfService.query.filter_by(id=tos_id).first()
+    form = TermsOfServiceForm(obj=tos)
 
-    if request.method == "GET":
-        # Populate form with existing data
-        form.content.data = tos.content
-        form.active_date.data = tos.active_date
-        form.sunset_date.data = tos.sunset_date
-        form.version.data = tos.version
-
-    # If form is submitted
     if form.validate_on_submit():
-        if request.method == "POST":
-            # Update terms of service in database
-            tos.content = form.content.data
-            tos.active_date = form.active_date.data
-            tos.sunset_date = form.sunset_date.data
-            tos.version = form.version.data
-            tos.updated_at = datetime.now()
-            tos.updated_by = current_user.id
-            db.session.commit()
+        form.populate_obj(tos)
+        tos.updated_date = datetime.now(tz=timezone.utc)
+        tos.updated_by = current_user.id
+        db.session.commit()
+        flash("Terms of Service updated successfully.", category="success")
 
-            # Redirect user to support - list terms of service page
-            return redirect(url_for("terms_of_service.support_list_tos"))
+        # Redirect user to support - list terms of service page
+        return redirect(url_for("terms_of_service.support_list_tos"))
 
     return render_template(
         "terms_of_service/support_add_edit_tos.html",
-        user=current_user,
-        form=form,
-        title="Soulstone - Edit Terms of Service",
+        title="Soulstone - Edit Terms of Service", form=form
     )
