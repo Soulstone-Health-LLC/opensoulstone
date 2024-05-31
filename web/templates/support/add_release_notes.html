@@ -15,11 +15,11 @@
         <form method="post" class="" novalidate>
           {{ form.hidden_tag() }}
           <div class="form-group">
-            {{ form.release_note_date.label() }} {{
+            {{ form.release_note_date.label(class="form-label") }} {{
             form.release_note_date(class="form-control") }}
           </div>
           <div class="form-group">
-            {{ form.release_note_content.label() }} {{
+            {{ form.release_note_content.label(class="form-label") }} {{
             form.release_note_content(class="form-control") }}
           </div>
           {{ form.submit(class="btn btn-primary") }} {{ form.cancel(class="btn
