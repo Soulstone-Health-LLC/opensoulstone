@@ -1,8 +1,4 @@
-"""
-Support > Forms - This file contains all of the forms for the Support
-Blueprint.
-"""
-
+"""Support > Forms - Forms for the support views."""
 # Imports
 from datetime import datetime, timezone
 from flask_wtf import FlaskForm
