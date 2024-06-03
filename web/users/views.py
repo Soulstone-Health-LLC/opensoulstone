@@ -5,12 +5,10 @@ from flask import (
     Blueprint, render_template, request, flash, redirect, url_for, session)
 from werkzeug.security import generate_password_hash
 from flask_login import login_required, logout_user, current_user
-from flask_mail import Message
 from universal.controls import send_email
-from app import db, mail
+from app import db
 from .forms import (
-    LoginForm, ResetPasswordForm, ResetRequestForm, ShortCodeForm
-)
+    LoginForm, ResetPasswordForm, ResetRequestForm, ShortCodeForm)
 from .models import User
 from .controls import handle_login, generate_short_code
 
@@ -134,39 +132,15 @@ def change_password():
     form = ResetPasswordForm()
 
     if form.validate_on_submit():
-        if request.method == "POST":
-            password = generate_password_hash(form.password.data)
+        current_user.password = generate_password_hash(form.password.data)
+        current_user.password_reset_by_system = False
+        current_user.password_reset_at = datetime.now(tz=timezone.utc)
+        current_user.updated_at = datetime.now(tz=timezone.utc)
+        current_user.updated_by = current_user.id
+        db.session.commit()
+        flash("Password updated!", category="success")
 
-            # Update password on database
-            current_user.password = password
-            current_user.password_reset_by_system = False
-            current_user.password_reset_at = datetime.utcnow()
-            current_user.updated_at = datetime.utcnow()
-            current_user.updated_by = current_user.id
-            db.session.commit()
-            flash("Password updated!", category="success")
+        return redirect(url_for("settings.profile", user_id=current_user.id))
 
-            # Sent email to user informing password was changed
-            msg = Message(
-                "Soulstone - Password Changed",
-                recipients=[current_user.email],
-                sender="noreply@soulstone.com",
-            )
-            msg.body = f"""
-Your password was changed on
-{current_user.password_reset_at.strftime('%Y-%m-%d %I:%M:%S %p')}
-by {current_user.first_name} {current_user.last_name}.
-
-If you did not change your password,
-please your practice's Super User immediately.
-
-
-You can also reset your password by clicking the link below:
-{url_for('users.reset_request', _external=True)}
-            """
-            mail.send(msg)
-
-            return redirect(url_for("users.logout"))
-
-    return render_template("users/change_password.html", form=form,
-                           user=current_user)
+    return render_template("users/change_password.html",
+                           title="Soulstone - Change Password", form=form)
