@@ -1,7 +1,6 @@
 """
 Users > Forms - This file contains all of the forms for the Users Blueprint.
 """
-
 # Imports
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, EmailField
@@ -58,7 +57,15 @@ class LoginForm(FlaskForm):
     submit = SubmitField(label="Log In")
 
 
-# Form - Request Password Reset
+# Form - Short Code & Forgot Password - Confirm Short Code Page
+class ShortCodeForm(FlaskForm):
+    """Short Code Form"""
+
+    short_code = StringField(label="Short Code *", validators=[DataRequired()])
+    submit = SubmitField(label="Submit")
+
+
+# Form - Forgot Password - Reset Request Page
 class ResetRequestForm(FlaskForm):
     """Request Reset Password Form"""
 

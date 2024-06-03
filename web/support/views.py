@@ -1,18 +1,16 @@
 """Support > Views - This file contains the views for the Support Blueprint."""
 # Imports
-import random
-import string
 from datetime import datetime, timezone
-from flask import Blueprint, render_template, request, flash, redirect, url_for
+from flask import Blueprint, render_template, flash, redirect, url_for
 from flask_login import login_required, current_user
 from werkzeug.security import generate_password_hash
-from support.forms import AddPracticeForm, PracticeUserForm, ReleaseNotesForm
-from app import db, mail
-from settings.models import Practice
-from .models import ReleaseNotes
-from .controls import send_email
+from universal.controls import send_email, randompass
 from users.models import User
 from decorators.decorators import support_required
+from settings.models import Practice
+from app import db
+from .models import ReleaseNotes
+from .forms import AddPracticeForm, PracticeUserForm, ReleaseNotesForm
 
 
 # Blueprint Configuration
@@ -118,19 +116,12 @@ def add_practice_user(practice_id):
     form = PracticeUserForm()
     practice = Practice.query.get(practice_id)
 
-    # Random string
-    def randompass(length):
-        """Generates a random string for a temporary password"""
-        s = string
-        letters = s.ascii_lowercase + s.ascii_uppercase + s.digits
-        return "".join(random.choice(letters) for i in range(length))
-
     # Gets the data from the form and saves to the database
     if form.validate_on_submit():
         new_practice_user = User()
         form.populate_obj(new_practice_user)
         new_practice_user.practice_id = practice_id
-        new_practice_user.password = randompass(10)
+        new_practice_user.password = generate_password_hash(randompass(10))
         new_practice_user.created_by = current_user.id
         db.session.add(new_practice_user)
         db.session.commit()

@@ -1,5 +1,7 @@
 """Support > Controllers - controls for the support blueprint"""
 # Imports
+import string
+import random
 from flask_mail import Message
 from app import mail
 
@@ -12,3 +14,11 @@ def send_email(subject, recipient, body):
                   recipient], sender="donotreply@openvolunteer.com")
     msg.body = body
     mail.send(msg)
+
+
+# Random string
+def randompass(length):
+    """Generates a random string for a temporary password"""
+    s = string
+    letters = s.ascii_lowercase + s.ascii_uppercase + s.digits
+    return "".join(random.choice(letters) for i in range(length))

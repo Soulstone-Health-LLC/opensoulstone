@@ -1,22 +1,18 @@
-"""
-Users > Views - This file contains all of the views for the Users Blueprint.
-"""
-
+"""Users > Views - Views for the User Blueprint."""
 # Imports
-from datetime import datetime
-from flask import Blueprint, render_template, request, flash, redirect, url_for
-from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import login_user, login_required, logout_user, current_user
+from datetime import datetime, timezone
+from flask import (
+    Blueprint, render_template, request, flash, redirect, url_for, session)
+from werkzeug.security import generate_password_hash
+from flask_login import login_required, logout_user, current_user
 from flask_mail import Message
-from users.forms import (
-    RegistrationForm,
-    LoginForm,
-    ResetPasswordForm,
-    ResetRequestForm,
-)
-from users.models import User
-from terms_of_service.models import TermsOfService, UserAgreement
+from universal.controls import send_email
 from app import db, mail
+from .forms import (
+    LoginForm, ResetPasswordForm, ResetRequestForm, ShortCodeForm
+)
+from .models import User
+from .controls import handle_login, generate_short_code
 
 
 # Blueprint Configuration
@@ -28,161 +24,24 @@ users = Blueprint("users", __name__)
 def login():
     """Login page"""
     # If user is currently logged in, redirect to home
-    if current_user.is_authenticated:
+    if current_user.is_authenticated and current_user.role == "Support":
+        return redirect(url_for("supportapp.support"))
+
+    if current_user.is_authenticated and not current_user.role == "Support":
         return redirect(url_for("core.home"))
 
-    # Login logic
+    # Form and validation
     form = LoginForm()
+    if form.validate_on_submit() and request.method == "POST":
+        return handle_login(form)
 
-    # Gets the data from the form and saves as variables
-    if form.validate_on_submit():
-        if request.method == "POST":
-            email = form.email.data
-            password = form.password.data
-
-            # Checks if the user's email is on file
-            user = User.query.filter_by(email=email).first()
-
-            # Checks if the password is correct
-            if user:
-                if check_password_hash(user.password, password):
-                    # Check if user is a Support user
-                    if user.role == "Support":
-                        flash("Logged in successfully", category="success")
-                        login_user(user, remember=True)
-                        return redirect(url_for("supportapp.support"))
-                    else:
-                        # Check if password needs to be updated
-                        if user.password_reset_by_system:
-                            flash("Please update your password.",
-                                  category="error")
-                            login_user(user, remember=True)
-                            return redirect(url_for("users.change_password"))
-                        else:
-                            # Check if user has agreed to the latest TOS
-                            active_tos = (
-                                TermsOfService.query.filter(
-                                    TermsOfService.active_date <=
-                                    datetime.now(),
-                                    TermsOfService.sunset_date >
-                                    datetime.now(),
-                                )
-                                .order_by(TermsOfService.active_date.desc())
-                                .first()
-                            )
-
-                            user_agreement = UserAgreement.query.filter(
-                                UserAgreement.user_id == user.id,
-                                UserAgreement.tos_id == active_tos.id,
-                            ).first()
-
-                            if not user_agreement:
-                                login_user(user, remember=True)
-                                return redirect(
-                                    url_for(
-                                        "terms_of_service.user_agreement",
-                                        tos_id=active_tos.id,
-                                    )
-                                )
-                            else:
-                                flash("Logged in successfully",
-                                      category="success")
-                                login_user(user, remember=True)
-                                return redirect(url_for("core.home"))
-                else:
-                    flash(
-                        f"""
-                        The account information used for {form.email.data}
-                        is incorrect""",
-                        category="error",
-                    )
-            else:
-                flash(
-                    f"Account not found for {form.email.data}.",
-                    category="error")
-
-    return render_template(
-        "users/login.html", title="Soulstone - Login", form=form,
-        user=current_user
-    )
-
-
-# Forgot Password
-def send_mail(user):
-    """Generates a serialized token and sends the link to the user's email"""
-    token = User.get_token(user)
-    msg = Message(
-        "Soulstone - Password Reset Request",
-        recipients=[user.email],
-        sender="noreply@soulstone.com",
-    )
-    msg.body = f""" To reset your password, please follow the link below:
-
-    {url_for('users.reset_token', token=token, _external=True)}
-
-    If you did not send a password reset request, please ignore this email.
-
-    ...
-    """
-    mail.send(msg)
-
-
-# Reset Request Page
-@users.route("/reset_request", methods=["GET", "POST"])
-def reset_request():
-    """Reset page"""
-    form = ResetRequestForm()
-
-    if request.method == "POST":
-        # Checks if the user's email is on file
-        user = User.query.filter_by(email=form.email.data).first()
-
-        if user:
-            send_mail(user)
-            flash(
-                f"An email to {form.email.data} with a reset password link.",
-                category="success",
-            )
-        else:
-            flash(
-                f"Account not found with {form.email.data}", category="error")
-
-    return render_template(
-        "users/reset_request.html",
-        title="Soulstone - Password Reset Request",
-        form=form,
-    )
-
-
-# Reset Password Page
-@users.route("/reset_password/<token>", methods=["GET", "POST"])
-def reset_token(token):
-    """Checks the link the user clicked and if the token matches"""
-    user = User.verify_token(token)
-    if user is None:
-        flash(
-            """That is an invalid token or the token has expired.
-              Please try again.""",
-            category="error",
-        )
-        return redirect(url_for("users.reset_request"))
-
-    form = ResetPasswordForm()
-    if form.validate_on_submit():
-        password = generate_password_hash(form.password.data)
-
-        # Update password on database
-        user.password = password
-        db.session.commit()
-        flash(" Password updated!", category="success")
-        return redirect(url_for("users.login"))
-
-    return render_template("users/change_password.html", form=form)
+    return render_template("users/login.html", title="Soulstone - Login",
+                           form=form, user=current_user)
 
 
 # Logout
-@users.route("/logout")
-@login_required
+@ users.route("/logout")
+@ login_required
 def logout():
     """Logout operation"""
     logout_user()
@@ -190,55 +49,85 @@ def logout():
     return redirect(url_for("users.login"))
 
 
-# Sign Up Page
-@users.route("/sign_up", methods=["GET", "POST"])
-def sign_up():
-    """Sign up page"""
-    form = RegistrationForm()
+# Forgot Password - Reset Request Page
+@users.route("/forgot_password_request", methods=["GET", "POST"])
+def forgot_password_request():
+    """Reset page"""
+    form = ResetRequestForm()
 
     if form.validate_on_submit():
-        if request.method == "POST":
-            email = form.email.data
-            first_name = form.first_name.data
-            last_name = form.last_name.data
-            password = form.password.data
+        user = User.query.filter_by(email=form.email.data).first()
 
-            # Checks if email already exists
-            user = User.query.filter_by(email=email).first()
+        # If email is not found
+        if not user:
+            flash("Email not found.", category="error")
 
-            if user:
-                # security issue - should look at some better wording
-                flash("Email is already in use.", category="error")
-            else:
-                # Add new user to database
-                new_user = User(
-                    email=email,
-                    first_name=first_name,
-                    last_name=last_name,
-                    password=generate_password_hash(password),
-                    user_type="Owner",
-                )
-                db.session.add(new_user)
-                db.session.commit()
+        # Generate token
+        short_code = generate_short_code()
+        send_email("Soulstone - Password Reset Request",
+                   user.email,
+                   f"You have requested a password reset for your account."
+                   f"\n\nPlease use this code to reset your password:"
+                   f"\n{short_code}"
+                   f"\n\nIf you did not request this, please ignore this email."
+                   )
+        session['short_code'] = short_code
+        session['user_id'] = user.id
+        flash("An email has been sent with instructions to reset your password.",
+              category="success")
 
-                # Flash success message
-                flash("Account created!", category="success")
-
-                # Remember the newly registered user
-                login_user(new_user, remember=True)
-
-                # redirect the user to landing page
-                return redirect(url_for("core.home"))
+        return redirect(url_for("users.forgot_password_short_code"))
 
     return render_template(
-        "users/sign_up.html", title="Soulstone - Register", form=form,
-        user=current_user
-    )
+        "users/reset_request.html",
+        title="Soulstone - Password Reset Request", form=form)
+
+
+# Forgot Password - Confirm Short Code Page
+@ users.route("/forgot_password_short_code", methods=["GET", "POST"])
+def forgot_password_short_code():
+    """Allows the user to enter the short code sent to their email"""
+    form = ShortCodeForm()
+
+    if form.validate_on_submit():
+        if form.short_code.data == session.get("short_code"):
+            flash("Code accepted. Please enter your new password.",
+                  category="success")
+            return redirect(url_for("users.forgot_password_reset_password"))
+
+        else:
+            flash("The code you entered is incorrect. Please try again.",
+                  category="error")
+
+    return render_template("users/change_password_reset_code.html",
+                           form=form)
+
+
+# Forgot Password - Reset User Password Page
+@ users.route("/forgot_password_reset_password", methods=["GET", "POST"])
+def forgot_password_reset_password():
+    """Allows the user to change their password"""
+    form = ResetPasswordForm()
+
+    if form.validate_on_submit():
+        user = User.query.get(session.get("user_id"))
+        user.password = generate_password_hash(form.password.data)
+        user.password_reset_by_system = False
+        user.password_reset_at = datetime.now(tz=timezone.utc)
+        user.updated_at = datetime.now(tz=timezone.utc)
+        user.updated_by = user.id
+        db.session.commit()
+        flash("Password updated!", category="success")
+
+        return redirect(url_for("users.login"))
+
+    return render_template("users/change_password.html",
+                           title="Soulstone - Change Password", form=form)
 
 
 # Change Password Page
-@users.route("/change_password", methods=["GET", "POST"])
-@login_required
+@ users.route("/change_password", methods=["GET", "POST"])
+@ login_required
 def change_password():
     """Change password page"""
 
