@@ -38,7 +38,6 @@ class People(db.Model):
         db.String(255), nullable=False, default='default_profile.jpg')
 
     # Outstanding Balances
-
     def outstanding_balance(self):
         """Returns the outstanding balance for the person"""
         charge_sum = (
