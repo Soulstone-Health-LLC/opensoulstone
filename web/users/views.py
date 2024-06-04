@@ -30,7 +30,7 @@ def login():
 
     # Form and validation
     form = LoginForm()
-    if form.validate_on_submit() and request.method == "POST":
+    if form.validate_on_submit():
         return handle_login(form)
 
     return render_template("users/login.html", title="Soulstone - Login",

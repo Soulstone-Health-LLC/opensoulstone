@@ -21,8 +21,9 @@ def handle_login(form):
 
     # If the password is incorrect
     if not check_password_hash(user.password, form.password.data):
-        flash(f"The account information used for {
-              form.email.data} is incorrect", category="error")
+        flash(
+            f"The account information used for {form.email.data} is incorrect",
+            category="error")
         return redirect(url_for("users.login"))
 
     # Check if user is a Support user
@@ -39,6 +40,13 @@ def handle_login(form):
 
     # Check if user has agreed to the latest TOS
     active_tos = get_active_tos()
+
+    # If no active TOS is found
+    if not active_tos:
+        login_user(user, remember=True)
+        flash("Logged in successfully", category="success")
+        return redirect(url_for("core.home"))
+
     latest_user_agreement = UserAgreement.query.filter(
         UserAgreement.user_id == user.id,
         UserAgreement.tos_id == active_tos.id,
