@@ -67,12 +67,14 @@ def forgot_password_request():
                    f"You have requested a password reset for your account."
                    f"\n\nPlease use this code to reset your password:"
                    f"\n{short_code}"
-                   f"\n\nIf you did not request this, please ignore this email."
+                   f"\n\nIf you did not request this, please ignore"
+                   f" this email."
                    )
         session['short_code'] = short_code
         session['user_id'] = user.id
-        flash("An email has been sent with instructions to reset your password.",
-              category="success")
+        flash(
+            "An email has been sent with instructions to reset your password.",
+            category="success")
 
         return redirect(url_for("users.forgot_password_short_code"))
 
