@@ -115,13 +115,14 @@ def add_practice_user(practice_id):
 
     form = PracticeUserForm()
     practice = Practice.query.get(practice_id)
+    random_password = randompass(10)
 
     # Gets the data from the form and saves to the database
     if form.validate_on_submit():
         new_practice_user = User()
         form.populate_obj(new_practice_user)
         new_practice_user.practice_id = practice_id
-        new_practice_user.password = generate_password_hash(randompass(10))
+        new_practice_user.password = generate_password_hash(random_password)
         new_practice_user.created_by = current_user.id
         db.session.add(new_practice_user)
         db.session.commit()
@@ -132,7 +133,7 @@ def add_practice_user(practice_id):
                    f"Your Soulstone account has been created for {
                        practice.name}."
                    f"\n\nEmail: {new_practice_user.email}"
-                   f"\nTemporary Password: {new_practice_user.password}"
+                   f"\nTemporary Password: {random_password}"
                    f"\n\nPlease login at: https://soulstone.app/login"
                    f"\nand update your password at your earliest convenience."
                    f"\n\nThank you!"
