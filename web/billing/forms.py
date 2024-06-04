@@ -1,7 +1,4 @@
-"""
-Billing > Froms - This file contains the forms for the billing blueprint.
-"""
-
+"""Billing > Froms - Forms for the billing blueprint."""
 # Imports
 from flask_wtf import FlaskForm
 from wtforms import SubmitField, FloatField, IntegerField, SelectField
@@ -33,8 +30,7 @@ class AddLedgerPaymentForm(FlaskForm):
     payment_amount = FloatField(
         label="Payment Amount *", validators=[DataRequired()])
     payment_method = SelectField(
-        label="Payment Method *",
-        choices=PAYMENT_TYPE_CHOICES,
+        label="Payment Method *", choices=PAYMENT_TYPE_CHOICES,
         validators=[DataRequired()],
     )
     check_number = IntegerField(label="Check Number")

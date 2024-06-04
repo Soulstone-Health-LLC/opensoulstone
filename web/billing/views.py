@@ -1,26 +1,20 @@
-"""
-Billing > Views - This file contains the routes for the billing blueprint.
-"""
-
+"""Billing > Views - Routes for the billing blueprint."""
 # Imports
 import pdfkit
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from flask import (
-    Blueprint,
-    render_template,
-    request,
-    flash,
-    redirect,
-    url_for,
-    make_response,
-)
+    Blueprint, render_template, request, flash, redirect, url_for,
+    make_response)
 from flask_login import login_required, current_user
-from billing.forms import AddLedgerChargeForm, AddLedgerPaymentForm
-from app import db
 from persons.models import People
-from .models import Charges, LedgerCharges, LedgerPayments
 from settings.models import Practice
 from persons.person_header import personHeader
+from app import db
+from .models import Charges, LedgerCharges, LedgerPayments
+from .forms import AddLedgerChargeForm, AddLedgerPaymentForm
+from .controls import (
+    get_people, get_ledger_charges, get_total_charges, get_total_payments,
+    get_outstanding_balances)
 
 
 # Blueprint configuration
@@ -33,61 +27,16 @@ billing = Blueprint("billing", __name__)
 def ledger():
     """Routes the user to the Billing page"""
 
-    start_date = datetime.utcnow() - timedelta(days=120)
+    start_date = datetime.now(tz=timezone.utc) - timedelta(days=120)
+    people = get_people(current_user.practice_id)
+    ledger_charges = get_ledger_charges(current_user.practice_id, start_date)
+    total_charges = get_total_charges(current_user.practice_id) or 0
+    total_payments = get_total_payments(current_user.practice_id) or 0
 
-    people = People.query.filter_by(practice_id=current_user.practice_id).all()
-    ledger_charges = (
-        db.session.query(
-            LedgerCharges.id,
-            LedgerCharges.created_at,
-            LedgerCharges.units,
-            LedgerCharges.unit_amount,
-            LedgerCharges.tax_rate,
-            LedgerCharges.practice_id,
-            People.id.label("person_id"),
-            People.first_name,
-            People.middle_name,
-            People.last_name,
-            People.suffix_name,
-            People.gender_identity,
-            Charges.code,
-            Charges.description,
-        )
-        .join(People, LedgerCharges.person_id == People.id)
-        .join(Charges, LedgerCharges.charge_id == Charges.id)
-        .filter(LedgerCharges.practice_id == current_user.practice_id,
-                LedgerCharges.created_at >= start_date)
-        .all()
-    )
-    total_charges = (
-        db.session.query(
-            db.func.sum(
-                LedgerCharges.units * LedgerCharges.unit_amount
-                + (LedgerCharges.unit_amount * LedgerCharges.tax_rate)
-            )
-        )
-        .filter_by(practice_id=current_user.practice_id)
-        .scalar()
-    )
-    total_payments = (
-        db.session.query(db.func.sum(LedgerPayments.amount))
-        .filter_by(practice_id=current_user.practice_id)
-        .scalar()
-    )
-
-    if total_charges is None:
-        total_charges = 0
-    if total_payments is None:
-        total_payments = 0
     return render_template(
-        "billing/billing.html",
-        title="Soulstone - Billing",
-        user=current_user,
-        people=people,
-        ledger_charges=ledger_charges,
-        total_charges=total_charges,
-        total_payments=total_payments,
-    )
+        "billing/billing.html", title="Soulstone - Billing", people=people,
+        ledger_charges=ledger_charges, total_charges=total_charges,
+        total_payments=total_payments)
 
 
 # Billing - Balance
@@ -95,65 +44,16 @@ def ledger():
 @login_required
 def balance():
     """Routes the user to the Balance page"""
-    # queries
-    people = People.query.filter_by(practice_id=current_user.practice_id).all()
 
-    total_charges = (
-        db.session.query(
-            db.func.coalesce(
-                db.func.sum(
-                    LedgerCharges.units * LedgerCharges.unit_amount
-                    + (LedgerCharges.unit_amount * LedgerCharges.tax_rate)
-                ),
-                0,  # Replace None with 0
-            )
-        )
-        .filter_by(practice_id=current_user.practice_id)
-        .scalar()
-    )
-
-    total_payments = (
-        db.session.query(
-            db.func.coalesce(
-                db.func.sum(LedgerPayments.amount), 0  # Replace None with 0
-            )
-        )
-        .filter_by(practice_id=current_user.practice_id)
-        .scalar()
-    )
-
-    # List of outstanding balances
-    balances = (
-        People.query.outerjoin(LedgerCharges)
-        .outerjoin(LedgerPayments)
-        .group_by(People.id)
-        .having(
-            db.func.coalesce(
-                db.func.sum(
-                    LedgerCharges.unit_amount * LedgerCharges.units
-                    + (LedgerCharges.unit_amount * LedgerCharges.tax_rate)
-                ),
-                0,
-            )
-            > db.func.coalesce(
-                # Replace with the correct column name
-                db.func.sum(LedgerPayments.amount),
-                0,
-            )
-        )
-        .filter(People.practice_id == current_user.practice_id)
-        .all()
-    )
+    people = get_people(current_user.practice_id)
+    total_charges = get_total_charges(current_user.practice_id) or 0
+    total_payments = get_total_payments(current_user.practice_id) or 0
+    balances = get_outstanding_balances(current_user.practice_id)
 
     return render_template(
-        "billing/balance.html",
-        title="Soulstone - Balance",
-        user=current_user,
-        people=people,
-        total_charges=total_charges,
-        total_payments=total_payments,
-        balances=balances,
-    )
+        "billing/balance.html", title="Soulstone - Balance", user=current_user,
+        people=people, total_charges=total_charges,
+        total_payments=total_payments, balances=balances)
 
 
 # Billing - Add Ledger Charge

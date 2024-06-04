@@ -8,6 +8,7 @@ class Charges(db.Model):
     """SQL Table: charges"""
 
     __tablename__ = "charges"
+
     id = db.Column(db.Integer, primary_key=True)
     # Foreign Keys
     practice_id = db.Column(db.Integer, db.ForeignKey("practices.id"))
@@ -30,6 +31,7 @@ class LedgerCharges(db.Model):
     """SQL Table: ledger_charges"""
 
     __tablename__ = "ledger_charges"
+
     id = db.Column(db.Integer, primary_key=True)
     # Foreign Keys
     practice_id = db.Column(db.Integer, db.ForeignKey("practices.id"))
@@ -52,6 +54,7 @@ class LedgerPayments(db.Model):
     """SQL Table: ledger_payments"""
 
     __tablename__ = "ledger_payments"
+
     id = db.Column(db.Integer, primary_key=True)
     # Foreign Keys
     practice_id = db.Column(db.Integer, db.ForeignKey("practices.id"))
