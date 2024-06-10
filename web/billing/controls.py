@@ -1,6 +1,5 @@
 """Billing > Controls - Controls for the billing blueprint."""
 # Imports
-from sqlalchemy.sql import select, func
 from persons.models import People
 from app import db
 from .models import Charges, LedgerCharges, LedgerPayments
@@ -90,11 +89,14 @@ def get_outstanding_balances(practice_id):
             People.last_name,
             People.suffix_name,
             (charges_subquery.c.total_charges - db.func.coalesce(
-                payments_subquery.c.total_payments, 0)).label("outstanding_balance"),
+                payments_subquery.c.total_payments, 0)).label(
+                    "outstanding_balance"),
         )
         .join(charges_subquery, People.id == charges_subquery.c.person_id)
-        .outerjoin(payments_subquery, People.id == payments_subquery.c.person_id)
-        .filter(charges_subquery.c.total_charges > db.func.coalesce(payments_subquery.c.total_payments, 0))
+        .outerjoin(
+            payments_subquery, People.id == payments_subquery.c.person_id)
+        .filter(charges_subquery.c.total_charges > db.func.coalesce(
+            payments_subquery.c.total_payments, 0))
         .filter(charges_subquery.c.practice_id == practice_id)
         .all()
     )
