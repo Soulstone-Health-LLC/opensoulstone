@@ -31,7 +31,7 @@ def dashboard_page():
     person_data = (
         db.session.query(
             db.func.count(People.id).label("count"),
-            db.func.strftime("%Y-%m", People.created_at).label("month"),
+            db.func.to_char(People.created_at, 'YYYY-MM').label("month"),
         )
         .filter(
             People.practice_id == current_user.practice_id,
@@ -48,7 +48,7 @@ def dashboard_page():
     events_data = (
         db.session.query(
             db.func.count(Events.id).label("count"),
-            db.func.strftime("%Y-%m", Events.date).label("month"),
+            db.func.to_char(Events.date, 'YYYY-MM').label("month"),
         )
         .filter(
             Events.practice_id == current_user.practice_id,
@@ -69,7 +69,8 @@ def dashboard_page():
                 * LedgerCharges.units
                 * (1 + LedgerCharges.tax_rate)
             ).label("sum"),
-            db.func.strftime("%Y-%m", LedgerCharges.created_at).label("month"),
+            db.func.to_char(LedgerCharges.created_at,
+                            'YYYY-MM').label("month"),
         )
         .filter(
             LedgerCharges.practice_id == current_user.practice_id,
@@ -91,8 +92,8 @@ def dashboard_page():
     ledger_payments_data = (
         db.session.query(
             db.func.sum(LedgerPayments.amount).label("sum"),
-            db.func.strftime(
-                "%Y-%m", LedgerPayments.created_at).label("month"),
+            db.func.to_char(
+                LedgerPayments.created_at, 'YYYY-MM').label("month"),
         )
         .filter(
             LedgerPayments.practice_id == current_user.practice_id,
@@ -111,7 +112,7 @@ def dashboard_page():
     visit_notes_data = (
         db.session.query(
             db.func.count(Notes.id).label("count"),
-            db.func.strftime("%Y-%m", Notes.date_of_service).label("month"),
+            db.func.to_char(Notes.date_of_service, 'YYYY-MM').label("month"),
         )
         .filter(
             Notes.practice_id == current_user.practice_id,
