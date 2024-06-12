@@ -3,7 +3,7 @@ Persons > Views - This file contains the views for the Persons Blueprint.
 """
 
 # Imports
-from datetime import datetime
+from datetime import datetime, timezone
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 from persons.forms import (
@@ -87,94 +87,93 @@ def addPerson():
     form = AddPersonForm()
 
     if form.validate_on_submit():
-        if request.method == "POST":
-            # Get data from the form
-            practice_id = current_user.practice_id
-            created_at = datetime.utcnow()
-            created_by = current_user.get_id()
-            updated_at = datetime.utcnow()
-            updated_by = current_user.get_id()
-            first_name = form.first_name.data
-            middle_name = form.middle_name.data
-            last_name = form.last_name.data
-            suffix = form.suffix_name.data
-            date_of_birth = form.date_of_birth.data
-            gender_identity = form.gender_identity.data
-            address_1 = form.address_1.data
-            address_2 = form.address_2.data
-            city = form.city.data
-            state = form.state.data
-            zipcode = form.zipcode.data
-            phone_number = form.phone.data
-            phone_type = form.phone_type.data
-            email = form.email.data
-            # If profile picture is included, save it to the filesystem
-            if form.picture.data:
-                username = first_name + last_name + str(datetime.utcnow())
-                pic = add_profile_pic(form.picture.data, username)
+        # Get data from the form
+        practice_id = current_user.practice_id
+        created_at = datetime.now(tz=timezone.utc)
+        created_by = current_user.id
+        updated_at = datetime.now(tz=timezone.utc)
+        updated_by = current_user.id
+        first_name = form.first_name.data
+        middle_name = form.middle_name.data
+        last_name = form.last_name.data
+        suffix = form.suffix_name.data
+        date_of_birth = form.date_of_birth.data
+        gender_identity = form.gender_identity.data
+        address_1 = form.address_1.data
+        address_2 = form.address_2.data
+        city = form.city.data
+        state = form.state.data
+        zipcode = form.zipcode.data
+        phone_number = form.phone.data
+        phone_type = form.phone_type.data
+        email = form.email.data
+        # If profile picture is included, save it to the filesystem
+        if form.picture.data:
+            username = first_name + last_name + str(datetime.now())
+            pic = add_profile_pic(form.picture.data, username)
 
-            # Add new practice to database
-            # If a profile picture was uploaded, add it to the database
-            if form.picture.data:
-                new_person = People(
-                    practice_id=practice_id,
-                    created_at=created_at,
-                    created_by=created_by,
-                    updated_at=updated_at,
-                    updated_by=updated_by,
-                    first_name=first_name,
-                    middle_name=middle_name,
-                    last_name=last_name,
-                    suffix_name=suffix,
-                    date_of_birth=date_of_birth,
-                    gender_identity=gender_identity,
-                    address_1=address_1,
-                    address_2=address_2,
-                    city=city,
-                    state=state,
-                    zipcode=zipcode,
-                    phone_number=phone_number,
-                    phone_type=phone_type,
-                    email=email,
-                    profile_image=pic,
-                )
-                db.session.add(new_person)
-                db.session.commit()
-                flash(
-                    f"{first_name} {last_name} created successfully.",
-                    category="success",
-                )
-            else:
-                new_person = People(
-                    practice_id=practice_id,
-                    created_at=created_at,
-                    created_by=created_by,
-                    updated_at=updated_at,
-                    updated_by=updated_by,
-                    first_name=first_name,
-                    middle_name=middle_name,
-                    last_name=last_name,
-                    suffix_name=suffix,
-                    date_of_birth=date_of_birth,
-                    gender_identity=gender_identity,
-                    address_1=address_1,
-                    address_2=address_2,
-                    city=city,
-                    state=state,
-                    zipcode=zipcode,
-                    phone_number=phone_number,
-                    phone_type=phone_type,
-                    email=email,
-                )
-                db.session.add(new_person)
-                db.session.commit()
-                flash(
-                    f"{first_name} {last_name} created successfully.",
-                    category="success",
-                )
+        # Add new practice to database
+        # If a profile picture was uploaded, add it to the database
+        if form.picture.data:
+            new_person = People(
+                practice_id=practice_id,
+                created_at=created_at,
+                created_by=created_by,
+                updated_at=updated_at,
+                updated_by=updated_by,
+                first_name=first_name,
+                middle_name=middle_name,
+                last_name=last_name,
+                suffix_name=suffix,
+                date_of_birth=date_of_birth,
+                gender_identity=gender_identity,
+                address_1=address_1,
+                address_2=address_2,
+                city=city,
+                state=state,
+                zipcode=zipcode,
+                phone_number=phone_number,
+                phone_type=phone_type,
+                email=email,
+                profile_image=pic,
+            )
+            db.session.add(new_person)
+            db.session.commit()
+            flash(
+                f"{first_name} {last_name} created successfully.",
+                category="success",
+            )
+        else:
+            new_person = People(
+                practice_id=practice_id,
+                created_at=created_at,
+                created_by=created_by,
+                updated_at=updated_at,
+                updated_by=updated_by,
+                first_name=first_name,
+                middle_name=middle_name,
+                last_name=last_name,
+                suffix_name=suffix,
+                date_of_birth=date_of_birth,
+                gender_identity=gender_identity,
+                address_1=address_1,
+                address_2=address_2,
+                city=city,
+                state=state,
+                zipcode=zipcode,
+                phone_number=phone_number,
+                phone_type=phone_type,
+                email=email,
+            )
+            db.session.add(new_person)
+            db.session.commit()
+            flash(
+                f"{first_name} {last_name} created successfully.",
+                category="success",
+            )
 
-            # Redirect to view people
-            return redirect(url_for("persons.people"))
+        # Redirect to view people
+        return redirect(url_for("persons.people"))
 
     return render_template(
         "persons/add_people.html",

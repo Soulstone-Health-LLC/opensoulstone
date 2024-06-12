@@ -27,7 +27,7 @@ class People(db.Model):
     address_2 = db.Column(db.Text)
     city = db.Column(db.Text)
     state = db.Column(db.Text)
-    zipcode = db.Column(db.Integer)
+    zipcode = db.Column(db.String(10))
     phone_number = db.Column(db.String(10))
     phone_type = db.Column(db.String(10))
     email = db.Column(db.Text)
