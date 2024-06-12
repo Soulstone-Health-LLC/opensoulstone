@@ -55,7 +55,7 @@ def schedule():
                 """,
                 "start": str(event.date) + "T" + str(event.start_time),
                 "end": str(event.date) + "T" + str(event.end_time),
-                "url": url_for("calendar.viewEvent", event_id=event.id),
+                "url": url_for("events.viewEvent", event_id=event.id),
             }
             for event in events
         ]
