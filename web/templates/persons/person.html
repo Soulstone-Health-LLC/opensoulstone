@@ -230,7 +230,7 @@
               </div>
               <div class="mb-3">
                 <a
-                  href="{{ url_for('calendar.addEvent') }}"
+                  href="{{ url_for('events.addEvent') }}"
                   class="btn btn-primary"
                   ><i class="fe fe-plus"></i> Add Appointment</a
                 >
@@ -265,7 +265,7 @@
                       <td>
                         <div class="btn-group">
                           <a
-                            href="{{ url_for('calendar.viewEvent', event_id=e.id) }}"
+                            href="{{ url_for('events.viewEvent', event_id=e.id) }}"
                             class="btn btn-primary badge"
                             type="button"
                             ><i class="fe fe-calendar"></i> View</a

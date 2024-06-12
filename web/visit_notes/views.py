@@ -6,7 +6,7 @@ Blueprint.
 
 # Imports
 import pdfkit
-from datetime import datetime, timedelta
+from datetime import datetime, timezone, timedelta
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask import make_response
 from flask_login import login_required, current_user
@@ -94,8 +94,8 @@ def addVisitNote(id):
             start_date = datetime.now() - timedelta(days=365)
             chakra_data = (
                 db.session.query(
-                    db.func.strftime(
-                        "%Y-%m-%d", Notes.date_of_service).label("day"),
+                    db.func.to_char(Notes.date_of_service,
+                                    'YYYY-MM-DD').label("day"),
                     Notes.chakra_assessment_root_score,
                     Notes.chakra_assessment_sacral_score,
                     Notes.chakra_assessment_solar_plexus_score,
@@ -108,7 +108,6 @@ def addVisitNote(id):
                     Notes.person_id == pers_id,
                     Notes.date_of_service >= start_date,
                 )
-                .group_by("day")
                 .all()
             )
 
@@ -144,14 +143,14 @@ def addVisitNote(id):
         else:
             return render_template("error_pages/401.html", user=current_user)
 
-    if form.validate_on_submit() and request.method == "POST":
+    if form.validate_on_submit():
         # Get data from the form
         practice_id = current_user.practice_id
         person_id = pers_id
-        created_at = datetime.utcnow()
-        created_by = current_user.get_id()
-        updated_at = datetime.utcnow()
-        updated_by = current_user.get_id()
+        created_at = datetime.now(tz=timezone.utc)
+        created_by = current_user.id
+        updated_at = datetime.now(tz=timezone.utc)
+        updated_by = current_user.id
         date_of_service = form.date_of_service.data
         reason_for_visit = form.reason_for_visit.data
         chakra_assessment_root_score = form.chakra_assessment_root_score.data
@@ -255,8 +254,8 @@ def editVisitNote(id):
         start_date = datetime.now() - timedelta(days=365)
         chakra_data = (
             db.session.query(
-                db.func.strftime(
-                    "%Y-%m-%d", Notes.date_of_service).label("day"),
+                db.func.to_char(Notes.date_of_service,
+                                'YYYY-MM-DD').label("day"),
                 Notes.chakra_assessment_root_score,
                 Notes.chakra_assessment_sacral_score,
                 Notes.chakra_assessment_solar_plexus_score,
@@ -269,7 +268,6 @@ def editVisitNote(id):
                 Notes.person_id == pers_id,
                 Notes.date_of_service >= start_date,
             )
-            .group_by("day")
             .all()
         )
 
@@ -350,8 +348,9 @@ def editVisitNote(id):
             chakra_graph_data=chakra_graph_data,
         )
 
-    if form.validate_on_submit() and request.method == "POST":
-        note.updated_at = datetime.utcnow()
+    if form.validate_on_submit():
+        note.updated_at = datetime.now(tz=timezone.utc)
+        note.updated_by = current_user.id
         note.reason_for_visit = form.reason_for_visit.data
         note.date_of_service = form.date_of_service.data
         note.chakra_assessment_root_score =\
@@ -422,7 +421,7 @@ def changeStatus(visit_note_id):
 
     if form.validate_on_submit() and request.method == "POST":
         note.status = form.status.data
-        note.updated_at = datetime.utcnow()
+        note.updated_at = datetime.now(tz=timezone.utc)
         note.updated_by = current_user.id
 
         # Update visit note to database
@@ -457,7 +456,7 @@ def changeStatusDelete(visit_note_id):
 
     if form.validate_on_submit() and request.method == "POST":
         note.status = "Deleted"
-        note.updated_at = datetime.utcnow()
+        note.updated_at = datetime.now(tz=timezone.utc)
         note.updated_by = current_user.id
 
         # Update visit note to database
