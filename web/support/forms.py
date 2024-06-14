@@ -8,7 +8,8 @@ from wtforms import (
 from wtforms.fields.simple import TelField
 from wtforms.validators import DataRequired, Length, Email
 from wtforms.widgets import TextArea
-from dictionary.general import STATE_CHOICES, ROLE_CHOICES, PHONE_TYPE_CHOICES
+from dictionary.general import (
+    STATE_CHOICES, ROLE_CHOICES, PHONE_TYPE_CHOICES, USER_TYPE_CHOICES)
 
 
 # Form - Support - Add New Practice
@@ -43,6 +44,7 @@ class PracticeUserForm(FlaskForm):
     role = SelectField(
         label="User Role *", choices=ROLE_CHOICES, validators=[DataRequired()]
     )
+    user_type = SelectField(label="User Type *", choices=USER_TYPE_CHOICES)
     first_name = StringField(
         label="First Name *", validators=[DataRequired(),
                                           Length(min=2, max=150)]
