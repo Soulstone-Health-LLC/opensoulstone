@@ -1,8 +1,4 @@
-"""
-Dashboard - Views -- This file contains the views for the dashboard app.
-"""
-
-
+"""Dashboard - Views -- This file contains the views for the dashboard app."""
 # Imports
 from datetime import datetime, timedelta
 from flask import Blueprint, render_template
