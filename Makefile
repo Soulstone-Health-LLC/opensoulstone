@@ -1,30 +1,45 @@
-.PHONY: help build up down destroy start stop restart logs ps login-soulstone debug-soulstone test_db test_env test
+# Makefile
+.PHONY: build run up stop clean logs shell seed test-env restart
+
+# Docker-related variables
+DOCKER_COMPOSE = docker compose
+
+# Build the Docker image
 build:
-		docker-compose build $(c)
-up-no-db:
-		docker-compose up --build -d $(c)
-up: up-no-db init_db
-down:
-		-docker-compose exec soulstone-app flask commands db_drop
-		docker-compose down $(c)
-destroy:
-		docker-compose down -v $(c)
-rebuild: down up
-start:
-		docker-compose start $(c)
+	$(DOCKER_COMPOSE) build
+
+# Run the Docker container
+run:
+	$(DOCKER_COMPOSE) up
+
+# Build and run the Docker container
+up:
+	$(DOCKER_COMPOSE) up --build -d
+
+# Stop and remove the Docker container
 stop:
-		docker-compose stop $(c)
-restart : stop start
+	$(DOCKER_COMPOSE) down
+
+# Clean up Docker images and volumes
+clean:
+	$(DOCKER_COMPOSE) down -v
+
+# View the logs
 logs:
-		docker-compose logs --tail=100 -f $(c)
-ps:
-		docker-compose ps
-login-soulstone:
-		docker-compose exec soulstone-app /bin/bash
-init_db:
-		docker-compose exec soulstone-app flask commands db_create
-seed_db:
-		docker-compose exec soulstone-app flask commands db_seed
-test_env: destroy up init_db seed_db
-test:
-		pytest -v
+	$(DOCKER_COMPOSE) logs --tail=100 -f
+
+# Container shell
+shell:
+	$(DOCKER_COMPOSE) exec web sh
+
+# Seed the database with test data
+seed_users:
+	$(DOCKER_COMPOSE) exec web flask commands seed_users
+
+seed: seed_users
+
+# Test environment
+test-env: clean up seed logs
+
+# Quick restrat
+restart: stop up logs
