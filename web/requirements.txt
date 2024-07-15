@@ -9,6 +9,7 @@ ics
 gunicorn
 pdfkit
 pillow
+psycopg2
 pytest
 requests
 selenium

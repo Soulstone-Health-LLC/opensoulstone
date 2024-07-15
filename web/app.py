@@ -1,10 +1,9 @@
 """Flask application initialization and configuration."""
 # Imports
-import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail
-from config import BaseConfig
+from .config import BaseConfig
 
 # Flask initialization
 app = Flask(__name__)
