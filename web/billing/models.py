@@ -13,10 +13,10 @@ class Charges(db.Model):
     # Foreign Keys
     practice_id = db.Column(db.Integer, db.ForeignKey("practices.id"))
     # Data Points - Created/Updated
-    created_at = db.Column(db.DateTime(timezone=True),
-                           default=datetime.now(tz=timezone.utc))
+    created_at = db.Column(db.DateTime(),
+                           default=datetime.now(timezone.utc))
     created_by = db.Column(db.Integer, db.ForeignKey("users.id"))
-    updated_at = db.Column(db.DateTime(timezone=True))
+    updated_at = db.Column(db.DateTime())
     updated_by = db.Column(db.Integer, db.ForeignKey("users.id"))
     # Data Points - Main
     code = db.Column(db.Text, nullable=False)
@@ -39,10 +39,10 @@ class LedgerCharges(db.Model):
     person_id = db.Column(db.Integer, db.ForeignKey("people.id"))
     note_id = db.Column(db.Integer, db.ForeignKey("notes.id"))
     # Data Points - Created/Updated
-    created_at = db.Column(db.DateTime(timezone=True),
-                           default=datetime.now(tz=timezone.utc))
+    created_at = db.Column(db.DateTime(),
+                           default=datetime.now(timezone.utc))
     created_by = db.Column(db.Integer, db.ForeignKey("users.id"))
-    updated_at = db.Column(db.DateTime(timezone=True))
+    updated_at = db.Column(db.DateTime())
     updated_by = db.Column(db.Integer, db.ForeignKey("users.id"))
     # Data Points - Main
     units = db.Column(db.Integer, nullable=False, default=1)
@@ -60,10 +60,10 @@ class LedgerPayments(db.Model):
     practice_id = db.Column(db.Integer, db.ForeignKey("practices.id"))
     person_id = db.Column(db.Integer, db.ForeignKey("people.id"))
     # Data Points - Created/Updated
-    created_at = db.Column(db.DateTime(timezone=True),
-                           default=datetime.now(tz=timezone.utc))
+    created_at = db.Column(db.DateTime(),
+                           default=datetime.now(timezone.utc))
     created_by = db.Column(db.Integer, db.ForeignKey("users.id"))
-    updated_at = db.Column(db.DateTime(timezone=True))
+    updated_at = db.Column(db.DateTime())
     updated_by = db.Column(db.Integer, db.ForeignKey("users.id"))
     # Data Points - Main
     amount = db.Column(db.Float, nullable=False)

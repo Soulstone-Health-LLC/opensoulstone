@@ -24,4 +24,3 @@ class BaseConfig(object):
     MAIL_USE_SSL = os.environ['MAIL_USE_SSL'].lower() == 'true'
     MAIL_USERNAME = os.environ['MAIL_USERNAME']
     MAIL_PASSWORD = os.environ['MAIL_PASSWORD']
-

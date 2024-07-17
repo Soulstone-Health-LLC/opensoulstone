@@ -29,7 +29,6 @@ class EventTypes(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     practice_id = db.Column(db.Integer, db.ForeignKey("practices.id"))
-    person_id = db.Column(db.Integer, db.ForeignKey("people.id"))
     created_at = db.Column(db.DateTime(timezone=True),
                            default=datetime.now(tz=timezone.utc))
     created_by = db.Column(db.Integer, db.ForeignKey("users.id"))

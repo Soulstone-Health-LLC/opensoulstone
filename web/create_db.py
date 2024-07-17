@@ -36,7 +36,7 @@ with app.app_context():
     if user is None:
         user = User(
             email="rodneygauna@gmail.com",
-            password=generate_password_hash("password"),
+            password=generate_password_hash("rodneygauna@gmail.com"),
             first_name="Rodney",
             last_name="Gauna",
             role="Support"

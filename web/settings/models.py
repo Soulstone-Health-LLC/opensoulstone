@@ -11,7 +11,7 @@ class Practice(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     # Data Points - Created/Updated
     created_date = db.Column(db.DateTime(timezone=True), nullable=False,
-                             default=datetime.now(tz=timezone.utc))
+                             default=datetime.now(timezone.utc))
     created_by = db.Column(db.Integer, db.ForeignKey("users.id"))
     updated_date = db.Column(db.DateTime(timezone=True))
     updated_by = db.Column(db.Integer, db.ForeignKey("users.id"))

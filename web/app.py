@@ -3,13 +3,12 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail
-from .config import BaseConfig
+from config import BaseConfig
 
-# Flask initialization
+
+# Flask app configuration
 app = Flask(__name__)
-# Base configuration
 app.config.from_object(BaseConfig)
-# Database initialization
 db = SQLAlchemy(app)
 
 
@@ -48,7 +47,7 @@ from settings.views import settings
 from support.views import supportapp
 from error_pages.handler import error_pages
 from terms_of_service.views import terms_of_service
-from utils.test_data import faker_bp
+from utils.test_data import commands
 
 # Flask Blueprints - Register
 app.register_blueprint(core)
@@ -63,7 +62,7 @@ app.register_blueprint(settings)
 app.register_blueprint(supportapp)
 app.register_blueprint(error_pages)
 app.register_blueprint(terms_of_service)
-app.register_blueprint(faker_bp)
+app.register_blueprint(commands)
 
 
 # Main function

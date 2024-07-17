@@ -1,5 +1,5 @@
 # Dockerfile
-FROM python:3.12.3
+FROM python:3.12
 
 # Set work directory
 WORKDIR /app
