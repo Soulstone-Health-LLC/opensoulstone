@@ -219,7 +219,7 @@
 
   // Sidebar Toggle - State Checker
   // Check localStorage for sidenav-toggled, if true add class, else remove class
-  if (localStorage.getItem("sidenav-toggled")) {
+  if (localStorage.getItem("sidenav-toggled") == "true") {
     $(".app").addClass("sidenav-toggled");
   } else {
     $(".app").removeClass("sidenav-toggled");
