@@ -86,7 +86,7 @@
                     <a href="{{url_for('billing.generateInvoice', person_id=b.id)}}" class="btn btn-primary badge" type="button"
                       ><i class="fe fe-file-text"></i> View Invoice</a
                     >
-                    <a href="{{url_for('billing.pdfInvoice', person_id=b.id)}}" class="btn btn-outline-primary badge" type="button"
+                    <a href="{{url_for('billing.pdfInvoice', person_id=b.id)}}" class="btn btn-outline-primary badge" target="_blank" type="button"
                       ><i class="fe fe-printer"></i> Print Invoice</a
                     >
                   </div>

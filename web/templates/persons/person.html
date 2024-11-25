@@ -198,6 +198,7 @@
                           >
                           <a
                             href="{{ url_for('visit_notes.pdfVisitNote', id=n.id) }}"
+                            target="_blank"
                             class="btn btn-outline-primary badge"
                             type="button"
                             ><i class="fe fe-printer"></i> Print</a
@@ -405,6 +406,7 @@
                           >
                           <a
                             href="{{ url_for('billing.pdfPaymentReceipt', payment_id=payment.id) }}"
+                            target="_blank"
                             class="btn btn-outline-primary badge"
                             type="button"
                             ><i class="fe fe-printer"></i> Print Receipt</a
