@@ -4,10 +4,19 @@
   <div class="container">
     <div class="row align-items-center flex-row-reverse">
       <div class="col-md-12 col-sm-12 text-center">
-        Copyright © 2021 <a href="#">Soulstone</a>. All rights reserved.
+        Copyright © <span id="copyright_year"></span> <a href="http://soulstonehealth.com" target="_blank">Soulstone</a>. All rights reserved.
       </div>
     </div>
   </div>
 </footer>
 <!-- FOOTER CLOSED -->
+
+<!-- JAVASCRIPT to update the Copyright year to the current one -->
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    var currentYear = new Date().getFullYear();
+    var el = document.getElementById('copyright_year');
+    el.innerHTML = currentYear + ' ' + el.innerHTML;
+  });
+</script>
 {% endblock footer %}
