@@ -35,7 +35,7 @@ class People(db.Model):
     date_of_birth = db.Column(db.Date)
     gender_identity = db.Column(db.Text)
     profile_image = db.Column(
-        db.String(255), nullable=False, default='default_profile.jpg')
+        db.Text, nullable=False, default='default_profile.jpg')
 
     # Outstanding Balances
     def outstanding_balance(self):
