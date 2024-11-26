@@ -21,7 +21,11 @@ def dashboard_page():
     """Route for the dashboard."""
 
     # Start Date for Dashboard (120 days)
-    start_date = datetime.now() - timedelta(days=120)
+    # start_date = datetime.now() - timedelta(days=120)
+
+    # Start Date for Dashboard (the first day of the current month)
+    start_date = datetime.now().replace(month=datetime.now().month - 5, day=1,
+                                        hour=0, minute=0, second=0)
 
     # Dashboard - Newly Created Persons
     person_data = (
@@ -34,6 +38,7 @@ def dashboard_page():
             People.created_at >= start_date,
         )
         .group_by("month")
+        .order_by("month")
         .all()
     )
 
@@ -51,6 +56,7 @@ def dashboard_page():
             Events.date >= start_date
         )
         .group_by("month")
+        .order_by("month")
         .all()
     )
 
@@ -73,6 +79,7 @@ def dashboard_page():
             LedgerCharges.created_at >= start_date,
         )
         .group_by("month")
+        .order_by("month")
         .all()
     )
 
@@ -96,6 +103,7 @@ def dashboard_page():
             LedgerPayments.created_at >= start_date,
         )
         .group_by("month")
+        .order_by("month")
         .all()
     )
 
@@ -115,6 +123,7 @@ def dashboard_page():
             Notes.date_of_service >= start_date,
         )
         .group_by("month")
+        .order_by("month")
         .all()
     )
 
