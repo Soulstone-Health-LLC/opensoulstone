@@ -28,4 +28,6 @@ def add_profile_pic(pic_upload, username):
     pic.thumbnail(output_size)
     pic.save(filepath)
 
+    os.chmod(filepath, 0o666)
+
     return storage_filename
