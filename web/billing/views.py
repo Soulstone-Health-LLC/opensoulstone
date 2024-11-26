@@ -22,7 +22,7 @@ billing = Blueprint("billing", __name__)
 
 
 # Billing
-@billing.route("/billing")
+@billing.route("/billing/charges")
 @login_required
 def ledger():
     """Routes the user to the Billing page"""
