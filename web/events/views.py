@@ -141,8 +141,14 @@ def addEvent():
             updated_at = datetime.utcnow()
             updated_by = current_user.get_id()
             event_type_id = form.event_type_id.data
-            person_id = form.person.data
-            practitioner_id = form.practitioner_id.data
+            if form.person.data == 0:
+                person_id = None
+            else:
+                person_id = form.person.data
+            if form.practitioner_id.data == 0:
+                practitioner_id = None
+            else:
+                practitioner_id = form.practitioner_id.data
             date = form.date.data
             note = form.note.data
 
