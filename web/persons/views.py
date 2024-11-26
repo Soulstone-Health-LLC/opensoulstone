@@ -109,7 +109,10 @@ def addPerson():
         email = form.email.data
         # If profile picture is included, save it to the filesystem
         if form.picture.data:
-            username = first_name + last_name + str(datetime.now())
+            current_time = datetime.now(tz=timezone.utc)
+            formatted_time = current_time.strftime("%Y-%m-%d-%H-%M")
+            username = f"{current_user.practice_id}_{
+                first_name}_{last_name}_{formatted_time}"
             pic = add_profile_pic(form.picture.data, username)
 
         # Add new practice to database
@@ -214,11 +217,13 @@ def editPerson(id):
             # Get data from the form
             # If profile picture is included, save it to the filesystem
             if form.picture.data:
-                username = person.first_name + \
-                    person.last_name + str(datetime.utcnow())
+                current_time = datetime.now(tz=timezone.utc)
+                formatted_time = current_time.strftime("%Y-%m-%d-%H-%M")
+                username = f"{current_user.practice_id}_{
+                    person.first_name}_{person.last_name}_{formatted_time}"
                 pic = add_profile_pic(form.picture.data, username)
                 person.profile_image = pic
-            person.updated_at = datetime.utcnow()
+            person.updated_at = datetime.now(tz=timezone.utc)
             person.updated_by = current_user.get_id()
             person.first_name = form.first_name.data
             person.middle_name = form.middle_name.data
