@@ -92,39 +92,51 @@
         <div class="mt-5">
           <div class="main-profile-contact-list float-md-end d-lg-flex">
             <div class="me-5">
-              <div class="media">
-                <div class="media-icon bg-primary me-3 mt-1">
-                  <i class="fe fe-edit-3 fs-20 text-white"></i>
-                </div>
-                <div class="media-body">
-                  <span class="text-muted">Visit Notes</span>
-                  <div class="fw-semibold fs-25">{{ notes_count }}</div>
-                </div>
-              </div>
-            </div>
-            <div class="me-5 mt-5 mt-md-0">
-              <div class="media">
-                <div class="media-icon bg-secondary me-3 mt-1">
-                  <i class="fe fe-calendar fs-20 text-white"></i>
-                </div>
-                <div class="media-body">
-                  <span class="text-muted">Appointments</span>
-                  <div class="fw-semibold fs-25">{{ events_count }}</div>
-                </div>
-              </div>
-            </div>
-            <div class="me-5 mt-5 mt-md-0">
-              <div class="media">
-                <div class="media-icon bg-success me-3 mt-1">
-                  <i class="fe fe-credit-card fs-20 text-white"></i>
-                </div>
-                <div class="media-body">
-                  <span class="text-muted">Open Balance</span>
-                  <div class="fw-semibold fs-25">
-                    {{ "$ {:,.2f}".format(balance) }}
+              <a
+                href="{{ url_for('persons.viewPerson', id=person_header.id) }}"
+              >
+                <div class="media">
+                  <div class="media-icon bg-primary me-3 mt-1">
+                    <i class="fe fe-edit-3 fs-20 text-white"></i>
+                  </div>
+                  <div class="media-body">
+                    <span class="text-muted">Visit Notes</span>
+                    <div class="fw-semibold fs-25">{{ notes_count }}</div>
                   </div>
                 </div>
-              </div>
+              </a>
+            </div>
+            <div class="me-5 mt-5 mt-md-0">
+              <a
+                href="{{ url_for('persons.viewPerson', id=person_header.id) }}"
+              >
+                <div class="media">
+                  <div class="media-icon bg-secondary me-3 mt-1">
+                    <i class="fe fe-calendar fs-20 text-white"></i>
+                  </div>
+                  <div class="media-body">
+                    <span class="text-muted">Appointments</span>
+                    <div class="fw-semibold fs-25">{{ events_count }}</div>
+                  </div>
+                </div>
+              </a>
+            </div>
+            <div class="me-5 mt-5 mt-md-0">
+              <a
+                href="{{ url_for('persons.viewPerson', id=person_header.id) }}"
+              >
+                <div class="media">
+                  <div class="media-icon bg-success me-3 mt-1">
+                    <i class="fe fe-credit-card fs-20 text-white"></i>
+                  </div>
+                  <div class="media-body">
+                    <span class="text-muted">Open Balance</span>
+                    <div class="fw-semibold fs-25">
+                      {{ "$ {:,.2f}".format(balance) }}
+                    </div>
+                  </div>
+                </div>
+              </a>
             </div>
           </div>
         </div>
