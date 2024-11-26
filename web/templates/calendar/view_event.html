@@ -18,6 +18,7 @@
           <div class="col-md-6">
             <div class="form-group">
               <label for="eventTitle">Event Type</label>
+              {% if event.event_name %}
               <input
                 type="text"
                 class="form-control"
@@ -26,6 +27,16 @@
                 value="{{ event.event_name }}"
                 readonly
               />
+              {% else %}
+              <input
+                type="text"
+                class="form-control"
+                id="eventTitle"
+                name="eventTitle"
+                value="Blocked Off Time"
+                readonly
+              />
+              {% endif %}
             </div>
           </div>
           <div class="col-md-6">
@@ -53,11 +64,11 @@
             </div>
           </div>
         </div>
+        {% if event.person_id %}
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
               <label for="person">Person</label>
-              {% if event.person_id %}
               <input
                 type="text"
                 class="form-control"
@@ -66,19 +77,10 @@
                 value="{{ event.person_first_name }} {{ event.person_last_name }} ({{event.gender_identity}})"
                 readonly
               />
-              {% else %}
-              <input
-                type="text"
-                class="form-control"
-                id="person"
-                name="person"
-                value=""
-                readonly
-              />
-              {% endif %}
             </div>
           </div>
         </div>
+        {% endif %}
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
@@ -144,26 +146,32 @@
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="col-md-1">
-            <a
-              href="{{ url_for('events.editEvent', event_id=event.id) }}"
-              class="btn btn-primary"
-              >Edit Event</a
-            >
-          </div>
-          <div class="col-md-1">
+        <div class="">
+          {% if event.event_name %}
+          <a
+            href="{{ url_for('events.editEvent', event_id=event.id) }}"
+            class="btn btn-primary"
+            >Edit Event</a
+          >
+          {% else %}
+          <a
+            href="{{ url_for('events.edit_blocked_off_time', event_id=event.id) }}"
+            class="btn btn-primary"
+            >Edit Blocked Off Time</a
+          >
+          {% endif %}
+          <button type="button">
             <form
               action="{{ url_for('events.deleteEvent', event_id=event.id) }}"
               method="post"
             >
               <input
                 type="submit"
-                class="btn btn-danger ms-2"
+                class="btn btn-danger"
                 value="Delete Event"
               />
             </form>
-          </div>
+          </button>
         </div>
       </div>
     </div>

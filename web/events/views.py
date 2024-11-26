@@ -3,10 +3,10 @@ Calendar > Views - This file contains the views for the Calendar Blueprint.
 """
 
 # Imports
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
-from .forms import EventForm
+from .forms import EventForm, BlockedOffTimeForm
 from app import db
 from users.models import User
 from .models import Events, EventTypes
@@ -40,7 +40,7 @@ def schedule():
                 EventTypes.event_name,
             )
             .outerjoin(People, Events.person_id == People.id)
-            .join(EventTypes, Events.event_type_id == EventTypes.id)
+            .outerjoin(EventTypes, Events.event_type_id == EventTypes.id)
             .filter(Events.practice_id == current_user.practice_id,
                     Events.date >= start_date)
             .all()
@@ -100,7 +100,7 @@ def addEvent():
         .order_by(People.last_name)
     )
 
-    form.person.choices = [(0, "None")] + [
+    form.person.choices = [
         (
             person.id,
             person.last_name
@@ -118,7 +118,7 @@ def addEvent():
         .order_by(User.first_name)
     )
 
-    form.practitioner_id.choices = [(0, "None")] + [
+    form.practitioner_id.choices = [
         (practictioner.id,
          practictioner.first_name + " " + practictioner.last_name)
         for practictioner in practictioners
@@ -136,19 +136,13 @@ def addEvent():
                 form.date.data, form.start_time.data)
             # Get data from the form
             practice_id = current_user.practice_id
-            created_at = datetime.utcnow()
+            created_at = datetime.now(tz=timezone.utc)
             created_by = current_user.get_id()
-            updated_at = datetime.utcnow()
+            updated_at = datetime.now(tz=timezone.utc)
             updated_by = current_user.get_id()
             event_type_id = form.event_type_id.data
-            if form.person.data == 0:
-                person_id = None
-            else:
-                person_id = form.person.data
-            if form.practitioner_id.data == 0:
-                practitioner_id = None
-            else:
-                practitioner_id = form.practitioner_id.data
+            person_id = form.person.data
+            practitioner_id = form.practitioner_id.data
             date = form.date.data
             note = form.note.data
 
@@ -184,6 +178,72 @@ def addEvent():
                            user=current_user)
 
 
+# Add Blocked Off Time
+@events.route("/calendar/add_block", methods=["GET", "POST"])
+@login_required
+def add_blocked_off_time():
+    """Add Blocked Off Time page"""
+    form = BlockedOffTimeForm()
+
+    # Choices of Users that have a role of Practitioner
+    practictioners = (
+        db.session.query(User)
+        .filter_by(practice_id=current_user.practice_id, role="Practitioner")
+        .order_by(User.first_name)
+    )
+
+    form.practitioner_id.choices = [
+        (practictioner.id,
+         practictioner.first_name + " " + practictioner.last_name)
+        for practictioner in practictioners
+    ]
+
+    if form.validate_on_submit():
+        if request.method == "POST":
+            start_datetime = datetime.combine(
+                form.date.data, form.start_time.data)
+            # calculate duration
+            duration = form.duration.data * timedelta(minutes=1)
+            # Get data from the form
+            practice_id = current_user.practice_id
+            created_at = datetime.now(tz=timezone.utc)
+            created_by = current_user.get_id()
+            updated_at = datetime.now(tz=timezone.utc)
+            updated_by = current_user.get_id()
+            practitioner_id = form.practitioner_id.data
+            date = form.date.data
+            note = form.note.data
+
+            # Calculate end date and time
+            end_time = start_datetime + duration
+
+            # Create new event
+            new_event = Events(
+                practice_id=practice_id,
+                created_at=created_at,
+                created_by=created_by,
+                updated_at=updated_at,
+                updated_by=updated_by,
+                practitioner_id=practitioner_id,
+                date=date,
+                start_time=datetime.time(start_datetime),
+                end_time=datetime.time(end_time),
+                note=note,
+            )
+
+            # Add new event to the database
+            db.session.add(new_event)
+            db.session.commit()
+
+            # Flash message
+            flash("Blocked Off Time created", "success")
+
+            # Redirect to the calendar page
+            return redirect(url_for("events.schedule"))
+    return render_template("calendar/add_blocked_off_time.html", form=form,
+                           user=current_user)
+
+
 # View Event
 @events.route("/calendar/view_event/<int:event_id>")
 @login_required
@@ -196,6 +256,7 @@ def viewEvent(event_id):
             Events.date,
             Events.start_time,
             Events.end_time,
+            Events.note,
             People.id.label("person_id"),
             People.first_name.label("person_first_name"),
             People.middle_name,
@@ -209,7 +270,7 @@ def viewEvent(event_id):
         )
         .filter_by(id=event_id)
         .outerjoin(People, Events.person_id == People.id)
-        .join(EventTypes, Events.event_type_id == EventTypes.id)
+        .outerjoin(EventTypes, Events.event_type_id == EventTypes.id)
         .outerjoin(User, Events.practitioner_id == User.id)
         .first()
     )
@@ -250,7 +311,7 @@ def editEvent(event_id):
         .order_by(People.last_name)
     )
 
-    form.person.choices = [(0, "None")] + [
+    form.person.choices = [
         (
             person.id,
             person.first_name + " " + person.last_name +
@@ -266,7 +327,7 @@ def editEvent(event_id):
         .order_by(User.first_name)
     )
 
-    form.practitioner_id.choices = [(0, "None")] + [
+    form.practitioner_id.choices = [
         (practictioner.id,
          practictioner.first_name + " " + practictioner.last_name)
         for practictioner in practictioners
@@ -283,7 +344,7 @@ def editEvent(event_id):
             start_datetime = datetime.combine(
                 form.date.data, form.start_time.data)
             # Get data from the form
-            updated_at = datetime.utcnow()
+            updated_at = datetime.now(tz=timezone.utc)
             updated_by = current_user.get_id()
             event_type_id = form.event_type_id.data
             practitioner_id = form.practitioner_id.data
@@ -326,12 +387,78 @@ def editEvent(event_id):
     )
 
 
+# Edit Blocked Off Time
+@events.route("/calendar/edit_block/<int:event_id>", methods=["GET", "POST"])
+@login_required
+def edit_blocked_off_time(event_id):
+    """Edit Blocked Off Time page"""
+    event = Events.query.get_or_404(event_id)
+    form = BlockedOffTimeForm()
+
+    # Choices of Users that have a role of Practitioner
+    practictioners = (
+        db.session.query(User)
+        .filter_by(practice_id=current_user.practice_id, role="Practitioner")
+        .order_by(User.first_name)
+    )
+
+    form.practitioner_id.choices = [
+        (practictioner.id,
+         practictioner.first_name + " " + practictioner.last_name)
+        for practictioner in practictioners
+    ]
+
+    if form.validate_on_submit():
+        if request.method == "POST":
+            # calculate duration
+            duration = form.duration.data * timedelta(minutes=1)
+            start_datetime = datetime.combine(
+                form.date.data, form.start_time.data)
+            # Get data from the form
+            updated_at = datetime.now(tz=timezone.utc)
+            updated_by = current_user.get_id()
+            practitioner_id = form.practitioner_id.data
+            date = form.date.data
+            note = form.note.data
+
+            # Calculate end date and time
+            end_time = start_datetime + duration
+
+            # Update event
+            event.updated_at = updated_at
+            event.updated_by = updated_by
+            event.practitioner_id = practitioner_id
+            event.date = date
+            event.start_time = datetime.time(start_datetime)
+            event.end_time = datetime.time(end_time)
+            event.note = note
+
+            # Add new event to the database
+            db.session.commit()
+
+            # Flash message
+            flash("Blocked Off Time updated", "success")
+
+            # Redirect to the calendar page
+            return redirect(url_for("events.schedule"))
+    elif request.method == "GET":
+        form.practitioner_id.data = event.practitioner_id
+        form.date.data = event.date
+        form.start_time.data = event.start_time
+        form.note.data = event.note
+
+    return render_template(
+        "calendar/edit_blocked_off_time.html", form=form, event=event,
+        user=current_user
+    )
+
+
 # Delete Event
 @events.route("/calendar/delete_event/<int:event_id>", methods=["POST"])
 @login_required
 def deleteEvent(event_id):
     """Delete Event page"""
-    event = Events.query.filter_by(id=event_id).first()
+    event = Events.query.filter_by(id=event_id).first_or_404()
 
     # Delete event
     if request.method == "POST":
