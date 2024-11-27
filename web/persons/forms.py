@@ -25,7 +25,7 @@ class AddPersonForm(FlaskForm):
     """Add User to the Practice Form"""
 
     picture = FileField("Upload Profile Picture",
-                        validators=[FileAllowed(["jpg", "png"])])
+                        validators=[FileAllowed(["jpg", "jpeg", "png"])])
     first_name = StringField(
         label="First Name *", validators=[DataRequired(),
                                           Length(min=2, max=150)]
@@ -57,7 +57,7 @@ class EditPersonForm(FlaskForm):
     """Add User to the Practice Form"""
 
     picture = FileField("Upload Profile Picture",
-                        validators=[FileAllowed(["jpg", "png"])])
+                        validators=[FileAllowed(["jpg", "jpeg", "png"])])
     first_name = StringField(
         label="First Name *", validators=[DataRequired(),
                                           Length(min=2, max=150)]
