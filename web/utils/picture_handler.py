@@ -21,13 +21,11 @@ def add_profile_pic(pic_upload, username):
                             'static/profile_pics', storage_filename)
 
     # Play Around with this size.
-    output_size = (200, 200)
+    output_size = (128, 128)
 
-    # Open the picture and save it
+    # Open the picture, resize, and save it
     pic = Image.open(pic_upload)
-    pic.thumbnail(output_size)
+    pic = pic.resize(output_size)
     pic.save(filepath)
-
-    os.chmod(filepath, 0o666)
 
     return storage_filename
