@@ -3,14 +3,14 @@ Reports > Forms - This file contains the forms for the Reports Blueprint.
 """
 
 # Imports
+from wtforms import SubmitField, SelectField
 from datetime import datetime, timedelta
 from flask_wtf import FlaskForm
 from wtforms import SubmitField, DateField
 from wtforms.validators import DataRequired
 
+
 # Form - Generate Report
-
-
 class GenerateReportForm(FlaskForm):
     """Form to generate a report with start and end dates"""
 
@@ -27,6 +27,25 @@ class GenerateReportForm(FlaskForm):
         label="End Date *",
         format="%Y-%m-%d",
         default=datetime.now(),
+        render_kw={"class": "form-control"},
+        validators=[DataRequired()]
+    )
+    submit = SubmitField(label="Generate Report")
+
+
+# Form - Birthday Report
+class BirthdayReportForm(FlaskForm):
+    """Form to generate a report with a month selection"""
+
+    month_choices = [
+        ('01', 'January'), ('02', 'February'), ('03', 'March'), ('04', 'April'),
+        ('05', 'May'), ('06', 'June'), ('07', 'July'), ('08', 'August'),
+        ('09', 'September'), ('10', 'October'), ('11', 'November'), ('12', 'December')
+    ]
+
+    month = SelectField(
+        label="Month *",
+        choices=month_choices,
         render_kw={"class": "form-control"},
         validators=[DataRequired()]
     )

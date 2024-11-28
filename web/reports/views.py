@@ -9,21 +9,23 @@ from persons.models import People
 from events.models import Events, EventTypes
 from visit_notes.models import Notes
 from billing.models import LedgerCharges, LedgerPayments
-from reports.forms import GenerateReportForm
+from reports.forms import GenerateReportForm, BirthdayReportForm
 
 # Blueprint Configuration
 reports = Blueprint("reports", __name__)
 
-
 # Reports Landing Page
+
+
 @reports.route("/reports", methods=["GET"])
 @login_required
 def reports_landing():
     """Route for the reports landing page."""
     return render_template("reports/reports_landing.html", title="Soulstone - Reports", user=current_user)
 
-
 # Person Report
+
+
 @reports.route("/reports/person", methods=["GET", "POST"])
 @login_required
 def person_report():
@@ -34,26 +36,27 @@ def person_report():
         end_date = form.end_date.data
         report_data = generate_person_report_data(start_date, end_date)
         column_labels = get_column_labels("Person Report")
-        return render_template("reports/report.html", title="Soulstone - Person Report", form=form, user=current_user, report_data=report_data, column_labels=column_labels, start_date=start_date, end_date=end_date, selected_report="Person Report")
+        return render_template("reports/report.html", title="Soulstone - Person Report", user=current_user, report_data=report_data, column_labels=column_labels, start_date=start_date, end_date=end_date, selected_report="Person Report", form=form)
     return render_template("reports/generate_report.html", title="Soulstone - Generate Person Report", form=form, user=current_user)
 
-
 # Birthday Report
+
+
 @reports.route("/reports/birthday", methods=["GET", "POST"])
 @login_required
 def birthday_report():
     """Route for generating and viewing the Birthday Report."""
-    form = GenerateReportForm()
+    form = BirthdayReportForm()
     if form.validate_on_submit():
-        start_date = form.start_date.data
-        end_date = form.end_date.data
-        report_data = generate_birthday_report_data(start_date, end_date)
+        selected_month = form.month.data
+        report_data = generate_birthday_report_data(selected_month)
         column_labels = get_column_labels("Birthday Report")
-        return render_template("reports/report.html", title="Soulstone - Birthday Report", form=form, user=current_user, report_data=report_data, column_labels=column_labels, start_date=start_date, end_date=end_date, selected_report="Birthday Report")
-    return render_template("reports/generate_report.html", title="Soulstone - Generate Birthday Report", form=form, user=current_user)
-
+        return render_template("reports/report.html", title="Soulstone - Birthday Report", form=form, user=current_user, report_data=report_data, column_labels=column_labels, selected_report="Birthday Report", selected_month=selected_month)
+    return render_template("reports/generate_birthday_report.html", title="Soulstone - Generate Birthday Report", form=form, user=current_user)
 
 # Event Report
+
+
 @reports.route("/reports/event", methods=["GET", "POST"])
 @login_required
 def event_report():
@@ -67,8 +70,9 @@ def event_report():
         return render_template("reports/report.html", title="Soulstone - Event Report", form=form, user=current_user, report_data=report_data, column_labels=column_labels, start_date=start_date, end_date=end_date, selected_report="Event Report")
     return render_template("reports/generate_report.html", title="Soulstone - Generate Event Report", form=form, user=current_user)
 
-
 # Open Visit Notes Report
+
+
 @reports.route("/reports/open-visit-notes", methods=["GET", "POST"])
 @login_required
 def open_visit_notes_report():
@@ -83,21 +87,22 @@ def open_visit_notes_report():
         return render_template("reports/report.html", title="Soulstone - Open Visit Notes Report", form=form, user=current_user, report_data=report_data, column_labels=column_labels, start_date=start_date, end_date=end_date, selected_report="Open Visit Notes Report")
     return render_template("reports/generate_report.html", title="Soulstone - Generate Open Visit Notes Report", form=form, user=current_user)
 
-
 # Open Balances Report
+
+
 @reports.route("/reports/open-balances", methods=["GET", "POST"])
 @login_required
 def open_balances_report():
     """Route for generating and viewing the Open Balances Report."""
     form = GenerateReportForm()
-    if form.validate_on_submit():
-        report_data = generate_open_balances_report_data()
-        column_labels = get_column_labels("Open Balances Report")
-        return render_template("reports/report.html", title="Soulstone - Open Balances Report", form=form, user=current_user, report_data=report_data, column_labels=column_labels, selected_report="Open Balances Report")
-    return render_template("reports/generate_report.html", title="Soulstone - Generate Open Balances Report", form=form, user=current_user)
-
+    # Directly generate the report data without checking form submission
+    report_data = generate_open_balances_report_data()
+    column_labels = get_column_labels("Open Balances Report")
+    return render_template("reports/report.html", title="Soulstone - Open Balances Report", form=form, user=current_user, report_data=report_data, column_labels=column_labels, selected_report="Open Balances Report")
 
 # Export CSV
+
+
 @reports.route("/reports/export-csv", methods=["POST"])
 @login_required
 def export_csv():
@@ -106,7 +111,9 @@ def export_csv():
     selected_report = request.form.get("selected_report")
     start_date = request.form.get("start_date")
     end_date = request.form.get("end_date")
-    report_data = generate_report_data(selected_report, start_date, end_date)
+    selected_month = request.form.get("selected_month")
+    report_data = generate_report_data(
+        selected_report, start_date, end_date, selected_month)
     column_labels = get_column_labels(selected_report)
     csv_output = generate_csv(report_data, column_labels)
     response = make_response(csv_output.getvalue())
@@ -115,8 +122,9 @@ def export_csv():
     response.headers["Content-type"] = "text/csv"
     return response
 
-
 # Helper Functions
+
+
 def generate_csv(data, column_labels):
     """Generate a CSV file from the provided data and column labels."""
     output = io.StringIO()
@@ -143,7 +151,7 @@ def get_column_labels(report):
         return []
 
 
-def generate_report_data(report, start_date, end_date):
+def generate_report_data(report, start_date, end_date, selected_month=None):
     """Generate report data based on the selected report and date parameters."""
     if report == "Person Report":
         return generate_person_report_data(start_date, end_date)
@@ -152,7 +160,7 @@ def generate_report_data(report, start_date, end_date):
     elif report == "Open Visit Notes Report":
         return generate_open_visit_notes_report_data(start_date, end_date)
     elif report == "Birthday Report":
-        return generate_birthday_report_data(start_date, end_date)
+        return generate_birthday_report_data(selected_month)
     elif report == "Open Balances Report":
         return generate_open_balances_report_data()
     else:
@@ -174,9 +182,9 @@ def generate_open_visit_notes_report_data(start_date, end_date):
     return db.session.query(People.id, People.first_name, People.middle_name, People.last_name, People.suffix_name, Notes.id, Notes.created_at, Notes.status).join(People, People.id == Notes.person_id).filter(Notes.practice_id == current_user.practice_id, Notes.status == "Open", Notes.created_at >= start_date, Notes.created_at <= end_date).all()
 
 
-def generate_birthday_report_data(start_date, end_date):
+def generate_birthday_report_data(selected_month):
     """Generate data for the Birthday Report."""
-    return db.session.query(People.id, People.first_name, People.middle_name, People.last_name, People.suffix_name, People.date_of_birth).filter(People.practice_id == current_user.practice_id, People.date_of_birth >= start_date, People.date_of_birth <= end_date).all()
+    return db.session.query(People.id, People.first_name, People.middle_name, People.last_name, People.suffix_name, People.date_of_birth).filter(People.practice_id == current_user.practice_id, db.extract('month', People.date_of_birth) == selected_month).all()
 
 
 def generate_open_balances_report_data():

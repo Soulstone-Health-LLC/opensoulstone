@@ -1,0 +1,29 @@
+{% extends "base.html" %} {% block pagenav %}
+<h1 class="page-title">Generate Report</h1>
+<ol class="breadcrumb">
+  <li class="breadcrumb-item active">Generate Report</li>
+</ol>
+{% endblock pagenav %} {% block content %}
+<!-- Generate Report - Start -->
+<div class="row">
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Generate Report</div>
+    </div>
+    <div class="card-body">
+      <form method="post" class="" novalidate>
+        {{ form.hidden_tag() }}
+        <div class="row" id="month-row">
+          <div class="col-md-6">
+            <div class="form-group">
+              {{ form.month.label(class="form-label") }} {{ form.month() }}
+            </div>
+          </div>
+        </div>
+        {{ form.submit(class="btn btn-primary") }}
+      </form>
+    </div>
+  </div>
+</div>
+<!-- Generate Report - End -->
+{% endblock content %}
