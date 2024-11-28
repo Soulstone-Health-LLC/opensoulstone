@@ -1,0 +1,39 @@
+{% extends "base.html" %} {% block pagenav %}
+<h1 class="page-title">Reports</h1>
+<ol class="breadcrumb">
+  <li class="breadcrumb-item active">Reports</li>
+</ol>
+{% endblock pagenav %} {% block content %}
+<!-- Reports Landing Page - Start -->
+<div class="row">
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Available Reports</div>
+    </div>
+    <div class="card-body">
+      <ul>
+        <li>
+          <a href="{{ url_for('reports.person_report') }}">Person Report</a>
+        </li>
+        <li>
+          <a href="{{ url_for('reports.birthday_report') }}">Birthday Report</a>
+        </li>
+        <li>
+          <a href="{{ url_for('reports.event_report') }}">Event Report</a>
+        </li>
+        <li>
+          <a href="{{ url_for('reports.open_visit_notes_report') }}"
+            >Open Visit Notes Report</a
+          >
+        </li>
+        <li>
+          <a href="{{ url_for('reports.open_balances_report') }}"
+            >Open Balances Report</a
+          >
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<!-- Reports Landing Page - End -->
+{% endblock content %}

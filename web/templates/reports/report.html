@@ -1,85 +1,47 @@
 {% extends "base.html" %} {% block pagenav %}
-<h1 class="page-title">Reports</h1>
+<h1 class="page-title">{{ selected_report }}</h1>
 <ol class="breadcrumb">
-  <li class="breadcrumb-item">
-    <a href="{{ url_for('reports.generate_report') }}">Generate Report</a>
-  </li>
   <li class="breadcrumb-item active">{{ selected_report }}</li>
 </ol>
-{% endblock pagenav%} {% block content %}
-<!-- Report Title - Start -->
-<div class="row mb-3">
+{% endblock pagenav %} {% block content %}
+<!-- Report - Start -->
+<div class="row">
   <div class="card">
     <div class="card-header">
-      <div class="card-title">Report Details</div>
+      <div class="card-title">{{ selected_report }}</div>
     </div>
     <div class="card-body">
-      <div class="row">
-        <div class="col">
-          <h5>Report:</h5>
-          <p class="card-text">{{ selected_report }}</p>
-        </div>
-        <div class="col">
-          <h5>Report Start Date:</h5>
-          <p class="card-text">{{ start_date }}</p>
-        </div>
-        <div class="col">
-          <h5>Report End Date:</h5>
-          <p class="card-text">{{ end_date }}</p>
-        </div>
-      </div>
+      <form method="post" action="{{ url_for('reports.export_csv') }}">
+        {{ form.hidden_tag() }}
+        <input
+          type="hidden"
+          name="selected_report"
+          value="{{ selected_report }}"
+        />
+        <input type="hidden" name="start_date" value="{{ start_date }}" />
+        <input type="hidden" name="end_date" value="{{ end_date }}" />
+        <button type="submit" class="btn btn-primary">Export CSV</button>
+      </form>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            {% for label in column_labels %}
+            <th>{{ label }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in report_data %}
+          <tr>
+            {% for cell in row %}
+            <td>{{ cell }}</td>
+            {% endfor %}
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
-<!-- CSV Download Button - Start -->
-<div class="row mb-6">
-  <form method="post" action="{{ url_for('reports.export_csv') }}">
-    <input type="hidden" name="selected_report" value="{{ selected_report }}" />
-    <input type="hidden" name="start_date" value="{{ start_date }}" />
-    <input type="hidden" name="end_date" value="{{ end_date }}" />
-    <button type="submit" class="btn btn-primary" id="download-csv">
-      <i class="fe fe-download"></i> Export to CSV
-    </button>
-  </form>
-</div>
-<!-- CSV Download Button - End -->
-
-<!-- Reports - Start -->
-<div class="e-table px-5 pb-5">
-  <div class="table-responsive table-lg">
-    <table
-      {% if selected_report=="Person Report" %}
-      data-order='[[ 2, "asc" ]]'
-      {% elif selected_report=="Event Report" %}
-      data-order='[[ 1, "desc" ]]'
-      {% elif selected_report=="Open Visit Notes Report" %}
-      data-order='[[ 6, "desc" ]]'
-      {% elif selected_report=="Birthday Report" %}
-      data-order='[[ 5, "asc" ]]'
-      {% elif selected_report=="Open Balances Report" %}
-      data-order='[[ 3, "desc" ]]'
-      {% endif %}
-      class="table table-bordered border-bottom w-100"
-      id="responsive-datatable"
-    >
-      <thead>
-        <tr>
-          {% for column_label in column_labels %}
-          <th>{{ column_label }}</th>
-          {% endfor %}
-        </tr>
-      </thead>
-      <tbody>
-        {% for row in report_data %}
-        <tr>
-          {% for cell in row %}
-          <td>{{ cell }}</td>
-          {% endfor %}
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
-</div>
-<!-- Reports - End -->
-{% endblock %}
+<!-- Report - End -->
+{% endblock content %}

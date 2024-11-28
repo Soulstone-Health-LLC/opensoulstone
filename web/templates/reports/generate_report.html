@@ -1,10 +1,10 @@
-{%extends "base.html"%} {%block pagenav%}
-<h1 class="page-title">Reports</h1>
+{% extends "base.html" %} {% block pagenav %}
+<h1 class="page-title">Generate Report</h1>
 <ol class="breadcrumb">
-  <li class="breadcrumb-item active">Reports</li>
+  <li class="breadcrumb-item active">Generate Report</li>
 </ol>
-{%endblock pagenav%} {%block content%}
-<!-- Reports - Start -->
+{% endblock pagenav %} {% block content %}
+<!-- Generate Report - Start -->
 <div class="row">
   <div class="card">
     <div class="card-header">
@@ -13,29 +13,24 @@
     <div class="card-body">
       <form method="post" class="" novalidate>
         {{ form.hidden_tag() }}
-        <div class="row">
-          <div class="form-group">
-            {{form.report_options.label(class="form-label")}}
-            {{form.report_options()}}
-          </div>
-        </div>
-        <div class="row">
+        <div class="row" id="date-row">
           <div class="col-md-6">
             <div class="form-group">
-              {{form.start_date.label(class="form-label")}}
-              {{form.start_date()}}
+              {{ form.start_date.label(class="form-label") }} {{
+              form.start_date() }}
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
-              {{form.end_date.label(class="form-label")}} {{form.end_date()}}
+              {{ form.end_date.label(class="form-label") }} {{ form.end_date()
+              }}
             </div>
           </div>
         </div>
-        {{form.submit(class="btn btn-primary")}}
+        {{ form.submit(class="btn btn-primary") }}
       </form>
     </div>
   </div>
 </div>
-<!-- Reports - End -->
-{%endblock content%}
+<!-- Generate Report - End -->
+{% endblock content %}
