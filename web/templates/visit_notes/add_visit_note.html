@@ -184,6 +184,19 @@
   {{form.submit(class="btn btn-primary mb-5")}}
 </form>
 <!-- End Visit Note Form -->
+<!-- Load CKEditor -->
+{{ ckeditor.load(pkg_type="basic") }} {{
+ckeditor.config(name="reason_for_visit") }} {{
+ckeditor.config(name="chakra_assessment_root_description") }} {{
+ckeditor.config(name="chakra_assessment_sacral_description") }} {{
+ckeditor.config(name="chakra_assessment_solar_plexus_description") }} {{
+ckeditor.config(name="chakra_assessment_heart_description") }} {{
+ckeditor.config(name="chakra_assessment_throat_description") }} {{
+ckeditor.config(name="chakra_assessment_third_eye_description") }} {{
+ckeditor.config(name="chakra_assessment_crown_description") }} {{
+ckeditor.config(name="visit_notes") }} {{
+ckeditor.config(name="post_visit_recommendations") }}
+<!-- End CKEditor -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
 
 <script type="text/javascript">

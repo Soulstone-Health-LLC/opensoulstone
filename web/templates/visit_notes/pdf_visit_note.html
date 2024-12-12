@@ -56,7 +56,7 @@ person.phone_number[6:10] }} ({{ person.phone_type }})
 <p></p>
 {% else %}
 <h3>Reason for Visit:</h3>
-{{ note.reason_for_visit }} {% endif %}
+{{ note.reason_for_visit|safe }} {% endif %}
 <br />
 <br />
 {% if note.visit_notes == None or note.visit_notes == '' %}
@@ -64,7 +64,7 @@ person.phone_number[6:10] }} ({{ person.phone_type }})
 <p></p>
 {% else %}
 <h3>Visit Notes</h3>
-{{ note.visit_notes }} {% endif %}
+{{ note.visit_notes|safe }} {% endif %}
 <br />
 <br />
 {% if note.post_visit_recommendations == None or note.post_visit_recommendations
@@ -73,4 +73,4 @@ person.phone_number[6:10] }} ({{ person.phone_type }})
 <p></p>
 {% else %}
 <h3>Post Visit Recommendation:</h3>
-{{ note.post_visit_recommendations }} {% endif %}
+{{ note.post_visit_recommendations|safe }} {% endif %}

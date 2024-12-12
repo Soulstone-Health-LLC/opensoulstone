@@ -1,6 +1,7 @@
 email-validator
 faker
 flask
+flask-ckeditor
 flask-login
 flask-mail
 flask-sqlalchemy

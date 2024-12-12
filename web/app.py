@@ -1,6 +1,7 @@
 """Flask application initialization and configuration."""
 # Imports
 from flask import Flask
+from flask_ckeditor import CKEditor
 from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail
 from config import BaseConfig
@@ -10,6 +11,7 @@ from config import BaseConfig
 app = Flask(__name__)
 app.config.from_object(BaseConfig)
 db = SQLAlchemy(app)
+ckeditor = CKEditor(app)
 
 
 # Importing the models to create the tables

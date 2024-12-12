@@ -2,6 +2,8 @@
 Basic configuration file for the application.
 Variables are read from the environment variables from docker-compose.yml
 """
+
+# Imports
 import os
 
 
