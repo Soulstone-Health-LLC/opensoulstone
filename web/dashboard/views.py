@@ -1,6 +1,7 @@
 """Dashboard - Views -- This file contains the views for the dashboard app."""
 # Imports
-from datetime import datetime, timedelta
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
 from flask import Blueprint, render_template
 from flask_login import login_required, current_user
 from app import db
@@ -23,9 +24,9 @@ def dashboard_page():
     # Start Date for Dashboard (120 days)
     # start_date = datetime.now() - timedelta(days=120)
 
-    # Start Date for Dashboard (the first day of the current month)
-    start_date = datetime.now().replace(month=datetime.now().month - 5, day=1,
-                                        hour=0, minute=0, second=0)
+    # Start Date for Dashboard (current month minus 5 months)
+    start_date = datetime.now().replace(day=1, hour=0, minute=0,
+                                        second=0) - relativedelta(months=5)
 
     # Dashboard - Newly Created Persons
     person_data = (
