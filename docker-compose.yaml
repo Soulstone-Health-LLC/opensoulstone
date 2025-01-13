@@ -26,6 +26,8 @@ services:
       MAIL_USE_SSL: ${MAIL_USE_SSL}
       MAIL_USERNAME: ${MAIL_USERNAME}
       MAIL_PASSWORD: ${MAIL_PASSWORD}
+      SUPPORT_EMAIL: ${SUPPORT_EMAIL}
+      SUPPORT_PASSWORD: ${SUPPORT_PASSWORD}
     volumes:
       - profile-images:/app/static/profile_pics
     expose:
