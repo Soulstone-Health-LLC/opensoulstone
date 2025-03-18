@@ -25,8 +25,9 @@ def dashboard_page():
     # start_date = datetime.now() - timedelta(days=120)
 
     # Start Date for Dashboard (current month minus 5 months)
-    start_date = datetime.now().replace(day=1, hour=0, minute=0,
-                                        second=0) - relativedelta(months=5)
+    start_date = datetime.now().replace(
+        day=1, hour=0, minute=0, second=0,
+        microsecond=0) - relativedelta(months=5)
 
     # Dashboard - Newly Created Persons
     person_data = (
