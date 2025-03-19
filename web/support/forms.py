@@ -68,6 +68,36 @@ class PracticeUserForm(FlaskForm):
     submit = SubmitField(label="Register Account")
 
 
+# Form - Edit Practice User
+class EditPracticeUserForm(FlaskForm):
+    """Edit the User to the Practice Form"""
+
+    role = SelectField(
+        label="User Role *", choices=ROLE_CHOICES, validators=[DataRequired()]
+    )
+    user_type = SelectField(label="User Type *", choices=USER_TYPE_CHOICES)
+    first_name = StringField(
+        label="First Name *", validators=[DataRequired(),
+                                          Length(min=2, max=150)]
+    )
+    middle_name = StringField(label="Middle Name")
+    last_name = StringField(
+        label="Last Name *", validators=[DataRequired(),
+                                         Length(min=2, max=150)]
+    )
+    suffix_name = StringField(label="Suffix")
+    email = EmailField(
+        label="Email *", validators=[DataRequired(), Email(),
+                                     Length(min=3, max=150)]
+    )
+    phone_number = TelField(label="Phone Number *",
+                            validators=[DataRequired()])
+    phone_type = SelectField(label="Phone Type *", choices=PHONE_TYPE_CHOICES)
+    status = SelectField(label="Status *", choices=STATUS_CHOICES,
+                         validators=[DataRequired()])
+    submit = SubmitField(label="Update Account")
+
+
 # Form - Release Notes
 class ReleaseNotesForm(FlaskForm):
     """Add or edit release notes form"""

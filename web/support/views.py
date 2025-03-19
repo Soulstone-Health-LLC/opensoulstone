@@ -10,7 +10,8 @@ from decorators.decorators import support_required
 from settings.models import Practice
 from app import db
 from .models import ReleaseNotes
-from .forms import AddPracticeForm, PracticeUserForm, ReleaseNotesForm
+from .forms import (AddPracticeForm, PracticeUserForm,
+                    EditPracticeUserForm, ReleaseNotesForm)
 
 
 # Blueprint Configuration
@@ -151,6 +152,58 @@ def add_practice_user(practice_id):
         title="Soulstone - Add Practice User",
         form=form,
         practice=practice
+    )
+
+
+# Support - Practices - View Practice User
+@supportapp.route("/support/view_practice_user/<int:practice_id>/<int:user_id>")
+@login_required
+@support_required
+def view_practice_user(user_id, practice_id):
+    """View practice user form and page"""
+
+    practice_user = User.query.get_or_404(user_id)
+    practice = Practice.query.get_or_404(practice_id)
+
+    return render_template(
+        "support/support_view_user.html",
+        title="Soulstone - View Practice User",
+        user=practice_user,
+        practice=practice
+    )
+
+
+# Support - Practices - Edit Practice User
+@supportapp.route("/support/edit_practice_user/<int:practice_id>/<int:user_id>",
+                  methods=["GET", "POST"])
+@login_required
+@support_required
+def edit_practice_user(user_id, practice_id):
+    """Edit practice user form and page"""
+
+    practice_user = User.query.get_or_404(user_id)
+    practice = Practice.query.get_or_404(practice_id)
+    form = EditPracticeUserForm(obj=practice_user)
+
+    # Gets the data from the form and saves to the database
+    if form.validate_on_submit():
+        form.populate_obj(practice_user)
+        practice_user.updated_by = current_user.id
+        practice_user.updated_at = datetime.now(tz=timezone.utc)
+        db.session.commit()
+        flash(f"{practice_user.email} updated successfully.",
+              category="success")
+
+        # Redirect user to Support home page
+        return redirect(url_for("supportapp.view_practice",
+                                practice_id=practice_user.practice_id))
+
+    return render_template(
+        "support/support_add_user.html",
+        title="Soulstone - Edit Practice User",
+        form=form,
+        practice=practice,
+        user=practice_user
     )
 
 
