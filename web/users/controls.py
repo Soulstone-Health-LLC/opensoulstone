@@ -28,9 +28,9 @@ def handle_login(form):
         return redirect(url_for("users.login"))
 
     # If the account is inactive
-    if user.status == "Inactive":
+    if user.status == "Inactive" or user.status == "Locked":
         flash(
-            "This account is inactive. Please contact your practice's Super User.",
+            "This account is inactive or locked. Please contact your practice's Super User.",
             category="error")
         return redirect(url_for("users.login"))
 
@@ -96,7 +96,7 @@ def get_active_tos():
 def check_practice_status(practice_id):
     """Checks the status of the practice."""
     practice = Practice.query.get(practice_id)
-    if practice.status == "Inactive":
+    if practice.status == "Inactive" or practice.status == "Locked":
         return False
     return True
 
