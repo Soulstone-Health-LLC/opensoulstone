@@ -102,7 +102,8 @@ USER_TYPE_CHOICES = [
 ]
 
 # Status Dictionary
-STATUS_CHOICES = [("Active", "Active"), ("Inactive", "Inactive")]
+STATUS_CHOICES = [("Active", "Active"), ("Inactive",
+                                         "Inactive"), ("Locked", "Locked")]
 
 # Payment Type Dictionary
 PAYMENT_TYPE_CHOICES = [
