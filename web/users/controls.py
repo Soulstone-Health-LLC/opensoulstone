@@ -6,6 +6,7 @@ from flask import flash, redirect, url_for
 from flask_login import login_user
 from werkzeug.security import check_password_hash
 from terms_of_service.models import TermsOfService, UserAgreement
+from settings.models import Practice
 from .models import User
 
 
@@ -23,6 +24,20 @@ def handle_login(form):
     if not check_password_hash(user.password, form.password.data):
         flash(
             f"The account information used for {form.email.data} is incorrect",
+            category="error")
+        return redirect(url_for("users.login"))
+
+    # If the account is inactive
+    if user.status == "Inactive":
+        flash(
+            "This account is inactive. Please contact your practice's Super User.",
+            category="error")
+        return redirect(url_for("users.login"))
+
+    # If the practice is inactive
+    if check_practice_status(user.practice_id) is False:
+        flash(
+            "This practice is inactive. Please contact Soulstone Health Support.",
             category="error")
         return redirect(url_for("users.login"))
 
@@ -75,6 +90,15 @@ def get_active_tos():
         .order_by(TermsOfService.active_date.desc())
         .first()
     )
+
+
+# Function - Check Practice Status
+def check_practice_status(practice_id):
+    """Checks the status of the practice."""
+    practice = Practice.query.get(practice_id)
+    if practice.status == "Inactive":
+        return False
+    return True
 
 
 # Function - Generate Short Code
