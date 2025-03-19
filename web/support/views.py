@@ -49,9 +49,9 @@ def view_practice(practice_id):
 
 
 # Support - Practices - Add Practice
-@ supportapp.route("/support/add_practice", methods=["GET", "POST"])
-@ login_required
-@ support_required
+@supportapp.route("/support/add_practice", methods=["GET", "POST"])
+@login_required
+@support_required
 def add_practice():
     """Add practice form and page"""
 
@@ -77,10 +77,10 @@ def add_practice():
 
 
 # Support - Practices - Edit Practice
-@ supportapp.route("/support/edit_practice/<int:practice_id>",
-                   methods=["GET", "POST"])
-@ login_required
-@ support_required
+@supportapp.route("/support/edit_practice/<int:practice_id>",
+                  methods=["GET", "POST"])
+@login_required
+@support_required
 def edit_practice(practice_id):
     """Edit practice form and page"""
 
@@ -106,10 +106,10 @@ def edit_practice(practice_id):
 
 
 # Support - Practices - Add Practice User
-@ supportapp.route("/support/<int:practice_id>/support_add_user",
-                   methods=["GET", "POST"])
-@ login_required
-@ support_required
+@supportapp.route("/support/<int:practice_id>/support_add_user",
+                  methods=["GET", "POST"])
+@login_required
+@support_required
 def add_practice_user(practice_id):
     """Add practice user form and page"""
 
@@ -155,9 +155,9 @@ def add_practice_user(practice_id):
 
 
 # Support App - Release Notes - View list of Release Notes
-@ supportapp.route("/support/release_notes")
-@ login_required
-@ support_required
+@supportapp.route("/support/release_notes")
+@login_required
+@support_required
 def view_release_notes():
     """View release notes form and page"""
 
@@ -172,9 +172,9 @@ def view_release_notes():
 
 
 # Support App - Release Notes - Add Release Note
-@ supportapp.route("/support/add_release_notes", methods=["GET", "POST"])
-@ login_required
-@ support_required
+@supportapp.route("/support/add_release_notes", methods=["GET", "POST"])
+@login_required
+@support_required
 def add_release_notes():
     """Add release notes form and page"""
 
@@ -202,9 +202,9 @@ def add_release_notes():
 
 
 # Support App - Release Notes - View a Release Note
-@ supportapp.route("/support/release_notes/<int:release_note_id>")
-@ login_required
-@ support_required
+@supportapp.route("/support/release_notes/<int:release_note_id>")
+@login_required
+@support_required
 def view_release_note_details(release_note_id):
     """View release note details form and page"""
 
@@ -218,10 +218,10 @@ def view_release_note_details(release_note_id):
 
 
 # Support App - Release Notes - Edit Release Note
-@ supportapp.route("/support/edit_release_notes/<int:release_note_id>",
-                   methods=["GET", "POST"])
-@ login_required
-@ support_required
+@supportapp.route("/support/edit_release_notes/<int:release_note_id>",
+                  methods=["GET", "POST"])
+@login_required
+@support_required
 def edit_release_notes(release_note_id):
     """Edit release notes form and page"""
 
@@ -254,9 +254,9 @@ def edit_release_notes(release_note_id):
 
 
 # Support App - Release Notes - Delete Release Note
-@ supportapp.route("/support/delete_release_notes/<int:release_note_id>")
-@ login_required
-@ support_required
+@supportapp.route("/support/delete_release_notes/<int:release_note_id>")
+@login_required
+@support_required
 def delete_release_notes(release_note_id):
     """Delete release notes from database"""
 
