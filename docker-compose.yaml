@@ -13,7 +13,7 @@ services:
       - web:web
     depends_on:
       - certbot
-    restart: unless-stopped
+    # restart: unless-stopped
 
   certbot:
     image: certbot/certbot
@@ -21,7 +21,7 @@ services:
       - ./nginx/certs:/etc/letsencrypt
       - ./nginx/certbot:/var/www/certbot
     command: certonly --webroot --webroot-path=/var/www/certbot --email rodney@soulstonehealth.com --agree-tos --no-eff-email -d soulstone.app -d www.soulstone.app
-    restart: unless-stopped
+    # restart: unless-stopped
 
   web:
     build: ./web
