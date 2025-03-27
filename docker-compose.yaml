@@ -9,18 +9,27 @@ services:
       - profile-images:/static/profile_pics
       - ./nginx/certs:/etc/letsencrypt
       - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/certbot:/var/www/certbot
     links:
       - web:web
     depends_on:
       - certbot
+    # restart: unless-stopped
 
   certbot:
     image: certbot/certbot
     volumes:
       - ./nginx/certs:/etc/letsencrypt
       - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/certbot:/var/www/certbot
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do sleep 6h & wait $!; certbot renew; done;'"
     command: certonly --webroot --webroot-path=/var/www/certbot --email rodney@soulstonehealth.com --agree-tos --no-eff-email -d soulstone.app
+    # restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "certbot", "renew", "--dry-run"]
+      interval: 12h
+      timeout: 10s
+      retries: 3
 
   web:
     build: ./web
@@ -47,6 +56,7 @@ services:
     command: >
       sh -c "python3 ./create_db.py &&
              gunicorn -w 2 -b :8000 app:app"
+    # restart: unless-stopped
 
   postgres:
     image: postgres:latest
@@ -60,6 +70,7 @@ services:
       - "5432"
     ports:
       - "5432:5432"
+    # restart: unless-stopped
 
 volumes:
   db-data:
