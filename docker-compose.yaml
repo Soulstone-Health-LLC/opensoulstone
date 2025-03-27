@@ -3,12 +3,13 @@ services:
     build: ./nginx
     ports:
       - "80:80"
+      - "443:443"
     volumes:
       - ./web/static:/static
       - profile-images:/static/profile_pics
-      - ./nginx/certs:/etc/letsencrypt
-      - ./nginx/conf.d:/etc/nginx/conf.d
-      - ./nginx/certbot:/var/www/certbot
+      - ./nginx/conf.d:/etc/nginx/conf.d/:ro
+      - ./nginx/certs:/etc/letsencrypt/:ro
+      - ./nginx/certbot:/var/www/certbot/:ro
     links:
       - web:web
     depends_on:
@@ -16,10 +17,10 @@ services:
     # restart: unless-stopped
 
   certbot:
-    image: certbot/certbot
+    image: certbot/certbot:latest
     volumes:
-      - ./nginx/certs:/etc/letsencrypt
-      - ./nginx/certbot:/var/www/certbot
+      - ./nginx/certs:/etc/letsencrypt/:rw
+      - ./nginx/certbot:/var/www/certbot/:rw
     # restart: unless-stopped
 
   web:
