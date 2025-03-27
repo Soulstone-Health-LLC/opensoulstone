@@ -3,28 +3,25 @@ services:
     build: ./nginx
     ports:
       - "80:80"
-      # - "443:443"
     volumes:
       - ./web/static:/static
       - profile-images:/static/profile_pics
-      # - ./nginx/certs:/etc/letsencrypt
-      # - ./nginx/conf.d:/etc/nginx/conf.d
-      # - ./nginx/certbot:/var/www/certbot
+      - ./nginx/certs:/etc/letsencrypt
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/certbot:/var/www/certbot
     links:
       - web:web
-    # depends_on:
-    # - certbot
-    # restart: unless-stopped
+    depends_on:
+      - certbot
+    restart: unless-stopped
 
-  # certbot:
-  # image: certbot/certbot
-  # volumes:
-  # - ./nginx/certs:/etc/letsencrypt
-  # - ./nginx/conf.d:/etc/nginx/conf.d
-  # - ./nginx/certbot:/var/www/certbot
-  # entrypoint: "/bin/sh -c 'trap exit TERM; while :; do sleep 6h & wait $!; certbot renew; done;'"
-  # command: certonly --webroot --webroot-path=/var/www/certbot --email rodney@soulstonehealth.com --agree-tos --no-eff-email -d soulstone.app
-  # restart: unless-stopped
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - ./nginx/certs:/etc/letsencrypt
+      - ./nginx/certbot:/var/www/certbot
+    command: certonly --webroot --webroot-path=/var/www/certbot --email rodney@soulstonehealth.com --agree-tos --no-eff-email -d soulstone.app -d www.soulstone.app
+    restart: unless-stopped
 
   web:
     build: ./web
