@@ -5,7 +5,7 @@ if ! [ -x "$(command -v docker compose)" ]; then
   exit 1
 fi
 
-domains=(soulstone.app)
+domains="soulstone.app"
 rsa_key_size=4096
 data_path="./nginx/certbot"
 email="rodney@soulstonehealth.com" # Adding a valid address is strongly recommended
