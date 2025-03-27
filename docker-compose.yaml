@@ -8,8 +8,8 @@ services:
       - ./web/static:/static
       - profile-images:/static/profile_pics
       - ./nginx/conf.d:/etc/nginx/conf.d/:ro
-      - ./nginx/certs:/etc/letsencrypt/:ro
-      - ./nginx/certbot:/var/www/certbot/:ro
+      - ./nginx/certbot/conf:/etc/letsencrypt
+      - ./nginx/certbot/www:/var/www/certbot
     links:
       - web:web
     # restart: unless-stopped
@@ -17,8 +17,8 @@ services:
   certbot:
     image: certbot/certbot:latest
     volumes:
-      - ./nginx/certs:/etc/letsencrypt/:rw
-      - ./nginx/certbot:/var/www/certbot/:rw
+      - ./nginx/certbot/conf:/etc/letsencrypt
+      - ./nginx/certbot/www:/var/www/certbot
     # restart: unless-stopped
 
   web:
