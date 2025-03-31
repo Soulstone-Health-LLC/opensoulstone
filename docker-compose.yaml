@@ -43,6 +43,8 @@ services:
       - profile-images:/app/static/profile_pics
     expose:
       - "80:8000"
+    ports:
+      - "8000:8000"
     depends_on:
       - postgres
     command: >
