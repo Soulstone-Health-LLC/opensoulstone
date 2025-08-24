@@ -1,13 +1,37 @@
 # Makefile
-.PHONY: build run up stop clean logs shell db_seed_all test-env restart
+.PHONY: build run up stop clean logs shell db_seed_all test-env restart dev-up dev-stop login-soulstone init-db validate status health-check
 
 # Docker-related variables
 DOCKER_COMPOSE = docker compose
+DOCKER_COMPOSE_DEV = docker compose -f docker-compose.dev.yaml
+
+# Setup validation and health checks
+validate:
+	./validate-setup.sh
+
+health-check:
+	./health-check.sh
+
+# Environment status
+status:
+	./check-environment.sh
+
+# Database initialization
+init-db:
+	./init-db.sh
 
 # Build the Docker image
 build:
 	$(DOCKER_COMPOSE) build
 
+# Development commands (no SSL, simplified setup)
+dev-up:
+	$(DOCKER_COMPOSE_DEV) up --build
+
+dev-stop:
+	$(DOCKER_COMPOSE_DEV) down
+
+# Production commands (with nginx and SSL)
 # Run the Docker container
 run:
 	$(DOCKER_COMPOSE) up
@@ -31,6 +55,9 @@ logs:
 # Container shell
 shell:
 	$(DOCKER_COMPOSE) exec web sh
+
+# Legacy alias for shell command
+login-soulstone: shell
 
 # Seed the database with test data
 db_seed_practice:

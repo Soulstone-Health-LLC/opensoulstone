@@ -17,8 +17,8 @@ LOCAL = "http://127.0.0.1:5000"
 # ------------------------------------------------------------------------------
 # Global Variables
 # ------------------------------------------------------------------------------
-EMAIL = "rodneygauna+hh@gmail.com"
-VALID_PASSWORD = "rodneygauna+hh"
+EMAIL = "test.user@example.com"
+VALID_PASSWORD = "secure_test_password"
 
 
 # ------------------------------------------------------------------------------

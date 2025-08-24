@@ -1,14 +1,18 @@
 #!/bin/bash
 
+# SSL Certificate Setup Script for Production Deployment
+# Update the variables below for your domain and email
+
 if ! [ -x "$(command -v docker compose)" ]; then
   echo 'Error: docker compose is not installed.' >&2
   exit 1
 fi
 
-domains="soulstone.app"
+# CONFIGURE THESE VARIABLES FOR YOUR DEPLOYMENT
+domains="your-domain.com"  # Replace with your actual domain
 rsa_key_size=4096
 data_path="./nginx/certbot"
-email="rodney@soulstonehealth.com" # Adding a valid address is strongly recommended
+email="admin@your-domain.com" # Replace with your email address for Let's Encrypt notifications
 staging=0 # Set to 1 if you're testing your setup to avoid hitting request limits
 
 if [ -d "$data_path" ]; then

@@ -1,0 +1,57 @@
+# Development Docker Compose Configuration
+# This file is for local development without SSL/HTTPS complexity
+# Use: docker compose -f docker-compose.dev.yaml up
+
+services:
+  web:
+    build: ./web
+    environment:
+      SECRET_KEY: ${SECRET_KEY:-dev-secret-key-change-in-production}
+      POSTGRES_DB: ${POSTGRES_DB:-soulstone_dev}
+      DATABASE_PORT: 5432
+      POSTGRES_USER: ${POSTGRES_USER:-soulstone_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-dev_password}
+      MAIL_SERVER: ${MAIL_SERVER:-smtp.example.com}
+      MAIL_PORT: ${MAIL_PORT:-587}
+      MAIL_USE_TLS: ${MAIL_USE_TLS:-True}
+      MAIL_USE_SSL: ${MAIL_USE_SSL:-False}
+      MAIL_USERNAME: ${MAIL_USERNAME:-your-email@example.com}
+      MAIL_PASSWORD: ${MAIL_PASSWORD:-your-password}
+      SUPPORT_EMAIL: ${SUPPORT_EMAIL:-admin@example.com}
+      SUPPORT_PASSWORD: ${SUPPORT_PASSWORD:-admin_password}
+      PRACTICE_NAME: ${PRACTICE_NAME:-Development Practice}
+      PRACTICE_ADDRESS: ${PRACTICE_ADDRESS:-123 Dev Street}
+      PRACTICE_CITY: ${PRACTICE_CITY:-Dev City}
+      PRACTICE_STATE: ${PRACTICE_STATE:-Dev State}
+      PRACTICE_ZIPCODE: ${PRACTICE_ZIPCODE:-12345}
+      PRACTICE_PHONE: ${PRACTICE_PHONE:-555-123-4567}
+      PRACTICE_PHONE_TYPE: ${PRACTICE_PHONE_TYPE:-Office}
+    volumes:
+      - profile-images:/app/static/profile_pics
+      # Mount source code for live development (optional - uncomment next line)
+      # - ./web:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+    command: >
+      sh -c "python3 ./create_db.py &&
+             python3 app.py"
+    # For development, use Flask's built-in server instead of gunicorn
+    # This enables auto-reloading and better debugging
+
+  postgres:
+    image: postgres:latest
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-soulstone_dev}
+      POSTGRES_USER: ${POSTGRES_USER:-soulstone_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-dev_password}
+    ports:
+      - "5432:5432"
+    # Expose postgres port for direct database access during development
+
+volumes:
+  db-data:
+  profile-images:
