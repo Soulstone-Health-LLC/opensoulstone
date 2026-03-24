@@ -5,7 +5,7 @@ Blueprint.
 
 
 # Imports
-import pdfkit
+import weasyprint
 from datetime import datetime, timezone, timedelta
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask import make_response
@@ -495,8 +495,7 @@ def pdfVisitNote(id):
         person=person,
         user=current_user,
     )
-    config = pdfkit.configuration(wkhtmltopdf="/usr/bin/wkhtmltopdf")
-    pdf = pdfkit.from_string(rendered, False, configuration=config)
+    pdf = weasyprint.HTML(string=rendered).write_pdf()
     response = make_response(pdf)
     response.headers["Content-Type"] = "application/pdf"
     response.headers["Content-Disposition"] = "inline; filename=visit_note.pdf"

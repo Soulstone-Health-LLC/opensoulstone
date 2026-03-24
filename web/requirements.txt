@@ -8,9 +8,9 @@ flask-sqlalchemy
 flask-wtf
 ics
 gunicorn
-pdfkit
+weasyprint
 pillow
-psycopg2
+psycopg2-binary
 pytest
 requests
 selenium

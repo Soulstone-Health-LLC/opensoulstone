@@ -1,5 +1,9 @@
 """Flask application initialization and configuration."""
-# Imports
+# fmt: off
+# isort: skip_file
+# Import order here is intentional — models and blueprints depend on `app` and
+# `db` being defined first. Do not allow formatters to reorder these imports.
+
 from flask import Flask
 from flask_ckeditor import CKEditor
 from flask_sqlalchemy import SQLAlchemy
@@ -68,6 +72,4 @@ app.register_blueprint(terms_of_service)
 app.register_blueprint(commands)
 
 
-# Main function
-if __name__ == "__main__":
-    app.run(debug=True)
+

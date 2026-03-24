@@ -1,6 +1,6 @@
 """Billing > Views - Routes for the billing blueprint."""
 # Imports
-import pdfkit
+import weasyprint
 from datetime import datetime, timedelta, timezone
 from flask import (
     Blueprint, render_template, request, flash, redirect, url_for,
@@ -581,8 +581,7 @@ def pdfInvoice(person_id):
         person=person,
         user=current_user,
     )
-    config = pdfkit.configuration(wkhtmltopdf="/usr/bin/wkhtmltopdf")
-    pdf = pdfkit.from_string(rendered, False, configuration=config)
+    pdf = weasyprint.HTML(string=rendered).write_pdf()
     response = make_response(pdf)
     response.headers["Content-Type"] = "application/pdf"
     response.headers[
@@ -609,8 +608,7 @@ def pdfPaymentReceipt(payment_id):
         person=person,
         user=current_user,
     )
-    config = pdfkit.configuration(wkhtmltopdf="/usr/bin/wkhtmltopdf")
-    pdf = pdfkit.from_string(rendered, False, configuration=config)
+    pdf = weasyprint.HTML(string=rendered).write_pdf()
     response = make_response(pdf)
     response.headers["Content-Type"] = "application/pdf"
     response.headers["Content-Disposition"] = "inline;\

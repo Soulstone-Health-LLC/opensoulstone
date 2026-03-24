@@ -33,15 +33,16 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     command: >
       sh -c "python3 ./create_db.py &&
-             python3 app.py"
+             python3 run.py"
     # For development, use Flask's built-in server instead of gunicorn
     # This enables auto-reloading and better debugging
 
   postgres:
-    image: postgres:latest
+    image: postgres:17
     volumes:
       - db-data:/var/lib/postgresql/data
     environment:
@@ -51,6 +52,11 @@ services:
     ports:
       - "5432:5432"
     # Expose postgres port for direct database access during development
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-soulstone_user} -d ${POSTGRES_DB:-soulstone_dev}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
 volumes:
   db-data:
