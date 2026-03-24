@@ -106,9 +106,9 @@ SUPPORT_PASSWORD="secure_admin_password"
 PRACTICE_NAME="Your Practice Name"
 PRACTICE_ADDRESS="123 Main Street"
 PRACTICE_CITY="Your City"
-PRACTICE_STATE="Your State"
+PRACTICE_STATE="Your State (Abbreviation)"
 PRACTICE_ZIPCODE="12345"
-PRACTICE_PHONE="555-123-4567"
+PRACTICE_PHONE="5551234567"
 PRACTICE_PHONE_TYPE="Office"
 ```
 
@@ -138,32 +138,32 @@ MAIL_USE_SSL="False"
 
 ### Make Commands
 
-| Command | Description | Environment |
-|---------|-------------|-------------|
-| `make validate` | **Run first** - Validate your setup and configuration | Any |
-| `make status` | Check which environment is currently running | Any |
-| `make dev-up` | **Recommended for development** - Start without SSL complexity | Development |
-| `make dev-stop` | Stop development environment | Development |
-| `make test-env` | Development environment with sample data (⚠️ **resets data**) | Development |
-| `make up` | Start production stack with nginx and SSL | Production |
-| `make stop` | Stop all running containers | Any |
-| `make start` | Start previously stopped containers | Any |
-| `make restart` | Stop and restart all services | Any |
-| `make logs` | View application logs | Any |
-| `make shell` | Access the web container shell for debugging | Any |
-| `make clean` | Stop containers and remove volumes (⚠️ **destroys data**) | Any |
-| `make init-db` | Initialize database only (useful for custom setups) | Any |
+| Command         | Description                                                    | Environment |
+| --------------- | -------------------------------------------------------------- | ----------- |
+| `make validate` | **Run first** - Validate your setup and configuration          | Any         |
+| `make status`   | Check which environment is currently running                   | Any         |
+| `make dev-up`   | **Recommended for development** - Start without SSL complexity | Development |
+| `make dev-stop` | Stop development environment                                   | Development |
+| `make test-env` | Development environment with sample data (⚠️ **resets data**)  | Development |
+| `make up`       | Start production stack with nginx and SSL                      | Production  |
+| `make stop`     | Stop all running containers                                    | Any         |
+| `make start`    | Start previously stopped containers                            | Any         |
+| `make restart`  | Stop and restart all services                                  | Any         |
+| `make logs`     | View application logs                                          | Any         |
+| `make shell`    | Access the web container shell for debugging                   | Any         |
+| `make clean`    | Stop containers and remove volumes (⚠️ **destroys data**)      | Any         |
+| `make init-db`  | Initialize database only (useful for custom setups)            | Any         |
 
 ### Database Seeding Commands
 
-| Command | Description |
-|---------|-------------|
-| `make db_seed_all` | Seed all sample data |
+| Command                 | Description                     |
+| ----------------------- | ------------------------------- |
+| `make db_seed_all`      | Seed all sample data            |
 | `make db_seed_practice` | Add sample practice information |
-| `make db_seed_users` | Add sample users |
-| `make db_seed_people` | Add sample clients |
-| `make db_seed_charges` | Add sample billing charges |
-| `make db_seed_events` | Add sample appointments |
+| `make db_seed_users`    | Add sample users                |
+| `make db_seed_people`   | Add sample clients              |
+| `make db_seed_charges`  | Add sample billing charges      |
+| `make db_seed_events`   | Add sample appointments         |
 
 ### Flask CLI Commands (Advanced)
 
@@ -270,14 +270,14 @@ make up
 
 ### Development vs Production
 
-| Aspect | Development (`make dev-up`) | Production (`make up`) |
-|--------|----------------------------|------------------------|
-| **SSL/HTTPS** | ❌ No SSL (HTTP only) | ✅ SSL with certificates |
-| **Nginx** | ❌ Direct Flask access | ✅ Nginx reverse proxy |
-| **Ports** | 8000 (direct) | 80/443 (via nginx) |
-| **Certificates** | ❌ Not needed | ✅ Required (Let's Encrypt) |
-| **Restart Policy** | ❌ Manual restart | ✅ Auto-restart |
-| **Best For** | Local development | Production deployment |
+| Aspect             | Development (`make dev-up`) | Production (`make up`)      |
+| ------------------ | --------------------------- | --------------------------- |
+| **SSL/HTTPS**      | ❌ No SSL (HTTP only)       | ✅ SSL with certificates    |
+| **Nginx**          | ❌ Direct Flask access      | ✅ Nginx reverse proxy      |
+| **Ports**          | 8000 (direct)               | 80/443 (via nginx)          |
+| **Certificates**   | ❌ Not needed               | ✅ Required (Let's Encrypt) |
+| **Restart Policy** | ❌ Manual restart           | ✅ Auto-restart             |
+| **Best For**       | Local development           | Production deployment       |
 
 ### Project Structure
 
@@ -378,7 +378,7 @@ This script will check:
 - ✅ Docker installation and status
 - ✅ Environment variable configuration
 - ✅ Port availability (8000, 5432)
-- ⚠️  Common configuration issues
+- ⚠️ Common configuration issues
 
 ### Example validation output
 
